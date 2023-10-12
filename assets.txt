@@ -5,8 +5,9 @@ IMG02=https://raw.githubusercontent.com/Mischlichter/data/main/01_03.png
 DMP02=https://raw.githubusercontent.com/Mischlichter/data/main/01_d03.png
 
 scene02:
-IMG04=https://raw.githubusercontent.com/Mischlichter/data/main/02_01.png
-DMP04=https://raw.githubusercontent.com/Mischlichter/data/main/02_d01.png
-IMG05=https://raw.githubusercontent.com/Mischlichter/data/main/02_02.png
-DMP05=https://raw.githubusercontent.com/Mischlichter/data/main/02_d02.png
+IMG04=https://raw.githubusercontent.com/Mischlichter/data/main/02_02.png
+DMP04=https://raw.githubusercontent.com/Mischlichter/data/main/02_d02.png
+IMG05=https://raw.githubusercontent.com/Mischlichter/data/main/02_01.png
+DMP05=https://raw.githubusercontent.com/Mischlichter/data/main/02_d01.png
+
 
