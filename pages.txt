@@ -1,0 +1,23 @@
+menu: startpage
+
+h1: Welcome to Hogeai 
+
+p: This is a sample paragrapht we all are in this togethere till its all wonderful.
+
+h5: New to this?
+
+p: This world is wonderful and everyday something new.
+p: Now there is another paragraph
+
+bg: scene01
+
+
+menu: history
+
+h1: This is the History of HogeAI
+
+p: It all began with this sample text and slowly evolved into something truely dynamic and beautiful. Everyday we keep on building
+
+bg: scene02
+
+
