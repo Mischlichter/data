@@ -10,4 +10,10 @@ DMP04=https://raw.githubusercontent.com/Mischlichter/data/main/02_d02.png:2:0:0
 IMG05=https://raw.githubusercontent.com/Mischlichter/data/main/02_01.png
 DMP05=https://raw.githubusercontent.com/Mischlichter/data/main/02_d01.png
 
+scene03:
+IMG01=https://raw.githubusercontent.com/Mischlichter/data/main/01_04.png:2:0:0
+DMP01=https://raw.githubusercontent.com/Mischlichter/data/main/01_d04.png:2:0:0
+IMG02=https://raw.githubusercontent.com/Mischlichter/data/main/01_03.png
+DMP02=https://raw.githubusercontent.com/Mischlichter/data/main/01_d03.png
+
 
