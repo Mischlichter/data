@@ -1,23 +1,49 @@
-menu: startpage
+SCENE01:
 
-h1: Welcome to Hogeai 
+H01: WELCOME TO HOGEAI
 
-p: This is a sample paragrapht we all are in this togethere till its all wonderful.
+P01: Step right in! You've just unlocked a universe where every thought has the potential to become a visual spectacle. With HogeAI, it's not just about generating images—it's about bringing stories to life. Remember those wild "What if?" moments? Like imagining Hoge stargazing on a serene night? Here, they transform into vibrant visuals. Rooted in the heartbeat of our dynamic community, HogeAI is more than a tool—it's an experience. Dive in, play around, and discover the art of possibility. Whether you're a creator, a dreamer, or someone who just stumbled in curious, there's a splash of magic waiting for you here.
 
-h5: New to this?
+H02: WHERE IT ALL BEGAN
 
-p: This world is wonderful and everyday something new.
-p: Now there is another paragraph
+P02: Picture this: A buzzing Hoge community chat. Memes flying left and right. And then, someone drops a wild idea: "Yo, what if we could get an AI to whip up Hoge visuals on the spot?" Mind. Blown.
 
-bg: scene01
+Borrowing Some Brainpower:
+Now, the tech world's already got some nifty AI models that turn words into pics. We thought, "Why reinvent the wheel? Let's grab one and teach it the Hoge lingo."
+
+AI Bootcamp:
+Training this AI felt like prepping a newbie for an art contest. We fed it heaps of Hoge images, each with its own little story. Bit by bit, our digital prodigy started getting the hang of the Hoge vibe and dishing out some artsy pieces.
+
+Twists, Turns, and Eurekas:
+It wasn't all rainbows and butterflies. Think of it like teaching a toddler to paint. Some messy tries, a few "What on earth is that?" moments, but then... Eureka! We started seeing images that screamed Hoge through and through.
+
+Enter: The HogeAI Bot:
+With our AI now Hoge-ified to perfection, a lightbulb moment hit: "Let's get everyone in on this fun!" And ta-da, the HogeAI Bot was born. Think of it as our genius artist in a bot suit, always ready to draw up your Hoge dreams.
+
+Test Drive & Tune-ups:
+But, wait! Before unveiling our masterpiece, we let a gang of beta testers take it for a spin. These legends played, prodded, and pointed out the bits that needed some extra love. With their two cents, we polished our bot till it sparkled, all set to make its big debut.
+
+P03: Got questions? Ideas? Or just want to share a masterpiece you made with HogeAI? Don't be a stranger! Our community thrives on your insights, feedback, and, of course, those delightful Hoge memes.
 
 
-menu: history
+#container1 {
+    width: 60%;
+}
 
-h1: This is the History of HogeAI
+#container2 {
+    width: 40%;
+}
 
-p: It all began with this sample text and slowly evolved into something truely dynamic and beautiful. Everyday we keep on building
+#container3 {
+    width: 80%;
+}
 
-bg: scene02
+SCNENE02:
 
+H01: THIS IS A NEW SCENE
 
+P01: The beauty of HogeAI? There's no right or wrong. Play around, experiment, and most importantly, have a blast! From serene landscapes to wacky adventures, the Hoge universe is yours to explore. The beauty of HogeAI? There's no right or wrong. Play around, experiment, and most importantly, have a blast! From serene landscapes to wacky adventures, the Hoge universe is yours to explore. The beauty of HogeAI? There's no right or wrong. Play around, experiment, and most importantly, have a blast! From serene landscapes to wacky adventures, the Hoge universe is yours to explore. The beauty of HogeAI? There's no right or wrong. Play around, experiment, and most importantly, have a blast! From serene landscapes to wacky adventures, the Hoge universe is yours to explore.
+
+#container1 {
+    width: 50%;
+}
