@@ -38,7 +38,7 @@ P03: Got questions? Ideas? Or just want to share a masterpiece you made with Hog
     width: 80%;
 }
 
-SCNENE02:
+SCENE02:
 
 H01: THIS IS A NEW SCENE
 
