@@ -40,7 +40,7 @@ But, wait! Before unveiling our masterpiece, we let a gang of beta testers take 
     width: 80%;
 }
 
-#container03 {
+#container04 {
     width: 20%;
 }
 
@@ -60,10 +60,10 @@ Got questions? Ideas? Or just want to share a masterpiece you made with HogeAI? 
     width: 50%;
 }
 
-#container01 {
+#container02 {
     width: 50%;
 }
 
-#container01 {
+#container03 {
     width: 50%;
 }
