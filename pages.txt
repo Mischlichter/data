@@ -35,6 +35,7 @@ But, wait! Before unveiling our masterpiece, we let a gang of beta testers take 
 
 #container02 {
     width: 50%;
+    font-family: 'JetBrainsMono-ExtraBold', sans-serif;
     text-transform: none;
 }
 
