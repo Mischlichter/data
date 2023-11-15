@@ -35,6 +35,7 @@ But, wait! Before unveiling our masterpiece, we let a gang of beta testers take 
 
 #container02 {
     width: 50%;
+    text-transform: none;
 }
 
 #container03 {
@@ -63,6 +64,7 @@ Got questions? Ideas? Or just want to share a masterpiece you made with HogeAI? 
 
 #container02 {
     width: 50%;
+    text-transform: uppercase;
 }
 
 #container03 {
