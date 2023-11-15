@@ -65,7 +65,6 @@ Got questions? Ideas? Or just want to share a masterpiece you made with HogeAI? 
 
 #container02 {
     width: 50%;
-    text-transform: uppercase;
 }
 
 #container03 {
