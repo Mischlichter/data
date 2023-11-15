@@ -29,19 +29,19 @@ But, wait! Before unveiling our masterpiece, we let a gang of beta testers take 
 
 
 #container01 {
-    width: 60%;
+    width: 50%;
 }
 
 #container02 {
-    width: 40%;
+    width: 50%;
 }
 
 #container03 {
-    width: 80%;
+    width: 50%;
 }
 
 #container04 {
-    width: 20%;
+    width: 50%;
 }
 
 SCENE02:
