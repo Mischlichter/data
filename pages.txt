@@ -40,6 +40,9 @@ But, wait! Before unveiling our masterpiece, we let a gang of beta testers take 
     width: 80%;
 }
 
+#container03 {
+    width: 20%;
+}
 
 SCENE02:
 
