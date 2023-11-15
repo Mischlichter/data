@@ -30,14 +30,12 @@ But, wait! Before unveiling our masterpiece, we let a gang of beta testers take 
 
 #container01 {
     width: 60%;
-    width: fit-content;
-  	margin: 0 auto
+    center;
 }
 
 #container02 {
     width: 60%;
-    width: fit-content;
-    margin: 0 auto
+    center;
 }
 
 #container03 {
