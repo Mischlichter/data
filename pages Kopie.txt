@@ -29,22 +29,22 @@ But, wait! Before unveiling our masterpiece, we let a gang of beta testers take 
 
 
 #container01 {
-
+    width: 50%;
     font-family: 'JetBrainsMono-ExtraBold', sans-serif;
 }
 
 #container02 {
-
+    width: 50%;
     font-family: 'JetBrainsMono-ExtraBold', sans-serif;
     text-transform: none;
 }
 
 #container03 {
-
+    width: 50%;
 }
 
 #container04 {
-
+    width: 50%;
 }
 
 SCENE02:
@@ -60,13 +60,13 @@ Got questions? Ideas? Or just want to share a masterpiece you made with HogeAI? 
 
 
 #container01 {
-
+    width: 50%;
 }
 
 #container02 {
-
+    width: 50%;
 }
 
 #container03 {
-
+    width: 50%;
 }
