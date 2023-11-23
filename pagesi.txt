@@ -22,11 +22,11 @@ https://raw.githubusercontent.com/Mischlichter/data/main/02_01.png
 I03:
 https://raw.githubusercontent.com/Mischlichter/data/main/02_02.png
 
-#i-container02 {
+#i-container01 {
 	width: 50%;
 }
 
-#i-container04 {
+#i-container03 {
 	width: 50%;
 	transform: scaleX(-1);
 }
