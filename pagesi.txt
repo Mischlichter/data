@@ -7,11 +7,11 @@ I04:
 https://raw.githubusercontent.com/Mischlichter/data/main/01_03.png
 
 #i-container02 {
-	width: 50%;
+	
 }
 
 #i-container04 {
-	width: 80%;
+	
 }
 
 SCENE02:
@@ -23,10 +23,9 @@ I03:
 https://raw.githubusercontent.com/Mischlichter/data/main/02_02.png
 
 #i-container01 {
-	width: 50%;
+	
 }
 
 #i-container03 {
-	width: 50%;
-	transform: scaleX(-1);
+
 }
