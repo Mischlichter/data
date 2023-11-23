@@ -6,6 +6,9 @@ WELCOME TO HOGEAI
 P02:
 Step right in! You've just unlocked a universe where every thought has the potential to become a visual spectacle. With HogeAI, it's not just about generating images—it's about bringing stories to life. Remember those wild "What if?" moments? Like imagining Hoge stargazing on a serene night? Here, they transform into vibrant visuals. Rooted in the heartbeat of our dynamic community, HogeAI is more than a tool—it's an experience. Dive in, play around, and discover the art of possibility. Whether you're a creator, a dreamer, or someone who just stumbled in curious, there's a splash of magic waiting for you here.
 
+I02:
+https://raw.githubusercontent.com/Mischlichter/data/main/01_02.png
+
 P03:
 WHERE IT ALL BEGAN
 
@@ -27,6 +30,8 @@ With our AI now Hoge-ified to perfection, a lightbulb moment hit: "Let's get eve
 Test Drive & Tune-ups:
 But, wait! Before unveiling our masterpiece, we let a gang of beta testers take it for a spin. These legends played, prodded, and pointed out the bits that needed some extra love. With their two cents, we polished our bot till it sparkled, all set to make its big debut.
 
+I04:
+https://raw.githubusercontent.com/Mischlichter/data/main/01_03.png
 
 #container01 {
 
@@ -38,12 +43,19 @@ But, wait! Before unveiling our masterpiece, we let a gang of beta testers take 
     font-family: 'JetBrainsMono-ExtraBold', sans-serif;
     text-transform: none;
 }
+#i-container02 {
+
+}
 
 #container03 {
 
 }
 
 #container04 {
+
+}
+
+#i-container04 {
 
 }
 
