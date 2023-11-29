@@ -11,9 +11,14 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v2  # Update to the latest version that supports Node.js 16
 
-    - name: Set up Python
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'  # Specify Node.js version 16
+
+    - name: Install Python
       uses: actions/setup-python@v2
       with:
         python-version: '3.x'
@@ -22,8 +27,8 @@ jobs:
       run: pip install pillow
 
     - name: Scale images
-      run: python https://github.com/Mischlichter/data/blob/main/gallery/scaled/scale_images.py
-      
+      run: python gallery/scaled/scale_images.py  # Update to the correct path
+
     - name: Commit and push scaled images
       run: |
         git config --global user.name 'GitHub Action'
@@ -31,3 +36,4 @@ jobs:
         git add gallery/scaled/
         git commit -m "Add scaled images" -a || exit 0
         git push
+
