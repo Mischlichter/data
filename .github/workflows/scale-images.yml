@@ -26,8 +26,8 @@ jobs:
     - name: Install Pillow
       run: pip install pillow
 
-    - name: Scale images
-      run: python gallery/scaled/scale_images.py  # Update to the correct path
+    - name: Run Python Script
+      run: python gallery/scale_images.py  # Update to the correct path
 
     - name: Commit and push scaled images
       run: |
@@ -36,4 +36,3 @@ jobs:
         git add gallery/scaled/
         git commit -m "Add scaled images" -a || exit 0
         git push
-
