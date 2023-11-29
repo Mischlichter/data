@@ -13,11 +13,21 @@ for filename in os.listdir(input_folder):
         try:
             with Image.open(os.path.join(input_folder, filename)) as img:
                 # Calculate new dimensions
-                new_width = int(img.width * 0.236)
-                new_height = int(img.height * 0.236)
+                original_width, original_height = img.size
+                new_width = int(original_width * 1.236)  # 123.6% of original width
+                new_height = int(original_height * 1.236)  # 123.6% of original height
 
-                # Resize and save the image with '_scaled' appended to the filename
-                img = img.resize((new_width, new_height), Image.LANCZOS)  # Use Image.LANCZOS
+                # Calculate cropping box to center the content
+                left = (new_width - original_width) // 2
+                top = (new_height - original_height) // 2
+                right = (new_width + original_width) // 2
+                bottom = (new_height + original_height) // 2
+
+                # Crop and resize the image
+                img = img.crop((left, top, right, bottom))
+                img = img.resize((new_width, new_height), Image.ANTIALIAS)
+
+                # Save the image with '_scaled' appended to the filename
                 new_filename = os.path.splitext(filename)[0] + '_scaled' + os.path.splitext(filename)[1]
                 img.save(os.path.join(output_folder, new_filename))
                 print(f"Saved scaled file: {new_filename}")
