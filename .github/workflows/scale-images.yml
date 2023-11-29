@@ -1,0 +1,33 @@
+name: Scale Images
+
+on:
+  push:
+    paths:
+      - 'gallery/*'
+
+jobs:
+  process-images:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install Pillow
+      run: pip install pillow
+
+    - name: Scale images
+      run: python https://github.com/Mischlichter/data/blob/main/gallery/scaled/scale_images.py
+      
+    - name: Commit and push scaled images
+      run: |
+        git config --global user.name 'GitHub Action'
+        git config --global user.email 'action@github.com'
+        git add gallery/scaled/
+        git commit -m "Add scaled images" -a || exit 0
+        git push
