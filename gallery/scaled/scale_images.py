@@ -20,7 +20,7 @@ for filename in os.listdir(input_folder):
                 right = (new_width + img.width) // 2
 
                 # Adjust vertical position to 0.618 from the top
-                vertical_shift = (new_height - img.height) * 0.618
+                vertical_shift = (new_height - img.height) * 0.768
                 top = int(vertical_shift)
                 bottom = top + img.height
 
