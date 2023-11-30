@@ -29,6 +29,9 @@ for filename in os.listdir(input_folder):
                 # Crop the image
                 img = img.crop((0, crop_top, img.width, crop_bottom))
 
+                # Resize the cropped image back to the original dimensions
+                img = img.resize((img.width, img.height - crop_top - (new_height - img.height - crop_top)), Image.LANCZOS)
+
                 new_filename = os.path.splitext(filename)[0] + '_scaled' + os.path.splitext(filename)[1]
                 img.save(os.path.join(output_folder, new_filename))
                 print(f"Saved scaled and cropped file: {new_filename}")
