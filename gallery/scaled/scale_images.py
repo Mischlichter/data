@@ -13,11 +13,11 @@ for filename in os.listdir(input_folder):
         try:
             with Image.open(os.path.join(input_folder, filename)) as img:
                 # Calculate new dimensions
-                new_width = int(img.width * 1.618)  # Scale up to 123.6%
-                new_height = int(img.height * 1.618)
+                new_width = int(img.width * 1.5)  # Scale up to 123.6%
+                new_height = int(img.height * 1.5)
 
                 # Define the vertical offset for off-centered cropping
-                vertical_offset = -0.114  # Negative value to move upwards
+                vertical_offset = -0.25  # Negative value to move upwards
 
                 # Calculate crop coordinates
                 left = (new_width - img.width) // 2
