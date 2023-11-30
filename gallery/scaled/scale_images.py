@@ -12,17 +12,20 @@ for filename in os.listdir(input_folder):
         print(f"Processing file: {filename}")
         try:
             with Image.open(os.path.join(input_folder, filename)) as img:
-                # Calculate new dimensions
-                new_width = int(img.width * 1.236)  # Scale up to 123.6%
-                new_height = int(img.height * 1.236)
+                # Assuming new_width, new_height, img.width, and img.height are defined
 
+                # Horizontal center remains the same
                 left = (new_width - img.width) // 2
                 right = (new_width + img.width) // 2
 
-                # Adjust vertical position to 0.618 from the top
-                vertical_shift = (new_height - img.height) * 0.768
-                top = int(vertical_shift)
-                bottom = top + img.height
+
+                vertical_shift = 0.618
+                vertical_center = new_height * vertical_shift
+                 vertical_offset = img.height // 2
+
+                top = int(vertical_center - vertical_offset)
+                bottom = int(vertical_center + vertical_offset)
+
 
 
                 img = img.resize((new_width, new_height), Image.LANCZOS)
