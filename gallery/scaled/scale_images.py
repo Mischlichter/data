@@ -7,39 +7,29 @@ output_folder = 'gallery/scaled/'
 if not os.path.exists(output_folder):
     os.makedirs(output_folder)
 
-# Define the scaling factor (123.6%)
-scaling_factor = 1.236
-
 for filename in os.listdir(input_folder):
     if filename.endswith('.jpg') or filename.endswith('.png'):
         print(f"Processing file: {filename}")
         try:
             with Image.open(os.path.join(input_folder, filename)) as img:
-                # Calculate the new dimensions based on the scaling factor
-                new_width = int(img.width * scaling_factor)
-                new_height = int(img.height * scaling_factor)
+                # Calculate new dimensions
+                new_width = int(img.width * 1.236)  # Scale up to 123.6%
+                new_height = int(img.height * 1.236)
 
-                # Resize the image while keeping the original dimensions
+                left = (new_width - img.width) // 2
+                right = (new_width + img.width) // 2
+
+                # Adjust vertical position to 0.618 from the top
+                vertical_shift = (new_height - img.height) * 0.618
+                top = int(vertical_shift)
+                bottom = top + img.height
+
+
                 img = img.resize((new_width, new_height), Image.LANCZOS)
-
-                # Calculate the crop dimensions based on the golden ratio
-                crop_top = int((new_height - img.height) * 0.382)  # 38.2% from the top
-                crop_bottom = new_height - crop_top
-
-                # Crop the image
-                img = img.crop((0, crop_top, img.width, crop_bottom))
-
-                # Resize the cropped image back to the original dimensions
-                img = img.resize((img.width, img.height - crop_top - (new_height - img.height - crop_top)), Image.LANCZOS)
-
-                # Create a blank image with the original dimensions
-                final_img = Image.new("RGB", (img.width, img.height))
-
-                # Paste the cropped image onto the blank image
-                final_img.paste(img, (0, 0))
+                img = img.crop((left, top, right, bottom))
 
                 new_filename = os.path.splitext(filename)[0] + '_scaled' + os.path.splitext(filename)[1]
-                final_img.save(os.path.join(output_folder, new_filename))
-                print(f"Saved scaled and cropped file: {new_filename}")
+                img.save(os.path.join(output_folder, new_filename))
+                print(f"Saved scaled file: {new_filename}")
         except Exception as e:
             print(f"Error processing {filename}: {e}")
