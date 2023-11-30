@@ -7,35 +7,33 @@ output_folder = 'gallery/scaled/'
 if not os.path.exists(output_folder):
     os.makedirs(output_folder)
 
-scaling_factor = 1.236  # Scale factor
-golden_ratio = 0.618  # Golden ratio
-
 for filename in os.listdir(input_folder):
     if filename.endswith('.jpg') or filename.endswith('.png'):
         print(f"Processing file: {filename}")
         try:
             with Image.open(os.path.join(input_folder, filename)) as img:
-                original_width, original_height = img.size
+                # Calculate new dimensions
+                new_width = int(img.width * 1.236)  # Scale up to 123.6%
+                new_height = int(img.height * 1.236)
 
-                # Scale the image
-                scaled_width = int(original_width * scaling_factor)
-                scaled_height = int(original_height * scaling_factor)
-                img = img.resize((scaled_width, scaled_height), Image.LANCZOS)
+                # Resize the image
+                img = img.resize((new_width, new_height), Image.LANCZOS)
 
-                # Calculate the vertical center for cropping
-                vertical_center = int(scaled_height * golden_ratio)
+                # Adjust the vertical center to 61.8%
+                golden_ratio = 0.618
+                vertical_center = int(new_height * golden_ratio)
 
                 # Calculate top and bottom coordinates for cropping
-                top = max(0, vertical_center - original_height // 2)
-                bottom = min(scaled_height, top + original_height)
+                top = max(vertical_center - img.height // 2, 0)
+                bottom = top + img.height
 
                 # Ensure the crop dimensions are within the image boundaries
-                if bottom > scaled_height:
-                    bottom = scaled_height
-                    top = bottom - original_height
+                if bottom > new_height:
+                    bottom = new_height
+                    top = bottom - img.height
 
                 # Crop the image
-                img = img.crop((0, top, original_width, bottom))
+                img = img.crop((0, top, img.width, bottom))
 
                 # Save the processed image
                 new_filename = os.path.splitext(filename)[0] + '_scaled' + os.path.splitext(filename)[1]
