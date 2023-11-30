@@ -22,17 +22,20 @@ for filename in os.listdir(input_folder):
                 scaled_height = int(original_height * scaling_factor)
                 img = img.resize((scaled_width, scaled_height), Image.LANCZOS)
 
-                # Calculate new crop dimensions
-                crop_height = original_height
-                crop_width = original_width
+                # Calculate the vertical center for cropping
+                vertical_center = int(scaled_height * golden_ratio)
 
                 # Calculate top and bottom coordinates for cropping
-                vertical_offset = int(crop_height * (1 - golden_ratio))
-                top = max(0, vertical_offset)
-                bottom = top + crop_height
+                top = max(0, vertical_center - original_height // 2)
+                bottom = min(scaled_height, top + original_height)
+
+                # Ensure the crop dimensions are within the image boundaries
+                if bottom > scaled_height:
+                    bottom = scaled_height
+                    top = bottom - original_height
 
                 # Crop the image
-                img = img.crop((0, top, crop_width, bottom))
+                img = img.crop((0, top, original_width, bottom))
 
                 # Save the processed image
                 new_filename = os.path.splitext(filename)[0] + '_scaled' + os.path.splitext(filename)[1]
