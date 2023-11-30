@@ -32,8 +32,14 @@ for filename in os.listdir(input_folder):
                 # Resize the cropped image back to the original dimensions
                 img = img.resize((img.width, img.height - crop_top - (new_height - img.height - crop_top)), Image.LANCZOS)
 
+                # Create a blank image with the original dimensions
+                final_img = Image.new("RGB", (img.width, img.height))
+
+                # Paste the cropped image onto the blank image
+                final_img.paste(img, (0, 0))
+
                 new_filename = os.path.splitext(filename)[0] + '_scaled' + os.path.splitext(filename)[1]
-                img.save(os.path.join(output_folder, new_filename))
+                final_img.save(os.path.join(output_folder, new_filename))
                 print(f"Saved scaled and cropped file: {new_filename}")
         except Exception as e:
             print(f"Error processing {filename}: {e}")
