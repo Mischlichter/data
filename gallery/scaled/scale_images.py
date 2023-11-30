@@ -21,7 +21,7 @@ for filename in os.listdir(input_folder):
 
                 vertical_shift = 0.618
                 vertical_center = new_height * vertical_shift
-                 vertical_offset = img.height // 2
+                vertical_offset = img.height // 2
 
                 top = int(vertical_center - vertical_offset)
                 bottom = int(vertical_center + vertical_offset)
