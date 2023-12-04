@@ -110,5 +110,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "35217652234"
+    },
+    "23436331083.jpg": {
+        "File Name": "23436331083.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "epic shot, hogeai man in a dark decentralized Blockchain city future, overrun by evil corporate monsters, cyberpunk, reds, purples, black colors, unreal engine",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "23436331083"
     }
 }
