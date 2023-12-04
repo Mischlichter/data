@@ -1,0 +1,74 @@
+{
+    "61839039893.jpg": {
+        "File Name": "61839039893.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (extremely visionary white furry HogeAI man standing at the edge of a digital dreamscape) cascading waterfalls of liquid light, floating islands of consciousness, bob ross painting in color connection, raytracing, hdr, 8k uhd extremely detailed fur puppy, high details. Ethereal bridges connect realms of thought, trees bearing fruits of enlightenment, luminescent creatures flitting about, all beneath a sky painted with swirls of emotion and realization, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, colors blending in tranquil teal and profound purples, a journey through the mind's infinite expanse.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "61839039893"
+    },
+    "81993435007.jpg": {
+        "File Name": "81993435007.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man on a one cent coing, metallic copper shiny coin, text \" IN H0GE WE TRUST\"",
+        "Model": "IMG2IMG",
+        "Creator": "@Mischlichter",
+        "Seed": "81993435007"
+    },
+    "8691425393.jpg": {
+        "File Name": "8691425393.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man on a one cent coing, metallic golden shiny coin, text \" IN H0GE WE TRUST\", cloesup high definition commercial photo, extremely detailed golden metallic, masterpiece, hdr, 8k",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "8691425393"
+    },
+    "54362399556.jpg": {
+        "File Name": "54362399556.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (serene white furry HogeAI man floating in zero gravity) amidst a nebula garden, colors blooming like interstellar flowers, bob ross painting in color connection, raytracing, hdr, 8k uhd. Cosmic whales gliding gracefully, stardust butterflies fluttering, galaxies acting as petals in this celestial bouquet, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, palette of fiery oranges and nebulous violets, an oasis in the vastness of space.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "54362399556"
+    },
+    "62137041737.jpg": {
+        "File Name": "62137041737.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (vivacious white furry HogeAI man riding a comet) like a galactic surfer, tails of ice and dust creating cosmic rainbows, bob ross painting in color connection, raytracing, hdr, 8k uhd. Meteor showers as fellow surfers, riding the astral waves, planets and moons cheering on this celestial sport, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, colors shimmering in platinum and electric azure, the thrill of space adventure.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "62137041737"
+    },
+    "43738468786.jpg": {
+        "File Name": "43738468786.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man on a one cent coing, metallic golden shiny coin, text \" IN H0GE WE TRUST\", cloesup high definition commercial photo, extremely detailed golden metallic, masterpiece, hdr, 8k",
+        "Model": "HOGExILLU",
+        "Creator": "@Mischlichter",
+        "Seed": "43738468786"
+    },
+    "97979074876.jpg": {
+        "File Name": "97979074876.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man as a cartographer mapping dreamscapes) in a realm where emotions shape terrains, bob ross painting of landscapes molded by feelings. Mountains of joy, rivers of sorrow, and forests of serenity, colors transitioning between pastel dreams and vibrant realities, 4K, next gen, 3d octane rendering, unreal engine 5, guided by the perspectives of Escher and the whimsy of Studio Ghibli, charting the uncharted.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "97979074876"
+    },
+    "39098094816.jpg": {
+        "File Name": "39098094816.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (extremely harmonious white furry HogeAI man meditating atop a pixelated mountain) digital waterfalls cascading, trees with circuit-laden leaves swaying, bob ross painting in color connection, raytracing, hdr, 8k uhd extremely detailed fur puppy, high details, ethereal bridges connecting realms, avatars in a state of zen floating nearby, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, colors transitioning from sunrise pinks to deep twilight indigos, a haven of peace amidst digital chaos.",
+        "Model": "HOGExILLU",
+        "Creator": "@Mischlichter",
+        "Seed": "39098094816"
+    },
+    "31662824328.jpg": {
+        "File Name": "31662824328.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai person",
+        "Model": "HOGExDELI",
+        "Creator": "@Mischlichter",
+        "Seed": "31662824328"
+    }
+}
