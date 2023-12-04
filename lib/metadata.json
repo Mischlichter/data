@@ -70,5 +70,13 @@
         "Model": "HOGExDELI",
         "Creator": "@Mischlichter",
         "Seed": "31662824328"
+    },
+    "47521014691.jpg": {
+        "File Name": "47521014691.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "\"highly detailed movie scene of a funny trippy hogeai man with basecap, by Dustin Nguyen, Akihiko Yoshida, Greg Tocchini, Greg Rutkowski, Cliff Chiang, 4k resolution, nier inspired, graffiti inspired, tessa thompson inspired, vibrant but dreary but upflifting green, black and yellow color scheme! ! !\"",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "47521014691"
     }
 }
