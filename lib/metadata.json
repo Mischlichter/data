@@ -126,5 +126,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "20222558324"
+    },
+    "64006120150.jpg": {
+        "File Name": "64006120150.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man-woman as a tailor crafting a bespoke suit) in a vintage atelier, bob ross painting of fabrics, threads, and tools. The meticulous measurements, the sheen of silk, and the elegance of a custom fit, 4K, next gen, 3d octane rendering, unreal engine 5, reflecting the sartorial excellence of Savile Row and the legacy of Coco Chanel.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "64006120150"
     }
 }
