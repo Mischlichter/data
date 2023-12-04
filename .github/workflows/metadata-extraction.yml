@@ -18,17 +18,22 @@ jobs:
       with:
         python-version: '3.x'
 
-    - name: Install Dependencies
+    - name: Install Python Dependencies
       run: |
-        pip install Pillow  # Example, replace with actual dependencies
+        pip install Pillow  # Add any other necessary Python dependencies
+
+    - name: Install exiftool
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y exiftool
 
     - name: Run Metadata Extraction Script
       run: python lib/libary.py
 
     - name: Commit and Push Changes
       run: |
-        git config --global user.name 'Your Name'
-        git config --global user.email 'your-email@example.com'
-        git add path/to/your/json/file.json
-        git commit -m "Update image metadata"
+        git config --global user.name 'Mischlichter'
+        git config --global user.email 'alex.stephan.weimar@web.de'
+        git add lib/metadata.json
+        git commit -m "Update image metadata" || echo "No changes to commit"
         git push
