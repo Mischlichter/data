@@ -6,12 +6,18 @@ def extract_specific_metadata(image_path):
     try:
         result = subprocess.run(['exiftool', '-FileName', '-Directory', '-Description', '-Model', '-Creator', image_path], capture_output=True, text=True)
         metadata = result.stdout.splitlines()
+        
+        # Extracting the numeric part from the file name as Seed
+        file_name = metadata[0].split(": ")[-1]
+        seed = ''.join(filter(str.isdigit, file_name))
+        
         metadata_dict = {
-            "File Name": metadata[0].split(": ")[-1],
+            "File Name": file_name,
             "Directory": metadata[1].split(": ")[-1],
-            "Description": metadata[2].split(": ")[-1],
+            "Prompt": metadata[2].split(": ")[-1],  # Changed "Description" to "Prompt"
             "Model": metadata[3].split(": ")[-1],
-            "Creator": metadata[4].split(": ")[-1]
+            "Creator": metadata[4].split(": ")[-1],
+            "Seed": seed  # Added "Seed" category
         }
         return metadata_dict
     except Exception as e:
