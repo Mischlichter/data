@@ -28,12 +28,12 @@ jobs:
         sudo apt-get install -y exiftool
 
     - name: Run Metadata Extraction Script
-      run: python lib/library.py
+      run: python lib/libary.py
 
     - name: Commit and Push Changes
       run: |
         git config --global user.name 'Mischlichter'
         git config --global user.email 'alex.stephan.weimar@web.de'
-        git add lib/json/metadata.json
+        git add lib/metadata.json
         git commit -m "Update image metadata" || echo "No changes to commit"
         git push
