@@ -86,5 +86,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "8346417188"
+    },
+    "97868652285.jpg": {
+        "File Name": "97868652285.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man transforms into Super Saiyan in incendiary display of fire enveloping bending to his will, hogeai vibrant colored flames flow together in a complementary way. spectacular spontaneous perfection texture, organic,hogeai professional photography, Hasselblad camera, hyper - realistic, Intricate fine details, UHD, HDRI, blender rendering",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "97868652285"
     }
 }
