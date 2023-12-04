@@ -2,18 +2,25 @@ import os
 import json
 import subprocess
 
-def extract_metadata(image_path):
+def extract_specific_metadata(image_path):
     try:
-        result = subprocess.run(['exiftool', image_path], capture_output=True, text=True)
-        metadata = result.stdout
-        return metadata
+        result = subprocess.run(['exiftool', '-FileName', '-Directory', '-Description', '-Model', '-Creator', image_path], capture_output=True, text=True)
+        metadata = result.stdout.splitlines()
+        metadata_dict = {
+            "File Name": metadata[0].split(": ")[-1],
+            "Directory": metadata[1].split(": ")[-1],
+            "Description": metadata[2].split(": ")[-1],
+            "Model": metadata[3].split(": ")[-1],
+            "Creator": metadata[4].split(": ")[-1]
+        }
+        return metadata_dict
     except Exception as e:
         print(f"Error extracting metadata for {image_path}: {e}")
         return None
 
 def update_metadata_json(metadata, json_file):
     with open(json_file, 'w') as file:
-        json.dump(metadata, file, indent=4)
+        json.dump(metadata, file, indent=4)  # Use indent=4 for better formatting
 
 def main():
     base_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
@@ -32,7 +39,7 @@ def main():
     for image in os.listdir(gallery_path):
         if image.lower().endswith(('.jpg', '.jpeg')) and image not in existing_metadata:
             image_path = os.path.join(gallery_path, image)
-            image_metadata = extract_metadata(image_path)
+            image_metadata = extract_specific_metadata(image_path)
             if image_metadata:
                 existing_metadata[image] = image_metadata
 
