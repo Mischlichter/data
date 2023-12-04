@@ -1,38 +1,39 @@
-name: Scale Images
+name: Image Metadata Extraction
 
 on:
   push:
     paths:
-      - 'gallery/*'
+      - 'gallerycom/**'
 
 jobs:
-  process-images:
+  extract-metadata:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2  # Update to the latest version that supports Node.js 16
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '16'  # Specify Node.js version 16
+    - name: Checkout Repository
+      uses: actions/checkout@v2
 
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
         python-version: '3.x'
 
-    - name: Install Pillow
-      run: pip install Pillow  # Use 'Pillow' instead of 'pillow'
-
-    - name: Run Python Script
-      run: python scale_images.py  # Update to the correct path
-
-    - name: Commit and push scaled images
+    - name: Install Python Dependencies
       run: |
-        git config --global user.name 'GitHub Action'
-        git config --global user.email 'action@github.com'
-        git add gallery/scaled/
-        git commit -m "Add scaled images" -a || exit 0
+        pip install Pillow  # Add any other necessary Python dependencies
+
+    - name: Install exiftool
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y exiftool
+
+    - name: Run Metadata Extraction Script
+      run: python lib/library.py  # Make sure this path is correct
+
+    - name: Commit and Push Changes
+      run: |
+        git config --global user.name 'Your Name'
+        git config --global user.email 'your-email@example.com'
+        git add path/to/your/json/file.json  # Replace with the actual path
+        git commit -m "Update image metadata" || echo "No changes to commit"
         git push
