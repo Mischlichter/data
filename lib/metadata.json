@@ -78,5 +78,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "47521014691"
+    },
+    "8346417188.jpg": {
+        "File Name": "8346417188.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hasselblad photo, chibi hogeai, (extremely cute white furry hogeai man) drinking a cocktail, a peaceful morning sun is rising, over hawaii, wind is blowing, bob ross painting in color connection , raytracing, hdr, 8k uhd extremely detailed fur puppy, high details, beach bar and cinematic beach with beautiful sky, detailed, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, extremly vibrant colors",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "8346417188"
     }
 }
