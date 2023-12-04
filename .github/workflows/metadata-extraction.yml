@@ -1,0 +1,34 @@
+name: Image Metadata Extraction
+
+on:
+  push:
+    paths:
+      - 'gallerycom/**'
+
+jobs:
+  extract-metadata:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install Dependencies
+      run: |
+        pip install Pillow  # Example, replace with actual dependencies
+
+    - name: Run Metadata Extraction Script
+      run: python lib/libary.py
+
+    - name: Commit and Push Changes
+      run: |
+        git config --global user.name 'Your Name'
+        git config --global user.email 'your-email@example.com'
+        git add path/to/your/json/file.json
+        git commit -m "Update image metadata"
+        git push
