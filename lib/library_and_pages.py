@@ -94,7 +94,7 @@ def generate_html_page(metadata, output_dir, image_path):
     </html>
     '''
 
-    title = metadata.get("Prompt", "No Title")
+    title = "Created with HogeAI"
     description = f"Created by {metadata.get('Creator', 'Unknown')} using {metadata.get('Model', 'Unknown Model')}"
     image_url = f'https://github.com/Mischlichter/data/raw/main/gallerycom/{os.path.basename(image_path)}'
     seed = metadata.get("Seed", "Unknown")  # Extracting seed from metadata
