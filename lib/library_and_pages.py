@@ -65,7 +65,7 @@ def generate_html_page(metadata, output_dir, image_path):
                 align-items: center;
                 justify-content: center;
                 flex-direction: column;
-                max-width: 50%; /* Set max-width to 50% */
+                max-width: 30%; /* Set max-width to 50% */
                 margin: 0 auto; /* Center-align the container horizontally */
             }}
 
