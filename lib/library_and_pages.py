@@ -104,10 +104,7 @@ def generate_html_page(metadata, output_dir, image_path):
 def main():
     base_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
     gallery_path = os.path.join(base_path, 'gallerycom')
-
-    
     html_output_dir = os.path.join(base_path, 'docs/sharing')
-
     json_file_path = os.path.join(base_path, 'lib/metadata.json')
 
     if not os.path.exists(html_output_dir):
@@ -126,6 +123,12 @@ def main():
             if image_metadata:
                 existing_metadata[image] = image_metadata
                 generate_html_page(image_metadata, html_output_dir, image_path)
+                
+                # Add a delay of 10 seconds (adjust as needed)
+                time.sleep(10)
+
+                # Add a break to pause and wait for user input
+                input("Press Enter to continue...")
 
     update_metadata_json(existing_metadata, json_file_path)
 
