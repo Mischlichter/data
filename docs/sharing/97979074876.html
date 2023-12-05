@@ -24,10 +24,7 @@
                 color: #7cfc05;
                 margin: 0;
                 padding: 0;
-                display: flex;
-                justify-content: center; /* Center horizontally */
-                align-items: center; /* Center vertically */
-                min-height: 100vh; /* Ensure the body takes up at least the viewport height */
+                overflow: auto;
             }
 
             .container {
@@ -35,9 +32,9 @@
                 align-items: center;
                 justify-content: center;
                 flex-direction: column;
-                max-width: 30%;
+                max-width: 30%; /* Set max-width to 50% */
+                margin: 0 auto; /* Center-align the container horizontally */
             }
-
 
             .metadata {
                 margin-top: 20px;
