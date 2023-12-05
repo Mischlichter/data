@@ -38,13 +38,8 @@ def generate_html_page(metadata, output_dir, image_path):
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{title}</title>
-        <meta name="description" content="{description}">
-        <meta property="og:title" content="{title}" />
-        <meta property="og:description" content="{description}" />
-        <meta property="og:image" content="{image_url}" />
-        <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="{title}">
+        <meta name="twitter:title" content="Created with HogeAI">
         <meta name="twitter:description" content="{description}">
         <meta name="twitter:image" content="{image_url}">
         <style>
@@ -84,7 +79,7 @@ def generate_html_page(metadata, output_dir, image_path):
         <div class="container">
             <img src="{image_url}" alt="{description}" style="max-width: 100%; height: auto;">
             <div class="metadata">
-                <p><strong>Title:</strong> {title}</p>
+                <p><strong>Prompt:</strong> {prompt}</p>
                 <p><strong>Seed:</strong> {seed}</p>
                 <p><strong>Creator:</strong> @{creator}</p>
                 <p><strong>Created with:</strong> HogeAI</p>
@@ -95,7 +90,8 @@ def generate_html_page(metadata, output_dir, image_path):
     '''
 
     title = "Created with HogeAI"
-    description = f"Created by {metadata.get('Creator', 'Unknown')} using {metadata.get('Model', 'Unknown Model')}"
+    prompt = metadata.get("Prompt", "No Title")
+    description = f"Created by {metadata.get('Creator', 'Unknown')} using HogeAI BOT"
     image_url = f'https://github.com/Mischlichter/data/raw/main/gallerycom/{os.path.basename(image_path)}'
     seed = metadata.get("Seed", "Unknown")  # Extracting seed from metadata
     creator = metadata.get("Creator", "Unknown")  # Extracting creator from metadata
