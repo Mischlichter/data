@@ -84,7 +84,7 @@ def generate_html_page(metadata, output_dir, image_path):
 
     title = metadata.get("Prompt", "No Title")
     description = f"Created by {metadata.get('Creator', 'Unknown')} using {metadata.get('Model', 'Unknown Model')}"
-    image_url = os.path.relpath(image_path, output_dir)  # Relative path to the image
+    image_url = os.path.join('/gallerycom', os.path.basename(image_path))
     seed = metadata.get("Seed", "Unknown")  # Extracting seed from metadata
     creator = metadata.get("Creator", "Unknown")  # Extracting creator from metadata
 
