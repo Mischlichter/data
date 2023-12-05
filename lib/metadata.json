@@ -230,5 +230,13 @@
         "Model": "HOGExDELI",
         "Creator": "@Mischlichter",
         "Seed": "24303977119"
+    },
+    "35296282646.jpg": {
+        "File Name": "35296282646.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (centered white furry HogeAI man within the Seed of Life) surrounded by intricate mandalas, bob ross painting in color connection, raytracing, hdr, 8k uhd. Cosmic patterns form a dance of balance, stars and planets align in sacred synchronicity, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, palette of enlightening whites and grounding umbers, harmonizing universal laws.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "35296282646"
     }
 }
