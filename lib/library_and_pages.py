@@ -43,6 +43,10 @@ def generate_html_page(metadata, output_dir, image_path):
         <meta property="og:description" content="{description}" />
         <meta property="og:image" content="{image_url}" />
         <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{title}">
+        <meta name="twitter:description" content="{description}">
+        <meta name="twitter:image" content="{image_url}">
         <style>
             @font-face {{
                 font-family: 'JetBrainsMono-Regular';
