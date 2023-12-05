@@ -85,10 +85,17 @@ def generate_html_page(metadata, output_dir, image_path):
     title = metadata.get("Prompt", "No Title")
     description = f"Created by {metadata.get('Creator', 'Unknown')} using {metadata.get('Model', 'Unknown Model')}"
     image_url = os.path.relpath(image_path, output_dir)  # Relative path to the image
+    seed = metadata.get("Seed", "Unknown")  # Extracting seed from metadata
 
-    html_content = html_template.format(title=title, description=description, image_url=image_url)
+    html_content = html_template.format(
+        title=title, 
+        description=description, 
+        image_url=image_url,
+        seed=seed  # Add seed here
+    )
     
     output_path = os.path.join(output_dir, metadata["Seed"] + ".html")
+    
     with open(output_path, "w") as file:
         file.write(html_content)
 
