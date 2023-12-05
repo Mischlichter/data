@@ -129,8 +129,7 @@ def main():
                 existing_metadata[image] = image_metadata
                 generate_html_page(image_metadata, html_output_dir, image_path)
                 
-                # Add a delay of 10 seconds (adjust as needed)
-                time.sleep(10)
+        
 
 
 
