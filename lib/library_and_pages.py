@@ -74,7 +74,7 @@ def generate_html_page(metadata, output_dir, image_path):
             <div class="metadata">
                 <p><strong>Title:</strong> {title}</p>
                 <p><strong>Seed:</strong> {seed}</p>
-                <p><strong>Creator:</strong> @{creator}</p>  
+                <p><strong>Creator:</strong> @{creator}</p>
                 <p><strong>Created with:</strong> HogeAI</p>
             </div>
         </div>
@@ -86,12 +86,14 @@ def generate_html_page(metadata, output_dir, image_path):
     description = f"Created by {metadata.get('Creator', 'Unknown')} using {metadata.get('Model', 'Unknown Model')}"
     image_url = os.path.relpath(image_path, output_dir)  # Relative path to the image
     seed = metadata.get("Seed", "Unknown")  # Extracting seed from metadata
+    creator = metadata.get("Creator", "Unknown")  # Extracting creator from metadata
 
     html_content = html_template.format(
         title=title, 
         description=description, 
         image_url=image_url,
-        seed=seed  # Add seed here
+        seed=seed,
+        creator=creator  # Add creator here
     )
     
     output_path = os.path.join(output_dir, metadata["Seed"] + ".html")
