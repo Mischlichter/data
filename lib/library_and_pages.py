@@ -38,11 +38,10 @@ def generate_html_page(metadata, output_dir, image_path):
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{title}</title>
-        <meta name="twitter:card" content="summary">
+        <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:title" content="Created with HogeAI">
         <meta name="twitter:description" content="{description}">
         <meta name="twitter:image" content="{image_url}">
-
         <style>
             @font-face {{
                 font-family: 'JetBrainsMono-Regular';
