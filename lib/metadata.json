@@ -222,5 +222,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "16879594957"
+    },
+    "24303977119.jpg": {
+        "File Name": "24303977119.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai person",
+        "Model": "HOGExDELI",
+        "Creator": "@Mischlichter",
+        "Seed": "24303977119"
     }
 }
