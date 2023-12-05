@@ -1,6 +1,7 @@
 import os
 import json
 import subprocess
+import time
 
 def extract_specific_metadata(image_path):
     try:
