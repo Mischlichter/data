@@ -23,6 +23,8 @@ def extract_specific_metadata(image_path):
         print(f"Error extracting metadata for {image_path}: {e}")
         return None
 
+
+
 def update_metadata_json(metadata, json_file):
     with open(json_file, 'w') as file:
         json.dump(metadata, file, indent=4)
