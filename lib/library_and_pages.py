@@ -1,7 +1,6 @@
 import os
 import json
 import subprocess
-import time
 
 def extract_specific_metadata(image_path):
     try:
@@ -128,8 +127,7 @@ def main():
                 # Add a delay of 10 seconds (adjust as needed)
                 time.sleep(10)
 
-                # Add a break to pause and wait for user input
-                input("Press Enter to continue...")
+
 
     update_metadata_json(existing_metadata, json_file_path)
 
