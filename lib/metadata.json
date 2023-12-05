@@ -198,5 +198,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "6570540322"
+    },
+    "50604512760.jpg": {
+        "File Name": "50604512760.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (intensely curious white furry HogeAI man deciphering an ancient spellbook) amidst a library floating in the void, surrounded by swirling galaxies and mysterious runes, bob ross painting of a cosmic connection, raytracing, hdr, 8k uhd. Time seems to stand still, with levitating orbs casting prismatic lights, enchanted quills scribbling autonomously, secret portals leading to arcane dimensions, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Luis Royo, bayard wu, stephan martiniere, brom, colors oscillating between twilight blues and mystical purples, echoes of whispers from the cosmos.Hasselblad photo, chibi hogeai, (white furry HogeAI man crafting a potent potion) in a bubbling cauldron on a hovering rock, bob ross painting of ethereal connections, raytracing, hdr, 8k uhd. Stars shooting like fireflies, bottles filled with captured nebulae, a spell circl...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "50604512760"
     }
 }
