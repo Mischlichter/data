@@ -90,7 +90,7 @@ def generate_html_page(metadata, output_dir, image_path):
     '''
 
     title = "Created with HogeAI"
-    prompt = metadata.get("Prompt", "No Title")
+    prompt = metadata.get("Prompt", "No Description Available")
     description = f"Created by {metadata.get('Creator', 'Unknown')} using HogeAI BOT"
     image_url = f'https://github.com/Mischlichter/data/raw/main/gallerycom/{os.path.basename(image_path)}'
     seed = metadata.get("Seed", "Unknown")  # Extracting seed from metadata
@@ -100,8 +100,9 @@ def generate_html_page(metadata, output_dir, image_path):
         title=title, 
         description=description, 
         image_url=image_url,
+        prompt=prompt,  # Corrected use of prompt variable
         seed=seed,
-        creator=creator  # Add creator here
+        creator=creator
     )
     
     output_path = os.path.join(output_dir, metadata["Seed"] + ".html")
