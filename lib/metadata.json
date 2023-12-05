@@ -190,5 +190,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "61396835056"
+    },
+    "6570540322.jpg": {
+        "File Name": "6570540322.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man partaking in a ritual with extraterrestrial shamans) within a sacred geometric circle, bob ross painting of intergalactic rites. Portals open to other dimensions, cosmic energies blend, and universal truths are unveiled. Vibrant with electric blues and sacred golds, 4K, next gen, 3d octane rendering, unreal engine 5, sacred ceremony, evoking the artistry of H.R. Giger and greg rutkowski, a convergence of magic and science.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "6570540322"
     }
 }
