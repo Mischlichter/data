@@ -206,5 +206,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "50604512760"
+    },
+    "30827321063.jpg": {
+        "File Name": "30827321063.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Futuristic cyber punk style portrait, gangster Hogeai, (Dark furry HogeAI man smoking a cigarette, standing on a rooftop over looking the Futuristic cyber punk style city building {neon details in the sunset and vaguely along the building tops}, HogeAI gangster, lone anti-hero fighting with inner demons about what he should do in life, 4K, next gen, 3d octane rendering, unreal engine 5,",
+        "Model": "HOGExDELI",
+        "Creator": "@looneycorp",
+        "Seed": "30827321063"
     }
 }
