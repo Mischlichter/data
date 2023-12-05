@@ -43,35 +43,38 @@ def generate_html_page(metadata, output_dir, image_path):
         <meta property="og:description" content="{description}" />
         <meta property="og:image" content="{image_url}" />
         <meta property="og:type" content="website" />
-            <style>
-                @font-face {
-                    font-family: 'JetBrainsMono-Regular';
-                    src: url('https://raw.githubusercontent.com/Mischlichter/data/main/docs/fonts/JetBrainsMono-Regular.woff2') format('woff2');
-                    font-weight: 400;
-                    font-style: normal;
-                }
-                body {
-                    font-family: 'JetBrainsMono-Regular', sans-serif;
-                    background-color: black;
-                    color: #7cfc05;
-                    margin: 0;
-                    padding: 0;
-                    overflow: auto;
-                }
-                .container {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    flex-direction: column;
-                    max-width: 30%; /* Set max-width to 50% */
-                    margin: 0 auto; /* Center-align the container horizontally */
-                }
-                .metadata {
-                    margin-top: 20px;
-                    width: 100%; /* Set width to 100% to match the container width */
-                    text-align: left; /* Align metadata text to the left */
-                }
-            </style>
+        <style>
+            @font-face {{
+                font-family: 'JetBrainsMono-Regular';
+                src: url('https://raw.githubusercontent.com/Mischlichter/data/main/docs/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+                font-weight: 400;
+                font-style: normal;
+            }}
+
+            body {{
+                font-family: 'JetBrainsMono-Regular', sans-serif;
+                background-color: black;
+                color: #7cfc05;
+                margin: 0;
+                padding: 0;
+                overflow: auto;
+            }}
+
+            .container {{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                max-width: 50%; /* Set max-width to 50% */
+                margin: 0 auto; /* Center-align the container horizontally */
+            }}
+
+            .metadata {{
+                margin-top: 20px;
+                width: 100%; /* Set width to 100% to match the container width */
+                text-align: left; /* Align metadata text to the left */
+            }}
+        </style>
     </head>
     <body>
         <div class="container">
@@ -129,7 +132,8 @@ def main():
                 existing_metadata[image] = image_metadata
                 generate_html_page(image_metadata, html_output_dir, image_path)
                 
-        
+                # Add a delay of 10 seconds (adjust as needed)
+                time.sleep(10)
 
 
 
