@@ -36,7 +36,7 @@ jobs:
         git config --global user.email 'alex.stephan.weimar@web.de'
         git add lib/metadata.json
         git add docs/sharing/*.html  # Add this line to include HTML files
-        echo "Waiting for 1 minute before committing and pushing..."
-        sleep 60  # Wait for 1 minute
+        echo "Waiting for 2 minute before committing and pushing..."
+        sleep 120  # Wait for 1 minute
         git commit -m "Update image metadata and HTML pages" || echo "No changes to commit"
         git push
