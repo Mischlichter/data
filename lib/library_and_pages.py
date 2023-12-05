@@ -118,26 +118,30 @@ def main():
     if not os.path.exists(html_output_dir):
         os.makedirs(html_output_dir)
 
+    existing_metadata = {}
+
     if os.path.exists(json_file_path):
         with open(json_file_path, 'r') as file:
-            existing_metadata = json.load(file)
-    else:
-        existing_metadata = {}
+            try:
+                existing_metadata = json.load(file)
+            except json.JSONDecodeError as e:
+                print(f"Error loading JSON data: {e}")
 
-    for image in os.listdir(gallery_path):
-        if image.lower().endswith(('.jpg', '.jpeg')) and image not in existing_metadata:
-            image_path = os.path.join(gallery_path, image)
-            image_metadata = extract_specific_metadata(image_path)
-            if image_metadata:
-                existing_metadata[image] = image_metadata
-                generate_html_page(image_metadata, html_output_dir, image_path)
+    if not existing_metadata:  # Check if JSON is empty or doesn't exist
+        for image in os.listdir(gallery_path):
+            if image.lower().endswith(('.jpg', '.jpeg')):
+                image_path = os.path.join(gallery_path, image)
+                image_metadata = extract_specific_metadata(image_path)
+                if image_metadata:
+                    existing_metadata[image] = image_metadata
+
+        update_metadata_json(existing_metadata, json_file_path)
+
+    for image_name, metadata in existing_metadata.items():
+        image_path = os.path.join(gallery_path, image_name)
+        generate_html_page(metadata, html_output_dir, image_path)
                 
-                # Add a delay of 10 seconds (adjust as needed)
-                time.sleep(10)
-
-
-
-    update_metadata_json(existing_metadata, json_file_path)
+  
 
 if __name__ == "__main__":
     main()
