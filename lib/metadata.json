@@ -238,5 +238,69 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "35296282646"
+    },
+    "55582254988.jpg": {
+        "File Name": "55582254988.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man gazing into a reflective pool of liquid terpenes) within a cavern adorned with jewel-like resin crystals. The cave\u2019s ambient light casts a soft glow, creating a tranquil, introspective atmosphere. The composition\u2019s careful balance and the fantastical interplay of light and shadow are reminiscent of the poetic, contemplative scenes painted by Caspar David Friedrich and the visual lyricism of Gustav Klimt\u2019s golden phase.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "55582254988"
+    },
+    "92621542450.jpg": {
+        "File Name": "92621542450.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (extremely enlightened white furry HogeAI man floating amidst a digital neural network) synapses firing in rhythmic dances, data-driven thoughts weaving, bob ross painting in color connection, raytracing, hdr, 8k uhd extremely detailed fur puppy, high details. The cognitive space buzzes, with holographic memories playing, dendrites forming intricate mandalas, streams of consciousness flowing like liquid crystal, AI entities sharing cosmic wisdom, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, colors radiant in cognitive golds and reflective silvers, an exploration of the digital mind.",
+        "Model": "HOGExAZO",
+        "Creator": "@Mischlichter",
+        "Seed": "92621542450"
+    },
+    "51005630140.jpg": {
+        "File Name": "51005630140.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "1.0], celebrating HOGEAI mans pure defi creations,menacingly happy look",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "51005630140"
+    },
+    "30294856050.jpg": {
+        "File Name": "30294856050.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man lounging within a chalice of a blooming cannabis flower) with twinkling stars and soft, radiant light illuminating the intricate textures of the petals. The composition, with its sensual, organic forms and mesmerizing colors, is inspired by the ethereal, romantic paintings of John William Waterhouse and the symbolic, detailed works of Alphonse Mucha.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "30294856050"
+    },
+    "51665635398.jpg": {
+        "File Name": "51665635398.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Stippling art piece, chibi hogeai, (white furry HogeAI man orchestrating a symphony with fireflies) under a canopy of ancient, twisted trees with eyes. The composition, with its intricate dots creating depth and texture, echoes the meticulous, imaginative works of Aubrey Beardsley, with a touch of the whimsical, enchanted forests illustrated by Arthur Rackham.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "51665635398"
+    },
+    "69063088114.jpg": {
+        "File Name": "69063088114.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man as a cobbler mending shoes with precision) in a quaint shop, bob ross painting of leather pieces and worn tools. The soft hum of a radio, the rhythmic tapping of a hammer, and the trust of customers in a job well done, 4K, next gen, 3d octane rendering, unreal engine 5, channeling the craftsmanship of old-world artisans and the down-to-earth scenes of Pieter Bruegel the Elder.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "69063088114"
+    },
+    "49679513432.jpg": {
+        "File Name": "49679513432.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "\ud83c\uddf9\ud83c\uddef movie scene, (hogeai man), \"an unreal engine 3d render of a night rooftop scene, neon lights in the city below, close up shot of a photorealistic hogeai gangster wearing a trench coat looking at the city below, global illumination.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "49679513432"
+    },
+    "43211209027.jpg": {
+        "File Name": "43211209027.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (extremely reflective white furry HogeAI man amidst a digital zen garden) patterns of consciousness forming ripples in the sand, pixelated bonsai trees morphing, bob ross painting in color connection, raytracing, hdr, 8k uhd extremely detailed fur puppy, high details. The tranquil space resonates, with virtual koi fish swimming in code-filled ponds, holographic monks tending to fractal flowers, paths made of light leading to temples of thought, auras of avatars shimmering in harmonic frequencies, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, colors bathed in contemplative oranges and serene lavenders, a retreat into digital inner peace.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "43211209027"
     }
 }
