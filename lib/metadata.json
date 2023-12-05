@@ -182,5 +182,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "7896220539"
+    },
+    "61396835056.jpg": {
+        "File Name": "61396835056.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai man, (white furry HogeAI man, limbs transforming into tendrils of smoke) dances amidst ruins entangled with sentient vines and flowers that seem to pulse with music only they can hear. The scene is set under a dusky sky with stars beginning to twinkle, providing a subtle, magical light. The composition delicately balances the chaotic beauty of nature and the serene, timeless aura of ancient ruins, inspired by the intricate fantasies of Brian Froud and the romantic landscapes painted by Caspar David Friedrich",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "61396835056"
     }
 }
