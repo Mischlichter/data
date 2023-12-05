@@ -29,7 +29,7 @@ def update_metadata_json(metadata, json_file):
     with open(json_file, 'w') as file:
         json.dump(metadata, file, indent=4)
 
-def generate_html_page(metadata, output_dir):
+def generate_html_page(metadata, output_dir, image_path):
     html_template = '''
     <!DOCTYPE html>
     <html lang="en">
