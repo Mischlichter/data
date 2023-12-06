@@ -446,5 +446,13 @@
         "Model": "HOGExAZO",
         "Creator": "@Mischlichter",
         "Seed": "55632865293"
+    },
+    "52817960667.jpg": {
+        "File Name": "52817960667.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "1.0] musical notes, each triggering a classic riff when touched.",
+        "Model": "HOGExAZO",
+        "Creator": "@Mischlichter",
+        "Seed": "52817960667"
     }
 }
