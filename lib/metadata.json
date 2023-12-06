@@ -366,5 +366,37 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "47521014691"
+    },
+    "22995677667.jpg": {
+        "File Name": "22995677667.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (extremely vibrant white furry HogeAI man dancing amidst a neon-lit rainforest) bioluminescent flora casting ethereal glows, shadowy creatures with LED-lit eyes lurking, bob ross painting in color connection, raytracing, hdr, 8k uhd extremely detailed fur puppy, high details. The jungle is alive with rhythmic pulses, trees with holographic bark, water streams reflecting dynamic spectra, digital toucans chirping encrypted songs, luminescent mushrooms illuminating hidden paths, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, colors radiating vibrant greens and mysterious blues, a technicolor nature's rave.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "22995677667"
+    },
+    "66590301792.jpg": {
+        "File Name": "66590301792.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Digital collage, chibi hogeai, (white furry HogeAI man surfing on sound waves) amidst a psychedelic sky pulsating with vibrant, electric colors and abstract shapes. The dynamic, surreal landscape is inspired by the visually intoxicating artworks of Peter Max, blended with the cutting-edge, fluid forms and colors found in the works of digital artist Android Jones.",
+        "Model": "HOGExAZO",
+        "Creator": "@Mischlichter",
+        "Seed": "66590301792"
+    },
+    "13757639062.jpg": {
+        "File Name": "13757639062.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (extremely visionary white furry HogeAI man standing at the edge of a digital dreamscape) cascading waterfalls of liquid light, floating islands of consciousness, bob ross painting in color connection, raytracing, hdr, 8k uhd extremely detailed fur puppy, high details. Ethereal bridges connect realms of thought, trees bearing fruits of enlightenment, luminescent creatures flitting about, all beneath a sky painted with swirls of emotion and realization, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, colors blending in tranquil teal and profound purples, a journey through the mind's infinite expanse.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "13757639062"
+    },
+    "42276145415.jpg": {
+        "File Name": "42276145415.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, luminescent white hogeai man, strolling amidst a bioluminescent forest, twinkling starlit canopy, ethereal spirits, bob ross painting in color connection, raytracing, HDR, 8K UHD, intricate glowing tattoos, light-woven garments, dreamlike aura, 4K, next-gen, ultra-detailed, 3D Octane rendering, Unreal Engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, extremely vibrant shimmering hues.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "42276145415"
     }
 }
