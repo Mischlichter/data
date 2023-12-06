@@ -81,7 +81,7 @@ def generate_html_page(metadata, output_dir, image_path):
             <div class="metadata">
                 <p><strong>Prompt:</strong> {prompt}</p>
                 <p><strong>Seed:</strong> {seed}</p>
-                <p><strong>Creator:</strong> @{creator}</p>
+                <p><strong>Creator:</strong> {creator}</p>
                 <p><strong>Created with:</strong> HogeAI</p>
             </div>
         </div>
