@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gallery with Slideshow</title>
+    <style>
+        @font-face {
+            font-family: 'JetBrainsMono-Regular';
+            src: url('fonts/JetBrainsMono-Regular.woff2') format('woff2');
+            font-weight: 400; /* Regular font weight */
+            font-style: normal;
+        }
+        body {
+            font-family: 'JetBrainsMono-Regular', sans-serif;
+            background-color: black;
+            color: #7cfc05; /* Green color */
+            margin: 0;
+            padding: 0;
+            overflow: auto;
+
+        }
+
+        #gallery-container img {
+            width: 100%;
+            height: auto;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            border-radius: 8px;
+        }
+
+        .slides {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px); /* Add the blur effect */
+        }
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: none;
+        }
+        .slide--current {
+            display: block;
+        }
+        .slide__img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            
+            margin-top: 0; /* Reset top margin to ensure equal margin */
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .slide__img {
+            width: 95%;
+            height: 95%;
+            object-fit: contain;
+        }
+
+        .btn-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #fff;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            font-size: 24px;
+            border-radius: 50%;
+            opacity: 0.7;
+            z-index: 1010;
+        }
+
+        #btn-prev { left: 20px; }
+        #btn-next { right: 20px; }
+        
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 30px;
+            color: white;
+            cursor: pointer;
+            z-index: 1010;
+        }
+
+        
+
+        .image-wrap {
+            position: relative;
+            width: 100%; /* This will be relative to the grid column width */
+            padding-top: 100%; /* This creates a square aspect ratio */
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .image-wrap canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+            object-fit: cover; /* Adjust this as needed */
+        }
+
+        .center-container {
+            
+
+            position: absolute; /* Use absolute positioning */
+            width: 100%; /* Full width of the viewport */
+            height: 10000%; /* Full viewport height */
+            display: flex; /* Use flexbox for centering */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            z-index: 2; /* Place the center-container above the gallery container */
+            background-color: rgba(0, 0, 0, 1); /* Semi-transparent black background */
+        }
+
+        #ascii-art-container {
+            width: 300px;
+            height: 155px;
+            overflow: hidden;
+            position: fixed; /* Use fixed positioning */
+            top: 50%; /* Position from the center vertically */
+            left: 50%; /* Position from the center horizontally */
+            transform: translate(-50%, -50%); /* Center the element */
+            z-index: 3; /* Place the ascii-art-container above the center-container */
+            /* Rest of your styles for #ascii-art-container */
+        }
+
+
+        .ascii-line {
+            white-space: pre;
+            font-family: monospace;
+        }
+
+        .hidden-char {
+            visibility: hidden;
+        }
+        
+  
+        .no-scroll-keys {
+            overflow: hidden;
+        }
+
+        #search-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px; /* Increased top margin */
+            margin-bottom: 30px; /* Added bottom margin */
+        }
+
+        #search-bar {
+            font-family: 'JetBrainsMono-Regular', sans-serif; /* Use the custom font */
+            font-size: 16px; /* Adjust as needed */
+            border: 2px solid #7cfc05; /* Green border */
+            border-radius: 20px; /* Rounded corners */
+            padding: 8px 15px; /* Adjust padding as needed */
+            outline: none; /* Removes the default focus outline */
+            transition: border-color 0.3s;
+            background-color: black; /* Matches the body background */
+            color: #7cfc05; /* Green text color */
+            width: 50%; /* Adjust width as needed */
+        }
+
+        #search-bar::placeholder {
+            color: rgba(124, 252, 5, 0.5); /* Light green placeholder */
+        }
+
+        #search-bar:focus {
+            border-color: #fff; /* White color on focus */
+        }
+
+        /* Blinking cursor effect */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        #search-bar:not(:focus)::placeholder {
+            content: ''; /* Remove placeholder text when not focused */
+            animation: blink 1s step-end infinite;
+        }
+
+
+
+        #gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+
+
+        #gallery-container img {
+            width: 100%;
+            height: auto;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: opacity 0.1s ease, transform 0.1s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #gallery-container img:hover {
+            transform: scale(1.1);
+        }
+
+        .hidden-image {
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 0.1s ease, transform 0.1s ease-in;
+            pointer-events: none; /* Prevent interaction with hidden images */
+            display: none
+        }
+
+
+
+
+
+
+    </style>
+</head>
+<body onload="window.scrollTo(0, 0);">
+            <!-- Container for centering -->
+    <div class="center-container">
+        <div id="ascii-art-container">
+            <!-- Your ASCII art content goes here -->
+        </div>
+    </div>
+
+    <div id="search-container">
+        <input type="text" id="search-bar" placeholder="Search...">
+    </div>
+
+    <div id="gallery-container"></div>
+
+    <div class="slides" id="slideshow">
+        <div class="btn-nav" id="btn-prev">‹</div>
+        <div class="btn-nav" id="btn-next">›</div>
+        <div class="close" onclick="toggleSlideshow()">×</div>
+    </div>
+  
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
+    
+    <script>
+        //LOADING SCREEN
+        let loadingPercentage = 0;
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const asciiArt = [
+                "                 /^ ^\\                ", 
+                "                / 111 \\               ", 
+                "                V\\ Y /V               ", 
+                "                 / - \\                ", 
+                "                /    |                ", 
+                "               V__) ||                ",
+                "**************************************",
+                "*** LOADING DATA *** IMAGE LIBRARY ***",
+                "**************************************"
+            ];
+            const background = document.createElement('div');
+            background.style.position = 'absolute';
+            background.style.top = '0';
+            background.style.left = '0';
+            background.style.width = '100%';
+            background.style.height = '500vh';
+            background.style.zIndex = '-1';
+            background.style.backgroundColor = 'rgba(0, 0, 0, 0)'; // 10% grey
+            // Add more styles or content to the background as needed
+
+            document.body.insertBefore(background, document.body.firstChild);
+            
+            setTimeout(function() {
+                fetchImageFilenames();
+            }, 10);
+
+            const container = document.getElementById('ascii-art-container');
+            const numberOfCharacters = asciiArt[0].length;
+
+            asciiArt.forEach((line, lineIndex) => {
+                const lineDiv = document.createElement('div');
+                lineDiv.className = 'ascii-line';
+                line.split('').forEach((char, charIndex) => {
+                    const span = document.createElement('span');
+                    span.setAttribute('data-original-char', char);
+                    if (char === ' ' || char === '') {
+                        span.classList.add('hidden-char');
+                    }
+                    lineDiv.appendChild(span);
+                });
+                container.appendChild(lineDiv);
+            });
+
+            
+
+            function preventDefault(e) {
+                e.preventDefault();
+            }
+
+            function disableScroll() {
+                // Add event listeners to prevent scrolling
+                window.addEventListener('wheel', preventDefault, { passive: false });
+                window.addEventListener('touchmove', preventDefault, { passive: false });
+            }
+
+            function enableScroll() {
+                // Remove event listeners to re-enable scrolling
+                window.removeEventListener('wheel', preventDefault);
+                window.removeEventListener('touchmove', preventDefault);
+            }
+
+
+            function generateRandomCharacter() {
+                const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()[]{}|';
+                disableScroll();
+                return characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+
+            
+            let lastIntervalValue = 0;
+            const shuffleWidth = 7;
+
+
+            
+
+            const shuffleInterval = setInterval(function() {
+                //console.log(`LS loading percentage: ${loadingPercentage}`);
+
+                document.querySelectorAll('.ascii-line').forEach(line => {
+                    for (let charIndex = 0; charIndex < numberOfCharacters; charIndex++) {
+                        const span = line.childNodes[charIndex];
+                        if (span) {
+                            if (charIndex >= loadingPercentage && charIndex < loadingPercentage + shuffleWidth) {
+                                span.textContent = generateRandomCharacter();
+                            } else if (charIndex >= loadingPercentage - shuffleWidth && charIndex < loadingPercentage) {
+                                span.textContent = span.getAttribute('data-original-char');
+                            }
+                        }
+                    }
+                });
+            }, 30);
+
+            const shortInterval = setInterval(function() {
+                if (lastIntervalValue < loadingPercentage) {
+                    lastIntervalValue = loadingPercentage;
+                }
+                loadingPercentage++; // Increment loadingPercentage
+            }, 100000);
+
+
+            const loadingInterval = setInterval(function() {
+                if (loadingPercentage >= 50) {
+                    // Loading is complete
+                    shuffleOnes(); // Start shuffling spans with '1'
+                    clearInterval(loadingInterval);
+                    clearInterval(shuffleInterval); // Optionally clear the shuffle interval too
+                }
+            }, 10);
+
+        // Function to shuffle spans with '1'
+            function shuffleOnes() {
+                const spansWithOne = Array.from(document.querySelectorAll('span')).filter(span => span.getAttribute('data-original-char') === '1');
+                const shuffleDuration = 150; // Duration for each span to shuffle
+                const delayBetweenSpans = 50; // Delay between spans
+
+                spansWithOne.forEach((span, index) => {
+                    setTimeout(() => {
+                        shuffleSpan(span, index === spansWithOne.length - 1);
+                    }, delayBetweenSpans * index);
+                });
+
+                function shuffleSpan(span, isLastSpan) {
+                    let timeElapsed = 0;
+                    const shuffleFrequency = 420; // 11 random letters per second
+
+                    const shuffle = setInterval(() => {
+                        if (timeElapsed >= shuffleDuration) {
+                            clearInterval(shuffle);
+                            span.textContent = '1'; // Reset to original character
+                            if (isLastSpan) {
+                                removeCenterContainer(); // Remove the center container after the last span finishes shuffling
+                            }
+                            return;
+                        }
+
+                        span.textContent = generateRandomCharacter();
+                        timeElapsed += 1000 / shuffleFrequency;
+                    }, 1000 / shuffleFrequency);
+                }
+            }
+
+
+            function removeCenterContainer() {
+                const centerContainer = document.querySelector('.center-container');
+                if (centerContainer) {
+                    // Wait for 1 second before starting the opacity transition
+                    setTimeout(() => {
+                        centerContainer.style.transition = 'opacity 1s ease-out';
+                        centerContainer.style.opacity = '0';
+
+                        // Wait for another 1 second after the opacity transition to remove the container
+                        setTimeout(() => {
+                            centerContainer.remove();
+                            enableScroll();
+                        }, 1000); // Delay for the opacity transition
+                    }, 1000); // Initial delay before starting the transition
+                }
+            }
+
+
+        });
+
+        
+
+        //GALLERY CODE
+        const NEXT = 1;
+        const PREV = -1;
+
+        class Slideshow {
+            DOM = { el: null, slides: null, slidesInner: null };
+            current = 0;
+            isAnimating = false;
+
+            constructor(DOM_el) {
+                this.DOM.el = DOM_el;
+                this.DOM.slides = [...this.DOM.el.querySelectorAll('.slide')];
+                this.DOM.slidesInner = this.DOM.slides.map(item => item.querySelector('.slide__img'));
+                this.DOM.slides[this.current].classList.add('slide--current');
+            }
+
+            next() { this.navigate(NEXT); }
+            prev() { this.navigate(PREV); }
+
+            navigate(direction) {
+                if (this.isAnimating) return;
+                this.isAnimating = true;
+
+                const previous = this.current;
+                this.current = direction === NEXT 
+                    ? (this.current + 1) % this.DOM.slides.length 
+                    : (this.current - 1 + this.DOM.slides.length) % this.DOM.slides.length;
+
+                const currentSlide = this.DOM.slides[previous];
+                const currentInner = this.DOM.slidesInner[previous];
+                const upcomingSlide = this.DOM.slides[this.current];
+                const upcomingInner = this.DOM.slidesInner[this.current];
+
+                gsap.timeline({
+                    defaults: { duration: 1.6, ease: 'power3.inOut' },
+                    onStart: () => {
+                        this.DOM.slides[this.current].classList.add('slide--current');
+                        upcomingSlide.style.display = 'block'; // Display the upcoming slide immediately.
+                    },
+                    onComplete: () => {
+                        currentSlide.classList.remove('slide--current');
+                        this.isAnimating = false;
+                    }
+                })
+                .to(currentSlide, { xPercent: -100 * direction }, 0)
+                .to(currentInner, { scaleX: 4, transformOrigin: direction === NEXT ? '100% 50%' : '0% 50%' }, 0)
+                .fromTo(upcomingSlide, { xPercent: 100 * direction }, { xPercent: 0 }, 0)
+                .fromTo(upcomingInner, { scaleX: 4, transformOrigin: direction === NEXT ? '0% 50%' : '100% 50%' }, { scaleX: 1 }, 0);
+            }
+        }
+
+        function fetchImageFilenames() {
+            let imageMetadata = {};
+
+            // Fetch metadata first
+            fetch('https://raw.githubusercontent.com/Mischlichter/data/main/lib/metadata.json')
+                .then(response => response.json())
+                .then(data => {
+                    imageMetadata = data;
+
+                    // Fetch image URLs from your GitHub repository dynamically.
+                    fetch('https://api.github.com/repos/Mischlichter/data/contents/gallerycom')
+                        .then(response => response.json())
+                        .then(files => {
+                            const totalImages = files.length;
+                            let loadedImages = 0;
+
+                            function loadImage(index) {
+                                if (index >= totalImages) {
+                                    // All images loaded
+                                    initSlideshow();
+                                    return;
+                                }
+
+                                const file = files[index];
+                                const img = document.createElement('img');
+                                img.src = file.download_url;
+                                img.classList.add('grid-image'); // Add a CSS class for styling
+
+                                // Assign corresponding metadata to the image
+                                img.dataset.metadata = JSON.stringify(imageMetadata[file.name] || {});
+
+                                img.onload = () => {
+                                    loadedImages++; // Increment the count for each loaded image.
+                                    updateLoadingStatus((loadedImages / totalImages) * 100); // Calculate and update the loading status.
+                                    img.onclick = () => openSlideshow(index);
+                                    galleryContainer.appendChild(img);
+
+                                    // Load the next image with a tiny break
+                                    setTimeout(() => {
+                                        loadImage(index + 1);
+                                    }, 11); // Adjust the delay time (in milliseconds) as needed
+                                };
+
+                                // Handle image loading errors
+                                img.onerror = () => {
+                                    console.error(`Error loading image ${index}`);
+                                    // Move to the next image even if there's an error
+                                    loadImage(index + 1);
+                                };
+                            }
+
+                            // Start loading the first image
+                            loadImage(0);
+                        })
+                        .catch(error => console.error('Error fetching file names:', error));
+                })
+                .catch(error => console.error('Error fetching metadata:', error));
+        }
+
+
+
+
+        function updateLoadingStatus(percentage) {
+            loadingPercentage = Math.min(percentage, 100);
+
+            // You can log the loading percentage if needed.
+            console.log(`Loading Percentage: ${loadingPercentage}`);
+
+            // You can also update the UI or perform other actions with the loadingPercentage value.
+        }
+
+
+
+        
+
+        function initSlideshow() {
+            const slideshowEl = document.getElementById('slideshow');
+            Array.from(galleryContainer.children).forEach((img) => {
+                const slideEl = document.createElement('div');
+                slideEl.className = 'slide';
+                slideEl.innerHTML = `<img src="${img.src}" class="slide__img">`;
+                slideshowEl.appendChild(slideEl);
+            });
+            slideshow = new Slideshow(slideshowEl);
+        }
+
+        function openSlideshow(index) {
+            slideshow.current = index;
+            slideshow.DOM.slides.forEach((slide, idx) => {
+                slide.style.display = idx === index ? 'block' : 'none';
+            });
+            document.getElementById('slideshow').style.display = 'flex';
+        }
+
+        function toggleSlideshow() {
+            document.getElementById('slideshow').style.display = 'none';
+        }
+
+        const galleryContainer = document.getElementById('gallery-container');
+        let slideshow;
+
+        document.getElementById('btn-prev').addEventListener('click', () => slideshow.prev());
+        document.getElementById('btn-next').addEventListener('click', () => slideshow.next());
+
+        document.getElementById('search-bar').addEventListener('input', function() {
+            if (this.value.length > 0) {
+                this.style.animation = 'none'; // Stop blinking when typing starts
+            } else {
+                this.style.animation = ''; // Resume blinking when input is empty
+            }
+        });
+
+        
+        document.getElementById('search-bar').addEventListener('input', function() {
+            const query = this.value;
+            if (query.length > 0) {
+                this.style.animation = 'none'; // Stop blinking cursor when typing starts
+                filterImages(query); // Filter images based on the query
+            } else {
+                this.style.animation = ''; // Resume blinking cursor when input is empty
+                showAllImages(); // Show all images when search bar is cleared
+            }
+        });
+
+   
+
+
+        function filterImages(query) {
+            const queryLower = query.toLowerCase();
+            const images = document.querySelectorAll('#gallery-container img');
+
+            images.forEach(img => {
+                const metadata = JSON.parse(img.dataset.metadata || '{}');
+                const metadataString = Object.values(metadata).join(' ').toLowerCase();
+
+                if (metadataString.includes(queryLower)) {
+                    img.classList.remove('hidden-image');
+                    img.style.transition = 'opacity 0.15s ease, transform 0.15s ease-out';
+                    img.style.opacity = '1';
+                    img.style.transform = 'scale(0.95)';
+
+                    // Reset styles after a brief timeout
+                    setTimeout(() => resetStyles(img), 100);
+                } else {
+                    img.style.transition = 'opacity 0.15s ease, transform 0.15s ease-in';
+                    img.style.opacity = '0';
+                    img.style.transform = 'scale(0.95)';
+                    
+                    // Apply 'display: none' and reset styles after the animation
+                    setTimeout(() => {
+                        img.classList.add('hidden-image');
+                        resetStyles(img);
+                    }, 100);
+                }
+            });
+        }
+
+        function resetStyles(img) {
+            // Reset the styles so hover effects can take over
+            img.style.transition = '';
+            img.style.transform = '';
+            img.style.opacity = '';
+        }
+
+        function showAllImages() {
+            const images = document.querySelectorAll('#gallery-container img');
+            images.forEach(img => {
+                img.classList.remove('hidden-image');
+                img.style.transition = 'opacity 0.1s ease, transform 0.1s ease-out';
+                img.style.opacity = '1';
+                img.style.transform = 'scale(1)';
+
+                // Reset styles after a brief timeout
+                setTimeout(() => resetStyles(img), 100);
+            });
+        }
+
+        
+
+        
+    </script>
+</body>
+</html>
