@@ -454,5 +454,13 @@
         "Model": "HOGExAZO",
         "Creator": "@Mischlichter",
         "Seed": "52817960667"
+    },
+    "10905005421.jpg": {
+        "File Name": "10905005421.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man navigating the river of souls) in a boat made of moonbeams, bob ross painting of spiritual journeys, raytracing, hdr, 8k uhd. Ghostly apparitions offer guidance, memories manifest as stars, and the waters reflect the universe's history, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Boris Vallejo, bayard wu, greg rutkowski, colors glowing with silvery whites and ethereal blues, a voyage through the cosmos' memory.",
+        "Model": "HOGExAZO",
+        "Creator": "@Mischlichter",
+        "Seed": "10905005421"
     }
 }
