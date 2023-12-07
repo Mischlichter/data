@@ -101,7 +101,8 @@ def generate_html_page(metadata, output_dir, image_path):
         title=title, 
         description=description, 
         image_url=image_url,
-        prompt=prompt,  # Corrected use of prompt variable
+        image_url2=image_url2,  # Add image_url2 to the format method
+        prompt=prompt,
         seed=seed,
         creator=creator
     )
