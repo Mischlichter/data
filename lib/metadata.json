@@ -478,5 +478,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "2562353337"
+    },
+    "44260794286.jpg": {
+        "File Name": "44260794286.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man nestled within the roots of a gigantic, ancient cannabis plant) studying a book that emits a soft, magical glow. The composition, rich with texture and mystery, echoes the fantastical, immersive worlds created by J.R.R. Tolkien\u2019s writings and the intricate, atmospheric illustrations of Arthur Rackham.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "44260794286"
     }
 }
