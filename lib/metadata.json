@@ -510,5 +510,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "54535037495"
+    },
+    "96919757270.jpg": {
+        "File Name": "96919757270.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man navigating through a labyrinthine garden of towering cannabis plants) under a sky ablaze with auroras of deep purples and greens. Each plant is intricately detailed, their leaves subtly shimmering with trichomes. Enigmatic shadows play on the ground, creating a sense of depth and mystery. The composition\u2019s aesthetic, with its vivid coloration and magical realism, draws inspiration from Frida Kahlo and Andy Warhol\u2019s vibrant pop art.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "96919757270"
     }
 }
