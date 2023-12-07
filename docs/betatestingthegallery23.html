@@ -365,7 +365,7 @@
 
 
             const loadingInterval = setInterval(function() {
-                if (loadingPercentage >= 68) {
+                if (loadingPercentage >= 50) {
                     // Loading is complete
                     shuffleOnes(); // Start shuffling spans with '1'
                     clearInterval(loadingInterval);
@@ -495,6 +495,11 @@
                             const totalImages = files.length;
                             let loadedImages = 0;
 
+                            // Calculate the number of images needed to fill two viewports
+                            const imagesPerRow = calculateImagesPerRow();
+                            const rowsPerViewport = calculateRowsPerViewport();
+                            const imagesForTwoViewports = imagesPerRow * rowsPerViewport * 2;
+
                             function loadImage(index) {
                                 if (index >= totalImages) {
                                     // All images loaded
@@ -512,7 +517,7 @@
 
                                 img.onload = () => {
                                     loadedImages++; // Increment the count for each loaded image.
-                                    updateLoadingStatus((loadedImages / totalImages) * 100); // Calculate and update the loading status.
+                                    updateLoadingStatus((loadedImages / imagesForTwoViewports) * 100); // Calculate and update the loading status.
                                     img.onclick = () => openSlideshow(index);
                                     galleryContainer.appendChild(img);
 
@@ -538,6 +543,15 @@
                 .catch(error => console.error('Error fetching metadata:', error));
         }
 
+        function calculateImagesPerRow() {
+            const minGridItemWidth = 180; // Minimum width of each grid item in pixels
+            return Math.floor(window.innerWidth / minGridItemWidth);
+        }
+
+        function calculateRowsPerViewport() {
+            const minGridItemWidth = 180; // Assuming square items for simplicity
+            return Math.ceil(window.innerHeight / minGridItemWidth);
+        }
 
 
 
