@@ -558,5 +558,21 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "21822147505"
+    },
+    "3918638051.jpg": {
+        "File Name": "3918638051.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (extremely visionary white furry HogeAI man standing at the edge of a digital dreamscape) cascading waterfalls of liquid light, floating islands of consciousness, bob ross painting in color connection, raytracing, hdr, 8k uhd extremely detailed fur puppy, high details. Ethereal bridges connect realms of thought, trees bearing fruits of enlightenment, luminescent creatures flitting about, all beneath a sky painted with swirls of emotion and realization, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, colors blending in tranquil teal and profound purples, a journey through the mind's infinite expanse. [dark neon details], {HogeAI crazy} {scene in the galaxy cosmic universe}",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "3918638051"
+    },
+    "8215606195.jpg": {
+        "File Name": "8215606195.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "1.0] with live market data, enact tales of HogeAI's meteoric ascents and tactical trades, while the audience, a who's who of the crypto world, revel in the spectacle.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "8215606195"
     }
 }
