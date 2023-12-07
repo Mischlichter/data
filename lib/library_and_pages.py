@@ -46,6 +46,7 @@ def generate_favicon(image_path, output_dir, seed, size=(64, 64)):
 def generate_html_page(metadata, output_dir, image_path):
     seed = metadata.get("Seed", "Unknown")
     favicon_filename = generate_favicon(image_path, output_dir, seed)
+    favicon_url = favicon_filename if favicon_filename else ''
 
     html_template = '''
     <!DOCTYPE html>
@@ -113,7 +114,7 @@ def generate_html_page(metadata, output_dir, image_path):
     image_url2 = f'https://raw.githubusercontent.com/Mischlichter/data/main/gallerycom/{os.path.basename(image_path)}'
     seed = metadata.get("Seed", "Unknown")  # Extracting seed from metadata
     creator = metadata.get("Creator", "Unknown")  # Extracting creator from metadata
-    favicon_url = os.path.basename(favicon_path) if favicon_path else ''
+    
     
     html_content = html_template.format(
         title=title, 
