@@ -1,0 +1,43 @@
+name: Image Metadata Extraction
+
+on:
+  push:
+    paths:
+      - 'gallerycom/**'
+
+jobs:
+  extract-metadata:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install Python Dependencies
+      run: |
+        pip install Pillow  # Add any other necessary Python dependencies
+
+    - name: Install exiftool
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y exiftool
+
+    - name: Run Metadata Extraction Script
+      run: python lib/library_and_pages.py
+      
+    - name: Commit and Push Changes
+      run: |
+        git config --global user.name 'Mischlichter'
+        git config --global user.email 'alex.stephan.weimar@web.de'
+        git add lib/metadata.json
+        git add docs/sharing/*.html  # Add this line to include HTML files
+        git add docs/sharing/*_favicon.ico
+        echo "Waiting for 2 minute before committing and pushing..."
+        sleep 71  # Wait for 1 minute
+        git commit -m "Update image metadata and HTML pages" || echo "No changes to commit"
+        git push
