@@ -25,6 +25,11 @@ def extract_specific_metadata(image_path):
         print(f"Error extracting metadata for {image_path}: {e}")
         return None
 
+
+def update_metadata_json(metadata, json_file):
+    with open(json_file, 'w') as file:
+        json.dump(metadata, file, indent=4)
+
 def generate_favicon(image_path, output_dir, size=(64, 64)):
     try:
         with Image.open(image_path) as img:
@@ -35,11 +40,6 @@ def generate_favicon(image_path, output_dir, size=(64, 64)):
     except Exception as e:
         print(f"Error creating favicon for {image_path}: {e}")
         return None
-
-
-def update_metadata_json(metadata, json_file):
-    with open(json_file, 'w') as file:
-        json.dump(metadata, file, indent=4)
 
 def generate_html_page(metadata, output_dir, image_path):
     
