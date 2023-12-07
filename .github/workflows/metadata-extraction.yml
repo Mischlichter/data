@@ -39,5 +39,5 @@ jobs:
         git add docs/sharing/*_favicon.ico
         echo "Waiting for 2 minute before committing and pushing..."
         sleep 71  # Wait for 1 minute
-        git commit -m "Update image metadata and HTML pages" || echo "No changes to commit"
+        git commit -m "Update image metadata, HTML pages, and favicons" || echo "No changes to commit"
         git push
