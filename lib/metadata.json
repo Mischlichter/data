@@ -518,5 +518,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "96919757270"
+    },
+    "49157626137.jpg": {
+        "File Name": "49157626137.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man-woman as a spa therapist preparing an aromatic blend) in a serene wellness retreat, bob ross painting with soft pastels, ambient candles, and floating petals. The calming essence of lavender, the gentle touch of a massage, and the soothing sounds of nature, 4K, next gen, 3d octane rendering, unreal engine 5, encapsulating the tranquility of Bali spa resorts and the therapeutic expertise of ancient Ayurveda.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "49157626137"
     }
 }
