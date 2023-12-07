@@ -120,11 +120,12 @@ def main():
         os.makedirs(html_output_dir)
 
     # Load existing metadata from JSON
-    if os.path.exists(json_file_path):
+    if os.path.exists(json_file_path) and os.path.getsize(json_file_path) > 0:
         with open(json_file_path, 'r') as file:
             existing_metadata = json.load(file)
     else:
         existing_metadata = {}
+
 
     # Scan gallery directory for new images
     for image in os.listdir(gallery_path):
