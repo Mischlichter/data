@@ -33,7 +33,7 @@ def update_metadata_json(metadata, json_file):
 def generate_favicon(image_path, output_dir, size=(64, 64)):
     try:
         with Image.open(image_path) as img:
-            img.thumbnail(size, Image.ANTIALIAS)
+            img.thumbnail(size, Image.Resampling.LANCZOS)  # Updated resampling method
             favicon_path = os.path.join(output_dir, 'favicon.ico')
             img.save(favicon_path, format='ICO', sizes=[size])
             return favicon_path
