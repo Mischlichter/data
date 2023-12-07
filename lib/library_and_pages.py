@@ -2,6 +2,7 @@ import os
 import json
 import subprocess
 import time
+from PIL import Image
 
 def extract_specific_metadata(image_path):
     try:
@@ -24,6 +25,16 @@ def extract_specific_metadata(image_path):
         print(f"Error extracting metadata for {image_path}: {e}")
         return None
 
+def generate_favicon(image_path, output_dir, size=(64, 64)):
+    try:
+        with Image.open(image_path) as img:
+            img.thumbnail(size, Image.ANTIALIAS)
+            favicon_path = os.path.join(output_dir, 'favicon.ico')
+            img.save(favicon_path, format='ICO', sizes=[size])
+            return favicon_path
+    except Exception as e:
+        print(f"Error creating favicon for {image_path}: {e}")
+        return None
 
 
 def update_metadata_json(metadata, json_file):
@@ -31,6 +42,9 @@ def update_metadata_json(metadata, json_file):
         json.dump(metadata, file, indent=4)
 
 def generate_html_page(metadata, output_dir, image_path):
+    
+    favicon_path = generate_favicon(image_path, output_dir)
+
     html_template = '''
     <!DOCTYPE html>
     <html lang="en">
@@ -38,6 +52,7 @@ def generate_html_page(metadata, output_dir, image_path):
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{title}</title>
+        <link rel="icon" href="{favicon_url}" type="image/x-icon">
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:title" content="Created with HogeAI">
         <meta name="twitter:description" content="{description}">
@@ -88,7 +103,7 @@ def generate_html_page(metadata, output_dir, image_path):
     </body>
     </html>
     '''
-
+    
     title = "Created with HogeAI"
     prompt = metadata.get("Prompt", "No Description Available")
     description = f"Created by {metadata.get('Creator', 'Unknown')} using HogeAI BOT"
@@ -96,15 +111,17 @@ def generate_html_page(metadata, output_dir, image_path):
     image_url2 = f'https://raw.githubusercontent.com/Mischlichter/data/main/gallerycom/{os.path.basename(image_path)}'
     seed = metadata.get("Seed", "Unknown")  # Extracting seed from metadata
     creator = metadata.get("Creator", "Unknown")  # Extracting creator from metadata
-
+    favicon_url = os.path.basename(favicon_path) if favicon_path else ''
+    
     html_content = html_template.format(
         title=title, 
         description=description, 
         image_url=image_url,
-        image_url2=image_url2,  # Add image_url2 to the format method
+        image_url2=image_url2, 
         prompt=prompt,
         seed=seed,
-        creator=creator
+        creator=creator,
+        favicon_url=favicon_url  # Add favicon URL to the format method
     )
     
     output_path = os.path.join(output_dir, metadata["Seed"] + ".html")
