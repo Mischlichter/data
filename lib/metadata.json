@@ -462,5 +462,13 @@
         "Model": "HOGExAZO",
         "Creator": "@Mischlichter",
         "Seed": "10905005421"
+    },
+    "95057947242.jpg": {
+        "File Name": "95057947242.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man-woman as a barista pouring a perfect latte) in a quaint coffee shop, bob ross painting of steam rising and coffee beans scattered. The hum of espresso machines, the chatter of patrons, and the art of coffee-making, 4K, next gen, 3d octane rendering, unreal engine 5, capturing the cozy ambiance of a Parisian caf\u00e9 and the craft of a skilled barista.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "95057947242"
     }
 }
