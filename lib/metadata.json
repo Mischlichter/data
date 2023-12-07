@@ -654,5 +654,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "36656395442"
+    },
+    "91670521316.jpg": {
+        "File Name": "91670521316.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (mystical white furry HogeAI man meditating in zero gravity) amidst a field of floating crystals, reflecting the lights of distant stars, bob ross painting in color connection, raytracing, hdr, 8k uhd. Cosmic energies spiraling around, ancient space monoliths humming with power, portals to other dimensions shimmering invitingly, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, color palette of twilight purples and dawn pinks, the nexus of space and spirit.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "91670521316"
     }
 }
