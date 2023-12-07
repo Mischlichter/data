@@ -62,7 +62,7 @@ def generate_html_page(metadata, output_dir, image_path):
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:title" content="Created with HogeAI">
         <meta name="twitter:description" content="{description}">
-        <meta name="twitter:image" content="{image_url2}">
+        <meta name="twitter:image" content="{image_url}">
         <style>
             @font-face {{
                 font-family: 'JetBrainsMono-Regular';
@@ -114,7 +114,6 @@ def generate_html_page(metadata, output_dir, image_path):
     prompt = metadata.get("Prompt", "No Description Available")
     description = f"Created by {metadata.get('Creator', 'Unknown')} using HogeAI BOT"
     image_url = f'https://github.com/Mischlichter/data/raw/main/gallerycom/{os.path.basename(image_path)}'
-    image_url2 = f'https://raw.githubusercontent.com/Mischlichter/data/main/gallerycom/{os.path.basename(image_path)}'
     seed = metadata.get("Seed", "Unknown")  # Extracting seed from metadata
     creator = metadata.get("Creator", "Unknown")  # Extracting creator from metadata
     
@@ -123,7 +122,6 @@ def generate_html_page(metadata, output_dir, image_path):
         title=title, 
         description=description, 
         image_url=image_url,
-        image_url2=image_url2, 
         prompt=prompt,
         seed=seed,
         creator=creator,
