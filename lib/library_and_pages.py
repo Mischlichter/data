@@ -31,16 +31,19 @@ def update_metadata_json(metadata, json_file):
         json.dump(metadata, file, indent=4)
 
 def generate_favicon(image_path, output_dir, seed, size=(64, 64)):
+    print(f"Attempting to generate favicon for: {image_path}")
     try:
         with Image.open(image_path) as img:
             img.thumbnail(size, Image.Resampling.LANCZOS)
             favicon_filename = f'{seed}_favicon.ico'
             favicon_path = os.path.join(output_dir, favicon_filename)
             img.save(favicon_path, format='ICO', sizes=[size])
-            return favicon_filename  # Return the filename instead of the path
+            print(f"Favicon successfully saved at: {favicon_path}")
+            return favicon_filename
     except Exception as e:
         print(f"Error creating favicon for {image_path}: {e}")
         return None
+
 
 
 def generate_html_page(metadata, output_dir, image_path):
