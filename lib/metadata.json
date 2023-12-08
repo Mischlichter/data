@@ -686,5 +686,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "57616671210"
+    },
+    "34444168177.jpg": {
+        "File Name": "34444168177.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "epic shot of hogeai man as a arctic hunter holding a big spear, wearing a furry hooded arctic coat and carrying a bucket, standing on iceshell in the arctic sea, digital painting, detailed, trending on artstation, polar storm arctic sea, icebergs and aurora sky, 4k photo, body furry, Super Nintendo game, 3d render, Kodak portra 800, cinematic lighting, 4k, 8k, octane render",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "34444168177"
     }
 }
