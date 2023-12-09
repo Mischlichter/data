@@ -6,25 +6,30 @@
     <style>
         @font-face {
             font-family: 'JetBrainsMono-Regular';
-            src: url('fonts/JetBrainsMono-Regular.woff2') format('woff2');
+            src: url('fonts/JetBrainsMono-Regular.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-Regular.ttf') format('truetype'); /* Safari, Android, iOS */
             font-weight: 400; /* Regular font weight */
             font-style: normal;
         }
+
         @font-face {
             font-family: 'JetBrainsMono-Light';
-            src: url('fonts/JetBrainsMono-Light.woff2') format('woff2');
+            src: url('fonts/JetBrainsMono-Light.woff2') format('woff2'),
+                 url('fonts/JetBrainsMono-Light.ttf') format('truetype');
             font-weight: 300; /* Light font weight */
             font-style: normal;
         }
+
         @font-face {
             font-family: 'JetBrainsMono-LightItalic';
-            src: url('fonts/JetBrainsMono-LightItalic.woff2') format('woff2');
+            src: url('fonts/JetBrainsMono-LightItalic.woff2') format('woff2'),
+                 url('fonts/JetBrainsMono-LightItalic.ttf') format('truetype');
             font-weight: 400;
             font-style: italic; /* Set the font style to italic */
         }
 
         body {
-            font-family: 'JetBrainsMono-Regular', 'Courier New', monospace; /* Add 'Courier New' and monospace as fallbacks */
+            font-family: 'JetBrainsMono-Regular', sans-serif;
             background-color: black;
             color: #7cfc05; /* Green color */
             margin: 0;
@@ -267,7 +272,6 @@
             background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
             color: #7cfc05; /* Text color */
             padding: 0px;
-            font-family: 'JetBrainsMono-LightItalic', sans-serif;
             /* No width set so it takes the width of its content */
 
         }
@@ -301,7 +305,7 @@
         <div class="close" onclick="toggleSlideshow()">×</div>
     </div>
   
-
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
     <script>
@@ -695,7 +699,7 @@
    
 
 
-        function filterImagesAndOverlays(query) {
+        function filterImagesAndOverlays(query, maxMatches = 1) {
             const queryWords = query.toLowerCase().trim().split(/\s+/);
             const imageContainers = document.querySelectorAll('#gallery-container .image-container');
             const overlayContainers = document.querySelectorAll('#gallery-container .word-overlay');
@@ -713,6 +717,7 @@
                 const promptText = metadata["Prompt"] || '';
                 const promptWords = promptText.toLowerCase().split(' ');
 
+    
                 let matchingWords = [];
                 // Match individual words or word groups based on the query
                 if (queryWords.length === 1) {
@@ -726,6 +731,12 @@
                             }
                         }
                     }
+                }
+
+                // Limit the number of matching words and randomly select if necessary
+                if (matchingWords.length > maxMatches) {
+                    shuffleArray(matchingWords);
+                    matchingWords = matchingWords.slice(0, maxMatches);
                 }
 
                 matchingWords = matchingWords
@@ -746,24 +757,22 @@
                         const rightWords = [];
 
                         for (let i = index - maxDistance; i <= index + maxDistance; i++) {
-                            let distance = Math.abs(index - i);
-                            let opacity = 1 - distance * opacityStep;
-                            const wordStyle = `opacity: ${opacity}; color: white;`;
+                                let distance = Math.abs(index - i);
+                                let opacity = 1 - distance * opacityStep;
+                                const wordStyle = `opacity: ${opacity}; color: white;`;
 
-                            if (i < 0 || i >= words.length) {
-                                // Generate placeholder text that mimics regular text
-                                const placeholderWord = '...'; // Placeholder symbol
-                                const placeholder = `<span style='${wordStyle}'>${placeholderWord}</span>`;
-                                if (i < index) leftWords.push(placeholder);
-                                else if (i > index) rightWords.push(placeholder);
-                            } else {
-                                // Handle existing words
-                                const actualWord = words[i];
-                                const wordSpan = `<span style='${wordStyle}'>${actualWord}</span>`;
-                                if (i < index) leftWords.push(wordSpan);
-                                else if (i > index) rightWords.push(wordSpan);
+                                if (i < 0 || i >= words.length) {
+                                    const placeholderWord = '...';
+                                    const placeholder = `<span style='${wordStyle}'>${placeholderWord}</span>`;
+                                    if (i < index) leftWords.push(' ' + placeholder); // Space added before placeholder
+                                    else if (i > index) rightWords.push(placeholder + ' '); // Space added after placeholder
+                                } else {
+                                    const actualWord = words[i];
+                                    const wordSpan = `<span style='${wordStyle}'>${actualWord}</span>`;
+                                    if (i < index) leftWords.push(' ' + wordSpan); // Space added before word
+                                    else if (i > index) rightWords.push(wordSpan + ' '); // Space added after word
+                                }
                             }
-                        }
 
 
                         const leftWidth = leftWords.join('').length;
@@ -789,35 +798,28 @@
 
                     overlay.innerHTML = displayedWords.join('<br>');
 
-                    // Apply the transition and visibility logic from Function 1
                     container.classList.remove('hidden-image');
-                    container.style.transition = 'opacity 0.15s ease, transform 0.15s ease-out';
-                    container.style.opacity = '1';
-                    container.style.transform = 'scale(0.95)';
+                  
 
-                    // Reset styles after a brief timeout
-                    setTimeout(() => resetStyles(container), 100);
+          
+                    
                 } else {
-                    container.style.transition = 'opacity 0.15s ease, transform 0.15s ease-in';
-                    container.style.opacity = '0';
-                    container.style.transform = 'scale(0.95)';
+                    container.classList.add('hidden-image');
                     overlay.textContent = '';
 
-                    // Apply 'display: none' and reset styles after the animation
-                    setTimeout(() => {
-                        container.classList.add('hidden-image');
-                        resetStyles(container);
-                    }, 100);
+                    
+                    
                 }
             });
         }
 
-        function resetStyles(element) {
-            // Reset the styles so hover effects can take over
-            element.style.transition = '';
-            element.style.transform = '';
-            element.style.opacity = '';
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+            }
         }
+
 
 
 
@@ -856,10 +858,10 @@
 
 
         function initializePage() {
-                    document.getElementById('search-bar').value = ''; // Reset the search bar value
-                    window.scrollTo(0, 0); // Scroll to the top of the page
-                    // Any other initialization code can go here
-                }
+            document.getElementById('search-bar').value = ''; // Reset the search bar value
+            window.scrollTo(0, 0); // Scroll to the top of the page
+                // Any other initialization code can go here
+        }
 
         
     </script>
