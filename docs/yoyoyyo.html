@@ -10,6 +10,19 @@
             font-weight: 400; /* Regular font weight */
             font-style: normal;
         }
+        @font-face {
+            font-family: 'JetBrainsMono-Light';
+            src: url('fonts/JetBrainsMono-Light.woff2') format('woff2');
+            font-weight: 300; /* Light font weight */
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'JetBrainsMono-LightItalic';
+            src: url('fonts/JetBrainsMono-LightItalic.woff2') format('woff2');
+            font-weight: 400;
+            font-style: italic; /* Set the font style to italic */
+        }
+
         body {
             font-family: 'JetBrainsMono-Regular', sans-serif;
             background-color: black;
@@ -198,7 +211,7 @@
 
         #gallery-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 20px;
             padding: 20px;
             transition: transform 0.3s ease;
@@ -215,7 +228,15 @@
             overflow: hidden;
         }
 
-        #gallery-container img:hover {
+        #gallery-container .image-container {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: transform 0.3s ease; /* Added hover transition to the container */
+        }
+
+        #gallery-container .image-container:hover {
             transform: scale(1.1);
         }
 
@@ -227,14 +248,40 @@
             display: none
         }
 
+        .image-container {
+            position: relative;
+            overflow: hidden;
+            /* Other styles remain unchanged */
+        }
+
+        .word-overlay {
+
+            position: absolute;
+            bottom: 10%; /* Adjust this value as needed for vertical positioning */
+            left: 50%;
+            transform: translateX(-50%); /* Center both horizontally and vertically */
+            overflow: visible; /* Allows text to overflow outside of the container */
+            white-space: nowrap; /* Prevents automatic line breaks */
+            text-align: center;
+            font-size: 12px;
+            background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            color: #7cfc05; /* Text color */
+            padding: 0px;
+            font-family: 'JetBrainsMono-LightItalic', sans-serif;
+            /* No width set so it takes the width of its content */
+
+        }
 
 
 
+        .hidden-overlay {
+            display: none;
+        }
 
 
     </style>
 </head>
-<body onload="window.scrollTo(0, 0);">
+<body onload="initializePage();">
             <!-- Container for centering -->
     <div class="center-container">
         <div id="ascii-art-container">
@@ -257,7 +304,33 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
-    
+    <script>
+        // Function to toggle overlay containers based on search bar input
+        function toggleOverlayContainers() {
+            const searchInput = document.getElementById('search-bar');
+            const imageContainers = document.querySelectorAll('.image-container');
+
+            if (searchInput.value.trim() === '') {
+                imageContainers.forEach(container => {
+                    const overlay = container.querySelector('.word-overlay');
+                    overlay.style.display = 'none'; // Hide the overlay container when input is empty
+                });
+            } else {
+                imageContainers.forEach(container => {
+                    const overlay = container.querySelector('.word-overlay');
+                    overlay.style.display = 'block'; // Show the overlay container when there is text in the input
+                });
+            }
+        }
+
+
+        // Attach an event listener to the search bar input
+        document.getElementById('search-bar').addEventListener('input', toggleOverlayContainers);
+
+        // Initial call to toggleOverlayContainers to hide/show overlay containers on page load
+        toggleOverlayContainers();
+    </script>
+
     <script>
         //LOADING SCREEN
         let loadingPercentage = 0;
@@ -365,7 +438,7 @@
 
 
             const loadingInterval = setInterval(function() {
-                if (loadingPercentage >= 50) {
+                if (loadingPercentage >= 40) {
                     // Loading is complete
                     shuffleOnes(); // Start shuffling spans with '1'
                     clearInterval(loadingInterval);
@@ -508,9 +581,20 @@
                                 }
 
                                 const file = files[index];
+                                const imageContainer = document.createElement('div');
+                                imageContainer.classList.add('image-container'); // Add a CSS class for styling
+
                                 const img = document.createElement('img');
                                 img.src = file.download_url;
-                                img.classList.add('grid-image'); // Add a CSS class for styling
+                                img.classList.add('grid-image');
+
+                                // Create the word overlay div
+                                const wordOverlay = document.createElement('div');
+                                wordOverlay.classList.add('word-overlay');
+
+                                // Append the image and the overlay to the container
+                                imageContainer.appendChild(img);
+                                imageContainer.appendChild(wordOverlay);
 
                                 // Assign corresponding metadata to the image
                                 img.dataset.metadata = JSON.stringify(imageMetadata[file.name] || {});
@@ -519,7 +603,7 @@
                                     loadedImages++; // Increment the count for each loaded image.
                                     updateLoadingStatus((loadedImages / imagesForTwoViewports) * 100); // Calculate and update the loading status.
                                     img.onclick = () => openSlideshow(index);
-                                    galleryContainer.appendChild(img);
+                                    galleryContainer.appendChild(imageContainer);
 
                                     // Load the next image with a tiny break
                                     setTimeout(() => {
@@ -542,6 +626,7 @@
                 })
                 .catch(error => console.error('Error fetching metadata:', error));
         }
+
 
         function calculateImagesPerRow() {
             const minGridItemWidth = 180; // Minimum width of each grid item in pixels
@@ -570,14 +655,20 @@
 
         function initSlideshow() {
             const slideshowEl = document.getElementById('slideshow');
-            Array.from(galleryContainer.children).forEach((img) => {
+
+            // Select only the images within the image-container divs
+            const images = galleryContainer.querySelectorAll('.image-container .grid-image');
+
+            images.forEach((img) => {
                 const slideEl = document.createElement('div');
                 slideEl.className = 'slide';
                 slideEl.innerHTML = `<img src="${img.src}" class="slide__img">`;
                 slideshowEl.appendChild(slideEl);
             });
+
             slideshow = new Slideshow(slideshowEl);
         }
+
 
         function openSlideshow(index) {
             slideshow.current = index;
@@ -597,80 +688,171 @@
         document.getElementById('btn-prev').addEventListener('click', () => slideshow.prev());
         document.getElementById('btn-next').addEventListener('click', () => slideshow.next());
 
-        document.getElementById('search-bar').addEventListener('input', function() {
-            if (this.value.length > 0) {
-                this.style.animation = 'none'; // Stop blinking when typing starts
-            } else {
-                this.style.animation = ''; // Resume blinking when input is empty
-            }
-        });
+
 
         
-        document.getElementById('search-bar').addEventListener('input', function() {
-            const query = this.value;
-            if (query.length > 0) {
-                this.style.animation = 'none'; // Stop blinking cursor when typing starts
-                filterImages(query); // Filter images based on the query
-            } else {
-                this.style.animation = ''; // Resume blinking cursor when input is empty
-                showAllImages(); // Show all images when search bar is cleared
-            }
-        });
 
    
 
 
-        function filterImages(query) {
-            const queryLower = query.toLowerCase();
-            const images = document.querySelectorAll('#gallery-container img');
+        function filterImagesAndOverlays(query) {
+            const queryWords = query.toLowerCase().trim().split(/\s+/);
+            const imageContainers = document.querySelectorAll('#gallery-container .image-container');
+            const overlayContainers = document.querySelectorAll('#gallery-container .word-overlay');
 
-            images.forEach(img => {
+            imageContainers.forEach((container, index) => {
+                const img = container.querySelector('img');
+                const overlay = overlayContainers[index];
                 const metadata = JSON.parse(img.dataset.metadata || '{}');
-                const metadataString = Object.values(metadata).join(' ').toLowerCase();
 
-                if (metadataString.includes(queryLower)) {
-                    img.classList.remove('hidden-image');
-                    img.style.transition = 'opacity 0.15s ease, transform 0.15s ease-out';
-                    img.style.opacity = '1';
-                    img.style.transform = 'scale(0.95)';
+                delete metadata["File Name"];
+                delete metadata["Directory"];
+
+                const metadataString = Object.values(metadata).join(' ').toLowerCase();
+                const words = metadataString.split(' ');
+                const promptText = metadata["Prompt"] || '';
+                const promptWords = promptText.toLowerCase().split(' ');
+
+                let matchingWords = [];
+                // Match individual words or word groups based on the query
+                if (queryWords.length === 1) {
+                    matchingWords = words.filter(word => word.toLowerCase().startsWith(queryWords[0]));
+                } else {
+                    for (let i = 0; i < words.length; i++) {
+                        if (words[i].toLowerCase().startsWith(queryWords[0])) {
+                            let wordGroup = words.slice(i, i + queryWords.length);
+                            if (wordGroup.length === queryWords.length && wordGroup.every((w, idx) => w.toLowerCase().startsWith(queryWords[idx]))) {
+                                matchingWords.push(wordGroup.join(' '));
+                            }
+                        }
+                    }
+                }
+
+                matchingWords = matchingWords
+                    .filter((value, index, self) => self.indexOf(value) === index)
+                    .sort();
+
+                if (matchingWords.length > 0) {
+                    const displayedWords = [];
+                    matchingWords.forEach((matchingWord) => {
+                        // Check if the matching word is in the "Prompt" category
+                        const isWordInPrompt = promptWords.includes(matchingWord);
+
+                        const index = words.findIndex(word => word === matchingWord);
+                        const maxDistance = isWordInPrompt ? 3 : 0; // Neighbors only if in "Prompt"
+                        const opacityStep = 1 / (maxDistance + 1);
+
+                        const leftWords = [];
+                        const rightWords = [];
+
+                        for (let i = index - maxDistance; i <= index + maxDistance; i++) {
+                            if (i >= 0 && i < words.length) {
+                                let distance = Math.abs(index - i);
+                                let opacity = 1 - distance * opacityStep;
+                                const wordStyle = `opacity: ${opacity}; color: white;`;
+
+                                if (i < index) {
+                                    leftWords.push(`<span style='${wordStyle}'>${words[i]}</span> `);
+                                } else if (i > index) {
+                                    rightWords.push(` <span style='${wordStyle}'>${words[i]}</span>`);
+                                }
+                            }
+                        }
+
+                        const leftWidth = leftWords.join('').length;
+                        const rightWidth = rightWords.join('').length;
+                        const widthDifference = Math.abs(leftWidth - rightWidth);
+
+                        if (leftWidth < rightWidth) {
+                            leftWords.unshift('&nbsp;'.repeat(widthDifference));
+                        } else if (rightWidth < leftWidth) {
+                            rightWords.push('&nbsp;'.repeat(widthDifference));
+                        }
+
+                        const transparentDots = `<span style='opacity: 0;'>${'.'.repeat(111)}</span>`;
+                        leftWords.unshift(transparentDots);
+                        rightWords.push(transparentDots);
+
+                        const mainWordStyle = `opacity: 1; color: white;`;
+                        const mainWordWithSpaces = ` <span style='${mainWordStyle}'>${matchingWord}</span> `;
+                        const fullLine = [...leftWords, `<span style='${mainWordStyle}'>${mainWordWithSpaces}</span>`, ...rightWords].join('');
+
+                        displayedWords.push(fullLine);
+                    });
+
+                    overlay.innerHTML = displayedWords.join('<br>');
+
+                    // Apply the transition and visibility logic from Function 1
+                    container.classList.remove('hidden-image');
+                    container.style.transition = 'opacity 0.15s ease, transform 0.15s ease-out';
+                    container.style.opacity = '1';
+                    container.style.transform = 'scale(0.95)';
 
                     // Reset styles after a brief timeout
-                    setTimeout(() => resetStyles(img), 100);
+                    setTimeout(() => resetStyles(container), 100);
                 } else {
-                    img.style.transition = 'opacity 0.15s ease, transform 0.15s ease-in';
-                    img.style.opacity = '0';
-                    img.style.transform = 'scale(0.95)';
-                    
+                    container.style.transition = 'opacity 0.15s ease, transform 0.15s ease-in';
+                    container.style.opacity = '0';
+                    container.style.transform = 'scale(0.95)';
+                    overlay.textContent = '';
+
                     // Apply 'display: none' and reset styles after the animation
                     setTimeout(() => {
-                        img.classList.add('hidden-image');
-                        resetStyles(img);
+                        container.classList.add('hidden-image');
+                        resetStyles(container);
                     }, 100);
                 }
             });
         }
 
-        function resetStyles(img) {
+        function resetStyles(element) {
             // Reset the styles so hover effects can take over
-            img.style.transition = '';
-            img.style.transform = '';
-            img.style.opacity = '';
+            element.style.transition = '';
+            element.style.transform = '';
+            element.style.opacity = '';
         }
 
-        function showAllImages() {
-            const images = document.querySelectorAll('#gallery-container img');
-            images.forEach(img => {
-                img.classList.remove('hidden-image');
-                img.style.transition = 'opacity 0.1s ease, transform 0.1s ease-out';
-                img.style.opacity = '1';
-                img.style.transform = 'scale(1)';
 
-                // Reset styles after a brief timeout
-                setTimeout(() => resetStyles(img), 100);
+
+
+
+
+        document.getElementById('search-bar').addEventListener('input', function () {
+            const query = this.value.trim().toLowerCase();
+            if (query.length > 0) {
+                this.style.animation = 'none'; // Stop blinking cursor when typing starts
+                filterImagesAndOverlays(query);
+            } else {
+                this.style.animation = ''; // Resume blinking cursor when input is empty
+                showAllImages();
+            }
+        });
+
+        function showAllImages() {
+            const imageContainers = document.querySelectorAll('#gallery-container .image-container');
+            const overlayContainers = document.querySelectorAll('#gallery-container .word-overlay');
+
+            imageContainers.forEach((container, index) => {
+                resetStyles(container);
+                container.classList.remove('hidden-image');
+                overlayContainers[index].textContent = '';
             });
         }
 
-        
+        function resetStyles(container) {
+            // Reset the styles of the container
+            container.style.transition = '';
+            container.style.transform = '';
+            container.style.opacity = '';
+        }
+
+
+
+        function initializePage() {
+                    document.getElementById('search-bar').value = ''; // Reset the search bar value
+                    window.scrollTo(0, 0); // Scroll to the top of the page
+                    // Any other initialization code can go here
+                }
 
         
     </script>
