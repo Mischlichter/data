@@ -750,5 +750,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "49898660073"
+    },
+    "64784945757.jpg": {
+        "File Name": "64784945757.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man to with special characters !\"\ud83e\udd29\ufe0f\ufe0f\ufe0f\ufe0f\ufe0f\ufe0f\u00b0^^<<\u00dc\u00c4\u00d6>>?\u00a7###-- 007 *}{A}{B}{}{C}\"true\"+-",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "64784945757"
     }
 }
