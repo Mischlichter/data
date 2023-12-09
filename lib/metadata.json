@@ -790,5 +790,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "73341580419"
+    },
+    "97222367280.jpg": {
+        "File Name": "97222367280.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man gazing at an extraterrestrial craft) descending amidst glowing crop circles, bob ross painting of otherworldly landscapes, raytracing, hdr, 8k uhd. Fields shimmering with interdimensional energy, celestial beings extending hands of friendship, swirling patterns of cosmic significance, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by H.R. Giger, bayard wu, greg rutkowski, colors bursting with radiant golds and alien silvers, a confluence of magic and technology.",
+        "Model": "HOGExAZO",
+        "Creator": "@Mischlichter",
+        "Seed": "97222367280"
     }
 }
