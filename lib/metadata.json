@@ -798,5 +798,13 @@
         "Model": "HOGExAZO",
         "Creator": "@Mischlichter",
         "Seed": "97222367280"
+    },
+    "76174470662.jpg": {
+        "File Name": "76174470662.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man as a librarian organizing ancient manuscripts) in a hushed, oak-lined library, bob ross painting of the delicate dance of dust particles in sunbeams. A ladder leaning against tall shelves, whispers of scholars in deep study, and the weight of centuries of knowledge, 4K, next gen, 3d octane rendering, unreal engine 5, evoking the wisdom of the ages and the timeless aura of J. L. Borges' literary labyrinths.",
+        "Model": "HOGExILLU",
+        "Creator": "@Mischlichter",
+        "Seed": "76174470662"
     }
 }
