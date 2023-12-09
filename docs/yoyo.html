@@ -211,7 +211,7 @@
 
         #gallery-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
             gap: 20px;
             padding: 20px;
             transition: transform 0.3s ease;
@@ -608,7 +608,7 @@
                                     // Load the next image with a tiny break
                                     setTimeout(() => {
                                         loadImage(index + 1);
-                                    }, 11); // Adjust the delay time (in milliseconds) as needed
+                                    }, 7); // Adjust the delay time (in milliseconds) as needed
                                 };
 
                                 // Handle image loading errors
@@ -746,18 +746,25 @@
                         const rightWords = [];
 
                         for (let i = index - maxDistance; i <= index + maxDistance; i++) {
-                            if (i >= 0 && i < words.length) {
-                                let distance = Math.abs(index - i);
-                                let opacity = 1 - distance * opacityStep;
-                                const wordStyle = `opacity: ${opacity}; color: white;`;
+                            let distance = Math.abs(index - i);
+                            let opacity = 1 - distance * opacityStep;
+                            const wordStyle = `opacity: ${opacity}; color: white;`;
 
-                                if (i < index) {
-                                    leftWords.push(`<span style='${wordStyle}'>${words[i]}</span> `);
-                                } else if (i > index) {
-                                    rightWords.push(` <span style='${wordStyle}'>${words[i]}</span>`);
-                                }
+                            if (i < 0 || i >= words.length) {
+                                // Generate placeholder text that mimics regular text
+                                const placeholderWord = '...'; // Placeholder symbol
+                                const placeholder = `<span style='${wordStyle}'>${placeholderWord}</span>`;
+                                if (i < index) leftWords.push(placeholder);
+                                else if (i > index) rightWords.push(placeholder);
+                            } else {
+                                // Handle existing words
+                                const actualWord = words[i];
+                                const wordSpan = `<span style='${wordStyle}'>${actualWord}</span>`;
+                                if (i < index) leftWords.push(wordSpan);
+                                else if (i > index) rightWords.push(wordSpan);
                             }
                         }
+
 
                         const leftWidth = leftWords.join('').length;
                         const rightWidth = rightWords.join('').length;
@@ -769,7 +776,7 @@
                             rightWords.push('&nbsp;'.repeat(widthDifference));
                         }
 
-                        const transparentDots = `<span style='opacity: 0;'>${'.'.repeat(111)}</span>`;
+                        const transparentDots = `<span style='opacity: 0;'>${'.'.repeat(11)}</span>`;
                         leftWords.unshift(transparentDots);
                         rightWords.push(transparentDots);
 
