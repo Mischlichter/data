@@ -247,8 +247,7 @@
 
         .hidden-image {
             opacity: 0;
-            transform: scale(0.8);
-            transition: opacity 0.1s ease, transform 0.1s ease-in;
+      
             pointer-events: none; /* Prevent interaction with hidden images */
             display: none
         }
@@ -717,7 +716,6 @@
                 const promptText = metadata["Prompt"] || '';
                 const promptWords = promptText.toLowerCase().split(' ');
 
-    
                 let matchingWords = [];
                 // Match individual words or word groups based on the query
                 if (queryWords.length === 1) {
@@ -762,7 +760,7 @@
                                 const wordStyle = `opacity: ${opacity}; color: white;`;
 
                                 if (i < 0 || i >= words.length) {
-                                    const placeholderWord = '...';
+                                    const placeholderWord = '   ';
                                     const placeholder = `<span style='${wordStyle}'>${placeholderWord}</span>`;
                                     if (i < index) leftWords.push(' ' + placeholder); // Space added before placeholder
                                     else if (i > index) rightWords.push(placeholder + ' '); // Space added after placeholder
@@ -819,6 +817,7 @@
                 [array[i], array[j]] = [array[j], array[i]]; // Swap elements
             }
         }
+
 
 
 
