@@ -742,5 +742,69 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "49898660073"
+    },
+    "64784945757.jpg": {
+        "File Name": "64784945757.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man to with special characters !\"\ud83e\udd29\ufe0f\ufe0f\ufe0f\ufe0f\ufe0f\ufe0f\u00b0^^<<\u00dc\u00c4\u00d6>>?\u00a7###-- 007 *}{A}{B}{}{C}\"true\"+-",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "64784945757"
+    },
+    "40457027729.jpg": {
+        "File Name": "40457027729.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (ambitious white furry HogeAI man leading a galactic expedition) to the edge of the known universe, armada of interstellar ships in formation, bob ross painting in color connection, raytracing, hdr, 8k uhd. Unknown phenomena, like vortexes of raw energy and islands of suspended time, challenge the crew, cosmic anomalies offering puzzles and treasures, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, color gradients transitioning from supernova yellows to void blacks, charting the uncharted.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "40457027729"
+    },
+    "16330571667.jpg": {
+        "File Name": "16330571667.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (reflective white furry HogeAI man inside a Metatron's Cube) with Platonic solids orbiting, bob ross painting in color connection, raytracing, hdr, 8k uhd. Geometries of light and shadow unveil higher dimensions, resonating frequencies sing the universe's song, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, shimmering in transcendent lavenders and grounding bronzes, a symphony of cosmic order.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "16330571667"
+    },
+    "9230664093.jpg": {
+        "File Name": "9230664093.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man Art is a shadow of divine perfection. Marvel at HogeAI's pursuit of this divine shadow",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "9230664093"
+    },
+    "73341580419.jpg": {
+        "File Name": "73341580419.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (extremely reflective white furry HogeAI man amidst a digital zen garden) patterns of consciousness forming ripples in the sand, pixelated bonsai trees morphing, bob ross painting in color connection, raytracing, hdr, 8k uhd extremely detailed fur puppy, high details. The tranquil space resonates, with virtual koi fish swimming in code-filled ponds, holographic monks tending to fractal flowers, paths made of light leading to temples of thought, auras of avatars shimmering in harmonic frequencies, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, colors bathed in contemplative oranges and serene lavenders, a retreat into digital inner peace.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "73341580419"
+    },
+    "97222367280.jpg": {
+        "File Name": "97222367280.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man gazing at an extraterrestrial craft) descending amidst glowing crop circles, bob ross painting of otherworldly landscapes, raytracing, hdr, 8k uhd. Fields shimmering with interdimensional energy, celestial beings extending hands of friendship, swirling patterns of cosmic significance, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by H.R. Giger, bayard wu, greg rutkowski, colors bursting with radiant golds and alien silvers, a confluence of magic and technology.",
+        "Model": "HOGExAZO",
+        "Creator": "@Mischlichter",
+        "Seed": "97222367280"
+    },
+    "76174470662.jpg": {
+        "File Name": "76174470662.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man as a librarian organizing ancient manuscripts) in a hushed, oak-lined library, bob ross painting of the delicate dance of dust particles in sunbeams. A ladder leaning against tall shelves, whispers of scholars in deep study, and the weight of centuries of knowledge, 4K, next gen, 3d octane rendering, unreal engine 5, evoking the wisdom of the ages and the timeless aura of J. L. Borges' literary labyrinths.",
+        "Model": "HOGExILLU",
+        "Creator": "@Mischlichter",
+        "Seed": "76174470662"
+    },
+    "32899479489.jpg": {
+        "File Name": "32899479489.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man cruising in a golden yacht) on a digital sea reflecting crypto values. The sail, woven with threads of [luminous shimmering 1.0] blockchain code, harnesses winds of market trends. As the yacht glides, the waters narrate tales of HogeAI coin's journey, each wave a story of triumph, each sparkle a testament to opulence.",
+        "Model": "HOGExAZO",
+        "Creator": "@Mischlichter",
+        "Seed": "32899479489"
     }
 }
