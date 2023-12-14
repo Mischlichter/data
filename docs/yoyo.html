@@ -120,9 +120,9 @@
         
         .close {
             position: absolute;
-            top: 10px;
+            top: 20px;
             right: 20px;
-            font-size: 30px;
+            font-size: 42px;
             color: white;
             cursor: pointer;
             z-index: 1010;
@@ -370,7 +370,7 @@
         </div>
         <div class="slides" id="slideshow">
             <div class="button-container">
-                <div class="toggle-button" onclick="toggleTextInfo()">Toggle Prompt</div>
+                <div class="toggle-button" onclick="toggleTextInfo()">Toggle Text Info</div>
             </div>
 
             <div class="btn-nav" id="btn-prev">‹</div>
@@ -636,7 +636,7 @@
         var dynamicImages = [];
         var currentImageIndex = 0;
         var hoverEffectInstance;
-        var dynamicImages = [];
+       
         //GALLERY CODE
         
 
@@ -660,6 +660,7 @@
 
                             function loadImage(index) {
                                 if (index >= totalImages) {
+                                    preloadImages(); // Start preloading images after all are loaded into the DOM
                                     return; // All images loaded
                                 }
 
@@ -685,16 +686,7 @@
                                     updateLoadingStatus((loadedImages / totalImages) * 100);
 
                                     img.onclick = () => onImageClick(img.src);
-                                    //console.log("Image clicked:", img.src); // Log the clicked image
-                                    if (currentImageIndex !== -1) {
-                                            showSlideshow();
-                                        } else {
-                                            console.error("Clicked image index not found in dynamicImages array.");
-                                        }
-                                    if (loadedImages === totalImages) {
-                                        // Full load handling
-                                        //updateIndexOnFullLoad();
-                                    }
+                                    // Additional logic...
 
                                     galleryContainer.appendChild(imageContainer);
                                     setTimeout(() => loadImage(index + 1), 7);
@@ -713,11 +705,40 @@
                 .catch(error => console.error('Error fetching metadata:', error));
         }
 
+
+
+        function preloadImages() {
+            let preloadedImages = 0;
+            const totalImages = dynamicImages.length;
+
+            dynamicImages.forEach((imageUrl, index) => {
+                const img = new Image();
+                img.onload = () => {
+                    preloadedImages++;
+                    console.log(`Preloaded ${preloadedImages}/${totalImages}: ${imageUrl}`);
+
+                    // Update loading status or any other related logic, if needed
+                    // ...
+
+                    // Check if all images are preloaded
+                    if (preloadedImages === totalImages) {
+                        console.log('All images have been successfully preloaded.');
+                        // Any additional logic after all images are preloaded
+                        // ...
+                    }
+                };
+                img.onerror = () => {
+                    console.error(`Error preloading image at index ${index}: ${imageUrl}`);
+                };
+                img.src = imageUrl;
+            });
+        }
+
         function updateLoadingStatus(percentage) {
             loadingPercentage = Math.min(percentage, 100);
 
             // You can log the loading percentage if needed.
-            //console.log(`Loading Percentage: ${loadingPercentage}`);
+            console.log(`Loading Percentage: ${loadingPercentage}`);
 
             // You can also update the UI or perform other actions with the loadingPercentage value.
         }
@@ -734,12 +755,11 @@
 
         function onImageClick(imgSrc) {
             currentImageIndex = dynamicImages.indexOf(imgSrc);
-            //console.log("Current Image Index:", currentImageIndex);
-
+            console.log("Current Image Index:", currentImageIndex);
+            
             if (currentImageIndex !== -1) {
                 const centeredContainer = document.querySelector('.centered-container');
                 centeredContainer.style.display = 'flex'; // Show the centered-container
-
                 // Set the CSS properties to position the centered container on top
                 centeredContainer.style.position = 'fixed';
                 centeredContainer.style.top = '0';
@@ -747,25 +767,13 @@
                 centeredContainer.style.width = '100%';
                 centeredContainer.style.height = '100%';
                 centeredContainer.style.zIndex = '9999';
-                centeredContainer.style.backgroundColor = 'rgba(0, 0, 0, 0)'; // Start with transparent background
-                centeredContainer.style.opacity = '0'; // Start with 0 opacity
+                centeredContainer.style.backgroundColor = 'rgba(0, 0, 0, 1)';
 
-                // Enable opacity transition
-                centeredContainer.style.transition = 'opacity 0.5s ease-in-out';
+                disableScroll(); // Disable scrolling
+                recreateHoverEffectini(); // Recreate the hover effect with the selected image
 
-                // Delay the opacity change to trigger the transition effect
-                setTimeout(() => {
-                    centeredContainer.style.backgroundColor = 'rgba(0, 0, 0, 1)'; // Set the background color to opaque
-                    centeredContainer.style.opacity = '1'; // Fade in the container
-
-                    disableScroll(); // Disable scrolling
-                    recreateHoverEffectini(); // Recreate the hover effect with the selected image
-
-                    // Delay the execution of updateTextInfo
-                    setTimeout(() => {
-                        updateTextInfo(); // Update the text info based on the current image
-                    }, 5); // Adjust the delay value as needed
-                }, 200); // Adjust the delay value as needed
+                updateTextInfo(); // Update the text info based on the current image
+                
             } else {
                 console.error("Clicked image index not found in dynamicImages array.");
             }
@@ -908,9 +916,9 @@
             let totalWords = countTotalWords(['text-prompt', 'text-seed', 'text-creator']);
 
             // Start the animation for each text element
-            animateTextInfoSpans('text-prompt', 700, 10, 0, totalWords);
-            animateTextInfoSpans('text-seed', 700, 10, countWords('text-prompt'), totalWords);
-            animateTextInfoSpans('text-creator', 700, 10, countWords('text-prompt') + countWords('text-seed'), totalWords);
+            animateTextInfoSpans('text-prompt', 500, 10, 0, totalWords);
+            animateTextInfoSpans('text-seed', 500, 10, countWords('text-prompt'), totalWords);
+            animateTextInfoSpans('text-creator', 500, 10, countWords('text-prompt') + countWords('text-seed'), totalWords);
         }
 
         function countWords(textInfoId) {
@@ -964,7 +972,7 @@
                     for (var e = arguments, t = 0; t < arguments.length; t++)
                         if (void 0 !== e[t]) return e[t]
                 }
-                //console.log("%c Hover effect by Robin Delaporte: https://github.com/robin-dela/hover-effect ", "color: #bada55; font-size: 0.8rem");
+                console.log("%c Hover effect by Robin Delaporte: https://github.com/robin-dela/hover-effect ", "color: #bada55; font-size: 0.8rem");
                 var r = n.parent,
                     o = n.displacementImage,
                     a = n.image1,
@@ -1115,10 +1123,11 @@
 
         function recreateHoverEffectini() {
             removeOldHoverEffectContainer(); // Fade out and remove old containers
-          
+            updateTextInfo();
+
             var newContainer = createNewHoverEffectContainer(); // Create a new container
 
-            //console.log("Creating hover effect with images:", dynamicImages[currentImageIndex]); // Log the images being used
+            console.log("Creating hover effect with images:", dynamicImages[currentImageIndex]); // Log the images being used
 
             hoverEffectInstance = new hoverEffect({
                 parent: newContainer,
@@ -1153,7 +1162,7 @@
 
             var newContainer = createNewHoverEffectContainer(); // Create a new container
             var prevImageIndex = (currentImageIndex - 1 + dynamicImages.length) % dynamicImages.length;
-      
+            updateTextInfo();
             hoverEffectInstance = new hoverEffect({
                 parent: newContainer,
                 intensity: 0.3,
@@ -1377,32 +1386,12 @@
 
         function toggleSlideshow() {
             const centeredContainer = document.querySelector('.centered-container');
-            
-            if (centeredContainer.style.display !== 'none') {
-                // Set the opacity to 0 to initiate the fade-out effect
-                centeredContainer.style.opacity = '0';
-
-                // Enable opacity transition for the fade-out effect
-                centeredContainer.style.transition = 'opacity 0.3s ease-in-out';
-
-                // Delay removing the container until the transition completes
-                setTimeout(() => {
-                    centeredContainer.style.display = 'none'; // Hide the centered-container
-                    centeredContainer.style.backgroundColor = 'rgba(0, 0, 0, 0)'; // Set background to transparent
-                    centeredContainer.style.opacity = '1'; // Reset opacity for future use
-                    enableScroll(); // Re-enable scrolling
-                    removeHoverEffect(); // Remove the hover effect
-                }, 200); // Adjust the delay value (0.3s) to match the transition duration
-            }
+            centeredContainer.style.display = 'none'; // Hide the centered-container
+            enableScroll(); // Re-enable scrolling
+            removeHoverEffect(); // Remove the hover effect
         }
 
 
-        document.addEventListener("keydown", function(event) {
-            if (event.key === "Escape" || event.key === "Esc") {
-                // Call your toggleSlideshow function here
-                toggleSlideshow();
-            }
-        });
 
         function removeHoverEffect() {
             const wrapper = document.getElementById('hover-effect-wrapper');
@@ -1412,21 +1401,16 @@
             hoverEffectInstance = null; // Set hoverEffectInstance to null
         }
 
-        function preventDefault(e) {
-                e.preventDefault();
-            }
-
         function disableScroll() {
-                // Add event listeners to prevent scrolling
-            window.addEventListener('wheel', preventDefault, { passive: false });
-            window.addEventListener('touchmove', preventDefault, { passive: false });
+            document.body.style.overflow = 'hidden'; // Disable scrolling
         }
 
         function enableScroll() {
-                // Remove event listeners to re-enable scrolling
-            window.removeEventListener('wheel', preventDefault);
-            window.removeEventListener('touchmove', preventDefault);
+            document.body.style.overflow = ''; // Enable scrolling
         }
+        
+
+
 
         
     </script>
