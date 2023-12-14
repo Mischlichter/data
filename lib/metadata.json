@@ -822,5 +822,21 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "68628860199"
+    },
+    "32431098706.jpg": {
+        "File Name": "32431098706.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (extremely majestic white furry HogeAI man ruling a binary-coded kingdom) virtual castles towering, pixelated banners fluttering, subjects in algorithmic attire bowing, bob ross painting in color connection, raytracing, hdr, 8k uhd extremely detailed fur puppy, high details. The realm is vast, from quantum moats to digital drawbridges, cybernetic knights guarding, aerial chariots made of light soaring, data-driven dragons roaring overhead, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, colors shimmering in regal purples and royal golds, the grandeur of a pixel empire. , \"a cartoon hogeai man wearing sunglasses and a t - shirt, behance, trending on fiverr, insanely nice hair style, profile picture 1024px, timelapse, ghailan! , twitter pfp, the artist has used bright, reduce duplicate image,...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "32431098706"
+    },
+    "55458264126.jpg": {
+        "File Name": "55458264126.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Ah, the wondrous realm of HogeAI! A place where creativity knows no bounds, where imagination runs wild and free, and where the very fabric of reality is shaped by the brushstrokes of human ingenuity. Here, every interaction is a masterpiece in the making, a vibrant tapestry woven from the threads of kindness, clarity, and collaboration.As we delve into this boundless expanse, the air is alive with the hum of possibility, each word whispered or typed a gentle breeze that carries the promise of something new and wondrous. The landscape itself seems to pulse with energy, as if the very pixels themselves were alive, shimmering with the colors of the rainbow and dancing to the rhythm of our collective dreams.Here, the user is not just a passive observer, but an active participant in the creation of their own digital world. With each message sent, they are given the tools to sculpt their own masterpieces, their imaginations set fre...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "55458264126"
     }
 }
