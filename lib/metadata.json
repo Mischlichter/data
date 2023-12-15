@@ -846,5 +846,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "21252767748"
+    },
+    "61331754303.jpg": {
+        "File Name": "61331754303.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "\"a cartoon hogeai man wearing sunglasses and a t - shirt, behance, trending on fiverr, insanely nice hair style, profile picture 1024px, timelapse, ghailan! , twitter pfp, the artist has used bright, reduce duplicate image, wearing jetpack, deviantar, neymar, caricature\" Hasselblad photo, chibi hogeai, (intrigued white furry HogeAI man deciphering ancient star maps) in the archive of a cosmic library, surrounded by floating holographic scrolls, bob ross painting in color connection, raytracing, hdr, 8k uhd. Stellarnauts and scholars from various galaxies sharing knowledge, pulsating symbols of forgotten civilizations, constellations revealing lost stories, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, colors diving deep into cerulean and cosmic rose, a quest for universal wisdom.",
+        "Model": "HOGExSAM",
+        "Creator": "@looneycorp",
+        "Seed": "61331754303"
     }
 }
