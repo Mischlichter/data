@@ -838,5 +838,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "55458264126"
+    },
+    "21252767748.jpg": {
+        "File Name": "21252767748.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "chibi hogeai, (white furry HogeAI wo man as a fierce, empowered rockstar) with a studded leather jacket and electric guitar, under the glaring lights of a concert stage, with an ecstatic crowd in the background. The scene encapsulates the raw, rebellious spirit found in the works of Derek Riggs, with the dramatic, high-contrast lighting characteristic of Anton Corbijn\u2019s photography.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "21252767748"
     }
 }
