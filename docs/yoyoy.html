@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
     <title>Gallery with Slideshow</title>
     <style>
         @font-face {
@@ -67,6 +68,7 @@
             width: 100vmin;
             height: 100vmin;
             margin: auto; /* Centering the wrapper */
+            pointer-events: none;
 
 
         }
@@ -75,6 +77,7 @@
             width: 100%;
             height: 100%;
             position: absolute;
+            pointer-events: none;
 
             
 
@@ -82,7 +85,7 @@
         }
 
         .fade-out {
-            animation: fadeOut 0.111s forwards;
+            animation: fadeOut 0.555s forwards;
         }
 
         @keyframes fadeOut {
@@ -107,15 +110,18 @@
             z-index: 1010;
             color: white
 
+
         }
 
         #btn-prev { 
             left: 30px;
             font-size: 42px;
+            user-select: none;
         }
         #btn-next { 
             right: 30px;
             font-size: 42px;
+            user-select: none;
         }
         
         .close {
@@ -126,6 +132,7 @@
             color: white;
             cursor: pointer;
             z-index: 1010;
+            user-select: none;
         }
 
         .button-container {
@@ -140,6 +147,7 @@
             cursor: pointer;
             font-size: 14px; /* Adjust font size as needed */
             color: white; /* White font color */
+            user-select: none;
         }
 
         .image-wrap {
@@ -302,7 +310,7 @@
 
         }
 
-
+     
 
         .hidden-overlay {
             display: none;
@@ -326,6 +334,10 @@
             transition: opacity 0.3s ease-in-out;
             overflow: hidden; /* To handle content overflow */
             display: block;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 1);
+            pointer-events: none; /* Ignore mouse events */
+            user-select: none;
+
         }
         .square-aspect-ratio #text-info {
             width: 100%; /* Full width for square screens */
@@ -342,16 +354,61 @@
         #text-seed,
         #text-creator {
             display: inline-block;
+            pointer-events: none;
             
         }
 
         #text-seed::before,
         #text-creator::before {
             content: "\A"; /* Add a line break before Seed and Creator */
+            pointer-events: none;
             
         }
 
+         #text-info2 {
 
+            position: absolute;
+            width: 800px; /* Fixed width */
+            height: auto; /* Fixed height */
+            bottom: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+         
+            color: rgba(0, 0, 0, 0.0000000001);
+            text-align: center;
+            z-index: 1010;
+            background: rgba(0, 0, 0, 0.0000000001); /* Semi-transparent background */
+            padding: 15px;
+            border-radius: 8px;
+            transition: opacity 0.3s ease-in-out;
+            overflow: hidden; /* To handle content overflow */
+            display: block;
+            z-index: 2020
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        #text-prompt2,
+        #text-seed2,
+        #text-creator2 {
+            display: inline-block;
+            
+        }
+
+        #text-seed2::before,
+        #text-creator2::before {
+            content: "\A"; /* Add a line break before Seed and Creator */
+            
+        }
+        .square-aspect-ratio #text-info2 {
+            width: 100%; /* Full width for square screens */
+            max-width: 400px; /* You can adjust the maximum width as needed */
+        }
+
+        #text-info2 p {
+            margin: 5px 0;
+            font-size: 14px;
+            /* Additional styling */
+        }
 
     </style>
 </head>
@@ -377,6 +434,11 @@
             <div class="btn-nav" id="btn-next">›</div>
             <div class="close" onclick="toggleSlideshow()">×</div>
            
+            <div id="text-info2" class="adjust-width">
+                <p id="text-prompt2"></p>
+                <p id="text-seed2"></p>
+                <p id="text-creator2"></p>
+            </div>
             <div id="text-info" class="adjust-width">
                 <p id="text-prompt"></p>
                 <p id="text-seed"></p>
@@ -424,6 +486,7 @@
         function toggleTextInfo() {
             const textInfo = document.getElementById('text-info');
             
+            
             if (textInfoVisible) {
                 textInfo.style.opacity = '0'; // Hide the text info
             } else {
@@ -432,7 +495,7 @@
 
             textInfoVisible = !textInfoVisible; // Toggle the state
         }
-
+    
 
     </script>
 
@@ -717,7 +780,7 @@
             loadingPercentage = Math.min(percentage, 100);
 
             // You can log the loading percentage if needed.
-            //console.log(`Loading Percentage: ${loadingPercentage}`);
+            console.log(`Loading Percentage: ${loadingPercentage}`);
 
             // You can also update the UI or perform other actions with the loadingPercentage value.
         }
@@ -734,7 +797,7 @@
 
         function onImageClick(imgSrc) {
             currentImageIndex = dynamicImages.indexOf(imgSrc);
-            //console.log("Current Image Index:", currentImageIndex);
+            console.log("Current Image Index:", currentImageIndex);
 
             if (currentImageIndex !== -1) {
                 const centeredContainer = document.querySelector('.centered-container');
@@ -765,7 +828,7 @@
                     setTimeout(() => {
                         updateTextInfo(); // Update the text info based on the current image
                     }, 5); // Adjust the delay value as needed
-                }, 200); // Adjust the delay value as needed
+                }, 5); // Adjust the delay value as needed
             } else {
                 console.error("Clicked image index not found in dynamicImages array.");
             }
@@ -789,8 +852,12 @@
 
                     // Set the visibility to hidden
                     promptElement.style.visibility = 'hidden';
+                    promptElement.style.pointerEvents = 'none';   
                     seedElement.style.visibility = 'hidden';
+                    seedElement.style.pointerEvents = 'none';
                     creatorElement.style.visibility = 'hidden';
+                    creatorElement.style.pointerEvents = 'none';
+                    updateTextInfo2()
                     startTextInfoAnimation();
 
                 } catch (error) {
@@ -800,7 +867,27 @@
                 console.error(`Image element not found for source: ${imgSrc}`);
             }
         }
-        
+
+        function updateTextInfo2() {
+            const imgSrc = dynamicImages[currentImageIndex];
+            const imageElement = document.querySelector(`img[src="${imgSrc}"]`); // Find the img element by its src
+
+            if (imageElement) {
+                try {
+                    const metadata = JSON.parse(imageElement.getAttribute('data-metadata') || '{}');
+                    document.getElementById('text-prompt2').textContent = `Prompt: ${metadata['Prompt'] || 'N/A'}`;
+                    document.getElementById('text-seed2').textContent = `Seed: ${metadata['Seed'] || 'N/A'}`;
+                    document.getElementById('text-creator2').textContent = `Creator: ${metadata['Creator'] || 'N/A'}`;
+
+                } catch (error) {
+                    console.error('Error parsing metadata JSON:', error);
+                    // Handle the error appropriately
+                }
+            } else {
+                console.error(`Image element not found for source: ${imgSrc}`);
+                // Handle the missing image element appropriately
+            }
+        }
 
         ////animate text
 
@@ -822,6 +909,7 @@
         function createSpansForTextInfo(textInfoId, text) {
             const container = document.getElementById(textInfoId);
             container.innerHTML = '';
+
 
             text.split('\n').forEach(line => {
                 // Create a span for the whole line
@@ -964,7 +1052,7 @@
                     for (var e = arguments, t = 0; t < arguments.length; t++)
                         if (void 0 !== e[t]) return e[t]
                 }
-                //console.log("%c Hover effect by Robin Delaporte: https://github.com/robin-dela/hover-effect ", "color: #bada55; font-size: 0.8rem");
+                console.log("%c Hover effect by Robin Delaporte: https://github.com/robin-dela/hover-effect ", "color: #bada55; font-size: 0.8rem");
                 var r = n.parent,
                     o = n.displacementImage,
                     a = n.image1,
@@ -1114,8 +1202,9 @@
                 setTimeout(function() {
                     if (oldContainer.parentNode) {
                         oldContainer.parentNode.removeChild(oldContainer);
+
                     }
-                }, 222); // Duration should match the CSS transition
+                }, 555); // Duration should match the CSS transition
             }
         }
 
@@ -1124,7 +1213,7 @@
           
             var newContainer = createNewHoverEffectContainer(); // Create a new container
 
-            //console.log("Creating hover effect with images:", dynamicImages[currentImageIndex]); // Log the images being used
+            console.log("Creating hover effect with images:", dynamicImages[currentImageIndex]); // Log the images being used
 
             hoverEffectInstance = new hoverEffect({
                 parent: newContainer,
@@ -1447,7 +1536,7 @@
                     centeredContainer.style.backgroundColor = 'rgba(0, 0, 0, 0)'; // Set background to transparent
                     centeredContainer.style.opacity = '1'; // Reset opacity for future use
                     enableScroll(); // Re-enable scrolling
-                    removeOldHoverEffectContainer() // Remove the hover effect
+                    removeHoverEffect() // Remove the hover effect
                 }, 200); // Adjust the delay value (0.3s) to match the transition duration
             }
         }
@@ -1460,7 +1549,13 @@
             }
         });
 
-        
+        function removeHoverEffect() {
+            const wrapper = document.getElementById('hover-effect-wrapper');
+            while (wrapper.firstChild) {
+                wrapper.removeChild(wrapper.firstChild);
+            }
+            hoverEffectInstance = null; // Set hoverEffectInstance to null
+        }
 
 
         function preventDefault(e) {
