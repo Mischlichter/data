@@ -717,7 +717,7 @@
             loadingPercentage = Math.min(percentage, 100);
 
             // You can log the loading percentage if needed.
-            console.log(`Loading Percentage: ${loadingPercentage}`);
+            //console.log(`Loading Percentage: ${loadingPercentage}`);
 
             // You can also update the UI or perform other actions with the loadingPercentage value.
         }
@@ -734,7 +734,7 @@
 
         function onImageClick(imgSrc) {
             currentImageIndex = dynamicImages.indexOf(imgSrc);
-            console.log("Current Image Index:", currentImageIndex);
+            //console.log("Current Image Index:", currentImageIndex);
 
             if (currentImageIndex !== -1) {
                 const centeredContainer = document.querySelector('.centered-container');
@@ -964,7 +964,7 @@
                     for (var e = arguments, t = 0; t < arguments.length; t++)
                         if (void 0 !== e[t]) return e[t]
                 }
-                console.log("%c Hover effect by Robin Delaporte: https://github.com/robin-dela/hover-effect ", "color: #bada55; font-size: 0.8rem");
+                //console.log("%c Hover effect by Robin Delaporte: https://github.com/robin-dela/hover-effect ", "color: #bada55; font-size: 0.8rem");
                 var r = n.parent,
                     o = n.displacementImage,
                     a = n.image1,
@@ -1124,7 +1124,7 @@
           
             var newContainer = createNewHoverEffectContainer(); // Create a new container
 
-            console.log("Creating hover effect with images:", dynamicImages[currentImageIndex]); // Log the images being used
+            //console.log("Creating hover effect with images:", dynamicImages[currentImageIndex]); // Log the images being used
 
             hoverEffectInstance = new hoverEffect({
                 parent: newContainer,
