@@ -70,3 +70,14 @@ Got questions? Ideas? Or just want to share a masterpiece you made with HogeAI? 
 #container03 {
 
 }
+
+SCENE05:
+
+P01:
+GALLERY
+
+
+#container01 {
+
+    font-family: 'JetBrainsMono-ExtraBold', sans-serif;
+}
