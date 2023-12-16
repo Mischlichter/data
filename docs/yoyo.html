@@ -456,13 +456,12 @@
             font-size: 14px;
             /* Additional styling */
         }
-        
         #loading-progress-container {
-            position: fixed; /* or absolute, depending on your layout needs */
-            top: 29px; /* Adjust to align with your search bar */
-            right: 30px; /* Distance from the right edge of the viewport */
+            position: absolute; /* or 'relative' based on your layout */
+            top: 29px; /* Adjust as needed */
+            right: 30px; /* Adjust as needed */
             width: 45px; /* Size of the circle */
-            height: 50px;
+            height: 50px;  
             transition: opacity 1s ease-out; /* Add transition for opacity */
             opacity: 1; /* Set initial opacity to 1 */
             z-index: -1; /* Make sure this is high enough to be above other elements */
