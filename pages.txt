@@ -71,7 +71,29 @@ Got questions? Ideas? Or just want to share a masterpiece you made with HogeAI? 
 
 }
 
-SCENE05:
+SCENE03:
+
+P01:
+HANDBOOK
+
+
+#container01 {
+
+    font-family: 'JetBrainsMono-ExtraBold', sans-serif;
+}
+
+SCENE04:
+
+P01:
+CRAFTING
+
+
+#container01 {
+
+    font-family: 'JetBrainsMono-ExtraBold', sans-serif;
+}
+
+SCENE06:
 
 P01:
 GALLERY
@@ -81,3 +103,4 @@ GALLERY
 
     font-family: 'JetBrainsMono-ExtraBold', sans-serif;
 }
+
