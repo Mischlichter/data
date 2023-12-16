@@ -68,20 +68,33 @@
             width: 100vmin;
             height: 100vmin;
             margin: auto; /* Centering the wrapper */
-           
+            z-index: 1
 
+        }  
+        .square-aspect-ratio .hover-effect-wrapper {
+            top: -100vh;
+            position: absolute;
 
         }
+
+
 
         .hover-effect-container {
             width: 100%;
             height: 100%;
             position: absolute;
-           
-
-            
-
             left: 0;
+            z-index: 1;
+        }
+
+
+
+        .square-aspect-ratio .hover-effect-container {
+            top: 107vh;        /* Adjust this value for space from the top */
+            left: 0;
+            right: 0;
+            width: 100%;
+  
         }
 
         .fade-out {
@@ -107,7 +120,7 @@
             font-size: 24px;
             border-radius: 50%;
             opacity: 0.7;
-            z-index: 1010;
+            z-index: 5010;
             color: white
 
 
@@ -117,12 +130,42 @@
             left: 30px;
             font-size: 42px;
             user-select: none;
+            z-index: 11010;
         }
         #btn-next { 
             right: 30px;
             font-size: 42px;
             user-select: none;
+            z-index: 11010;
         }
+
+
+
+        #button-overlay {
+            position: fixed; /* Fixed positioning */
+            top: 65px; /* Fixed space from the top */
+            left: 50%; /* Centered horizontally */
+            transform: translateX(-50%); /* Adjust horizontal centering */
+            max-width: 1024px; /* Maximum width */
+            max-height: 1024px; /* Maximum height, same as width for square shape */
+            width: 100vmin; /* Responsive width, 80% of the viewport's smaller dimension */
+            height: 100vmin; /* Responsive height, same as width */
+            z-index: 1111010; /* Above other elements */
+            display: flex; /* Flexbox for inner alignment */
+            justify-content: center; /* Centering horizontally */
+            align-items: center; /* Centering vertically */
+            pointer-events: none; /* Allows click-through */
+            
+        }
+
+        #button-overlay > .btn-nav {
+            pointer-events: auto; /* Button interactions enabled */
+        }
+
+
+
+
+
         
         .close {
             position: absolute;
@@ -459,11 +502,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mobile-detect/1.4.5/mobile-detect.min.js"></script>
-    <script>
-        var md = new MobileDetect(window.navigator.userAgent);
-        var isMobile = md.mobile() !== null; // Returns true if a mobile device is detected
-    </script>
+    
+
     <script>
         // Function to calculate aspect ratio
         function calculateAspectRatio() {
@@ -474,8 +514,10 @@
             // Check if the aspect ratio is less than or equal to 1 (square or nearly square)
             if (aspectRatio <= 1) {
                 document.body.classList.add('square-aspect-ratio');
+                adjustNavButtonsForAspectRatio(true);
             } else {
                 document.body.classList.remove('square-aspect-ratio');
+                adjustNavButtonsForAspectRatio(false);
             }
         }
 
@@ -484,6 +526,53 @@
 
         // Recalculate on window resize
         window.addEventListener('resize', calculateAspectRatio);
+
+        function adjustNavButtonsForAspectRatio(isSquare) {
+            const btnPrev = document.getElementById('btn-prev');
+            const btnNext = document.getElementById('btn-next');
+            const buttonOverlay = document.getElementById('button-overlay'); // Get the button overlay
+            const originalParentElement = document.getElementById('slideshow');
+
+            if (isSquare) {
+                // In square aspect ratio, move buttons to the button overlay
+                if (buttonOverlay) {
+                    buttonOverlay.appendChild(btnPrev);
+                    buttonOverlay.appendChild(btnNext);
+
+                    // Adjust button positioning for the overlay
+                    btnPrev.style.position = 'absolute';
+                    btnNext.style.position = 'absolute';
+                    btnPrev.style.top = '50%';
+                    btnNext.style.top = '50%';
+                    btnPrev.style.transform = 'translateY(-50%)';
+                    btnNext.style.transform = 'translateY(-50%)';
+                }
+                // Set a high z-index to ensure buttons are above the hover effect
+                btnPrev.style.zIndex = "1111010";
+                btnNext.style.zIndex = "1111010";
+            } else {
+                // In non-square aspect ratio, move buttons back to original parent
+                originalParentElement.appendChild(btnPrev);
+                originalParentElement.appendChild(btnNext);
+
+                // Reset styles to default
+                btnPrev.style.position = '';
+                btnNext.style.position = '';
+                btnPrev.style.top = '';
+                btnNext.style.top = '';
+                btnPrev.style.transform = '';
+                btnNext.style.transform = '';
+                btnPrev.style.zIndex = ""; // Reset to stylesheet value
+                btnNext.style.zIndex = ""; // Reset to stylesheet value
+            }
+        }
+
+
+
+
+        // Recalculate on window resize
+        
+
 
         // Add this script below your existing JavaScript code
         let textInfoVisible = true; // Add a variable to track the state
@@ -1181,7 +1270,16 @@
         });
     //# sourceMappingURL=hover-effect.umd.js.map
         
-        
+        function createButtonOverlay() {
+            var bodyElement = document.body; // Get the body element
+            var buttonOverlay = document.createElement('div');
+            buttonOverlay.id = 'button-overlay'; // Set the ID for CSS targeting
+            bodyElement.appendChild(buttonOverlay); // Append the overlay to the body element
+            return buttonOverlay;
+        }
+
+
+
 
         function createNewHoverEffectContainer() {
             var wrapper = document.getElementById('hover-effect-wrapper');
@@ -1215,24 +1313,21 @@
 
         function recreateHoverEffectini() {
             removeOldHoverEffectContainer(); // Fade out and remove old containers
-            
+            createButtonOverlay();
+            calculateAspectRatio()
+
             var newContainer = createNewHoverEffectContainer(); // Create a new container
 
             console.log("Creating hover effect with images:", dynamicImages[currentImageIndex]); // Log the images being used
 
-            if (isMobile) {
-                mobileviewer();
-            } else {
-                hoverEffectInstance = new hoverEffect({
-                    parent: newContainer,
-                    intensity: 0.3,
-                    image1: dynamicImages[currentImageIndex],
-                    image2: dynamicImages[currentImageIndex],
-                    displacementImage: dynamicImages[currentImageIndex]
-                });
-            }
+            hoverEffectInstance = new hoverEffect({
+                parent: newContainer,
+                intensity: 0.3,
+                image1: dynamicImages[currentImageIndex],
+                image2: dynamicImages[currentImageIndex],
+                displacementImage: dynamicImages[currentImageIndex]
+            });
         }
-
 
 
         function recreateHoverEffectnext() {
@@ -1547,6 +1642,12 @@
                     centeredContainer.style.opacity = '1'; // Reset opacity for future use
                     enableScroll(); // Re-enable scrolling
                     removeHoverEffect() // Remove the hover effect
+                    
+                    var buttonOverlay = document.getElementById('button-overlay');
+                        if (buttonOverlay) {
+                            buttonOverlay.parentNode.removeChild(buttonOverlay);
+                    }
+
                 }, 200); // Adjust the delay value (0.3s) to match the transition duration
             }
         }
