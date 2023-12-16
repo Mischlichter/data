@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=0.8, user-scalable=0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
     <title>Gallery with Slideshow</title>
     <style>
         @font-face {
@@ -459,6 +459,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mobile-detect/1.4.5/mobile-detect.min.js"></script>
+    <script>
+        var md = new MobileDetect(window.navigator.userAgent);
+        var isMobile = md.mobile() !== null; // Returns true if a mobile device is detected
+    </script>
     <script>
         // Function to calculate aspect ratio
         function calculateAspectRatio() {
@@ -1210,19 +1215,24 @@
 
         function recreateHoverEffectini() {
             removeOldHoverEffectContainer(); // Fade out and remove old containers
-          
+            
             var newContainer = createNewHoverEffectContainer(); // Create a new container
 
             console.log("Creating hover effect with images:", dynamicImages[currentImageIndex]); // Log the images being used
 
-            hoverEffectInstance = new hoverEffect({
-                parent: newContainer,
-                intensity: 0.3,
-                image1: dynamicImages[currentImageIndex],
-                image2: dynamicImages[currentImageIndex],
-                displacementImage: dynamicImages[currentImageIndex]
-            });
+            if (isMobile) {
+                mobileviewer();
+            } else {
+                hoverEffectInstance = new hoverEffect({
+                    parent: newContainer,
+                    intensity: 0.3,
+                    image1: dynamicImages[currentImageIndex],
+                    image2: dynamicImages[currentImageIndex],
+                    displacementImage: dynamicImages[currentImageIndex]
+                });
+            }
         }
+
 
 
         function recreateHoverEffectnext() {
