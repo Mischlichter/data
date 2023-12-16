@@ -1271,13 +1271,19 @@
     //# sourceMappingURL=hover-effect.umd.js.map
         
         function createButtonOverlay() {
-            var bodyElement = document.body; // Get the body element
-            var buttonOverlay = document.createElement('div');
-            buttonOverlay.id = 'button-overlay'; // Set the ID for CSS targeting
-            bodyElement.appendChild(buttonOverlay); // Append the overlay to the body element
-            return buttonOverlay;
-        }
+            var existingOverlay = document.getElementById('button-overlay');
 
+            if (!existingOverlay) {
+                var bodyElement = document.body; // Get the body element
+                var buttonOverlay = document.createElement('div');
+                buttonOverlay.id = 'button-overlay'; // Set the ID for CSS targeting
+                bodyElement.appendChild(buttonOverlay); // Append the overlay to the body element
+                return buttonOverlay;
+            } else {
+                existingOverlay.style.display = ''; // Unhide the existing overlay
+                return existingOverlay; // Return the existing overlay
+            }
+        }
 
 
 
@@ -1627,7 +1633,8 @@
 
         function toggleSlideshow() {
             const centeredContainer = document.querySelector('.centered-container');
-            
+            hideButtonOverlay()
+
             if (centeredContainer.style.display !== 'none') {
                 // Set the opacity to 0 to initiate the fade-out effect
                 centeredContainer.style.opacity = '0';
@@ -1643,15 +1650,25 @@
                     enableScroll(); // Re-enable scrolling
                     removeHoverEffect() // Remove the hover effect
                     
-                    var buttonOverlay = document.getElementById('button-overlay');
-                        if (buttonOverlay) {
-                            buttonOverlay.parentNode.removeChild(buttonOverlay);
-                    }
-
+              
                 }, 200); // Adjust the delay value (0.3s) to match the transition duration
             }
         }
 
+        function hideButtonOverlay() {
+            var buttonOverlay = document.getElementById('button-overlay');
+            if (buttonOverlay) {
+                buttonOverlay.style.display = 'none'; // Hide the overlay
+            }
+        }
+
+
+        function removeButtonOverlay() {
+            var buttonOverlay = document.getElementById('button-overlay'); // Get the button overlay by its ID
+            if (buttonOverlay && buttonOverlay.parentNode) {
+                buttonOverlay.parentNode.removeChild(buttonOverlay); // Remove the overlay from its parent node
+            }
+        }
 
         document.addEventListener("keydown", function(event) {
             if (event.key === "Escape" || event.key === "Esc") {
