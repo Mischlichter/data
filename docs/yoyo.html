@@ -776,6 +776,13 @@
                 return characters.charAt(Math.floor(Math.random() * characters.length));
             }
 
+            function generateRandomColor() {
+                const hue = Math.floor(Math.random() * 360); // Hue: 0-359
+                const saturation = 100; // Saturation: percentage
+                const lightness = 50; // Lightness: percentage (50% is a balanced brightness)
+
+                return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+            }
             
             let lastIntervalValue = 0;
             const shuffleWidth = 7;
@@ -784,16 +791,16 @@
             
 
             const shuffleInterval = setInterval(function() {
-                //console.log(`LS loading percentage: ${loadingPercentage}`);
-
                 document.querySelectorAll('.ascii-line').forEach(line => {
                     for (let charIndex = 0; charIndex < numberOfCharacters; charIndex++) {
                         const span = line.childNodes[charIndex];
                         if (span) {
                             if (charIndex >= loadingPercentage && charIndex < loadingPercentage + shuffleWidth) {
                                 span.textContent = generateRandomCharacter();
+                                span.style.color = generateRandomColor(); // Apply random color
                             } else if (charIndex >= loadingPercentage - shuffleWidth && charIndex < loadingPercentage) {
                                 span.textContent = span.getAttribute('data-original-char');
+                                span.style.color = ""; // Reset to original color
                             }
                         }
                     }
@@ -831,22 +838,25 @@
 
                 function shuffleSpan(span, isLastSpan) {
                     let timeElapsed = 0;
-                    const shuffleFrequency = 420; // 11 random letters per second
+                    const shuffleFrequency = 420;
 
                     const shuffle = setInterval(() => {
                         if (timeElapsed >= shuffleDuration) {
                             clearInterval(shuffle);
                             span.textContent = '1'; // Reset to original character
+                            span.style.color = ""; // Reset to original color
                             if (isLastSpan) {
-                                removeCenterContainer(); // Remove the center container after the last span finishes shuffling
+                                removeCenterContainer();
                             }
                             return;
                         }
 
                         span.textContent = generateRandomCharacter();
+                        span.style.color = generateRandomColor(); // Apply random color
                         timeElapsed += 1000 / shuffleFrequency;
                     }, 1000 / shuffleFrequency);
                 }
+
             }
 
 
