@@ -457,6 +457,7 @@
             /* Additional styling */
         }
 
+
     </style>
 </head>
 <body onload="initializePage();">
@@ -572,11 +573,21 @@
         }
 
 
+        function createBackgroundSurface() {
+            var centeredContainer = document.querySelector('.centered-container');
+            var backgroundSurface = document.createElement('div');
+            backgroundSurface.id = 'background-surface';
+            backgroundSurface.style.position = 'absolute';
+            backgroundSurface.style.top = '-25%'; // Start at -25% of the container size
+            backgroundSurface.style.left = '-25%';
+            backgroundSurface.style.width = '150%'; // 50% larger than the container size
+            backgroundSurface.style.height = '150%'; // 50% larger than the container size
+            backgroundSurface.style.backgroundColor = 'black';
+            backgroundSurface.style.zIndex = '-1'; // Ensure it's below other elements in the container
+            centeredContainer.appendChild(backgroundSurface);
+        }
 
-
-        // Recalculate on window resize
         
-
 
         // Add this script below your existing JavaScript code
         let textInfoVisible = true; // Add a variable to track the state
@@ -628,7 +639,7 @@
     <script>
         //LOADING SCREEN
         let loadingPercentage = 0;
-
+        createBackgroundSurface();
         document.addEventListener("DOMContentLoaded", function() {
             const asciiArt = [
                 "                 /^ ^\\                ", 
@@ -895,7 +906,7 @@
 
         function onImageClick(imgSrc) {
             currentImageIndex = dynamicImages.indexOf(imgSrc);
-            console.log("Current Image Index:", currentImageIndex);
+            //console.log("Current Image Index:", currentImageIndex);
 
             if (currentImageIndex !== -1) {
                 const centeredContainer = document.querySelector('.centered-container');
@@ -1150,7 +1161,7 @@
                     for (var e = arguments, t = 0; t < arguments.length; t++)
                         if (void 0 !== e[t]) return e[t]
                 }
-                console.log("%c Hover effect by Robin Delaporte: https://github.com/robin-dela/hover-effect ", "color: #bada55; font-size: 0.8rem");
+                //console.log("%c Hover effect by Robin Delaporte: https://github.com/robin-dela/hover-effect ", "color: #bada55; font-size: 0.8rem");
                 var r = n.parent,
                     o = n.displacementImage,
                     a = n.image1,
@@ -1328,7 +1339,7 @@
 
             var newContainer = createNewHoverEffectContainer(); // Create a new container
 
-            console.log("Creating hover effect with images:", dynamicImages[currentImageIndex]); // Log the images being used
+            //console.log("Creating hover effect with images:", dynamicImages[currentImageIndex]); // Log the images being used
 
             hoverEffectInstance = new hoverEffect({
                 parent: newContainer,
