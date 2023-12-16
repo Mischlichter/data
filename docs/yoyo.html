@@ -52,7 +52,7 @@
             font-family: 'JetBrainsMono-Bold', sans-serif;
            
             background-color: black;
-            color: #7cfc05; /* Green color */
+            color: #00ffcc; /* Green color */
             margin: 0;
             padding: 0;
             overflow: auto;
@@ -265,18 +265,18 @@
         #search-bar {
             font-family: 'JetBrainsMono-Bold', sans-serif; /* Use the custom font */
             font-size: 16px; /* Adjust as needed */
-            border: 2px solid #7cfc05; /* Green border */
+            border: 2px solid #00ffcc; /* Green border */
             border-radius: 20px; /* Rounded corners */
             padding: 8px 15px; /* Adjust padding as needed */
             outline: none; /* Removes the default focus outline */
             transition: border-color 0.3s;
             background-color: black; /* Matches the body background */
-            color: #7cfc05; /* Green text color */
+            color: #00ffcc; /* Green text color */
             width: 50%; /* Adjust width as needed */
         }
 
         #search-bar::placeholder {
-            color: rgba(124, 252, 5, 0.5); /* Light green placeholder */
+            color: rgba(0, 255, 204, 0.5); /* Light green placeholder */
         }
 
         #search-bar:focus {
@@ -456,6 +456,43 @@
             font-size: 14px;
             /* Additional styling */
         }
+        
+        #loading-progress-container {
+            position: fixed; /* or absolute, depending on your layout needs */
+            top: 29px; /* Adjust to align with your search bar */
+            right: 30px; /* Distance from the right edge of the viewport */
+            width: 45px; /* Size of the circle */
+            height: 50px;
+            transition: opacity 1s ease-out; /* Add transition for opacity */
+            opacity: 1; /* Set initial opacity to 1 */
+            z-index: -1; /* Make sure this is high enough to be above other elements */
+        }
+
+        .circular-chart {
+            display: block;
+            max-width: 100%; /* Adjust if needed */
+            max-height: 100%; /* Adjust if needed */
+        }
+
+        .circle-bg {
+            fill: none;
+            stroke: #000000;
+            stroke-width: 1;
+        }
+
+        .circle {
+            fill: none;
+            stroke-width: 1.6;
+            stroke-linecap: round;
+            animation: progress 1s ease-out forwards;
+        }
+
+        @keyframes progress {
+            0% {
+                stroke-dasharray: 0 100;
+            }
+        }
+
 
 
     </style>
@@ -467,6 +504,30 @@
             <!-- Your ASCII art content goes here -->
         </div>
     </div>
+    <div id="loading-progress-container">
+        <svg viewBox="0 0 36 36" class="circular-chart">
+            <path class="circle-bg"
+                d="M18 2.0845
+                a 15.9155 15.9155 0 0 1 0 31.831
+                a 15.9155 15.9155 0 0 1 0 -31.831"
+                fill="none"
+                stroke="#eeeeee"
+                stroke-width="2.5"
+            />
+
+            <path class="circle"
+                stroke-dasharray="100, 100"
+                d="M18 2.0845
+                a 15.9155 15.9155 0 0 1 0 31.831
+                a 15.9155 15.9155 0 0 1 0 -31.831"
+                fill="none"
+                stroke="#00ffcc"
+                stroke-width="2.5"
+                id="loading-progress"
+            />
+        </svg>
+    </div>
+
 
     <div class="centered-container">
         
@@ -605,6 +666,10 @@
             textInfoVisible = !textInfoVisible; // Toggle the state
         }
     
+       
+
+       
+
 
     </script>
 
@@ -886,12 +951,38 @@
         }
 
         function updateLoadingStatus(percentage) {
-            loadingPercentage = Math.min(percentage, 100);
+            // Ensure the percentage is between 0 and 100
+            loadingPercentage = Math.min(Math.max(percentage, 0), 100);
 
-            // You can log the loading percentage if needed.
-            console.log(`Loading Percentage: ${loadingPercentage}`);
+            // Select the SVG circle path element
+            var loadingProgress = document.getElementById('loading-progress');
 
-            // You can also update the UI or perform other actions with the loadingPercentage value.
+            if (loadingProgress) {
+                // Calculate the length of the path
+                const pathLength = loadingProgress.getTotalLength();
+
+                // Calculate the stroke dash offset
+                const offset = pathLength - (pathLength * loadingPercentage / 100);
+
+                // Update the stroke-dasharray and stroke-dashoffset
+                loadingProgress.style.strokeDasharray = pathLength;
+                loadingProgress.style.strokeDashoffset = offset;
+                if (loadingPercentage >= 100) {
+                        hideLoadingProgress();
+                    }
+            }
+        }
+
+        function hideLoadingProgress() {
+            const loadingContainer = document.getElementById('loading-progress-container');
+            if (loadingContainer) {
+                loadingContainer.style.opacity = '0'; // Start fade-out
+
+                // After the transition is complete, set display to 'none'
+                setTimeout(() => {
+                    loadingContainer.style.display = 'none';
+                }, 1000); // 1000ms = 1s (same as the CSS transition duration)
+            }
         }
 
         function calculateImagesPerRow() {
