@@ -87,8 +87,16 @@ SCENE04:
 P01:
 CRAFTING
 
+
+#container01 {
+
+    font-family: 'JetBrainsMono-ExtraBold', sans-serif;
+}
+
+SCENE05:
+
 P01:
-.
+ 
 
 
 #container01 {
