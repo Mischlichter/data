@@ -93,14 +93,3 @@ CRAFTING
     font-family: 'JetBrainsMono-ExtraBold', sans-serif;
 }
 
-SCENE06:
-
-P01:
-GALLERY
-
-
-#container01 {
-
-    font-family: 'JetBrainsMono-ExtraBold', sans-serif;
-}
-
