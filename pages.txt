@@ -87,6 +87,9 @@ SCENE04:
 P01:
 CRAFTING
 
+P01:
+.
+
 
 #container01 {
 
