@@ -29,12 +29,12 @@ But, wait! Before unveiling our masterpiece, we let a gang of beta testers take 
 
 
 #container01 {
-
+	z-index: 2;
     font-family: 'JetBrainsMono-ExtraBold', sans-serif;
 }
 
 #container02 {
-
+	z-index: 2;
     font-family: 'JetBrainsMono-ExtraBold', sans-serif;
     text-transform: none;
 }
