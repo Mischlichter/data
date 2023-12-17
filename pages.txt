@@ -95,12 +95,12 @@ CRAFTING
 
 SCENE05:
 
-P01:
+P01: GALLERY
  
 
 
 #container01 {
-
+	display: none;
     font-family: 'JetBrainsMono-ExtraBold', sans-serif;
 }
 
