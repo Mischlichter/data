@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/Mischlichter/data/main/gallerycom/65411740980.jpg">
+    <title>HOGE AI</title>
+    <style>
+        @font-face {
+            font-family: 'JetBrainsMono-Regular';
+            src: url('fonts/JetBrainsMono-Regular.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-Regular.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 400; /* Regular font weight */
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-Bold';
+            src: url('fonts/JetBrainsMono-Bold.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-Bold.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 700; /* Bold font weight */
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-BoldItalic';
+            src: url('fonts/JetBrainsMono-BoldItalic.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-BoldItalic.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 700; /* Bold font weight */
+            font-style: italic;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-ExtraBold';
+            src: url('fonts/JetBrainsMono-ExtraBold.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-ExtraBold.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 800; /* Extra-bold font weight */
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-ExtraBoldItalic';
+            src: url('fonts/JetBrainsMono-ExtraBoldItalic.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-ExtraBoldItalic.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 800; /* Extra-bold font weight */
+            font-style: italic;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-ExtraLight';
+            src: url('fonts/JetBrainsMono-ExtraLight.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-ExtraLight.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 200; /* Extra-light font weight */
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-ExtraLightItalic';
+            src: url('fonts/JetBrainsMono-ExtraLightItalic.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-ExtraLightItalic.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 200; /* Extra-light font weight */
+            font-style: italic;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-Italic';
+            src: url('fonts/JetBrainsMono-Italic.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-Italic.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 400; /* Regular font weight */
+            font-style: italic;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-Light';
+            src: url('fonts/JetBrainsMono-Light.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-Light.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 300; /* Light font weight */
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-LightItalic';
+            src: url('fonts/JetBrainsMono-LightItalic.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-LightItalic.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 300; /* Light font weight */
+            font-style: italic;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-Medium';
+            src: url('fonts/JetBrainsMono-Medium.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-Medium.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 500; /* Medium font weight */
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-MediumItalic';
+            src: url('fonts/JetBrainsMono-MediumItalic.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-MediumItalic.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 500; /* Medium font weight */
+            font-style: italic;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-SemiBold';
+            src: url('fonts/JetBrainsMono-SemiBold.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-SemiBold.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 600; /* Semi-bold font weight */
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-SemiBoldItalic';
+            src: url('fonts/JetBrainsMono-SemiBoldItalic.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-SemiBoldItalic.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 600; /* Semi-bold font weight */
+            font-style: italic;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-Thin';
+            src: url('fonts/JetBrainsMono-Thin.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-Thin.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 100; /* Thin font weight */
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-ThinItalic';
+            src: url('fonts/JetBrainsMono-ThinItalic.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-ThinItalic.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 100; /* Thin font weight */
+            font-style: italic;
+        }
+
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-family: 'JetBrainsMono-Regular', sans-serif;
+            background-color: black;
+            color: #00ffcc;
+            margin: 0;
+            padding: 0;
+            transition: color 0.3s ease;
+        }
+
+
+        html {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        html, body {
+            background-color: black;
+            color: #00ffcc; /* Green color */
+            height: 100%;
+            margin: 0;
+            padding: 0;
+           /* Add this property to disable horizontal scrolling */
+
+        }
+
+        #iframeContainer {
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            position: relative;
+
+            
+        }
+        #mouseOverlay {
+            pointer-events: auto;
+            z-index: 1;
+
+        }
+
+        #iframeContainer iframe {
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index:1;
+        }
+
+     
+        /* Wrapper for image containers */
+        .image-container-wrapper {
+            display: flex;
+            justify-content: center; /* Horizontally center the children */
+            flex-wrap: wrap; /* Allow the containers to wrap as necessary */
+            margin: auto; /* Center the wrapper itself */
+            max-width: 50%; /* Set maximum width */
+        }
+        /* Individual image containers */
+        .flex-icontainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+            /* Additional responsive scaling can be added here */
+            z-index: 2;
+            overflow-x: hidden; /* Disable horizontal scrolling */
+        }
+        .flex-container {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 20px auto; /* Center horizontally */
+            
+            border: none;
+            box-sizing: border-box;
+            font-family: 'JetBrainsMono-Bold', sans-serif;
+            text-transform: uppercase;
+            width: 50%;
+            z-index: 2;
+            
+        }
+        .flex-container span {
+            white-space: nowrap;
+            display: inline-block;
+            margin: 0 5px 5px 0;
+        }
+        #mainpage .dynamic-text { 
+            opacity: 0;
+
+        }
+        
+        #bodygallery .dynamic-text {
+            z-index: 2;
+        }
+            
+    
+
+
+        .menu-bar {
+            display: flex;
+            justify-content: space-evenly; /* Evenly spaces the menu items */
+            align-items: center;
+            background-color: #333333; /* 20% grey color */
+            position: fixed; /* Fixed to the top */
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px 30px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000; /* Ensures it stays on top of other content */
+        }
+        
+        .menu-container {
+            margin: 0; /* Adjust as needed */
+            /* Additional styles for your menu items */
+        }
+        .menu-container {
+            margin: 0; /* Adjust as needed */
+            cursor: default; /* Or 'pointer' if you want a hand cursor */
+        }
+        
+        @media screen and (max-width: 768px) {
+            .menu-bar {
+                display: flex; /* Enable flexbox */
+                flex-wrap: wrap; /* Allow wrapping into new lines */
+                padding: 5px; /* Adjust padding for mobile */
+                justify-content: space-evenly; /* Space items evenly */
+            }
+
+            .menu-container {
+                flex: 1 1 30%; /* Each item takes up to 50% of the width */
+                box-sizing: border-box; /* Include padding and border in the width */
+                text-align: center; /* Center text in each container */
+                padding: 5px; /* Adjust padding for items */
+            }
+        }
+        .active-menu-item {
+            font-family: 'JetBrainsMono-Bold'; /* Bold font */
+            color: #fff; /* Change color if needed */
+            /* Other styles to highlight the active item */
+        }
+        .menu-container {
+            transition: transform 0.3s ease;
+        }
+        .menu-container:hover {
+            transform: scale(1.1); /* Slightly enlarges the hovered item */
+        }
+        .content-above-iframe {
+            padding: 20px;
+        }
+        .content-below-iframe {
+            padding: 20px;
+        }
+
+
+
+
+    </style>
+</head>
+<body>
+
+    <div class="mainpage">
+        <!-- Your dynamic text content will go here -->
+        </div>
+        <div id="iframeContainer" style="position: relative; width: 100%; height: 100%;">
+        <div id="mouseOverlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;z-index: 1;"></div>
+        <!-- The iframe will be added dynamically -->        
+    </div>
+
+    <div id="bodyGalleryContainer">
+    <!-- Gallery content will be inserted here dynamically -->
+    </div>
+    
+
+
+    <div class="below-main"></div>
+    <link rel="stylesheet" type="text/css" href="css/bodygallery.css">
+    
+    <script src="scripts/lenis.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
+
+
+    <script src="bodygallery.js"></script>
+    
+    <script>
+        
+//////// MOUSE SMOOTHING ////////
+
+        const lenis = new Lenis()
+
+        lenis.on('scroll', (e) => {
+          //console.log(e)
+        })
+
+        function raf(time) {
+          lenis.raf(time)
+          requestAnimationFrame(raf)
+        }
+
+        requestAnimationFrame(raf)
+
+
+//////// IFRAME LOADING ////////
+
+
+        function updateIframe(sceneKey) {
+            const iframeContainer = document.getElementById('iframeContainer');
+            const mouseOverlay = document.getElementById('mouseOverlay');
+            const bodyGalleryContainer = document.getElementById('bodyGalleryContainer'); // Reference to the gallery container
+            let iframe = document.getElementById('sceneIframe');
+
+            if (sceneKey === 'scene05') {
+                // Hide the iframe container, mouse overlay, and other scenes' containers
+                iframeContainer.style.display = 'none';
+                if (mouseOverlay) {
+                    mouseOverlay.style.display = 'none';
+                }
+
+                // Ensure the gallery container is displayed
+                if (bodyGalleryContainer) {
+                    bodyGalleryContainer.style.display = 'block'; // Show the gallery
+                }
+
+                // Load the gallery for scene 05
+                loadGallery(); // Assumes loadGallery is accessible globally
+            } else {
+                // Display iframe container and show mouse overlay
+                iframeContainer.style.display = 'block';
+                if (mouseOverlay) {
+                    mouseOverlay.style.display = 'block';
+                    mouseOverlay.style.zIndex = '1';
+                }
+
+                // Hide the gallery container when other scenes are loaded
+                if (bodyGalleryContainer) {
+                    bodyGalleryContainer.style.display = 'none'; // Hide the gallery
+                }
+
+                // For other scenes, use the iframe
+                if (!iframe) {
+                    iframe = document.createElement('iframe');
+                    iframe.id = 'sceneIframe';
+                    iframe.style.width = '100%';
+                    iframe.style.height = '100%';
+                    iframe.style.border = 'none';
+                    iframe.style.zIndex = '1';
+                    iframeContainer.appendChild(iframe);
+                }
+
+                iframe.src = `depthyxx12.html?scene=${sceneKey}`;
+            }
+        }
+
+
+
+
+
+
+
+
+        
+
+
+//////// MOUSE HANDLING ///////////        
+
+        // Initialize Variables
+        var mouseX = 0, mouseY = 0;
+        var targetMouseX = window.innerWidth / 2, targetMouseY = window.innerHeight / 2;
+        var maxSmoothingFactor = 0.111; // Maximum smoothing factor
+        var isMouseInArea = false;
+        var applySmoothing = false;
+
+        var mouseOverlay = document.getElementById('mouseOverlay');
+
+        // Event Handlers
+        function handleMouseEnter(e) {
+            isMouseInArea = true;
+            applySmoothing = true; // Enable smoothing on entering
+            targetMouseX = e.clientX - mouseOverlay.offsetLeft - mouseOverlay.offsetWidth / 2;
+            targetMouseY = e.clientY - mouseOverlay.offsetTop - mouseOverlay.offsetHeight / 2;
+            
+        }
+
+        function handleMouseLeave(e) {
+            isMouseInArea = false;
+        }
+
+        function handleMouseMove(e) {
+            targetMouseX = e.clientX - mouseOverlay.offsetLeft - mouseOverlay.offsetWidth / 2;
+            targetMouseY = e.clientY - mouseOverlay.offsetTop - mouseOverlay.offsetHeight / 2;
+        }
+
+        // Attach Event Listeners
+        mouseOverlay.addEventListener('mouseenter', handleMouseEnter);
+        mouseOverlay.addEventListener('mouseleave', handleMouseLeave);
+        mouseOverlay.addEventListener('mousemove', handleMouseMove);
+
+        // Animation Frame Function
+        function animate() {
+            if (applySmoothing) {
+                var dx = targetMouseX - mouseX;
+                var dy = targetMouseY - mouseY;
+                var distance = Math.sqrt(dx * dx + dy * dy);
+                var smoothingFactor = Math.min(distance / 100, maxSmoothingFactor); // Dynamic smoothing factor
+
+                mouseX += dx * smoothingFactor;
+                mouseY += dy * smoothingFactor;
+
+                // Disable smoothing when close enough
+                if (distance < 1) {
+                    applySmoothing = false;
+                    mouseX = targetMouseX;
+                    mouseY = targetMouseY;
+                }
+            } else {
+                mouseX = targetMouseX;
+                mouseY = targetMouseY;
+            }
+
+            sendMouseEventToIframe('mousemove', { clientX: mouseX, clientY: mouseY });
+            requestAnimationFrame(animate);
+        }
+
+        requestAnimationFrame(animate);
+
+        // Update sendMouseEventToIframe to use coordinates
+        function sendMouseEventToIframe(eventType, event) {
+            const iframe = document.getElementById('sceneIframe');
+            if (iframe && iframe.contentWindow) {
+                //console.log('Sending event to iframe:', eventType, mouseX, mouseY);
+                iframe.contentWindow.postMessage({
+                    type: eventType,
+                    mouseX: mouseX,
+                    mouseY: mouseY
+                }, '*');
+            }
+        }
+        
+
+
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const background = document.createElement('div');
+            background.style.position = 'absolute';
+            background.style.top = '0';
+            background.style.left = '0';
+            background.style.width = '100%';
+            background.style.height = '500vh';
+            background.style.zIndex = '-1';
+            background.style.backgroundColor = 'rgba(0, 0, 0, 0)'; // 10% grey
+            // Add more styles or content to the background as needed
+
+            document.body.insertBefore(background, document.body.firstChild);
+        });
+
+
+//////// IMAGE LOADING ////////////////////
+
+        let currentSceneData = null;
+
+        async function fetchAndParseData() {
+            try {
+                const response = await fetch('https://raw.githubusercontent.com/Mischlichter/data/main/pages.txt');
+                const text = await response.text();
+                return parseText(text);
+            } catch (error) {
+                return null;
+            }
+        }
+
+        
+
+
+        function parseText(text) {
+
+            // Split the text into scenes
+            let scenes = text.split(/SCENE\d+:/);
+
+            // Remove the first empty element if it exists
+            if (scenes[0].trim() === '') {
+                scenes.shift();
+            }
+
+            let parsedData = [];
+
+            scenes.forEach((scene, index) => {
+
+                let sceneData = {
+                    sceneKey: `scene${index + 1}`,
+                    containers: {},
+                    numberOfContainers: 0
+                };
+
+                // Split the scene into paragraphs and CSS
+                let parts = scene.split(/#container\d+ \{/);
+                
+                // First part is always paragraphs. Exclude the paragraph numbers.
+                let paragraphs = parts[0].trim().split(/\n\nP\d+:\n/).filter(p => p).map(paragraph => paragraph.replace(/P\d+:\n/, '').trim());
+
+                // Calculate the number of containers
+                sceneData.numberOfContainers = paragraphs.length;
+
+                // Process CSS and associate with paragraphs
+                for (let i = 1; i <= sceneData.numberOfContainers; i++) {
+                    let css = parts[i] ? `#container${i.toString().padStart(2, '0')} {` + parts[i].split('}')[0].trim() + '}' : '';
+                    let containerKey = `container${i.toString().padStart(2, '0')}`;
+                    sceneData.containers[containerKey] = {
+                        text: paragraphs[i - 1],
+                        style: css
+                    };
+                }
+
+                parsedData.push(sceneData);
+            });
+
+            return parsedData;
+        }
+
+
+        async function fetchImage() {
+            try {
+                const response = await fetch('https://raw.githubusercontent.com/Mischlichter/data/main/pagesi.txt');
+                const text = await response.text();
+                return parseImage(text);
+            } catch (error) {
+                return null;
+            }
+        }
+
+        
+        function parseImage(text) {
+            console.log("Starting image parsing...");
+
+            // Split the text into scenes
+            let scenes = text.split(/SCENE\d+:/);
+            console.log("Scenes identified:", scenes.length);
+
+            // Remove the first empty element if it exists
+            if (scenes[0].trim() === '') {
+                scenes.shift();
+                console.log("Removed empty first element.");
+            }
+
+            let parsedImageData = [];
+
+            scenes.forEach((scene, index) => {
+                console.log(`Processing scene ${index + 1}`);
+
+                let sceneImageData = {
+                    sceneKey: `scene${index + 1}`,
+                    images: {}
+                };
+
+                // Extract image URLs and their CSS
+                let imageMatches = scene.matchAll(/\n\nI\d+:\n(https?:\/\/\S+)/g);
+                let cssMatches = scene.matchAll(/#i-container\d+ \{([\s\S]*?)\}/g);
+
+                let cssStyles = {};
+                for (const cssMatch of cssMatches) {
+                    let cssKey = cssMatch[0].match(/#i-container(\d+)/)[1];
+                    cssStyles[`i-container${cssKey.padStart(2, '0')}`] = cssMatch[1].trim();
+                }
+
+                for (const imageMatch of imageMatches) {
+                    let imageNumber = imageMatch[0].match(/I(\d+)/)[1];
+                    let imageKey = `i-container${imageNumber.padStart(2, '0')}`;
+                    let imageCSS = cssStyles[imageKey] || '';
+
+                    sceneImageData.images[imageKey] = {
+                        src: imageMatch[1].trim(),
+                        style: imageCSS
+                    };
+                    console.log(`Found image: ${imageKey} -> ${imageMatch[1].trim()}, CSS: ${imageCSS}`);
+                }
+
+                parsedImageData.push(sceneImageData);
+            });
+
+            console.log("Image parsing complete:", parsedImageData);
+            return parsedImageData;
+        }
+
+
+
+
+
+//////// MENU LOADING //////////
+
+
+        let isAnimating = false;
+
+        function initializeMenu() {
+            fetchAndParseMenuData().then(menuData => {
+                if (menuData && menuData.length > 0) {
+                    loadMenu(menuData);
+                }
+            });
+        }
+        // Call this function when the page loads
+        window.addEventListener('DOMContentLoaded', (event) => {
+            initializeMenu();
+        });
+
+
+        async function fetchAndParseMenuData() {
+            try {
+                //console.log("Fetching menu data...");
+                const response = await fetch('https://raw.githubusercontent.com/Mischlichter/data/main/menu.txt');
+                const text = await response.text();
+                return parseMenuText(text);
+            } catch (error) {
+                console.error("Error fetching menu data:", error);
+                return [];
+            }
+        }
+
+        function parseMenuText(text) {
+            //console.log("Parsing menu text...");
+            let menuItems = text.split('\n').filter(line => line.trim() !== '');
+            return menuItems.map(item => {
+                let [label, scene] = item.split(':');
+                return { label, scene };
+            });
+        }
+
+        let menuContainerIds = []; // Global or accessible scope
+        
+
+        function loadMenu(menuData) {
+       
+            isAnimating = true;
+            
+            setTimeout(() => {
+                isAnimating = false;
+                
+            }, 3000); // 3000 milliseconds = 3 seconds
+            
+            
+            // Create or clear the menu bar
+            let menuBar = document.querySelector('.menu-bar');
+            if (!menuBar) {
+                menuBar = document.createElement('div');
+                menuBar.className = 'menu-bar';
+                document.body.appendChild(menuBar);
+            } else {
+                menuBar.innerHTML = ''; // Clear existing content
+            }
+
+            // Clear existing menu container IDs
+            menuContainerIds = [];
+
+            // Create new containers for each menu item
+            menuData.forEach((menuItem, index) => {
+                //console.log("Creating container for:", menuItem.label);
+                const menuContainer = document.createElement('div');
+                menuContainer.id = `menuContainer${index}`;
+                menuContainer.className = 'menu-container';
+                menuContainer.innerText = menuItem.label; // Display the label
+                menuBar.appendChild(menuContainer); // Append to the menu bar
+
+                // Add click event listener to load the corresponding scene
+                menuContainer.addEventListener('click', () => {
+                    currentSceneIndex = index; // Update the current scene index
+                    loadScene(currentSceneIndex); // Load the selected scene
+                    highlightActiveMenuItem(`menuContainer${index}`);
+                });
+                // Add hover event listener
+                document.querySelectorAll('.menu-container').forEach(item => {
+                    item.addEventListener('mouseover', () => animateTextDuringHover(item));
+                });
+                // To trigger the hover effect on the first menu container after 3 seconds
+                setTimeout(() => {
+                    let firstMenuItem = document.getElementById('menuContainer0');
+                    if (firstMenuItem) {
+                        animateTextDuringHover(firstMenuItem);
+                    }
+                }, 3000); // 3000 milliseconds = 3 seconds
+                // Add the new container ID to the array
+                menuContainerIds.push(menuContainer.id);
+            });
+
+            // Call updateMenu at the end
+            updateMenu(menuData);
+        }
+
+
+
+//////// ANIMATION MENU ///////
+
+        function updateMenu(menuData) {
+            //console.log("Updating menu...");
+            preparedMenuItems = {}; // Resetting for the new menu
+
+            
+            menuData.forEach((menuItem, index) => {
+                let containerId = `menuContainer${index}`;
+                let textLines = menuItem.label.split('\n'); // Changed from menuItem.title to menuItem.label
+                //console.log("Preparing menu item:", menuItem.label);
+                let lineSpans = createSpansForMenu(containerId, textLines.join(' '));
+                preparedMenuItems[containerId] = lineSpans;
+            });
+
+            // Resetting the current animation index for menu
+            currentContainerIndex = 0;
+            containerIds = Object.keys(preparedMenuItems);
+
+
+
+            startAllMenuAnimations();
+
+
+        }
+
+
+        function createSpansForMenu(containerId, text) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+
+            //console.log("Creating spans for menu:", containerId);
+
+            let tempSpan = document.createElement('span');
+            tempSpan.style.display = 'inline-block';
+            tempSpan.style.visibility = 'hidden';
+            document.body.appendChild(tempSpan);
+
+            let style = window.getComputedStyle(container);
+            let paddingAndBorder = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight) +
+                                   parseFloat(style.borderLeftWidth) + parseFloat(style.borderRightWidth);
+            let availableWidth = container.clientWidth - paddingAndBorder - 5;
+
+            let lines = [];
+            let currentLine = '';
+            text.split(' ').forEach(word => {
+                let testLine = currentLine + word + ' ';
+                tempSpan.innerText = testLine;
+
+                if (tempSpan.offsetWidth > availableWidth && currentLine !== '') {
+                    let lineContainer = createLineContainerForMenu(container, currentLine.trim());
+                    lines.push(lineContainer);
+                    currentLine = word + ' ';
+                } else {
+                    currentLine = testLine;
+                }
+            });
+
+            if (currentLine.trim() !== '') {
+                let lineContainer = createLineContainerForMenu(container, currentLine.trim());
+                lines.push(lineContainer);
+            }
+
+            document.body.removeChild(tempSpan);
+            return lines;
+        }
+
+        function createLineContainerForMenu(container, lineText) {
+            let lineContainer = document.createElement('div');
+            lineContainer.style.display = 'inline-block';
+            lineContainer.style.width = '100%';
+            container.appendChild(lineContainer);
+
+            //console.log("Creating line container for:", lineText);
+
+            lineText.split(' ').forEach(word => {
+                if (word.trim() !== '') {
+                    var wordSpan = document.createElement('span');
+                    wordSpan.className = 'dynamic-text';
+                    wordSpan.setAttribute('data-final-text', word);
+                    wordSpan.style.opacity = '0';
+                    lineContainer.appendChild(wordSpan);
+                }
+            });
+
+            return lineContainer;
+
+        }
+
+        function startAnimationForMenuContainer(containerId) {
+            ///console.log("Starting animation for container:", containerId);
+            if (preparedMenuItems[containerId]) {
+                startLineAnimation(preparedMenuItems[containerId]);
+            } else {
+                console.log("No prepared data for container:", containerId);
+            }
+        }
+
+
+        function startAllMenuAnimations() {
+            menuContainerIds.forEach(containerId => {
+                startAnimationForMenuContainer(containerId);
+
+            if (containerId === 'menuContainer0') {
+                initializeFirstScene();
+            }
+            });
+        }
+
+        function initializeFirstScene() {
+            currentSceneIndex = 0; // Set to the first scene
+            loadScene(currentSceneIndex); // Load the first scene
+        }
+
+
+        function shuffleMenu() {
+            let menuItems = document.querySelectorAll('.menu-container');
+            
+            menuItems.forEach(menuItem => {
+                if (!menuItem.dataset.originalText) {
+                    menuItem.dataset.originalText = menuItem.textContent;
+                }
+                //console.log("Original text:", menuItem.dataset.originalText); // Log original text
+                animateMenuDuringScaling(menuItem, menuItem.dataset.originalText);
+            });
+        }
+
+
+        function animateMenuDuringScaling(element, finalText) {
+            var totalDuration = 300; // Total duration of the scrambling
+            var randomStartDelay = Math.random() * 200; // Start scrambling with random delay
+            var stopScramblingDelay = totalDuration - 200 + Math.random() * 400; // When to stop scrambling
+            var startTime = null;
+
+            function step(timestamp) {
+                if (!startTime) startTime = timestamp;
+                var progress = timestamp - startTime;
+
+                if (progress < stopScramblingDelay) {
+                    var scrambledText = generateRandomString(finalText.length);
+                    element.textContent = scrambledText;
+                    //console.log("Scrambled text:", scrambledText); // Log scrambled text
+                    requestAnimationFrame(step);
+                } else {
+                    element.textContent = finalText;
+                    element.style.opacity = '1';
+                    //console.log("Final text set to:", element.textContent); // Log final text
+                    if (progress >= totalDuration) {
+                        element.removeAttribute('data-originalText'); // Clean up
+                    }
+                }
+            }
+
+            setTimeout(function() {
+                requestAnimationFrame(step);
+            }, randomStartDelay);
+        }
+
+        function animateTextDuringHover(element, finalDuration = 150) {
+            // Check if an animation is in progress
+            if (isAnimating) {
+                ///console.log("Animation already in progress. Hover animation blocked.");
+                return; // Exit the function if an animation is already happening
+            }
+
+            // Capture the original text only if it has not been stored yet
+            if (!element.dataset.originalText) {
+                element.dataset.originalText = element.textContent;
+            }
+
+            var originalText = element.dataset.originalText; // Use the stored original text
+
+            var startTime = null;
+
+            function step(timestamp) {
+                if (!startTime) startTime = timestamp;
+                var progress = timestamp - startTime;
+
+                if (progress < finalDuration) {
+                    // Scramble text
+                    var scrambledText = generateRandomString(originalText.length);
+                    element.textContent = scrambledText;
+                    requestAnimationFrame(step);
+                } else {
+                    // Revert back to the original text
+                    element.textContent = originalText;
+                }
+            }
+
+            requestAnimationFrame(step);
+        }
+
+        // Attach the event listener to each menu item for hover animation
+        document.querySelectorAll('.menu-container').forEach(item => {
+            item.addEventListener('mouseover', () => animateTextDuringHover(item));
+        });
+
+
+
+
+        function highlightActiveMenuItem(activeMenuItemId) {
+            // Remove active class from all menu items
+            document.querySelectorAll('.menu-container').forEach(item => {
+                item.classList.remove('active-menu-item');
+            });
+
+            // Add active class to the current menu item
+            const activeItem = document.getElementById(activeMenuItemId);
+            if (activeItem) {
+                activeItem.classList.add('active-menu-item');
+            }
+        }
+
+//////// SZENE LOADER /////////////////////////////////////////////////////////////////////////
+
+
+        let currentSceneIndex = 0;
+        let scenesData = [];
+        let scenesiData = [];
+
+        async function initialize() {
+            scenesData = await fetchAndParseData();
+            if (scenesData && scenesData.length > 0) {
+                loadScene(currentSceneIndex);
+            
+            }
+            scenesiData = await fetchImage();
+            if (scenesiData && scenesiData.length > 0) {
+                loadScene(currentSceneIndex);
+            
+            }
+
+        }
+
+
+
+
+        // Keep track of dynamically added style elements
+        const dynamicStyles = [];
+
+        function clearDynamicStyles() {
+          dynamicStyles.forEach(style => style.remove());
+          dynamicStyles.length = 0; // Clear the array
+        }
+
+        function loadScene(index) {
+            const scene = scenesData[index];
+            const sceneImages = scenesiData[index]; // Assuming scenesiData is structured similarly
+
+            if (!scene) return;
+
+
+            // Remove all existing containers and dynamic styles
+            const existingContainers = document.querySelectorAll('.flex-container, .flex-icontainer');
+            existingContainers.forEach(container => container.remove());
+
+            // Clear dynamic styles
+            clearDynamicStyles();
+
+            let formattedSceneKey = scene.sceneKey.length === 6 ? `scene0${scene.sceneKey.charAt(5)}` : scene.sceneKey;
+
+            // Update the iframe with the new scene
+            updateIframe(formattedSceneKey);
+            console.log('Formatted Scene Key:', formattedSceneKey);
+            // Merge and sort text and image containers
+            let combinedData = [];
+            Object.keys(scene.containers).forEach(key => {
+                combinedData.push({ type: 'text', key: key, content: scene.containers[key] });
+            });
+
+            if (sceneImages && sceneImages.images) {
+                Object.keys(sceneImages.images).forEach(key => {
+                    combinedData.push({ type: 'image', key: key, content: sceneImages.images[key] });
+                });
+            }
+
+            combinedData.sort((a, b) => {
+                let numA = parseInt(a.key.match(/\d+/)[0], 10);
+                let numB = parseInt(b.key.match(/\d+/)[0], 10);
+                return numA - numB || (a.type === 'text' ? -1 : 1);
+            });
+
+            // Create containers in sorted order
+            combinedData.forEach(item => {
+                if (item.type === 'text') {
+                    const container = document.createElement('div');
+                    container.id = item.key;
+                    container.className = 'flex-container';
+                    document.body.appendChild(container);
+
+                    const style = document.createElement('style');
+                    style.innerHTML = item.content.style;
+                    document.head.appendChild(style);
+                    dynamicStyles.push(style);
+                } else {
+                    const imageContainer = document.createElement('div');
+                    imageContainer.id = item.key;
+                    imageContainer.className = 'flex-icontainer';
+                    document.body.appendChild(imageContainer);
+
+                    if (item.content.style) {
+                        const style = document.createElement('style');
+                        style.innerHTML = item.content.style;
+                        document.head.appendChild(style);
+                        dynamicStyles.push(style);
+                    }
+
+                    const image = document.createElement('img');
+                    image.src = item.content.src;
+                    imageContainer.appendChild(image);
+                }
+            });
+
+            currentSceneData = scene;
+
+            // Update containers when loading a new scene
+            updateAllContainers(scene);
+            highlightActiveMenuItem(`menuContainer${index}`);
+            window.scrollTo(0, 0);
+        }
+
+
+/////////// ANIMATION TEXT /////
+
+        function generateRandomString(length) {
+            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()[]{}|';
+            var randomString = '';
+            for (var i = 0; i < length; i++) {
+                randomString += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            return randomString;
+        }
+
+        function animateText(element, finalText, duration, delay) {
+            setTimeout(function() {
+                var currentText = generateRandomString(finalText.length);
+                element.textContent = currentText;
+                element.style.opacity = '0';
+
+                var shuffleFrequency = 20;
+                var intervalTime = duration / (finalText.length * shuffleFrequency);
+                var index = 0;
+                var shuffleCount = 0;
+                var startTime = null;
+
+                function step(timestamp) {
+                    if (!startTime) startTime = timestamp;
+                    var progress = timestamp - startTime;
+
+                    if (progress > intervalTime) {
+                        if (shuffleCount % shuffleFrequency === 0 && index < finalText.length) {
+                            currentText = currentText.substring(0, index) + finalText.charAt(index) + generateRandomString(finalText.length - index - 1);
+                            index++;
+                        } else {
+                            currentText = currentText.substring(0, index) + generateRandomString(finalText.length - index);
+                        }
+                        element.textContent = currentText;
+                        shuffleCount++;
+                        element.style.opacity = Math.min(1, parseFloat(element.style.opacity) + 0.05);
+
+                        let colorTransitionFactor = index / finalText.length;
+                        let startColor = { r: 7, g: 247, b: 139 }; // #07f78b
+                        let endColor = { r: 0, g: 255, b: 204 };   // #7cfc05
+                        let r = Math.floor(startColor.r + (endColor.r - startColor.r) * colorTransitionFactor);
+                        let g = Math.floor(startColor.g + (endColor.g - startColor.g) * colorTransitionFactor);
+                        let b = Math.floor(startColor.b + (endColor.b - startColor.b) * colorTransitionFactor);
+                        element.style.color = `rgb(${r}, ${g}, ${b})`;
+
+                        if (index === finalText.length && shuffleCount % shuffleFrequency === 0) {
+                            element.textContent = finalText;
+                            element.style.opacity = '1';
+                            element.style.color = `rgb(${endColor.r}, ${endColor.g}, ${endColor.b})`; // Final color
+                            return; // Stop the animation
+                        }
+                        startTime = timestamp;
+                    }
+                    requestAnimationFrame(step);
+                }
+
+                requestAnimationFrame(step);
+            }, delay);
+        }
+
+        function createSpansForContainer(containerId, text) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+
+            let tempSpan = document.createElement('span');
+            tempSpan.style.display = 'inline-block';
+            tempSpan.style.visibility = 'hidden';
+            document.body.appendChild(tempSpan);
+
+            let style = window.getComputedStyle(container);
+            let paddingAndBorder = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight) +
+                                   parseFloat(style.borderLeftWidth) + parseFloat(style.borderRightWidth);
+            let availableWidth = container.clientWidth - paddingAndBorder - 5;
+
+            // Calculate 10% additional width
+            let additionalWidth = availableWidth * 0.095;
+            let extendedWidth = availableWidth + additionalWidth;
+
+            let lines = [];
+            let currentLine = '';
+            text.split(' ').forEach(word => {
+                let testLine = currentLine + word + ' ';
+                tempSpan.innerText = testLine;
+
+                // Use extendedWidth for the condition
+                if (tempSpan.offsetWidth > extendedWidth && currentLine !== '') {
+                    let lineContainer = createLineContainer(container, currentLine.trim());
+                    lines.push(lineContainer);
+                    currentLine = word + ' ';
+                } else {
+                    currentLine = testLine;
+                }
+            });
+
+            if (currentLine.trim() !== '') {
+                let lineContainer = createLineContainer(container, currentLine.trim());
+                lines.push(lineContainer);
+            }
+
+            document.body.removeChild(tempSpan);
+            return lines;
+        }
+
+        function createLineContainer(container, lineText) {
+            let lineContainer = document.createElement('div');
+            lineContainer.style.display = 'inline-block';
+            lineContainer.style.width = '1000%';
+            container.appendChild(lineContainer);
+            lineContainer.style.whiteSpace = 'nowrap';
+            lineText.split(' ').forEach(word => {
+                if (word.trim() !== '') {
+                    var wordSpan = document.createElement('span');
+                    wordSpan.className = 'dynamic-text';
+                    wordSpan.setAttribute('data-final-text', word);
+                    wordSpan.style.opacity = '0';
+                    lineContainer.appendChild(wordSpan);
+                }
+            });
+
+            return lineContainer;
+        }
+
+        function startLineAnimation(lineContainers) {
+            let wordDelayIncrement = 200;
+            let lineStartDelay = 300;
+
+            // Pre-populate line containers with blank spaces or invisible characters
+            lineContainers.forEach(lineContainer => {
+                Array.from(lineContainer.children).forEach(wordSpan => {
+                    wordSpan.textContent = '\u00A0'; // Non-breaking space
+                });
+            });
+
+            // Start the animation by replacing the placeholders with actual text
+            lineContainers.forEach((lineContainer, lineIndex) => {
+                Array.from(lineContainer.children).forEach((wordSpan, wordIndex) => {
+                    let totalDelay = (lineIndex * lineStartDelay) + (wordIndex * wordDelayIncrement);
+                    setTimeout(() => {
+                        animateText(wordSpan, wordSpan.getAttribute('data-final-text'), 1000);
+                    }, totalDelay);
+                });
+            });
+        }
+
+
+////////ANIMATION SCALING
+
+        let preparedContainers = {};
+
+        function updateAllContainers(Scene) {
+
+            preparedContainers = {}; // Resetting for the new Scene
+            Object.keys(Scene.containers).forEach(containerId => {
+
+                let containerData = Scene.containers[containerId];
+                let textLines = containerData.text.split('\n');
+                let lineSpans = createSpansForContainer(containerId, textLines.join(' '));
+                preparedContainers[containerId] = lineSpans;
+            });
+
+            // Resetting the current animation index
+            currentContainerIndex = 0;
+            containerIds = Object.keys(Scene.containers);
+
+        }
+
+        function startAnimationForContainer(containerId) {
+            //console.log("Starting animation for container:", containerId);
+            if (preparedContainers[containerId]) {
+                startLineAnimation(preparedContainers[containerId]);
+            } else {
+                console.log("No prepared data for container:", containerId);
+            }
+        }
+      
+        function checkAndInitialize() {
+            const container01 = document.getElementById('container01');
+            if (container01.clientWidth > 0) {
+                updateAllContainers();
+            } else {
+                setTimeout(checkAndInitialize, 50);
+            }
+        }
+
+        function animateTextDuringScaling(element, finalText) {
+            var currentText = generateRandomString(finalText.length);
+            element.textContent = currentText;
+            element.style.opacity = '1';
+
+            var totalDuration = 300;  // Total duration of the scrambling
+            var randomStartDelay = Math.random() * 200;  // Start scrambling with random delay
+            var stopScramblingDelay = totalDuration - 200 + Math.random() * 400;  // Stop scrambling with random delay
+            var startTime = null;
+
+            function step(timestamp) {
+                if (!startTime) startTime = timestamp;
+                var progress = timestamp - startTime;
+
+                if (progress < stopScramblingDelay) {
+                    currentText = generateRandomString(finalText.length);
+                    element.textContent = currentText;
+                    requestAnimationFrame(step);
+                } else {
+                    element.textContent = finalText;
+                }
+            }
+
+            setTimeout(function() {
+                requestAnimationFrame(step);
+            }, randomStartDelay);
+        }
+
+        function startScalingAnimation(lineContainers) {
+            lineContainers.forEach(lineContainer => {
+                Array.from(lineContainer.children).forEach(wordSpan => {
+                    animateTextDuringScaling(wordSpan, wordSpan.getAttribute('data-final-text'));
+                });
+            });
+        }
+ 
+        function updateAllContainersDuringScaling() {
+            if (!currentSceneData) {
+                return; // Exit if not set
+            }
+            const savedScrollPosition = window.scrollY;
+            // Use currentSceneData for scaling animation
+            Object.keys(currentSceneData.containers).forEach(containerId => {
+                let containerData = currentSceneData.containers[containerId];
+                let textLines = containerData.text.split('\n');
+                let lineSpans = createSpansForContainer(containerId, textLines.join(' '));
+                startScalingAnimation(lineSpans);
+            });
+            window.scrollTo(0, savedScrollPosition);
+        }
+        
+        window.addEventListener('resize', function() {
+            if (isAnimating) {
+                return; // Exit the function if an animation is already happening
+            }
+            updateAllContainersDuringScaling();
+            
+            shuffleMenu();
+        });
+
+
+        function checkAndStartAnimationsOnScroll() {
+            const viewportHeight = window.innerHeight;
+            const triggerHeight = viewportHeight / 1.2; // 1/4 of the viewport height
+
+            containerIds.forEach(containerId => {
+                const container = document.getElementById(containerId);
+                if (container) {
+                    const rect = container.getBoundingClientRect();
+                    if (rect.top <= triggerHeight && !container.dataset.animationStarted) {
+                        startAnimationForContainer(containerId);
+                        container.dataset.animationStarted = 'true'; // Mark as animated
+                    }
+                }
+            });
+        }
+
+
+
+        
+        window.addEventListener('scroll', checkAndStartAnimationsOnScroll);
+ 
+
+
+        initialize();
+    </script>
+</body>
+</html>
