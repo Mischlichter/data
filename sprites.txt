@@ -1,22 +1,22 @@
 SCENE01:
 
 a:
-elements: 5
+elements: 10
 baseline: -300
-postionz: 25
-spreadz: 40
+postionz: 3
+spreadz: 5
 distance: 30
-spread: 120
+spread: 8
 size: 85%
 varsize: 15
 
 b:
-elements: 7
+elements: 25
 baseline: 300
-postionz: 25
-spreadz: 40
-distance: 30
-spread: 120
+postionz: -3
+spreadz: 0
+distance: 50
+spread: 1
 size: 110%
 varsize: 30
 
@@ -24,21 +24,21 @@ varsize: 30
 SCENE02:
 
 a:
-elements: 3
+elements: 20
 baseline: -300
-postionz: 25
-spreadz: 40
+postionz: -1
+spreadz: 5
 distance: 30
-spread: 120
+spread: 5
 size: 85%
-varsize: 15
+varsize: 5
 
 c:
-elements: 6
+elements: 11
 baseline: -300
-postionz: 25
-spreadz: 40
+postionz: -3
+spreadz: 5
 distance: 30
-spread: 120
+spread: 5
 size: 85%
-varsize: 15
+varsize: 7
