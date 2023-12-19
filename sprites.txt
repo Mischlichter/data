@@ -1,0 +1,44 @@
+SCENE01:
+
+a:
+elements: 5
+baseline: -300
+postionz: 25
+spreadz: 40
+distance: 30
+spread: 120
+size: 85%
+varsize: 15
+
+b:
+elements: 7
+baseline: 300
+postionz: 25
+spreadz: 40
+distance: 30
+spread: 120
+size: 110%
+varsize: 30
+
+
+SCENE02:
+
+a:
+elements: 3
+baseline: -300
+postionz: 25
+spreadz: 40
+distance: 30
+spread: 120
+size: 85%
+varsize: 15
+
+c:
+elements: 6
+baseline: -300
+postionz: 25
+spreadz: 40
+distance: 30
+spread: 120
+size: 85%
+varsize: 15
