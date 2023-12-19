@@ -3,7 +3,7 @@ SCENE01:
 a:
 elements: 10
 baseline: -300
-postionz: 3
+positionz: 3
 spreadz: 5
 distance: 30
 spread: 8
@@ -13,7 +13,7 @@ varsize: 15
 b:
 elements: 25
 baseline: 300
-postionz: -3
+positionz: -3
 spreadz: 0
 distance: 50
 spread: 1
@@ -26,7 +26,7 @@ SCENE02:
 a:
 elements: 20
 baseline: -300
-postionz: -1
+positionz: -1
 spreadz: 5
 distance: 30
 spread: 5
@@ -36,7 +36,7 @@ varsize: 5
 c:
 elements: 11
 baseline: -300
-postionz: -3
+positionz: -3
 spreadz: 5
 distance: 30
 spread: 5
