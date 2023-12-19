@@ -1,6 +1,6 @@
 SCENE01:
 
-a:
+a
 elements: 10
 baseline: -300
 positionz: 3
@@ -10,7 +10,7 @@ spread: 8
 size: 85
 varsize: 15
 
-b:
+b
 elements: 25
 baseline: 300
 positionz: -3
@@ -23,7 +23,7 @@ varsize: 30
 
 SCENE02:
 
-a:
+a
 elements: 20
 baseline: -300
 positionz: -1
@@ -33,7 +33,7 @@ spread: 5
 size: 85
 varsize: 5
 
-c:
+c
 elements: 11
 baseline: -300
 positionz: -3
