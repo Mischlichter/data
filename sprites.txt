@@ -7,7 +7,7 @@ positionz: 3
 spreadz: 5
 distance: 30
 spread: 8
-size: 85%
+size: 85
 varsize: 15
 
 b:
@@ -17,7 +17,7 @@ positionz: -3
 spreadz: 0
 distance: 50
 spread: 1
-size: 110%
+size: 110
 varsize: 30
 
 
@@ -40,5 +40,5 @@ positionz: -3
 spreadz: 5
 distance: 30
 spread: 5
-size: 85%
+size: 85
 varsize: 7
