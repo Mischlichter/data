@@ -30,7 +30,7 @@ positionz: -1
 spreadz: 5
 distance: 30
 spread: 5
-size: 85%
+size: 85
 varsize: 5
 
 c:
