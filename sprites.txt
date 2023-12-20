@@ -5,7 +5,7 @@ elements: 200
 baseline: -300
 positionz: 5
 spreadz: 5
-distance: 500
+distance: 300
 spread: 111
 size: 100
 varsize: 30
@@ -15,7 +15,7 @@ elements: 200
 baseline: 300
 positionz: 5
 spreadz: 5
-distance: 500
+distance: 200
 spread: 111
 size: 200
 varsize: 30
