@@ -1,7 +1,7 @@
 SCENE01:
 
 a:
-elements: 50
+elements: 200
 baseline: -300
 positionz: 5
 spreadz: 5
@@ -10,14 +10,14 @@ spread: 111
 size: 100
 varsize: 30
 
-b:
-elements: 50
+a:
+elements: 200
 baseline: 300
 positionz: 5
 spreadz: 5
 distance: 500
 spread: 111
-size: 100
+size: 200
 varsize: 30
 
 
