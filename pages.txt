@@ -84,20 +84,18 @@ HANDBOOK
 
 SCENE04:
 
-P01:
-CRAFTING
-
+P01: GALLERY
+ 
 
 #container01 {
-
+	display: none;
     font-family: 'JetBrainsMono-ExtraBold', sans-serif;
 }
 
 SCENE05:
 
-P01: GALLERY
+P01: THEATRE
  
-
 
 #container01 {
 	display: none;
