@@ -910,5 +910,13 @@
         "Model": "HOGExSAM",
         "Creator": "@looneycorp",
         "Seed": "86702866294"
+    },
+    "25228855932.jpg": {
+        "File Name": "25228855932.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man, spritesheet, intricate details, \ud83e\udd23\ud83c\udf89\ud83c\udf82\ud83c\udf20\ud83c\udf81\ud83c\udf88\ud83d\udd25\ud83d\udca1\ud83d\ude80\ud83e\udd73\ud83d\udc6f\ud83d\udc65\ud83c\udf0a\ud83d\udcab\ud83d\ude80\ud83d\udca1\ud83d\udd25\ud83e\udddd\ud83d\ude34\ud83d\ude14\ud83e\udd24\ud83d\ude2f\ud83d\ude1d\ud83d\ude35\ud83e\udd27\ud83e\udd15\ud83e\udd21\ud83d\udc68\u200d\ud83c\udfa4\ud83d\udc68\u200d\ud83c\udf3e\ud83d\udc69\u200d\ud83c\udfed\ud83d\udc69\u200d\ud83d\udd2c\ud83e\udd35",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "25228855932"
     }
 }
