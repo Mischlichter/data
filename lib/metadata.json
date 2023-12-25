@@ -974,5 +974,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "29227394976"
+    },
+    "24692349574.jpg": {
+        "File Name": "24692349574.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "a white horse an green lawn on a sunny day in reland, in style of van gogh",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "24692349574"
     }
 }
