@@ -998,5 +998,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "24758677802"
+    },
+    "62822227317.jpg": {
+        "File Name": "62822227317.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man as a computer mechanic working in server room, movie poster Hasselblad photo, chibi hogeai, (heroic white furry HogeAI man leading a fleet of starships) against a massive cosmic entity, galaxies spinning in the backdrop, bob ross painting in color connection, raytracing, hdr, 8k uhd. Laser beams crisscrossing, shields glowing under the barrage, ethereal chants resonating across space, aiding the fleet, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, hues of fiery oranges and cold cyans, the ultimate space standoff.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "62822227317"
     }
 }
