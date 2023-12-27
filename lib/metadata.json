@@ -990,5 +990,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "8007195425"
+    },
+    "24758677802.jpg": {
+        "File Name": "24758677802.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man in year of the \ud83d\udc36dog",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "24758677802"
     }
 }
