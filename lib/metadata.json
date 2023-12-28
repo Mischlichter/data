@@ -1014,5 +1014,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "52350263063"
+    },
+    "88816625365.jpg": {
+        "File Name": "88816625365.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man-woman as a chocolatier crafting an exquisite truffle) in a Parisian boutique, bob ross painting of molten chocolate, golden wrappers, and delicate ingredients. The aroma of cacao, the melt-in-mouth sensation, and the art of chocolate making, 4K, next gen, 3d octane rendering, unreal engine 5, paying homage to the sweet delights of Ladur\u00e9e and the craftsmanship of Belgian chocolatiers.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "88816625365"
     }
 }
