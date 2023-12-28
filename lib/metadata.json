@@ -966,5 +966,61 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "66498018419"
+    },
+    "29227394976.jpg": {
+        "File Name": "29227394976.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "xmas hogeai man Hasselblad photo, chibi hogeai, (intrepid white furry HogeAI man setting foot on an uncharted alien world) under the gaze of three neon suns, exotic flora and fauna beckoning, bob ross painting in color connection, raytracing, hdr, 8k uhd. Alien architectures, both ancient and advanced, rising from the horizon, the sky alive with flying creatures of unimaginable designs, mysterious energies resonating from the core, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, spectrum of neon greens and iridescent purples, a new world of wonders.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "29227394976"
+    },
+    "24692349574.jpg": {
+        "File Name": "24692349574.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "a white horse an green lawn on a sunny day in reland, in style of van gogh",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "24692349574"
+    },
+    "8007195425.jpg": {
+        "File Name": "8007195425.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man  next to his porsche. Hasselblad photo, chibi hogeai, (galactic white furry HogeAI man navigating the rings of a colossal planet) meteors trailing behind, vastness of space extending infinitely, bob ross painting in color connection, raytracing, hdr, 8k uhd, unmatched precision. Star clusters form a dazzling ballet, swirling black holes beckoning with their mysterious allure, interstellar comets with tails that tell tales of ancient galaxies, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, colors transitioning from deep space blue to fiery supernova reds, a galactic odyssey.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "8007195425"
+    },
+    "24758677802.jpg": {
+        "File Name": "24758677802.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man in year of the \ud83d\udc36dog",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "24758677802"
+    },
+    "62822227317.jpg": {
+        "File Name": "62822227317.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man as a computer mechanic working in server room, movie poster Hasselblad photo, chibi hogeai, (heroic white furry HogeAI man leading a fleet of starships) against a massive cosmic entity, galaxies spinning in the backdrop, bob ross painting in color connection, raytracing, hdr, 8k uhd. Laser beams crisscrossing, shields glowing under the barrage, ethereal chants resonating across space, aiding the fleet, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, hues of fiery oranges and cold cyans, the ultimate space standoff.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "62822227317"
+    },
+    "52350263063.jpg": {
+        "File Name": "52350263063.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man in a style of a toy action figure, video game, Hasselblad photo, chibi hogeai, (white furry HogeAI man entering an opulent theater of digital dreams) the stage, a dynamic display of HogeAI's market journey. Performers, adorned in attire that [glows pulsates 1.0] with live market data, enact tales of HogeAI's meteoric ascents and tactical trades, while the audience, a who's who of the crypto world, revel in the spectacle.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "52350263063"
+    },
+    "88816625365.jpg": {
+        "File Name": "88816625365.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man-woman as a chocolatier crafting an exquisite truffle) in a Parisian boutique, bob ross painting of molten chocolate, golden wrappers, and delicate ingredients. The aroma of cacao, the melt-in-mouth sensation, and the art of chocolate making, 4K, next gen, 3d octane rendering, unreal engine 5, paying homage to the sweet delights of Ladur\u00e9e and the craftsmanship of Belgian chocolatiers.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "88816625365"
     }
 }
