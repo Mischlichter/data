@@ -563,14 +563,14 @@
         function sendMouseEventToIframe(eventType, event) {
             const iframe = document.getElementById('sceneIframe');
             if (iframe && iframe.contentWindow) {
+                //console.log('Sending event to iframe:', eventType, mouseX, mouseY);
                 iframe.contentWindow.postMessage({
                     type: eventType,
-                    mouseX: event.clientX,
-                    mouseY: event.clientY
+                    mouseX: mouseX,
+                    mouseY: mouseY
                 }, '*');
             }
         }
-
         
 
 
@@ -588,40 +588,6 @@
 
             document.body.insertBefore(background, document.body.firstChild);
         });
-
-
-
-
-///gyro
-
-
-        if (window.DeviceOrientationEvent) {
-            window.addEventListener("deviceorientation", handleOrientation, true);
-        } else {
-            console.log("Device Orientation not supported.");
-        }
-
-        function handleOrientation(event) {
-            var alpha = event.alpha; // Yaw
-            var beta = event.beta;  // Pitch
-            var gamma = event.gamma; // Roll
-
-            // Call function to convert gyro data to mouse coordinates
-            convertGyroToMouse(alpha, beta, gamma);
-        }
-        
-        function convertGyroToMouse(alpha, beta, gamma) {
-            // Example conversion logic, needs to be adapted to your specific requirements
-            var mouseX = window.innerWidth * (gamma / 90); // Assuming gamma represents horizontal movement
-            var mouseY = window.innerHeight * (beta / 180); // Assuming beta represents vertical movement
-
-            // Constrain the values within the screen dimensions
-            mouseX = Math.max(0, Math.min(window.innerWidth, mouseX));
-            mouseY = Math.max(0, Math.min(window.innerHeight, mouseY));
-
-            sendMouseEventToIframe('mousemove', { clientX: mouseX, clientY: mouseY });
-        }
-
 
 
 //////// IMAGE LOADING ////////////////////
