@@ -1030,5 +1030,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "99727843161"
+    },
+    "56748337441.jpg": {
+        "File Name": "56748337441.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Chibi (HogeAI man) stands at the heart of a digital rendition of a Jean-Michel Basquiat-inspired studio, surrounded by chaotic yet deeply meaningful hogeai art. The studio is a whirlwind of vibrant colors, graffiti, and symbolic imagery, all rendered in Basquiat's raw, expressive style. (HogeAI man) interacts with the art, which seems to respond with animated elements and hidden messages. The lighting is dynamic, with spotlights highlighting certain pieces, creating a sense of fun and intensity. This scene celebrates the raw, unfiltered creativity of Basquiat, reimagined through the lens of digital art and HogeAI, showcasing HogeAI's commitment to pushing artistic boundaries",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "56748337441"
     }
 }
