@@ -1102,5 +1102,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "4885389743"
+    },
+    "18756609676.jpg": {
+        "File Name": "18756609676.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Set in a post-apocalyptic world, HogeAI man's latest gaming adventure combines elements of classic arcade games with a modern twist. The landscape is a dystopian wasteland, where HogeAI, in his iconic chibi form, navigates through a series of treacherous obstacles and enemies. Armed with an array of futuristic weapons, including a flamethrower, he battles against a backdrop of ruined cities and overgrown vegetation. The game's graphics are a stunning display of ultra-detailed 3D art, creating an immersive experience that pays homage to the classic arcade era while pushing the boundaries of modern gaming technology.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "18756609676"
     }
 }
