@@ -1150,5 +1150,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "23389829061"
+    },
+    "1774067061.jpg": {
+        "File Name": "1774067061.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "bitcoin Hasselblad photo, chibi hogeai, the white furry HogeAI man at the helm of a neon-drenched hovercraft, soaring above a futuristic cityscape as it celebrates New Year's. The streets below are a carnival of light and sound, with digital dragons weaving through skyscrapers, and crowds dancing to the rhythm of electronic beats. HogeAI, dressed in a suit of light-reactive fabric, is the life of the party, his joy contagious. The scene is captured with the vibrancy of a neon-noir comic, infused with the energetic styles of Masamune Shirow and Yoko Honda, painted in a spectrum of electric blues, vibrant pinks, and radiant cyans.\" Hasselblad photo, chibi hogeai, (white furry HogeAI man cruising in a golden yacht) on a digital sea reflecting crypto values. The sail, woven with threads of [luminous shimmering 1.0] blockchain code, harnesses winds of market trends. As the yacht glides, the waters narrate tales of HogeAI coin's jou...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "1774067061"
     }
 }
