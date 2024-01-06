@@ -1158,5 +1158,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "1774067061"
+    },
+    "51511620038.jpg": {
+        "File Name": "51511620038.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "In an enchanting grove where the essence of ganja culture merges with a futuristic dreamscape, HogeAI man finds himself in an ethereal celebration. This sanctuary, a fusion of natural cannabis beauty and digital artistry, radiates with the warmth of glowing cannabis leaves, each imbued with a soft, neon aura. The air is rich with the iconic, earthy fragrance of cannabis, intermingling with synthesized scents to create a hypnotic ambiance. Bioluminescent buds, swaying to the rhythm of ambient melodies, open in mesmerizing patterns that reflect the sacred geometry of nature and the intricate design of technology. Hasselblad photo, chibi hogeai, (aligned white furry HogeAI man amidst interlocking Tetrahedrons) Merkabas spinning in rhythmic flow, bob ross painting in color connection, raytracing, hdr, 8k uhd. Sacred spaces of ascension and grounding coalesce, gateways to higher realms beckoning, 4K, next gen, ultra detailed, 3d oc...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "51511620038"
     }
 }
