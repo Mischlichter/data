@@ -1222,5 +1222,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "88566923309"
+    },
+    "82450434151.jpg": {
+        "File Name": "82450434151.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man floating on a leaf down a river of melted amber resin) under a canopy of oversized, glowing cannabis leaves. The composition, filled with vibrant greens and warm golds, exhibits the fantastical storytelling found in the art of Hayao Miyazaki and the luminous, detailed botanical illustrations of Maria Sibylla Merian.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "82450434151"
     }
 }
