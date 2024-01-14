@@ -1238,5 +1238,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "30514575047"
+    },
+    "68898819193.jpg": {
+        "File Name": "68898819193.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man at night with moon \"Hasselblad photo, chibi hogeai, the white furry HogeAI man at the center of a New Year's celebration in a grand virtual reality arena. Around him, avatars of diverse descent and attire, each a unique digital creation, dance under a dome of stars. The arena is a masterpiece of virtual architecture, blending elements of ancient ruins with futuristic design, its walls alive with dynamic, ever-changing murals. HogeAI, wearing a garment that shifts color and pattern with the music, leads the revelry. The atmosphere is electric, charged with the energy of a thousand conversations and laughter, captured in the style of a hyper-detailed digital painting, reminiscent of the works of Giger and H.R. Giger, splashed with vibrant reds and deep cosmic blacks.\"",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "68898819193"
     }
 }
