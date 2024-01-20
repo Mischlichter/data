@@ -1270,5 +1270,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "77180949312"
+    },
+    "83993407826.jpg": {
+        "File Name": "83993407826.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man In an immersive game world inspired by the chaotic energy of arcade classics, HogeAI man embarks on an intergalactic mission. The environment is a detailed landscape of alien planets with terrain featuring treacherous craters and futuristic bunkers, reminiscent of the strategic battlegrounds in \"Worms 3D\". Amidst this, HogeAI, in his adorable chibi form, wields a flamethrower, casting vibrant flames against the backdrop of dark space and neon-lit alien structures. Each level is a unique composition of alien flora, interactive trenches, and dynamic obstacles, creating a cohesive yet challenging arcade experience.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "83993407826"
     }
 }
