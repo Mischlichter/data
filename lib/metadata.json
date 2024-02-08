@@ -1310,5 +1310,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "55275315384"
+    },
+    "3465536034.jpg": {
+        "File Name": "3465536034.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, radiant white hogeai man, standing on a floating island, surrounded by floating runes, spiraling galaxies above, bob ross painting in color connection, raytracing, HDR, 8K UHD, majestic ethereal wings, halo of pulsating energy, 4K, next-gen, ultra-detailed, 3D Octane rendering, Unreal Engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, extremely vibrant astral colors.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "3465536034"
     }
 }
