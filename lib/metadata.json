@@ -1318,5 +1318,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "3465536034"
+    },
+    "4598867056.jpg": {
+        "File Name": "4598867056.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (ambitious white furry HogeAI man leading a galactic expedition) to the edge of the known universe, armada of interstellar ships in formation, bob ross painting in color connection, raytracing, hdr, 8k uhd. Unknown phenomena, like vortexes of raw energy and islands of suspended time, challenge the crew, cosmic anomalies offering puzzles and treasures, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, color gradients transitioning from supernova yellows to void blacks, charting the uncharted. In a sprawling psychedelic city where architecture pulsates with the raw energy of acid rock, HogeAI man navigates streets that breathe with rebellion and freedom. Towering structures are canvases of vibrant graffiti, echoing the city's pulsating rhythms and underground roots. The air resonates with the r...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "4598867056"
     }
 }
