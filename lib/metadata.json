@@ -1358,5 +1358,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "40409738013"
+    },
+    "79950621128.jpg": {
+        "File Name": "79950621128.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man as a marine biologist exploring the depths of alien oceans) amidst bio-luminescent corals and extraterrestrial marine life, bob ross painting of a world bathed in deep blues and neon glows. Encountering beings of light, ethereal jellyfish structures, and floating islands, 4K, next gen, 3d octane rendering, unreal engine 5, inspired by the curiosity of Jacques Cousteau and the surreal visions of Yoko Honda, diving into uncharted waters. In a sprawling psychedelic city where architecture pulsates with the raw energy of acid rock, HogeAI man navigates streets that breathe with rebellion and freedom. Towering structures are canvases of vibrant graffiti, echoing the city's pulsating rhythms and underground roots. The air resonates with the reverberating sound of distorted guitars and improvised musical jams, creating an atmosphere charged with creativity and defiance.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "79950621128"
     }
 }
