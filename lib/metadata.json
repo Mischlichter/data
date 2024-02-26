@@ -1366,5 +1366,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "79950621128"
+    },
+    "71497524846.jpg": {
+        "File Name": "71497524846.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Digital art in Miami Vice style, portrait of hogeai man in a pastel-hued 1980s roller rink, wearing a white blazer and pastel tank top, holding an iridescent hogeai man token like a disco ball, positioned near a jukebox that plays community anthems, retro skateboards and neon signs adorn the walls, tropical sunset with intricate flamingos in the background, drenched in pink and blue neon lights, rendered in 3D Octane, embellished with lens flares, and completed with a vaporwave color palette, channeling the essence of \"Miami Vice\" and the audacity of Cyndi Lauper videos.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "71497524846"
     }
 }
