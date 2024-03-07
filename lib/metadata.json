@@ -1390,5 +1390,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "60700779003"
+    },
+    "66064364462.jpg": {
+        "File Name": "66064364462.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man cruising in a golden yacht) on a digital sea reflecting crypto values. The sail, woven with threads of [luminous shimmering 1.0] blockchain code, harnesses winds of market trends. As the yacht glides, the waters narrate tales of HogeAI coin's journey, each wave a story of triumph, each sparkle a testament to opulence. Hovering in a cityscape where time bends and reality folds, HogeAI man finds himself amidst skyscrapers that spiral into the clouds, their surfaces a cascade of ever-changing pixels. Streets below buzz with neon echoes, and the air crackles with electric life. His cloak, a fusion of fiber optics and celestial fabric, reacts to the city's pulse, creating a personal aurora of colors. Among the crowds, avatars and holograms coexist, their stories intertwining in a symphony of urban mythology.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "66064364462"
     }
 }
