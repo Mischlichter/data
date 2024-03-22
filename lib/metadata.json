@@ -1398,5 +1398,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "66064364462"
+    },
+    "95629633674.jpg": {
+        "File Name": "95629633674.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "chibi hogeai, (white furry HogeAI man woman embracing a grunge style) with distressed jeans and flannel, standing under a dim, valentines couple holding eachother, flickering neon sign. The environment reflects the raw, unfiltered love and compassion mood present in Nan Goldin\u2019s photography, complemented by the dark, gritty atmosphere characteristic of Banksy\u2019s iconic pieces, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Yoshitaka Amano, bayard wu, greg rutkowski \ud83d\udc9a\u2764\ufe0f\ud83e\udde1\ud83d\udc9b\ud83d\udc9a\ud83d\udc99\ud83d\udc9c\ud83d\udda4\u2763\ufe0f\ud83d\udc95\ud83d\udc93\ud83d\udc97\ud83d\udc96\ud83d\udc98\ud83d\udc9d",
+        "Model": "IMG2IMG",
+        "Creator": "@Mischlichter",
+        "Seed": "95629633674"
     }
 }
