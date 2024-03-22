@@ -1406,5 +1406,13 @@
         "Model": "IMG2IMG",
         "Creator": "@Mischlichter",
         "Seed": "95629633674"
+    },
+    "15049823387.jpg": {
+        "File Name": "15049823387.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (mystical white furry HogeAI man meditating in zero gravity) amidst a field of floating crystals, reflecting the lights of distant stars, bob ross painting in color connection, raytracing, hdr, 8k uhd. Cosmic energies spiraling around, ancient space monoliths humming with power, portals to other dimensions shimmering invitingly, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, color palette of twilight purples and dawn pinks, the nexus of space and spirit. On the shores of a neon-lit lake, HogeAI man watches as the water mirrors the kaleidoscopic sky, creating an endless dance of light and shadow. The beach is lined with stones that glow like molten lava, providing a stark contrast to the cool luminescence of the water. HogeAI, in a cloak that mimics the fluid patterns of the lake, seems to ...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "15049823387"
     }
 }
