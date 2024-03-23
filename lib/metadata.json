@@ -1422,5 +1422,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "55236249641"
+    },
+    "12318480549.jpg": {
+        "File Name": "12318480549.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "(extremely cute white furry hogeai man), extremely detailed blank background, detailed, bob ross painting in color connection, raytracing, hdr, 8k uhd, 4K, next gen, 3d octane rendering, unreal engine 5, urban chic, by RETNA, FAILE, giger, OSGEMEOS, colors bursting in black and golds",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "12318480549"
     }
 }
