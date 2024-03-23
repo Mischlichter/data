@@ -1414,5 +1414,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "15049823387"
+    },
+    "55236249641.jpg": {
+        "File Name": "55236249641.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man portrait (extremely cute white furry hogeai man), standing in a beachbar holding a cub of coffee, extremely detailed fur puppy, blank background, detailed, bob ross painting in color connection, raytracing, hdr, 8k uhd, 4K, next gen, 3d octane rendering, unreal engine 5, urban chic, by RETNA, FAILE, giger, OSGEMEOS, colors bursting in black and golds",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "55236249641"
     }
 }
