@@ -137,6 +137,12 @@
             font-style: italic;
         }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
@@ -152,17 +158,20 @@
         html {
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+
+            
         }
 
         html, body {
-            background-color: black;
+            /*background-color: black;*/
             color: #00ffcc; /* Green color */
-            height: 100%;
+            /*height: 100vh;*/
             margin: 0;
             padding: 0;
-           /* Add this property to disable horizontal scrolling */
-           scrollbar-width: none;
-           scrollbar-color: transparent transparent;
+    
+    
+            scrollbar-width: none;
+            scrollbar-color: transparent transparent;
         }
 
         body::-webkit-scrollbar {
@@ -201,47 +210,88 @@
         }
 
      
-        /* Wrapper for image containers */
-        .image-container-wrapper {
-            display: flex;
-            justify-content: center; /* Horizontally center the children */
-            flex-wrap: wrap; /* Allow the containers to wrap as necessary */
-            margin: auto; /* Center the wrapper itself */
-            max-width: 50%; /* Set maximum width */
-        }
+        
+        
         /* Individual image containers */
         .flex-icontainer {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            opacity: 0;
+            transition: opacity 1s ease-out;
+            position: relative; /* Essential for absolute child positioning */
+            width: 38%; /* Your desired width */
+            padding-top: 38%; /* Same as width for a 1:1 aspect ratio */
+            margin: 50px auto; /* Center horizontally */
+            border: 2px solid #00ffcc; /* Green border */
+            border-radius: 20px; /* Rounded corners */
+            overflow: hidden; /* Ensures nothing spills outside the rounded corners */
             box-sizing: border-box;
-            /* Additional responsive scaling can be added here */
-            z-index: 2;
-            overflow-x: hidden; /* Disable horizontal scrolling */
-            /*position: relative;
-            bottom: 800px; */
-            pointer-events: none;
+            background-color: black;
+            /* Removed flexbox styles since we're using absolute positioning for the image */
         }
+
+        .flex-icontainer img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 105%; /* Slightly larger than the container */
+            height: 105%; /* Keep the image square and slightly larger */
+            transform: translate(-50%, -50%); /* Center the image */
+            object-fit: cover; /* Ensures the image covers the available area */
+        }
+        @media screen and (max-width: 768px) {
+            .flex-icontainer {
+                width: 81%; /* Adjusted width for smaller screens */
+                padding-top: 81%; /* Maintain a 1:1 aspect ratio for .flex-icontainer */
+                margin: 20px auto; /* Adjusted margin for consistency, feel free to change */
+            }
+
+            .flex-icontainer img {
+                /* No changes needed here unless you want to adjust the image styles for smaller screens */
+            }
+        }
+
+
+
+
         .flex-container {
             display: flex;
             flex-wrap: wrap;
-            margin: 20px auto; /* Center horizontally */
+            margin: 50px auto; /* Center horizontally */
             /*position: relative;
             bottom: 800px; */
             border: none;
             box-sizing: border-box;
             font-family: 'JetBrainsMono-Bold', sans-serif;
             text-transform: uppercase;
-            width: 50%;
+            width: 38%;
             z-index: 2;
             pointer-events: none;
             
+            border: 2px solid #00ffcc; /* Green border */
+            border-radius: 20px; /* Rounded corners */
+            padding: 8px 15px; /* Adjust padding as needed */
+            background-color: black;
+            
         }
+        
         .flex-container span {
             white-space: nowrap;
             display: inline-block;
             margin: 0 5px 5px 0;
         }
+
+        @media screen and (max-width: 768px) {
+            .flex-container {
+                width: 81%; 
+                }
+
+            .flex-container span {
+                        /* No changes needed here unless you want to adjust the image styles for smaller screens */
+                }
+        }
+
+
+
+
         #mainpage .dynamic-text { 
             opacity: 0;
 
@@ -251,14 +301,15 @@
             z-index: 2;
         }
             
-    
+        
 
 
         .menu-bar {
             display: flex;
             justify-content: space-evenly; /* Evenly spaces the menu items */
             align-items: center;
-            background-color: #333333; /* 20% grey color */
+            background-color: black; /* 20% grey color */
+            border: 2px solid #00ffcc;
             position: fixed; /* Fixed to the top */
             top: 0;
             left: 0;
@@ -269,6 +320,8 @@
         }
         
         .menu-container {
+            font-family: 'JetBrainsMono-Bold';
+            font-size: 16px;
             margin: 0; /* Adjust as needed */
             /* Additional styles for your menu items */
         }
@@ -316,25 +369,45 @@
         }
 
 
+        .foreground-image-container {
+            position: absolute; /* or absolute, depending on your layout needs */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Ensures it is above all other content */
+            pointer-events: none; /* Allows clicks to pass through to elements below */
+        }
+
+        .foreground-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Adjust this as necessary to fit your design */
+        }
+
 
 
     </style>
 </head>
 <body>
+    
+
 
     <div class="mainpage">
-        <!-- Your dynamic text content will go here -->
+
         </div>
         <div id="iframeContainer" style="position: relative; width: 100%; height: 100%;;z-index: 1;">
         <div id="mouseOverlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;z-index: 1;"></div>
-        <!-- The iframe will be added dynamically -->        
+ 
     </div>
 
     <div id="bodyGalleryContainer">
-    <!-- Gallery content will be inserted here dynamically -->
+
     </div>
     
-
+    <div class="foreground-image-container">
+        <img src="https://raw.githubusercontent.com/Mischlichter/data/main/gallerycom/14034456181.jpg" alt="Foreground Image" class="foreground-image">
+    </div>
 
     <div class="below-main"></div>
     <link rel="stylesheet" type="text/css" href="css/bodygallery.css">
@@ -379,6 +452,31 @@
             }, 50); // Using setTimeout ensures this occurs in the next event loop cycle
         }
 
+        let lastScrollY = 0;
+        let currentOffset = 0;
+
+        
+
+
+        function updateParallax() {
+            const speedFactor = 0.5; // Adjust this value: <1 for slower, >1 for faster. Negative values reverse direction.
+            
+            const deltaY = window.scrollY - lastScrollY; // Difference in scroll
+            currentOffset += deltaY * speedFactor; // Calculate the new offset
+            
+            // Apply the transform with the new offset
+            const foregroundImage = document.querySelector('.foreground-image-container');
+            foregroundImage.style.transform = `translateY(${currentOffset}px)`;
+
+            lastScrollY = window.scrollY; // Update the last scroll position
+            
+            requestAnimationFrame(updateParallax); // Continuously update the position
+        }
+
+        // Initialize parallax effect
+        window.addEventListener('load', () => {
+            requestAnimationFrame(updateParallax);
+        });
 
 
 //////// IFRAME LOADING ////////
@@ -388,74 +486,82 @@
             const iframeContainer = document.getElementById('iframeContainer');
             const mouseOverlay = document.getElementById('mouseOverlay');
             const bodyGalleryContainer = document.getElementById('bodyGalleryContainer');
-            let iframe = document.getElementById('sceneIframe');
 
-            
+            unhideElementsByClass("foreground-image-container");
+
+            // Remove existing iframe and clear body gallery content
+            let existingIframe = document.getElementById('sceneIframe');
+            if (existingIframe) {
+                existingIframe.remove(); // Remove the old iframe
+            }
+            if (bodyGalleryContainer) {
+                bodyGalleryContainer.innerHTML = ''; // Clear body gallery content
+            }
 
             if (sceneKey === 'scene04') {
                 // Logic for scene04 (Gallery)
+               
                 iframeContainer.style.display = 'none';
                 if (mouseOverlay) {
                     mouseOverlay.style.display = 'none';
                 }
-                if (bodyGalleryContainer) {
-                    bodyGalleryContainer.style.display = 'block';
-                }
+                bodyGalleryContainer.style.display = 'block';
+                hideElementsByClass("foreground-image-container");
                 loadGallery(); // Load the gallery for scene04
                 unhideBackground();
                 scrollToTop();
             } else if (sceneKey === 'scene05') {
                 // Logic for scene05 (Clipz)
-                iframeContainer.style.display = 'block';
-                if (mouseOverlay) {
-                    mouseOverlay.style.display = 'block';
-                    mouseOverlay.style.zIndex = '1';
-                }
-                if (bodyGalleryContainer) {
-                    bodyGalleryContainer.style.display = 'none';
-                }
-                if (!iframe) {
-                    iframe = document.createElement('iframe');
-                    iframe.id = 'sceneIframe';
-                    iframe.style.width = '100%';
-                    iframe.style.height = '100%';
-                    iframe.style.border = 'none';
-                    iframeContainer.appendChild(iframe);
-                }
-                iframe.src = 'frames/clipz2.html'; // Load clipz.html for scene05
-                hideBackground();
-                scrollToTop();
-                hideBackground();
-               
+                hideElementsByClass("foreground-image-container");
+                setupIframe('clipz2.html'); // Load clipz.html for scene05
             } else {
-
                 // Logic for other scenes
+                setupIframe(`depthyxx14.html?scene=${sceneKey}`);
+            }
+
+            function setupIframe(src) {
                 iframeContainer.style.display = 'block';
                 if (mouseOverlay) {
                     mouseOverlay.style.display = 'block';
                     mouseOverlay.style.zIndex = '1';
                 }
-                if (bodyGalleryContainer) {
-                    bodyGalleryContainer.style.display = 'none';
-                }
-                if (!iframe) {
-                    iframe = document.createElement('iframe');
-                    iframe.id = 'sceneIframe';
-                    iframe.style.width = '100%';
-                    iframe.style.height = '100%';
-                    iframe.style.border = 'none';
-                    iframeContainer.appendChild(iframe);
-                    
-                }
-                iframe.src = `depthyxx12.html?scene=${sceneKey}`;
-                
-                unhideBackground();
+                bodyGalleryContainer.style.display = 'none';
+
+                let newIframe = document.createElement('iframe');
+                newIframe.id = 'sceneIframe';
+                newIframe.style.width = '100%';
+                newIframe.style.height = '100vh';
+                newIframe.style.border = 'none';
+                newIframe.src = src;
+                iframeContainer.appendChild(newIframe);
+
+                hideBackground();
                 scrollToTop();
             }
         }
 
 
+        function hideElementsByClass(className) {
+          // Get all elements with the specified class name
+          var elements = document.getElementsByClassName(className);
+          
+          // Loop through each element
+          for (var i = 0; i < elements.length; i++) {
+            // Hide the current element by setting its display property to 'none'
+            elements[i].style.display = 'none';
+          }
+        }
 
+        function unhideElementsByClass(className) {
+          // Get all elements with the specified class name
+          var elements = document.getElementsByClassName(className);
+          
+          // Loop through each element
+          for (var i = 0; i < elements.length; i++) {
+            // Unhide the current element by setting its display property to its default value
+            elements[i].style.display = '';
+          }
+        }
 
 
 
@@ -481,8 +587,8 @@
                     background.style.top = '0';
                     background.style.left = '0';
                     background.style.width = '100%';
-                    background.style.height = '500vh';
-                    background.style.zIndex = '-1';
+                    background.style.height = '10000vh';
+                    background.style.zIndex = '-2';
                     background.style.backgroundColor = 'rgba(0, 0, 0, 0)'; // 10% grey
                     // Add more styles or content to the background as needed
 
@@ -492,7 +598,6 @@
         }
 
  
-
 
         
 
@@ -581,8 +686,8 @@
             background.style.top = '0';
             background.style.left = '0';
             background.style.width = '100%';
-            background.style.height = '500vh';
-            background.style.zIndex = '-1';
+            background.style.height = '50000vh';
+            background.style.zIndex = '-2';
             background.style.backgroundColor = 'rgba(0, 0, 0, 0)'; // 10% grey
             // Add more styles or content to the background as needed
 
@@ -810,7 +915,7 @@
                     if (firstMenuItem) {
                         animateTextDuringHover(firstMenuItem);
                     }
-                }, 6000); // 3000 milliseconds = 3 seconds
+                }, 3000); // 3000 milliseconds = 3 seconds
                 // Add the new container ID to the array
                 menuContainerIds.push(menuContainer.id);
             });
@@ -1139,7 +1244,23 @@
             // Update containers when loading a new scene
             updateAllContainers(scene);
             highlightActiveMenuItem(`menuContainer${index}`);
+            observeImagesForAnimation();
             
+        }
+
+        function observeImagesForAnimation() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1; // Trigger the fade-in animation
+                    }
+                });
+            }, {
+                threshold: 0.3 // This means the animation will start when 10% of the item is visible
+            });
+
+            const images = document.querySelectorAll('.flex-icontainer');
+            images.forEach(image => observer.observe(image));
         }
 
 
@@ -1406,10 +1527,9 @@
         }
 
 
-
         
         window.addEventListener('scroll', checkAndStartAnimationsOnScroll);
- 
+        
 
 
         initialize();

@@ -187,8 +187,8 @@ html {
 }
 
 #ascii-art-container {
-    width: 300px;
-    height: 155px;
+    width: 370px;
+    height: 170px;
     overflow: hidden;
     position: fixed; /* Use fixed positioning */
     top: 50%; /* Position from the center vertically */
@@ -198,6 +198,11 @@ html {
     /* Rest of your styles for #ascii-art-container */
 }
 
+#ascii-art-container {
+
+        font-size: 16px;
+
+}
 
 .ascii-line {
     white-space: pre;
@@ -269,6 +274,7 @@ html {
     height: auto;
     cursor: pointer;
     border-radius: 8px;
+    border: 2px solid #00ffcc;
     transition: opacity 0.1s ease, transform 0.1s ease-out;
     position: relative;
     overflow: hidden;

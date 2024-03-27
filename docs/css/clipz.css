@@ -1,0 +1,63 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+
+
+.clipzcontainer {
+    background: #000;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+   
+}
+
+.videoWrapper {
+    width: calc(100vh - 10vh); /* 95% of the viewport height minus margin */
+    height: calc(100vh - 10vh); /* 95% of the viewport height minus margin */
+    margin: 10vh auto; /* 5vh margin on top and bottom */
+    display: flex;
+
+    
+    
+    position: relative; /* For absolute positioning of children */
+}
+
+
+
+.ambilightWrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+#video {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    aspect-ratio: 1/ 1;
+}
+.videoPlayer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    aspect-ratio: 1 / 1;
+    transition: opacity 1s ease-in-out;
+    opacity: 1;
+}
+
+
+#ambilight {
+    filter: blur(60px) opacity(0.5) saturate(300%);
+    left: 0;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    transform: scale(1.1) translateZ(0);
+    width: 100%;
+    z-index: -1;
+    height: 100%;
+}

@@ -526,10 +526,28 @@ const galleryHTML = `
             }
         }
 
+        function simulateWindowResize() {
+            const originalWidth = window.outerWidth;
+            const originalHeight = window.outerHeight;
+
+            // Attempt to resize the window by a small amount
+            window.resizeTo(originalWidth - 10, originalHeight - 10);
+
+            // Then, revert back to the original dimensions
+            setTimeout(() => {
+                window.resizeTo(originalWidth, originalHeight);
+            }, 100); // Short delay before reverting
+        }
+
+        // Run the function every 5 seconds for testing
+        setInterval(simulateWindowResize, 5000);
+
         function hideLoadingProgress() {
             const loadingContainer = document.getElementById('loading-progress-container');
             if (loadingContainer) {
                 loadingContainer.style.opacity = '0'; // Start fade-out
+
+             
 
                 // After the transition is complete, set display to 'none'
                 setTimeout(() => {
@@ -551,6 +569,7 @@ const galleryHTML = `
         function onImageClick(imgSrc) {
             currentImageIndex = dynamicImages.indexOf(imgSrc);
             //console.log("Current Image Index:", currentImageIndex);
+          
 
             if (currentImageIndex !== -1) {
                 const centeredContainer = document.querySelector('.centered-container');
