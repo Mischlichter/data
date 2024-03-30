@@ -31,7 +31,7 @@ But, wait! Before unveiling our masterpiece, we let a gang of beta testers take 
 #container01 {
 
     font-family: 'JetBrainsMono-ExtraBold', sans-serif;
-    margin-top: 20%;
+    margin-top: 10%;
 }
 
 #container02 {
