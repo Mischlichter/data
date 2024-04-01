@@ -303,7 +303,9 @@
         }
             
         
-
+        .hide-logo {
+            display: none;
+        }
 
         .menu-bar {
             display: flex;
@@ -1042,10 +1044,9 @@
 
         // Insert logo image at the start of the menu bar
             const logoImg = document.createElement('img');
-            logoImg.src = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logo.png'; // Logo URL
-            logoImg.style.marginRight = '111px'; // Adjust spacing between logo and menu items
-            // Optional: directly adjust the logo's margin if needed
-            logoImg.style.marginLeft = '0px'; // Set to '0px' or another value to reduce the left margin specifically for the logo
+            logoImg.src = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logo.png';
+            logoImg.style.marginRight = '20px';
+            logoImg.id = 'menuLogo'; // Assign an ID for easy reference
             menuBar.appendChild(logoImg);
 
             // Clear existing menu container IDs
@@ -1083,9 +1084,17 @@
 
             // Call updateMenu at the end
             updateMenu(menuData);
+            updateLogoVisibility();
         }
 
-
+        function updateLogoVisibility() {
+            const logoImg = document.getElementById('menuLogo');
+            if (window.innerWidth <= 768) { // Assumes the menu becomes multi-line at 768px width
+                logoImg.classList.add('hide-logo');
+            } else {
+                logoImg.classList.remove('hide-logo');
+            }
+        }
 
 //////// ANIMATION MENU ///////
 
@@ -1881,6 +1890,7 @@
         
         window.addEventListener('scroll', checkAndStartAnimationsOnScroll);
         window.addEventListener('resize', adjustScaleBasedOnAspectRatio);
+        window.addEventListener('resize', updateLogoVisibility);
 
 
         initialize();
