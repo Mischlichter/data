@@ -61,7 +61,7 @@ Got questions? Ideas? Or just want to share a masterpiece you made with HogeAI? 
 
 
 #container01 {
-
+    margin-top: 25%;
 }
 
 #container02 {
