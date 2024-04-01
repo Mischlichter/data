@@ -618,32 +618,7 @@
 
 //////// Interface Loadin //////
         
-        function calculateEffectiveScrollHeight(excludedClasses) {
-            const allElements = Array.from(document.body.getElementsByTagName('*'));
-            const excludedElements = excludedClasses.flatMap(className => 
-                Array.from(document.getElementsByClassName(className))
-            );
-
-            const excludedHeight = excludedElements.reduce((total, elem) => {
-                return total + elem.offsetHeight;
-            }, 0);
-
-            const totalHeight = allElements.reduce((total, elem) => {
-                return total + elem.offsetHeight;
-            }, 0);
-
-            const effectiveScrollHeight = totalHeight - excludedHeight;
-
-            console.log(`Total Height: ${totalHeight}, Excluded Height: ${excludedHeight}, Effective Scroll Height: ${effectiveScrollHeight}`);
-            return effectiveScrollHeight;
-        }
-
-        // Example usage
-        window.onload = () => {
-            const excludedClasses = ['scale-wrapper-background', 'scale-wrapper-interface'];
-            const effectiveScrollHeight = calculateEffectiveScrollHeight(excludedClasses);
-            console.log(`Effective Scroll Height: ${effectiveScrollHeight}`);
-        };
+        
         
 
 
