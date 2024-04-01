@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=0.8, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -536,7 +536,8 @@
     <div class="mainpage">
 
         </div>
-        
+        <div id="iframeContainer" style="position: relative; width: 100%; height: 100%;;z-index: 1;">
+        <div id="mouseOverlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;z-index: 1;"></div>
  
     </div>
 
@@ -1776,6 +1777,15 @@
         }
         
         window.addEventListener('resize', function() {
+            // Check if the device is iOS
+            var iOS = /iPad|iPhone|iPod/.test(navigator.platform) || 
+                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+            // Exclude this code from running on iOS devices
+            if(iOS) {
+                return; // Exit the function if on an iOS device
+            }
+
             if (isAnimating) {
                 return; // Exit the function if an animation is already happening
             }
