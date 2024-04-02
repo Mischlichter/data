@@ -402,6 +402,7 @@
           --viewer-width: 1024px;
           --viewer-height: 2048px;
           --total-width: 3072px; /* New variable for total width */
+
         }
 
         #interfaceContainer {
@@ -421,6 +422,7 @@
           background-size: cover;
           background-repeat: no-repeat;
           z-index: 15;
+
         }
 
    
@@ -430,7 +432,7 @@
           top: 0;
           width: calc((var(--total-width) - var(--viewer-width)) / 2); /* Adjust width for side containers */
           height: 100%;
-          overflow-x: hidden;
+          
 
         }
 
@@ -1462,9 +1464,13 @@
                 img.style.height = `${imageHeight}px`; // Set a fixed height for direct tiling
                 container.appendChild(img);
                 requestAnimationFrame(updateParallax);
-                adjustScaleBasedOnAspectRatio();
+                
+                // This function needs to be called to update the virtual canvas size accordingly
+                delayedVirtualCanvasUpdate();
             }
         }
+
+
 
         function createVerticalTiles_b(containerId, imageUrl, imageHeight) {
             const container = document.getElementById(containerId);
@@ -1484,10 +1490,15 @@
                 img.style.height = `${imageHeight}px`; // Set a fixed height for direct tiling
                 container.appendChild(img);
                 requestAnimationFrame(updateParallax);
-                adjustScaleBasedOnAspectRatio();
+                
+                updateVirtualCanvasSize();
             }
         }
 
+        function delayedVirtualCanvasUpdate() {
+            // Delay the call to updateVirtualCanvasSize
+            setTimeout(updateVirtualCanvasSize, 500); // Delay of 100 milliseconds
+        }
 
         function loadInterface(currentSceneIndex) {
             // Extend: Function to ensure wrapper existence
@@ -1893,9 +1904,86 @@
             });
         }
 
+        function getSmoothAspectRatio(viewportWidth, viewportHeight) {
+            const portraitAspectRatio = 1.6; 
+            const landscapeAspectRatio = 1.9; 
+
+            const currentAspectRatio = viewportWidth / viewportHeight;
+
+            if (currentAspectRatio < 1) {
+                return portraitAspectRatio;
+            } else if (currentAspectRatio >= 1 && currentAspectRatio < 4 / 3) {
+                let t = (currentAspectRatio - 1) / (4 / 3 - 1);
+                return portraitAspectRatio + t * (landscapeAspectRatio - portraitAspectRatio);
+            } else {
+                return landscapeAspectRatio;
+            }
+        }
+
+        function updateVirtualCanvasSize() {
+            // Check if virtualcanvas exists, if not create it
+            var virtualcanvas = document.getElementById('virtualcanvas');
+            if (!virtualcanvas) {
+                virtualcanvas = document.createElement('div');
+                virtualcanvas.id = 'virtualcanvas';
+                document.body.appendChild(virtualcanvas);
+            }
+
+            var viewportWidth = window.innerWidth;
+            var viewportHeight = window.innerHeight;
+            var smoothAspectRatio = getSmoothAspectRatio(viewportWidth, viewportHeight);
+            var fixedAspectRatio = 1536 / 1024; // Fixed aspect ratio
+
+            var size;
+
+            if (viewportWidth < viewportHeight) {
+                var canvasHeight = viewportHeight / smoothAspectRatio;
+                var canvasWidth = canvasHeight * fixedAspectRatio;
+                size = {
+                    width: canvasWidth,
+                    height: canvasHeight,
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    top: '50%'
+                };
+            } else {
+                var canvasWidth = viewportWidth;
+                var canvasHeight = canvasWidth / smoothAspectRatio;
+                size = {
+                    width: canvasWidth,
+                    height: canvasHeight,
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    top: '50%'
+                };
+            }
+
+            // Set the styles and dimensions of the virtual canvas
+            virtualcanvas.style.width = size.width + 'px';
+            virtualcanvas.style.height = size.height + 'px';
+            virtualcanvas.style.left = size.left;
+            virtualcanvas.style.position = 'absolute';
+            virtualcanvas.style.transform = size.transform;
+            virtualcanvas.style.top = size.top;
+            
+            virtualcanvas.style.zIndex = '100';
+
+        // Calculate the scale factor based on the virtual canvas size relative to 1536x1024
+            var scaleFactor = Math.min(size.width / 1536, size.height / 1024);
+
+            // Apply the scale factor to elements with specific classes
+            document.querySelectorAll('.scale-wrapper-background, .scale-wrapper-interface').forEach(element => {
+                element.style.transform = `translate(-50%, -50%) scale(${scaleFactor})`;
+            });    
+        }
+
         
+
+        // Add event listener to resize in case the viewport size changes
+        window.addEventListener('resize', updateVirtualCanvasSize);
+
         window.addEventListener('scroll', checkAndStartAnimationsOnScroll);
-        window.addEventListener('resize', adjustScaleBasedOnAspectRatio);
+        
         window.addEventListener('resize', updateLogoVisibility);
 
 
