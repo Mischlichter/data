@@ -1980,30 +1980,7 @@
             });
         }
 
-        let touchStartX = 0; // Initial touch position X
-        let touchStartY = 0; // Initial touch position Y
-
-        // Listen for the start of a touch and record its starting position
-        document.addEventListener('touchstart', function(e) {
-            touchStartX = e.touches[0].clientX;
-            touchStartY = e.touches[0].clientY;
-        }, { passive: true });
-
-        // Listen for the move of a touch
-        document.addEventListener('touchmove', function(e) {
-            const touchCurrentX = e.touches[0].clientX;
-            const touchCurrentY = e.touches[0].clientY;
-
-            // Calculate the distance moved in both X and Y directions
-            const moveX = touchCurrentX - touchStartX;
-            const moveY = touchCurrentY - touchStartY;
-
-            // Only prevent default horizontal scrolling behavior if horizontal movement is detected
-            // and there is minimal vertical movement, to allow vertical scrolling
-            if (Math.abs(moveX) > Math.abs(moveY)) {
-                e.preventDefault();
-            }
-        }, { passive: false }); // 'passive: false' is needed to be able to call preventDefault
+        
 
 
 
