@@ -1976,19 +1976,29 @@
             });
         }
 
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        // Listen for the start of a touch
+        document.addEventListener('touchstart', function(e) {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+        }, { passive: true }); // Use passive listener for better performance on scroll
+
+        // Listen for the move of a touch
         document.addEventListener('touchmove', function(e) {
-          // Determine the horizontal movement by comparing the start and current touch positions
-          var touchStartX = 0; // Assume this gets set elsewhere, e.g., in a touchstart event handler
-          var touchEndX = e.touches[0].clientX;
+            const touchEndX = e.touches[0].clientX;
+            const touchEndY = e.touches[0].clientY;
 
-          // Calculate the distance moved
-          var moveX = touchEndX - touchStartX;
+            const moveX = touchEndX - touchStartX;
+            const moveY = touchEndY - touchStartY;
 
-          // If there's significant horizontal movement, prevent the default scrolling behavior
-          if (Math.abs(moveX) > 5) { // 5 is a threshold, adjust as needed
-            e.preventDefault();
-          }
-        }, { passive: false }); // 'passive: false' allows us to call preventDefault
+            // If the horizontal movement is greater than the vertical movement, prevent default
+            // This is a simple threshold check; you might need to adjust it based on your needs
+            if (Math.abs(moveX) > Math.abs(moveY)) {
+                e.preventDefault();
+            }
+        }, { passive: false });
 
 
         // Add event listener to resize in case the viewport size changes
