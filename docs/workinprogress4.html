@@ -1473,7 +1473,7 @@
                 img.style.width = '100%'; // Stretch the image to fill the container's width
                 img.style.height = `${imageHeight}px`; // Set a fixed height for direct tiling
                 container.appendChild(img);
-                requestAnimationFrame(updateParallax);
+                
                 
                 updateVirtualCanvasSize();
             }
@@ -1577,13 +1577,15 @@
             requestAnimationFrame(updateParallax); // Continuously update the position
         }
 
-        // Initialize everything after the page content is fully loaded
         window.addEventListener('load', () => {
             loadInterface(0); // Load with the initial scene index
             adjustScaleBasedOnAspectRatio();
 
-            // Simple check for mobile devices and iOS platform
-            if (!/Mobi|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+            // More focused check for iOS devices
+            var isiOS = /iPad|iPhone|iPod/.test(navigator.platform) || 
+                        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+            if (!isiOS) {
                 requestAnimationFrame(updateParallax);
             }
         });
