@@ -1940,35 +1940,23 @@
                 return;
             }
 
+            // Get the width of the virtual canvas
             var virtualCanvasWidth = virtualCanvas.offsetWidth;
 
             // Determine if we are likely on a mobile device based on viewport width
-            var isMobile = window.innerWidth <= 768; // Mobile threshold
+            var isMobile = window.innerWidth <= 768; // This threshold can be adjusted
 
-            // Detect orientation for mobile devices
-            var isPortrait = window.innerHeight > window.innerWidth;
-            
-            // Default to base width percentage for design
-            var baseWidthPercent = 39;
+            // Calculate the desired width as a percentage of the virtual canvas width
+            var baseWidthPercent = 39; // Adjusted to 39% as per your update
+            // Increase width by 20% on mobile devices
+            var mobileWidthAdjustment = isMobile ? 1.45 : 1; // 20% wider on mobile devices
+            var scaledWidthPx = (virtualCanvasWidth * baseWidthPercent / 100) * mobileWidthAdjustment; // Apply adjustment for mobile
 
-            // Define mobile adjustments: Adjust these values as needed for your design
-            var portraitAdjustment = 1.45; // 45% wider on mobile in portrait
-            var landscapeAdjustment = 1.2; // 20% wider on mobile in landscape
-
-            // Select the appropriate adjustment factor based on mobile status and orientation
-            var adjustmentFactor = 1; // Default for non-mobile or desktop
-            if (isMobile) {
-                adjustmentFactor = isPortrait ? portraitAdjustment : landscapeAdjustment;
-            }
-
-            var scaledWidthPx = (virtualCanvasWidth * baseWidthPercent / 100) * adjustmentFactor; // Apply selected adjustment
-
+            // Adjust the widths of .flex-container and .flex-icontainer
             var flexContainers = document.querySelectorAll('.flex-container, .flex-icontainer');
             flexContainers.forEach(function(container) {
-                // Set width adjusted for mobile orientation or use default for desktop
-                container.style.width = scaledWidthPx + 'px';
-
-                // For .flex-icontainer, adjust padding-top to maintain aspect ratio
+                container.style.width = scaledWidthPx + 'px'; // Set width adjusted for mobile
+                // For .flex-icontainer, set padding-top to maintain aspect ratio, also adjusted for mobile
                 if (container.classList.contains('flex-icontainer')) {
                     container.style.paddingTop = scaledWidthPx + 'px';
                 }
