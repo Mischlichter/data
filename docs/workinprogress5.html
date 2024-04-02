@@ -144,7 +144,7 @@
         }
 
         body {
-            -webkit-touch-callout: none; /* iOS Safari */
+           
 
             -webkit-font-smoothing: antialiased;
             -webkit-overflow-scrolling: touch;
@@ -1992,9 +1992,18 @@
             }, 100); // Delay in milliseconds
         }, { passive: true });
 
-        document.addEventListener('touchmove', function(event) {
-          if (event.scale !== 1) { event.preventDefault(); }
-        }, { passive: false });
+        let initialScale = 1;
+        const viewport = document.querySelector("meta[name=viewport]");
+
+        function disableZoom() {
+          const scale = document.documentElement.clientWidth / window.innerWidth;
+          if (scale !== initialScale) {
+            viewport.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no');
+          }
+        }
+
+        setInterval(disableZoom, 1000);
+
 
     
         // Add event listener to resize in case the viewport size changes
