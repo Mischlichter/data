@@ -1981,27 +1981,38 @@
             });
         }
 
-        // Function to handle touchstart event
-        function handleTouchStart(event) {
-          // Check if more than one touch points are involved in this touch event (multi-touch)
-          if (event.touches.length > 1) {
-            // Prevent the default multi-touch action (like zooming)
-            event.preventDefault();
-          }
-        }
+        let initialScrollX = 0;
+        let initialScrollY = 0;
 
-        // Function to handle touchmove event
-        function handleTouchMove(event) {
-          // You can also prevent default actions during move
-          // especially useful if you're disabling swipe gestures
-          if (event.touches.length > 1) {
-            event.preventDefault();
-          }
-        }
+        // Track the initial scroll position on touchstart
+        document.addEventListener('touchstart', function() {
+            initialScrollX = window.scrollX;
+            initialScrollY = window.scrollY;
+        }, { passive: true });
 
-        // Add event listeners to the document or specific elements
-        document.addEventListener('touchstart', handleTouchStart, { passive: false });
-        document.addEventListener('touchmove', handleTouchMove, { passive: false });
+        // Your existing touchend listener
+        document.addEventListener('touchend', function() {
+            setTimeout(() => {
+                // Only reset horizontal scroll if it's greater than a certain threshold
+                if (window.scrollX > 0) {
+                    window.scrollTo(initialScrollX, initialScrollY);
+                }
+            }, 100); // Delay in milliseconds
+        }, { passive: true });
+
+        // Modified touchmove listener to track touch movements and revert after a delay
+        document.addEventListener('touchmove', function(e) {
+            if (e.touches.length > 1) {
+                // Immediately prevent the default action to attempt to disable browser handling of multi-touch
+                e.preventDefault();
+            }
+
+            // Revert to the initial scroll position after the touchmove ends
+            // This delay gives a chance for the touch action to be processed before reverting
+            setTimeout(() => {
+                window.scrollTo(initialScrollX, initialScrollY);
+            }, 150); // Adjust delay as needed
+        }, { passive: false });
 
     
         // Add event listener to resize in case the viewport size changes
