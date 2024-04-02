@@ -1981,38 +1981,31 @@
             });
         }
 
-        let initialScrollX = 0;
-        let initialScrollY = 0;
-
-        // Track the initial scroll position on touchstart
-        document.addEventListener('touchstart', function() {
-            initialScrollX = window.scrollX;
-            initialScrollY = window.scrollY;
-        }, { passive: true });
-
-        // Your existing touchend listener
         document.addEventListener('touchend', function() {
             setTimeout(() => {
                 // Only reset horizontal scroll if it's greater than a certain threshold
                 if (window.scrollX > 0) {
-                    window.scrollTo(initialScrollX, initialScrollY);
+                    window.scrollTo(0, window.scrollY);
                 }
             }, 100); // Delay in milliseconds
         }, { passive: true });
 
-        // Modified touchmove listener to track touch movements and revert after a delay
         document.addEventListener('touchmove', function(e) {
             if (e.touches.length > 1) {
-                // Immediately prevent the default action to attempt to disable browser handling of multi-touch
+                // Attempt to prevent the default zoom action for multi-touch gestures
                 e.preventDefault();
             }
-
-            // Revert to the initial scroll position after the touchmove ends
-            // This delay gives a chance for the touch action to be processed before reverting
-            setTimeout(() => {
-                window.scrollTo(initialScrollX, initialScrollY);
-            }, 150); // Adjust delay as needed
         }, { passive: false });
+
+        document.addEventListener('touchend', function() {
+            setTimeout(() => {
+                // Directly setting the viewport to attempt to "reset" zoom level.
+                const viewport = document.querySelector("meta[name=viewport]");
+                if (viewport) {
+                    viewport.setAttribute("content", "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no");
+                }
+            }, 100); // Delay to attempt adjustment after gesture is complete
+        }, { passive: true });
 
     
         // Add event listener to resize in case the viewport size changes
