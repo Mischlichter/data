@@ -157,7 +157,6 @@
             transition: color 0.3s ease;
             max-width: 100vw;
             overflow-x: hidden;
-            touch-action: pan-y;
         }
 
 
@@ -1984,12 +1983,18 @@
             });
         }
 
-
+        document.addEventListener('touchend', function() {
+            setTimeout(() => {
+                // Only reset horizontal scroll if it's greater than a certain threshold
+                if (window.scrollX > 0) {
+                    window.scrollTo(0, window.scrollY);
+                }
+            }, 100); // Delay in milliseconds
+        }, { passive: true });
 
         document.addEventListener('touchmove', function(event) {
           if (event.scale !== 1) { event.preventDefault(); }
         }, { passive: false });
-
 
     
         // Add event listener to resize in case the viewport size changes
