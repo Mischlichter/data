@@ -1551,43 +1551,42 @@
         let lastScrollY = 0;
 
         function updateParallax() {
+            // One-time iOS device check to exit the function if on an iOS device
+            const isiOS = /iPad|iPhone|iPod/.test(navigator.platform) || 
+                          (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+            if (isiOS) {
+                return; // Exit the function early if on an iOS device
+            }
+
             const speedFactorBackground = 0.3; // Slower background movement
             const speedFactorSides = -1.2; // Faster side images movement, negative for upward scroll
             const speedFactorViewer = -0.3; // Viewer image movement speed, matching scroll speed for a floating effect
 
-            // Background parallax effect
+            // Parallax effect updates for background, sides, and viewer container
             const background = document.getElementById('interfaceBackground');
             const offsetBackground = window.scrollY * speedFactorBackground;
             background.style.transform = `translateY(${offsetBackground}px)`;
 
-            // Side images parallax effect - since the sides are dynamically created, target their containers
             const sideLeft = document.getElementById('interfaceSideLeft');
             const sideRight = document.getElementById('interfaceSideRight');
             const offsetSides = window.scrollY * speedFactorSides;
             sideLeft.style.transform = `translateY(${offsetSides}px)`;
             sideRight.style.transform = `translateY(${offsetSides}px)`;
 
-            // Viewer image parallax effect - Apply the effect to the viewer container for more control
             const viewerContainer = document.getElementById('interfaceViewerContainer');
             const offsetViewer = window.scrollY * speedFactorViewer;
             viewerContainer.style.transform = `translateY(${offsetViewer}px)`;
 
             lastScrollY = window.scrollY; // Update the last scroll position
 
-            requestAnimationFrame(updateParallax); // Continuously update the position
+            requestAnimationFrame(updateParallax); // Request the next frame for continuous update
         }
 
         window.addEventListener('load', () => {
             loadInterface(0); // Load with the initial scene index
+            requestAnimationFrame(updateParallax);
             adjustScaleBasedOnAspectRatio();
 
-            // More focused check for iOS devices
-            var isiOS = /iPad|iPhone|iPod/.test(navigator.platform) || 
-                        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-
-            if (!isiOS) {
-                requestAnimationFrame(updateParallax);
-            }
         });
 
 
