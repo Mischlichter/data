@@ -1997,9 +1997,7 @@
             }
         }, { passive: false });
 
-        function handleOrientationChange() {
-            adjustContainerSizesBasedOnVirtualCanvas();
-        }
+    
         // Add event listener to resize in case the viewport size changes
         window.addEventListener('resize', updateVirtualCanvasSize);
 
@@ -2007,7 +2005,7 @@
         
         window.addEventListener('resize', updateLogoVisibility);
 
-        window.addEventListener('resize', handleOrientationChange);
+     
 
 
         initialize();
