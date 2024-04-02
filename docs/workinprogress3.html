@@ -1937,7 +1937,7 @@
             var scaleFactor = Math.min(size.width / 1536, size.height / 1024);
             if (isPortrait) {
                 // Adjust for portrait mode with threshold mechanics
-                var threshold = 0.25; // Define the threshold for scale changes
+                var threshold = 0.50; // Define the threshold for scale changes
                 var scaleFactorChange = lastScaleFactor !== null ? Math.abs(scaleFactor - lastScaleFactor) : 0;
                 cumulativeScaleChange += scaleFactorChange;
 
@@ -1955,7 +1955,7 @@
                 cumulativeScaleChange = 0; // Clear cumulative changes
             }
 
-            // Apply the scale factor smoothly for all modes
+            // Apply the scale factor for all modes
             document.querySelectorAll('.scale-wrapper-background, .scale-wrapper-interface').forEach(element => {
                 
                 element.style.transform = `translate(-50%, -50%) scale(${scaleFactor})`;
