@@ -1993,7 +1993,18 @@
         }, { passive: true });
 
 
+        document.addEventListener('touchstart', function(event) {
+          if (event.touches.length > 1) {
+            event.preventDefault();
+          }
+        }, { passive: false });
 
+        document.addEventListener('touchend', function(event) {
+          var zoom = window.innerWidth / window.document.documentElement.clientWidth;
+          if (zoom !== 1.0) {
+            event.preventDefault();
+          }
+        }, { passive: false });
     
         // Add event listener to resize in case the viewport size changes
         window.addEventListener('resize', updateVirtualCanvasSize);
