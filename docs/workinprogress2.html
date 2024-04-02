@@ -1920,8 +1920,8 @@
             }
         }
 
-        var lastScaleFactor = null;
-        var cumulativeScaleChange = 0; // Accumulates scale changes over time
+        var lastScaleFactor = null; // Tracks the last scale factor for portrait mode
+        var cumulativeScaleChange = 0; // Accumulates scale changes for portrait mode
 
         function updateVirtualCanvasSize() {
             var virtualcanvas = document.getElementById('virtualcanvas');
@@ -1929,70 +1929,65 @@
                 virtualcanvas = document.createElement('div');
                 virtualcanvas.id = 'virtualcanvas';
                 document.body.appendChild(virtualcanvas);
+                // Ensure elements are prepared for smooth transitions
+                virtualcanvas.style.transition = 'transform 0.5s ease';
             }
 
             var viewportWidth = window.innerWidth;
             var viewportHeight = window.innerHeight;
+            var isPortrait = viewportWidth < viewportHeight;
             var smoothAspectRatio = getSmoothAspectRatio(viewportWidth, viewportHeight);
             var fixedAspectRatio = 1536 / 1024; // Fixed aspect ratio
 
-            var size;
-            if (viewportWidth < viewportHeight) {
-                var canvasHeight = viewportHeight / smoothAspectRatio;
-                var canvasWidth = canvasHeight * fixedAspectRatio;
-                size = {
-                    width: canvasWidth,
-                    height: canvasHeight,
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    top: '50%'
-                };
+            var canvasWidth, canvasHeight;
+            if (isPortrait) {
+                canvasHeight = viewportHeight / smoothAspectRatio;
+                canvasWidth = canvasHeight * fixedAspectRatio;
             } else {
-                var canvasWidth = viewportWidth;
-                var canvasHeight = canvasWidth / smoothAspectRatio;
-                size = {
-                    width: canvasWidth,
-                    height: canvasHeight,
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    top: '50%'
-                };
+                canvasWidth = viewportWidth;
+                canvasHeight = canvasWidth / smoothAspectRatio;
             }
 
-            // Calculate the current scale factor
+            var size = { width: canvasWidth, height: canvasHeight };
+
             var scaleFactor = Math.min(size.width / 1536, size.height / 1024);
-            
-            // If this is the first run, initialize lastScaleFactor with the current scaleFactor
-            if (lastScaleFactor === null) {
-                lastScaleFactor = scaleFactor;
+            if (isPortrait) {
+                // Adjust for portrait mode with threshold mechanics
+                var threshold = 0.05; // Define the threshold for scale changes
+                var scaleFactorChange = lastScaleFactor !== null ? Math.abs(scaleFactor - lastScaleFactor) : 0;
+                cumulativeScaleChange += scaleFactorChange;
+
+                if (cumulativeScaleChange < threshold && lastScaleFactor !== null) {
+                    // If changes do not exceed the threshold, revert to the last scale factor
+                    scaleFactor = lastScaleFactor;
+                } else {
+                    // Once threshold is exceeded, update normally and reset
+                    lastScaleFactor = scaleFactor;
+                    cumulativeScaleChange = 0; // Reset cumulative change after exceeding threshold
+                }
+            } else {
+                // Landscape mode applies scale directly without threshold mechanics
+                lastScaleFactor = null; // Reset for portrait mode tracking
+                cumulativeScaleChange = 0; // Clear cumulative changes
             }
 
-            // Calculate the change from the last scale factor
-            var scaleFactorChange = Math.abs(scaleFactor - lastScaleFactor);
-            cumulativeScaleChange += scaleFactorChange;
+            // Apply the scale factor smoothly for all modes
+            document.querySelectorAll('.scale-wrapper-background, .scale-wrapper-interface').forEach(element => {
+                if (viewportWidth < viewportHeight) { // Portrait mode
+                    element.style.transition = 'transform 0.5s ease'; // Apply smooth transition
+                } else { // Landscape mode
+                    element.style.transition = 'none'; // No transition for immediate effect
+                }
+                element.style.transform = `translate(-50%, -50%) scale(${scaleFactor})`;
+            });
 
-            // Define a threshold for when to apply the scale change
-            var threshold = 0.25; // Example threshold value
-
-            // Check if the cumulative change exceeds the threshold
-            if (cumulativeScaleChange > threshold) {
-                // Apply the scale factor to elements with specific classes
-                document.querySelectorAll('.scale-wrapper-background, .scale-wrapper-interface').forEach(element => {
-                    element.style.transform = `translate(-50%, -50%) scale(${scaleFactor})`;
-                });
-
-                // Reset cumulativeScaleChange and update lastScaleFactor
-                cumulativeScaleChange = 0;
-                lastScaleFactor = scaleFactor;
-            }
-
-            // Update the virtual canvas styles regardless of scaling to handle window resizing
+            // Update the virtual canvas size
             virtualcanvas.style.width = size.width + 'px';
             virtualcanvas.style.height = size.height + 'px';
-            virtualcanvas.style.left = size.left;
+            virtualcanvas.style.left = '50%';
             virtualcanvas.style.position = 'absolute';
-            virtualcanvas.style.transform = size.transform;
-            virtualcanvas.style.top = size.top;
+            virtualcanvas.style.transform = 'translate(-50%, -50%)';
+            virtualcanvas.style.top = '50%';
             virtualcanvas.style.zIndex = '100';
         }
 
