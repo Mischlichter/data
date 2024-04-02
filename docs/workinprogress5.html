@@ -2001,7 +2001,75 @@
         
         window.addEventListener('resize', updateLogoVisibility);
 
-     
+        let evCache = [];
+        let prevDiff = -1;
+
+        function pointerdown_handler(ev) {
+          // Add this pointer to the cache and prevent mouse down
+          evCache.push(ev);
+        }
+
+        function pointermove_handler(ev) {
+          // This function is called on mouse move during the drag operation
+          for (let i = 0; i < evCache.length; i++) {
+            if (ev.pointerId == evCache[i].pointerId) {
+              evCache[i] = ev;
+              break;
+            }
+          }
+
+          if (evCache.length == 2) {
+            // Calculate the distance between the two pointers
+            const curDiff = Math.abs(evCache[0].clientX - evCache[1].clientX);
+
+            if (prevDiff > 0) {
+              if (curDiff > prevDiff) {
+                // Pinch moving OUT -> Zoom in
+                console.log("Pinching OUT -> Zoom in");
+              } else if (curDiff < prevDiff) {
+                // Pinch moving IN -> Zoom out
+                console.log("Pinching IN -> Zoom out");
+              }
+            }
+
+            // Cache the distance for the next move event
+            prevDiff = curDiff;
+          }
+
+          // Prevent default behavior to stop zooming
+          ev.preventDefault();
+        }
+
+        function pointerup_handler(ev) {
+          remove_event(ev);
+          // If the number of pointers down is less than two, reset diff tracker
+          if (evCache.length < 2) {
+            prevDiff = -1;
+          }
+        }
+
+        function init() {
+          // Attach event listeners to the document
+          document.addEventListener('pointerdown', pointerdown_handler);
+          document.addEventListener('pointermove', pointermove_handler);
+          document.addEventListener('pointerup', pointerup_handler);
+          document.addEventListener('pointercancel', pointerup_handler);
+          document.addEventListener('pointerout', pointerup_handler);
+          document.addEventListener('pointerleave', pointerup_handler);
+        }
+
+        function remove_event(ev) {
+          // Remove this event from the cache
+          for (let i = 0; i < evCache.length; i++) {
+            if (evCache[i].pointerId == ev.pointerId) {
+              evCache.splice(i, 1);
+              break;
+            }
+          }
+        }
+
+        // Initialize the listeners
+        window.onload = init;
 
 
         initialize();
