@@ -1548,32 +1548,33 @@
             }
         }
 
-        let lastScrollY = window.scrollY;
-
-        // Cache DOM references
-        const background = document.getElementById('interfaceBackground');
-        const sideLeft = document.getElementById('interfaceSideLeft');
-        const sideRight = document.getElementById('interfaceSideRight');
-        const viewerContainer = document.getElementById('interfaceViewerContainer');
+        let lastScrollY = 0;
 
         function updateParallax() {
-            const currentScrollY = window.scrollY;
-            if (lastScrollY !== currentScrollY) {
-                const speedFactorBackground = 0.3; // Slower background movement
-                const speedFactorSides = -1.2; // Faster side images movement, negative for upward scroll
-                const speedFactorViewer = -0.3; // Viewer image movement speed, matching scroll speed for a floating effect
+            const speedFactorBackground = 0.3; // Slower background movement
+            const speedFactorSides = -1.2; // Faster side images movement, negative for upward scroll
+            const speedFactorViewer = -0.3; // Viewer image movement speed, matching scroll speed for a floating effect
 
-                // Apply parallax effect based on current scroll position
-                background.style.transform = `translateY(${currentScrollY * speedFactorBackground}px)`;
-                sideLeft.style.transform = `translateY(${currentScrollY * speedFactorSides}px)`;
-                sideRight.style.transform = `translateY(${currentScrollY * speedFactorSides}px)`;
-                viewerContainer.style.transform = `translateY(${currentScrollY * speedFactorViewer}px)`;
+            // Background parallax effect
+            const background = document.getElementById('interfaceBackground');
+            const offsetBackground = window.scrollY * speedFactorBackground;
+            background.style.transform = `translateY(${offsetBackground}px)`;
 
-                lastScrollY = currentScrollY;
-            }
+            // Side images parallax effect - since the sides are dynamically created, target their containers
+            const sideLeft = document.getElementById('interfaceSideLeft');
+            const sideRight = document.getElementById('interfaceSideRight');
+            const offsetSides = window.scrollY * speedFactorSides;
+            sideLeft.style.transform = `translateY(${offsetSides}px)`;
+            sideRight.style.transform = `translateY(${offsetSides}px)`;
 
-            // Request the next frame to update parallax
-            requestAnimationFrame(updateParallax);
+            // Viewer image parallax effect - Apply the effect to the viewer container for more control
+            const viewerContainer = document.getElementById('interfaceViewerContainer');
+            const offsetViewer = window.scrollY * speedFactorViewer;
+            viewerContainer.style.transform = `translateY(${offsetViewer}px)`;
+
+            lastScrollY = window.scrollY; // Update the last scroll position
+
+            requestAnimationFrame(updateParallax); // Continuously update the position
         }
 
         // Initialize everything after the page content is fully loaded
