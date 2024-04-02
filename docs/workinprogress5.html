@@ -228,6 +228,7 @@
             overflow: hidden; /* Ensures nothing spills outside the rounded corners */
             box-sizing: border-box;
             background-color: black;
+            pointer-events: none;
             /* Removed flexbox styles since we're using absolute positioning for the image */
         }
 
@@ -239,6 +240,7 @@
             height: 105%; /* Keep the image square and slightly larger */
             transform: translate(-50%, -50%); /* Center the image */
             object-fit: cover; /* Ensures the image covers the available area */
+            pointer-events: none;
         }
 
 
@@ -263,6 +265,7 @@
             border-radius: 20px; /* Rounded corners */
             padding: 8px 15px; /* Adjust padding as needed */
             background-color: black;
+            pointer-events: none;
             
         }
         
@@ -270,6 +273,7 @@
             white-space: nowrap;
             display: inline-block;
             margin: 0 5px 5px 0;
+            pointer-events: none;
         }
 
 
