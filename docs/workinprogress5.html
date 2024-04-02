@@ -1992,15 +1992,9 @@
             }, 100); // Delay in milliseconds
         }, { passive: true });
 
-        function preventMultiTouchZoom(event) {
-            if (event.touches.length > 1) {
-                // Prevent the browser's default multi-touch actions, like zooming
-                event.preventDefault();
-            }
-        }
-
-        // Apply this preventive function on touchmove event which is key for zooming and scrolling
-        document.addEventListener('touchmove', preventMultiTouchZoom, { passive: false });
+        document.addEventListener('touchmove', function(event) {
+          if (event.scale !== 1) { event.preventDefault(); }
+        }, { passive: false });
 
     
         // Add event listener to resize in case the viewport size changes
