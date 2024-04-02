@@ -1993,8 +1993,10 @@
             }, 100); // Delay in milliseconds
         }, { passive: true });
 
-        
-
+        function resetZoomLevel() {
+          document.body.style.zoom = "100%";
+        }
+        window.addEventListener('resize', resetZoomLevel);
     
         // Add event listener to resize in case the viewport size changes
         window.addEventListener('resize', updateVirtualCanvasSize);
