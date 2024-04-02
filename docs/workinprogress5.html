@@ -212,7 +212,7 @@
             z-index:1;
         }
 
-        
+     
         
         
         /* Individual image containers */
@@ -538,7 +538,7 @@
 
     <div class="mainpage">
 
-    </div>
+        </div>
         <div id="iframeContainer" style="position: relative; width: 100%; height: 100%;;z-index: 1;">
         <div id="mouseOverlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;z-index: 1;"></div>
  
@@ -614,6 +614,11 @@
                 lenis.start();
             }, 50); // Using setTimeout ensures this occurs in the next event loop cycle
         }
+
+        
+
+//////// Interface Loadin //////
+        
 
         
 
@@ -1425,10 +1430,6 @@
             images.forEach(image => observer.observe(image));
         }
 
-        
-//////// Interface Loadin //////
-
-
         function createVerticalTiles_a(containerId, imageUrl, imageHeight) {
             const container = document.getElementById(containerId);
             container.innerHTML = ''; // Clear existing content
@@ -1976,8 +1977,6 @@
             });
         }
 
-        
-
         document.addEventListener('touchend', function() {
             setTimeout(() => {
                 // Only reset horizontal scroll if it's greater than a certain threshold
@@ -1994,18 +1993,17 @@
             }
         }, { passive: false });
 
-        function handleResizeEvents() {
-            updateVirtualCanvasSize();
-            updateLogoVisibility();
+        function handleOrientationChange() {
             adjustContainerSizesBasedOnVirtualCanvas();
-            // Add any other functions you need to call on resize here
         }
         // Add event listener to resize in case the viewport size changes
-        window.addEventListener('resize', handleResizeEvents);
+        window.addEventListener('resize', updateVirtualCanvasSize);
 
         window.addEventListener('scroll', checkAndStartAnimationsOnScroll);
         
-        
+        window.addEventListener('resize', updateLogoVisibility);
+
+        window.addEventListener('resize', handleOrientationChange);
 
 
         initialize();
