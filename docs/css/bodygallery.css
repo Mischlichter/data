@@ -4,7 +4,7 @@ html {
 }
 
 #bodygallery {
-   
+    
     font-family: 'JetBrainsMono-Bold', sans-serif;
    
     background-color: black;
@@ -222,8 +222,14 @@ html {
 #search-container {
     display: flex;
     justify-content: center;
-    margin-top: 85px; /* Increased top margin */
-    margin-bottom: 30px; /* Added bottom margin */
+    margin-top: 85px; /* Default top margin */
+    margin-bottom: 30px; /* Bottom margin */
+}
+
+@media (orientation: portrait) {
+    #search-container {
+        margin-top: 120px; /* Increased top margin for portrait mode */
+    }
 }
 
 #search-bar {
@@ -422,14 +428,20 @@ html {
     /* Additional styling */
 }
 #loading-progress-container {
-    position: absolute; /* or 'relative' based on your layout */
-    top: 84px; /* Adjust as needed */
-    right: 30px; /* Adjust as needed */
-    width: 45px; /* Size of the circle */
-    height: 50px;  
-    transition: opacity 1s ease-out; /* Add transition for opacity */
-    opacity: 1; /* Set initial opacity to 1 */
-    z-index: 50; /* Make sure this is high enough to be above other elements */
+    position: absolute;
+    top: 84px;
+    right: 30px;
+    width: 45px;
+    height: 50px;
+    transition: opacity 1s ease-out;
+    opacity: 1;
+    z-index: 50;
+}
+
+@media (orientation: portrait) {
+    #loading-progress-container {
+        top: 118.5px; /* Increased top for portrait mode */
+    }
 }
 
 .circular-chart {
