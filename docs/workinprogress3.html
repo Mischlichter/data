@@ -1976,16 +1976,26 @@
             });
         }
 
-        window.addEventListener('scroll', function() {
-          // Check if there's horizontal scroll
-          if (window.scrollX > 0) {
-            // Use setTimeout to avoid interrupting the scroll action
-            setTimeout(() => {
-              // Scroll back to the leftmost part of the window
-              window.scrollTo(0, window.scrollY);
-            }, 100); // Adjust the timeout as needed
-          }
-        });
+        let lastTouchX = 0;
+
+        window.addEventListener('touchstart', function(e) {
+            lastTouchX = e.touches[0].clientX;
+        }, false);
+
+        window.addEventListener('touchmove', function(e) {
+            const currentTouchX = e.touches[0].clientX;
+            const movedX = currentTouchX - lastTouchX;
+
+            if (Math.abs(movedX) > 5) { // Threshold to determine if significant horizontal move
+                // Prevent default behavior to stop scrolling
+                // e.preventDefault(); // Uncomment this line may prevent scrolling, use with caution
+
+                // Logic to snap back to the original position
+                setTimeout(() => {
+                    window.scrollTo(0, window.scrollY);
+                }, 100);
+            }
+        }, false);
 
         // Add event listener to resize in case the viewport size changes
         window.addEventListener('resize', updateVirtualCanvasSize);
