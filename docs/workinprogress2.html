@@ -1920,8 +1920,10 @@
             }
         }
 
+        var lastScaleFactor = null;
+        var cumulativeScaleChange = 0; // Accumulates scale changes over time
+
         function updateVirtualCanvasSize() {
-            // Check if virtualcanvas exists, if not create it
             var virtualcanvas = document.getElementById('virtualcanvas');
             if (!virtualcanvas) {
                 virtualcanvas = document.createElement('div');
@@ -1935,7 +1937,6 @@
             var fixedAspectRatio = 1536 / 1024; // Fixed aspect ratio
 
             var size;
-
             if (viewportWidth < viewportHeight) {
                 var canvasHeight = viewportHeight / smoothAspectRatio;
                 var canvasWidth = canvasHeight * fixedAspectRatio;
@@ -1958,27 +1959,41 @@
                 };
             }
 
-            // Set the styles and dimensions of the virtual canvas
+            // Calculate the current scale factor
+            var scaleFactor = Math.min(size.width / 1536, size.height / 1024);
+            
+            // If this is the first run, initialize lastScaleFactor with the current scaleFactor
+            if (lastScaleFactor === null) {
+                lastScaleFactor = scaleFactor;
+            }
+
+            // Calculate the change from the last scale factor
+            var scaleFactorChange = Math.abs(scaleFactor - lastScaleFactor);
+            cumulativeScaleChange += scaleFactorChange;
+
+            // Define a threshold for when to apply the scale change
+            var threshold = 0.25; // Example threshold value
+
+            // Check if the cumulative change exceeds the threshold
+            if (cumulativeScaleChange > threshold) {
+                // Apply the scale factor to elements with specific classes
+                document.querySelectorAll('.scale-wrapper-background, .scale-wrapper-interface').forEach(element => {
+                    element.style.transform = `translate(-50%, -50%) scale(${scaleFactor})`;
+                });
+
+                // Reset cumulativeScaleChange and update lastScaleFactor
+                cumulativeScaleChange = 0;
+                lastScaleFactor = scaleFactor;
+            }
+
+            // Update the virtual canvas styles regardless of scaling to handle window resizing
             virtualcanvas.style.width = size.width + 'px';
             virtualcanvas.style.height = size.height + 'px';
             virtualcanvas.style.left = size.left;
             virtualcanvas.style.position = 'absolute';
             virtualcanvas.style.transform = size.transform;
             virtualcanvas.style.top = size.top;
-            
-            virtualcanvas.style.zIndex = '-100';
-
-        // Calculate the scale factor based on the virtual canvas size relative to 1536x1024
-            var scaleFactor = Math.min(size.width / 1536, size.height / 1024);
-
-            // Adjust scaleFactor by a percentage (+ for increase, - for decrease)
-            var percentageChange = -0.1; // Adjust this value to change the scale factor by percentage
-            scaleFactor *= (1 + percentageChange);
-
-            // Apply the scale factor to elements with specific classes
-            document.querySelectorAll('.scale-wrapper-background, .scale-wrapper-interface').forEach(element => {
-                element.style.transform = `translate(-50%, -50%) scale(${scaleFactor})`;
-            });    
+            virtualcanvas.style.zIndex = '100';
         }
 
         
