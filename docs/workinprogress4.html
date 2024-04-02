@@ -1019,7 +1019,7 @@
             setTimeout(() => {
                 isAnimating = false;
                 
-            }, 7000); // 3000 milliseconds = 3 seconds
+            }, 4000); // 3000 milliseconds = 3 seconds
             
             
             // Create or clear the menu bar
@@ -1917,32 +1917,10 @@
             var size = { width: canvasWidth, height: canvasHeight };
 
             var scaleFactor = Math.min(size.width / 1536, size.height / 1024);
-            if (isPortrait) {
-                // Adjust for portrait mode with threshold mechanics
-                var threshold = 0; // Define the threshold for scale changes
-                var scaleFactorChange = lastScaleFactor !== null ? Math.abs(scaleFactor - lastScaleFactor) : 0;
-                cumulativeScaleChange += scaleFactorChange;
 
-                if (cumulativeScaleChange < threshold && lastScaleFactor !== null) {
-                    // If changes do not exceed the threshold, revert to the last scale factor
-                    scaleFactor = lastScaleFactor;
-                } else {
-                    // Once threshold is exceeded, update normally and reset
-                    lastScaleFactor = scaleFactor;
-                    cumulativeScaleChange = 0; // Reset cumulative change after exceeding threshold
-                }
-            } else {
-                // Landscape mode applies scale directly without threshold mechanics
-                lastScaleFactor = null; // Reset for portrait mode tracking
-                cumulativeScaleChange = 0; // Clear cumulative changes
-            }
-
-            // Apply the scale factor for all modes, increased by 10%
+            // Apply the scale factor for all modes without checking for changes
             document.querySelectorAll('.scale-wrapper-background, .scale-wrapper-interface').forEach(element => {
-                // Increase the scale factor by 10%
-                let adjustedScaleFactor = scaleFactor * 1;
-
-                element.style.transform = `translate(-50%, -50%) scale(${adjustedScaleFactor})`;
+                element.style.transform = `translate(-50%, -50%) scale(${scaleFactor})`;
             });
 
             // Update the virtual canvas size
@@ -1953,6 +1931,8 @@
             virtualcanvas.style.transform = 'translate(-50%, -50%)';
             virtualcanvas.style.top = '50%';
             virtualcanvas.style.zIndex = '-100';
+
+
         }
 
         function adjustContainerSizesBasedOnVirtualCanvas() {
@@ -1962,19 +1942,35 @@
                 return;
             }
 
-            // Get the width of the virtual canvas
             var virtualCanvasWidth = virtualCanvas.offsetWidth;
 
-            // Calculate the desired width as a percentage of the virtual canvas width
-            var baseWidthPercent = 39; // The base width percentage for your design
-            var scaledWidthPx = (virtualCanvasWidth * baseWidthPercent) / 100; // Calculate scaled width in pixels
+            // Determine if we are likely on a mobile device based on viewport width
+            var isMobile = window.innerWidth <= 768; // Mobile threshold
 
-            // Adjust the widths of .flex-container and .flex-icontainer
+            // Detect orientation for mobile devices
+            var isPortrait = window.innerHeight > window.innerWidth;
+            
+            // Default to base width percentage for design
+            var baseWidthPercent = 39;
+
+            // Define mobile adjustments: Adjust these values as needed for your design
+            var portraitAdjustment = 1.3; // 45% wider on mobile in portrait
+            var landscapeAdjustment = 1; // 20% wider on mobile in landscape
+
+            // Select the appropriate adjustment factor based on mobile status and orientation
+            var adjustmentFactor = 1; // Default for non-mobile or desktop
+            if (isMobile) {
+                adjustmentFactor = isPortrait ? portraitAdjustment : landscapeAdjustment;
+            }
+
+            var scaledWidthPx = (virtualCanvasWidth * baseWidthPercent / 100) * adjustmentFactor; // Apply selected adjustment
+
             var flexContainers = document.querySelectorAll('.flex-container, .flex-icontainer');
             flexContainers.forEach(function(container) {
-                // Set width directly in pixels to match the calculated width based on virtual canvas
+                // Set width adjusted for mobile orientation or use default for desktop
                 container.style.width = scaledWidthPx + 'px';
-                // For .flex-icontainer, set padding-top to maintain aspect ratio
+
+                // For .flex-icontainer, adjust padding-top to maintain aspect ratio
                 if (container.classList.contains('flex-icontainer')) {
                     container.style.paddingTop = scaledWidthPx + 'px';
                 }
@@ -1997,13 +1993,18 @@
             }
         }, { passive: false });
 
-
+        function handleResizeEvents() {
+            updateVirtualCanvasSize();
+            updateLogoVisibility();
+            adjustContainerSizesBasedOnVirtualCanvas();
+            // Add any other functions you need to call on resize here
+        }
         // Add event listener to resize in case the viewport size changes
-        window.addEventListener('resize', updateVirtualCanvasSize);
+        window.addEventListener('resize', handleResizeEvents);
 
         window.addEventListener('scroll', checkAndStartAnimationsOnScroll);
         
-        window.addEventListener('resize', updateLogoVisibility);
+        
 
 
         initialize();
