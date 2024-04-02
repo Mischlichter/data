@@ -387,7 +387,7 @@
         }
 
         #interfaceContainer {
-          position: absolute; /* or 'fixed' depending on use case */
+          position: fixed; /* or 'fixed' depending on use case */
           top: 50%;
           left: 50%;
           z-index: 15;
@@ -409,7 +409,7 @@
    
 
         #interfaceSideLeft, #interfaceSideRight {
-          position: absolute;
+          position: fixed;
           top: 0;
           width: calc((var(--total-width) - var(--viewer-width)) / 2); /* Adjust width for side containers */
           height: 100%;
@@ -427,7 +427,7 @@
         }
 
         #interfaceViewerContainer {
-          position: absolute;
+          position: fixed;
           top: 0;
           left: calc((100% - var(--viewer-width)) / 2); /* Center the viewer */
           width: var(--viewer-width);
@@ -459,7 +459,7 @@
         }
 
         #backgroundContainer {
-            position: absolute; /* or 'fixed' depending on use case */
+            position: fixed; /* or 'fixed' depending on use case */
             top: 50%;
             left: 50%;
             z-index: -2;
@@ -470,7 +470,7 @@
         }
 
         #backgroundInterfaceContainer {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: calc((100% - var(--viewer-width)) / 2); /* Center the viewer */
             width: var(--viewer-width);
