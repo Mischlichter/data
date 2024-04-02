@@ -186,7 +186,10 @@
             border-left: 6px solid transparent; /* Adjust the border width to match the thumb's width */
         }
 
-
+        body::-webkit-scrollbar-thumb {
+            background: transparent;
+            pointer-events: none; /* Disable interactivity */
+        }
 
         #iframeContainer {
             width: 100%;
@@ -456,7 +459,7 @@
         }
 
         #backgroundContainer {
-            position: absolute; /* or 'fixed' depending on use case */
+            position: fixed; /* or 'fixed' depending on use case */
             top: 50%;
             left: 50%;
             z-index: -2;
@@ -467,7 +470,7 @@
         }
 
         #backgroundInterfaceContainer {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: calc((100% - var(--viewer-width)) / 2); /* Center the viewer */
             width: var(--viewer-width);
@@ -486,7 +489,7 @@
         }
 
         .scale-wrapper-background, .scale-wrapper-interface {
-            position: absolute; /* Or 'fixed' if they should stay in place during scroll */
+            position: fixed; /* Or 'fixed' if they should stay in place during scroll */
             top: 0;
             left: 0;
             width: 100%;
@@ -496,7 +499,7 @@
 
         .scale-wrapper-background {
             pointer-events: none;
-            position: absolute; /* Switched to absolute for stronger positioning control */
+            position: fixed; /* Switched to absolute for stronger positioning control */
             top: -15%;
             left: 50%;
             transform-origin: center center; /* Ensures scaling occurs from the element's center */
@@ -507,7 +510,7 @@
 
         .scale-wrapper-interface {
             pointer-events: none;
-            position: absolute; /* Switched to absolute for stronger positioning control */
+            position: fixed; /* Switched to absolute for stronger positioning control */
             top: 50%;
             left: 50%;
             transform-origin: center center; /* Ensures scaling occurs from the element's center */
