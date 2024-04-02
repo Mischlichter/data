@@ -1990,22 +1990,15 @@
             }, 100); // Delay in milliseconds
         }, { passive: true });
 
-        document.addEventListener('touchmove', function(e) {
-            if (e.touches.length > 1) {
-                // Attempt to prevent the default zoom action for multi-touch gestures
-                e.preventDefault();
+        function preventMultiTouchZoom(event) {
+            if (event.touches.length > 1) {
+                // Prevent the browser's default multi-touch actions, like zooming
+                event.preventDefault();
             }
-        }, { passive: false });
+        }
 
-        document.addEventListener('touchend', function() {
-            setTimeout(() => {
-                // Directly setting the viewport to attempt to "reset" zoom level.
-                const viewport = document.querySelector("meta[name=viewport]");
-                if (viewport) {
-                    viewport.setAttribute("content", "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no");
-                }
-            }, 100); // Delay to attempt adjustment after gesture is complete
-        }, { passive: true });
+        // Apply this preventive function on touchmove event which is key for zooming and scrolling
+        document.addEventListener('touchmove', preventMultiTouchZoom, { passive: false });
 
     
         // Add event listener to resize in case the viewport size changes
