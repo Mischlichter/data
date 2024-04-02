@@ -1863,30 +1863,7 @@
             });
         }
 
-        function adjustScaleBasedOnAspectRatio() {
-            // Calculate the current aspect ratio
-            const currentAspectRatio = window.innerWidth / window.innerHeight;
-            
-            // Normalize the aspect ratio to a 0-1 range for interpolation purposes
-            // Assuming most aspect ratios will fall between 1:1 (1.0) and roughly 21:9 (2.33), which is quite wide
-            const minAspectRatio = 1; // 1:1 aspect ratio
-            const maxAspectRatio = 21 / 9; // 21:9 aspect ratio, adjust if needed
-
-            // Scale factors for the minimum and maximum aspect ratios
-            const scaleMin = 0.5; // Scale factor at 1:1 aspect ratio
-            const scaleMax = 1.1; // Scale factor at 16:9 aspect ratio, extends linearly beyond
-
-            // Calculate the normalized current aspect ratio, clamped between 0 and 1
-            const normalizedAspectRatio = Math.min(Math.max(currentAspectRatio, minAspectRatio), maxAspectRatio);
-
-            // Calculate a linearly interpolated scale factor based on the normalized aspect ratio
-            let scaleFactor = scaleMin + (scaleMax - scaleMin) * ((normalizedAspectRatio - minAspectRatio) / (maxAspectRatio - minAspectRatio));
-
-            // Apply the calculated scale factor
-            document.querySelectorAll('.scale-wrapper-background, .scale-wrapper-interface').forEach(element => {
-                element.style.transform = `translate(-50%, -50%) scale(${scaleFactor})`;
-            });
-        }
+        
 
         function getSmoothAspectRatio(viewportWidth, viewportHeight) {
             const portraitAspectRatio = 1.6; 
@@ -1959,7 +1936,7 @@
             document.querySelectorAll('.scale-wrapper-background, .scale-wrapper-interface').forEach(element => {
                 
                 element.style.transform = `translate(-50%, -50%) scale(${scaleFactor})`;
-                adjustContainerSizesBasedOnVirtualCanvas();
+                
             });
 
             // Update the virtual canvas size
