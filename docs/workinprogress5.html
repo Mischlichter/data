@@ -155,7 +155,7 @@
             transition: color 0.3s ease;
             max-width: 100vw;
             overflow-x: hidden;
-            touch-action: none;
+            
         }
 
 
@@ -1991,16 +1991,6 @@
             }, 100); // Delay in milliseconds
         }, { passive: true });
 
-
-
-    
-        // Add event listener to resize in case the viewport size changes
-        window.addEventListener('resize', updateVirtualCanvasSize);
-
-        window.addEventListener('scroll', checkAndStartAnimationsOnScroll);
-        
-        window.addEventListener('resize', updateLogoVisibility);
-
         let evCache = [];
         let prevDiff = -1;
 
@@ -2070,6 +2060,16 @@
 
         // Initialize the listeners
         window.onload = init;
+
+    
+        // Add event listener to resize in case the viewport size changes
+        window.addEventListener('resize', updateVirtualCanvasSize);
+
+        window.addEventListener('scroll', checkAndStartAnimationsOnScroll);
+        
+        window.addEventListener('resize', updateLogoVisibility);
+
+        
 
 
         initialize();
