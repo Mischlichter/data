@@ -1580,9 +1580,12 @@
         // Initialize everything after the page content is fully loaded
         window.addEventListener('load', () => {
             loadInterface(0); // Load with the initial scene index
-            requestAnimationFrame(updateParallax);
             adjustScaleBasedOnAspectRatio();
 
+            // Simple check for mobile devices and iOS platform
+            if (!/Mobi|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                requestAnimationFrame(updateParallax);
+            }
         });
 
 
