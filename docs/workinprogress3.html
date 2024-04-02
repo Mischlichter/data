@@ -1976,26 +1976,20 @@
             });
         }
 
-        let lastTouchX = 0;
+        document.addEventListener('touchmove', function(e) {
+          // Determine the horizontal movement by comparing the start and current touch positions
+          var touchStartX = 0; // Assume this gets set elsewhere, e.g., in a touchstart event handler
+          var touchEndX = e.touches[0].clientX;
 
-        window.addEventListener('touchstart', function(e) {
-            lastTouchX = e.touches[0].clientX;
-        }, false);
+          // Calculate the distance moved
+          var moveX = touchEndX - touchStartX;
 
-        window.addEventListener('touchmove', function(e) {
-            const currentTouchX = e.touches[0].clientX;
-            const movedX = currentTouchX - lastTouchX;
+          // If there's significant horizontal movement, prevent the default scrolling behavior
+          if (Math.abs(moveX) > 5) { // 5 is a threshold, adjust as needed
+            e.preventDefault();
+          }
+        }, { passive: false }); // 'passive: false' allows us to call preventDefault
 
-            if (Math.abs(movedX) > 5) { // Threshold to determine if significant horizontal move
-                // Prevent default behavior to stop scrolling
-                // e.preventDefault(); // Uncomment this line may prevent scrolling, use with caution
-
-                // Logic to snap back to the original position
-                setTimeout(() => {
-                    window.scrollTo(0, window.scrollY);
-                }, 100);
-            }
-        }, false);
 
         // Add event listener to resize in case the viewport size changes
         window.addEventListener('resize', updateVirtualCanvasSize);
