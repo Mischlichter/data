@@ -1932,7 +1932,7 @@
             virtualcanvas.style.top = '50%';
             virtualcanvas.style.zIndex = '-100';
 
-
+            
         }
 
         function adjustContainerSizesBasedOnVirtualCanvas() {
@@ -1993,18 +1993,13 @@
             }
         }, { passive: false });
 
-        function handleResizeEvents() {
-            updateVirtualCanvasSize();
-            updateLogoVisibility();
-            adjustContainerSizesBasedOnVirtualCanvas();
-            // Add any other functions you need to call on resize here
-        }
+        
         // Add event listener to resize in case the viewport size changes
-        window.addEventListener('resize', handleResizeEvents);
+        window.addEventListener('resize', updateVirtualCanvasSize);
 
         window.addEventListener('scroll', checkAndStartAnimationsOnScroll);
         
-        
+        window.addEventListener('resize', updateLogoVisibility);
 
 
         initialize();
