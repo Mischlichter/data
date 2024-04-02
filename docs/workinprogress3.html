@@ -387,7 +387,7 @@
         }
 
         #interfaceContainer {
-          position: fixed; /* or 'fixed' depending on use case */
+          position: absolute; /* or 'fixed' depending on use case */
           top: 50%;
           left: 50%;
           z-index: 15;
@@ -409,7 +409,7 @@
    
 
         #interfaceSideLeft, #interfaceSideRight {
-          position: fixed;
+          position: absolute;
           top: 0;
           width: calc((var(--total-width) - var(--viewer-width)) / 2); /* Adjust width for side containers */
           height: 100%;
@@ -427,7 +427,7 @@
         }
 
         #interfaceViewerContainer {
-          position: fixed;
+          position: absolute;
           top: 0;
           left: calc((100% - var(--viewer-width)) / 2); /* Center the viewer */
           width: var(--viewer-width);
@@ -459,7 +459,7 @@
         }
 
         #backgroundContainer {
-            position: fixed; /* or 'fixed' depending on use case */
+            position: absolute; /* or 'fixed' depending on use case */
             top: 50%;
             left: 50%;
             z-index: -2;
@@ -470,7 +470,7 @@
         }
 
         #backgroundInterfaceContainer {
-            position: fixed;
+            position: absolute;
             top: 0;
             left: calc((100% - var(--viewer-width)) / 2); /* Center the viewer */
             width: var(--viewer-width);
@@ -499,7 +499,7 @@
 
         .scale-wrapper-background {
             pointer-events: none;
-            position: fixed; /* Switched to absolute for stronger positioning control */
+            position: absolute; /* Switched to absolute for stronger positioning control */
             top: -15%;
             left: 50%;
             transform-origin: center center; /* Ensures scaling occurs from the element's center */
@@ -510,7 +510,7 @@
 
         .scale-wrapper-interface {
             pointer-events: none;
-            position: fixed; /* Switched to absolute for stronger positioning control */
+            position: absolute; /* Switched to absolute for stronger positioning control */
             top: 50%;
             left: 50%;
             transform-origin: center center; /* Ensures scaling occurs from the element's center */
