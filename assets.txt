@@ -1,6 +1,6 @@
 scene01:
-IMG01=https://raw.githubusercontent.com/Mischlichter/data/main/02_01.png:0.75:0:0
-DMP01=https://raw.githubusercontent.com/Mischlichter/data/main/02_d01.png:0.75:0:0
+IMG01=https://raw.githubusercontent.com/Mischlichter/data/main/02_01.png:0.80:0:0
+DMP01=https://raw.githubusercontent.com/Mischlichter/data/main/02_d01.png:0.80:0:0
 
 scene02:
 IMG01=https://raw.githubusercontent.com/Mischlichter/data/main/02_01.png:0.75:0:0
