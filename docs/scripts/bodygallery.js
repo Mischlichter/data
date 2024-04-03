@@ -265,7 +265,7 @@ const galleryHTML = `
             ];
             const background = document.createElement('div');
             background.style.position = 'absolute';
-            background.style.top = '0';
+            background.style.top = '-2px';
             background.style.left = '0';
             background.style.width = '100%';
             background.style.height = '500vh';
