@@ -174,7 +174,7 @@ html {
 }
 
 .center-container {
-    
+    top: -10%;
 
     position: absolute; /* Use absolute positioning */
     width: 100%; /* Full width of the viewport */
