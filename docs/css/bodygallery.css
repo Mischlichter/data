@@ -226,7 +226,7 @@ html {
     margin-bottom: 30px; /* Bottom margin */
 }
 
-@media (orientation: portrait) {
+@media screen and (max-width: 768px) {
     #search-container {
         margin-top: 120px; /* Increased top margin for portrait mode */
     }
@@ -438,7 +438,7 @@ html {
     z-index: 50;
 }
 
-@media (orientation: portrait) {
+@media screen and (max-width: 768px) {
     #loading-progress-container {
         top: 118.5px; /* Increased top for portrait mode */
     }
