@@ -293,9 +293,7 @@
         }
             
         
-        .hide-logo {
-            display: none;
-        }
+    
 
         .menu-bar {
             display: flex;
@@ -339,12 +337,29 @@
             }
 
             .menu-container {
-                flex: 1 1 30%; /* Each item takes up to 50% of the width */
+                flex: 1 1 25%; /* Each item takes up to 25% of the width */
                 box-sizing: border-box; /* Include padding and border in the width */
                 text-align: center; /* Center text in each container */
                 padding: 5px; /* Adjust padding for items */
+                
             }
+  
+            .logo-small {
+                position: absolute;
+                left: 15%; /* 25% of the container's width is the first quarter */
+                top: 50%;
+                transform: translate(-50%, -50%); /* Center horizontally and vertically */
+            }
+
+         
+
+
         }
+
+
+
+
+
         .active-menu-item {
             font-family: 'JetBrainsMono-Bold'; /* Bold font */
             color: #fff; /* Change color if needed */
@@ -541,6 +556,7 @@
 </head>
 <body>
     
+  
 
 
     <div class="mainpage">
@@ -1018,17 +1034,13 @@
         }
 
         let menuContainerIds = []; // Global or accessible scope
-        
 
         function loadMenu(menuData) {
-       
             isAnimating = true;
             
             setTimeout(() => {
                 isAnimating = false;
-                
             }, 4000); // 3000 milliseconds = 3 seconds
-            
             
             // Create or clear the menu bar
             let menuBar = document.querySelector('.menu-bar');
@@ -1040,7 +1052,7 @@
                 menuBar.innerHTML = ''; // Clear existing content
             }
 
-        // Insert logo image at the start of the menu bar
+            // Insert logo image at the start of the menu bar
             const logoImg = document.createElement('img');
             logoImg.src = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logo.png';
             logoImg.style.marginRight = '20px';
@@ -1052,7 +1064,6 @@
 
             // Create new containers for each menu item
             menuData.forEach((menuItem, index) => {
-                //console.log("Creating container for:", menuItem.label);
                 const menuContainer = document.createElement('div');
                 menuContainer.id = `menuContainer${index}`;
                 menuContainer.className = 'menu-container';
@@ -1065,20 +1076,36 @@
                     loadScene(currentSceneIndex); // Load the selected scene
                     highlightActiveMenuItem(`menuContainer${index}`);
                 });
+
                 // Add hover event listener
-                document.querySelectorAll('.menu-container').forEach(item => {
-                    item.addEventListener('mouseover', () => animateTextDuringHover(item));
-                });
+                menuContainer.addEventListener('mouseover', () => animateTextDuringHover(menuContainer));
+
                 // To trigger the hover effect on the first menu container after 3 seconds
-                setTimeout(() => {
-                    let firstMenuItem = document.getElementById('menuContainer0');
-                    if (firstMenuItem) {
-                        animateTextDuringHover(firstMenuItem);
-                    }
-                }, 8000); // 3000 milliseconds = 3 seconds
+                if (index === 0 || index === 3) {
+                    setTimeout(() => {
+                        animateTextDuringHover(menuContainer);
+                    }, 8000); // 3000 milliseconds = 3 seconds
+                }
+
                 // Add the new container ID to the array
                 menuContainerIds.push(menuContainer.id);
             });
+
+            // Insert fake menu items
+            
+                const fakeMenuItem1 = document.createElement('div');
+                fakeMenuItem1.className = 'menu-container';
+                fakeMenuItem1.setAttribute('data-fake', 'true'); // Mark as fake
+                fakeMenuItem1.innerText = '';
+                menuBar.insertBefore(fakeMenuItem1, menuBar.children[1]); // Insert after the logo
+
+                const fakeMenuItem2 = document.createElement('div');
+                fakeMenuItem2.className = 'menu-container';
+                fakeMenuItem2.setAttribute('data-fake', 'true'); // Mark as fake
+                fakeMenuItem2.innerText = '';
+                menuBar.insertBefore(fakeMenuItem2, menuBar.children[5]); // Insert after the third real menu item
+                 // Insert after the third real menu item
+          
 
             // Call updateMenu at the end
             updateMenu(menuData);
@@ -1087,12 +1114,26 @@
 
         function updateLogoVisibility() {
             const logoImg = document.getElementById('menuLogo');
-            if (window.innerWidth <= 768) { // Assumes the menu becomes multi-line at 768px width
-                logoImg.classList.add('hide-logo');
+            // Select only fake menu items using the data-fake attribute
+            const fakeMenuItems = document.querySelectorAll('.menu-container[data-fake="true"]');
+
+            if (window.innerWidth <= 768) {
+                logoImg.src = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logoS.png'; 
+                logoImg.classList.add('logo-small');
+                fakeMenuItems.forEach(item => item.style.display = '');
             } else {
-                logoImg.classList.remove('hide-logo');
+                logoImg.src = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logo.png'; 
+                logoImg.classList.remove('logo-small');
+                fakeMenuItems.forEach(item => item.style.display = 'none'); // Use empty string to reset the display property
             }
         }
+
+
+
+
+
+
+
 
 //////// ANIMATION MENU ///////
 
