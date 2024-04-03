@@ -63,9 +63,8 @@ const galleryHTML = `
         </div>
 
         <div id="search-container">
-            <input type="text" id="search-bar" placeholder="Please wait..." disabled>
+            <input type="text" id="search-bar" placeholder="Search...">
         </div>
-
 
         <div id="gallery-container"></div>
 
@@ -522,24 +521,8 @@ const galleryHTML = `
                 loadingProgress.style.strokeDasharray = pathLength;
                 loadingProgress.style.strokeDashoffset = offset;
                 if (loadingPercentage >= 100) {
-                        const searchBar = document.getElementById('search-bar');
-
-                                // Step 1: Fade out
-                        searchBar.style.opacity = 0;
-
-                                // Step 2: Wait for fade out to complete, change placeholder, and fade in
-                        setTimeout(() => {
-                            searchBar.placeholder = "Search...";
-                            searchBar.disabled = false; // Enable the search bar
-                            searchBar.style.opacity = 1; // Fade in
-
-                                    // Optional: Focus on the search bar after loading is complete and it's visible
-                            searchBar.focus();
-
-                        }, 150); // Match the timeout with your CSS transition time
-
-                        hideLoadingProgress(); // Hide the loading indicator, if applicable
-                }
+                        hideLoadingProgress();
+                    }
             }
         }
 

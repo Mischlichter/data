@@ -244,6 +244,12 @@ html {
     color: #00ffcc; /* Green text color */
     width: 50%; /* Adjust width as needed */
 }
+/* Add this CSS to your stylesheet */
+#search-bar {
+  transition: opacity 0.5s ease-in-out;
+  opacity: 0.5; /* Adjust based on your initial visibility requirement */
+}
+
 
 #search-bar::placeholder {
     color: rgba(0, 255, 204, 0.5); /* Light green placeholder */
