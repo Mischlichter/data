@@ -650,6 +650,48 @@
         
 
 
+        // Function to record the initial state of the page's elements
+        function recordInitialState() {
+            const elementsInitialState = {};
+            // Record initial state of all elements
+            document.querySelectorAll('*').forEach(element => {
+                elementsInitialState[element] = {
+                    width: element.offsetWidth,
+                    height: element.offsetHeight,
+                    top: element.offsetTop,
+                    left: element.offsetLeft
+                };
+            });
+            return elementsInitialState;
+        }
+
+        // Function to restore the initial state of the page's elements
+        function restoreInitialState(elementsInitialState) {
+            // Restore initial state of all elements
+            Object.keys(elementsInitialState).forEach(element => {
+                const initialState = elementsInitialState[element];
+                element.style.width = initialState.width + 'px';
+                element.style.height = initialState.height + 'px';
+                element.style.top = initialState.top + 'px';
+                element.style.left = initialState.left + 'px';
+            });
+        }
+
+        // Record initial state of elements when the page loads
+        const initialElementsState = recordInitialState();
+
+        // Function to handle touch events
+        function handleTouch(event) {
+            // Check if a touch event and zoom are detected
+            // For demonstration purposes, let's assume a zoom is detected if two fingers are used
+            if (event.touches.length === 2) {
+                // Restore initial state of elements
+                restoreInitialState(initialElementsState);
+            }
+        }
+
+        // Add event listener to handle touch events
+        document.addEventListener('touchstart', handleTouch);
 
         
 
