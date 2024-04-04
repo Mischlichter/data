@@ -655,32 +655,28 @@
 
         
         let startY = 0;
-        let startTime = 0;
+        let startScrollTop = 0;
 
         document.addEventListener('touchstart', function(e) {
             startY = e.touches[0].clientY;
-            startTime = new Date().getTime(); // Capture the start time of the touch
+            // Capture the start scroll position of the document
+            startScrollTop = document.scrollingElement.scrollTop;
         }, { passive: true });
 
-        document.addEventListener('touchend', function(e) {
-            const endY = e.changedTouches[0].clientY;
-            const endTime = new Date().getTime();
+        document.addEventListener('touchmove', function(e) {
+            const moveY = e.touches[0].clientY;
+            const distance = startY - moveY;
 
-            const distance = startY - endY;
-            const timeTaken = endTime - startTime;
+            // Calculate the new scroll position based on the movement
+            const newScrollPosition = startScrollTop + distance;
 
-            const speed = distance / timeTaken; // Calculate speed of swipe
-
-            // Determine the final scroll position
-            const finalScrollPosition = document.scrollingElement.scrollTop - distance * 2; // Example multiplier for effect amplification
-
-            // Use a smooth scroll function or library here to scroll to finalScrollPosition
-            // This could be window.scrollTo with behavior: 'smooth' or a library like Lenis or Smooth Scrollbar
+            // Scroll to the new position
             window.scrollTo({
-                top: finalScrollPosition,
-                behavior: 'smooth'
+                top: newScrollPosition,
+                behavior: 'auto' // 'auto' for instant scrolling without smooth effect
             });
         }, { passive: true });
+
 
 
         
