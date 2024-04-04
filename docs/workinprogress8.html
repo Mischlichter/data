@@ -155,7 +155,7 @@
             transition: color 0.3s ease;
             
             overflow-x: hidden;
-            touch-action: none;
+            touch-action: pan-y;
             
             
             
@@ -618,12 +618,6 @@
         
 //////// MOUSE SMOOTHING ////////
 
-        
-
-
-
-
-
         const lenis = new Lenis()
 
         lenis.on('scroll', (e) => {
@@ -654,28 +648,6 @@
         }
 
         
-        let startY = 0;
-        let startScrollTop = 0;
-
-        document.addEventListener('touchstart', function(e) {
-            startY = e.touches[0].clientY;
-            // Capture the start scroll position of the document
-            startScrollTop = document.scrollingElement.scrollTop;
-        }, { passive: true });
-
-        document.addEventListener('touchmove', function(e) {
-            const moveY = e.touches[0].clientY;
-            const distance = startY - moveY;
-
-            // Calculate the new scroll position based on the movement
-            const newScrollPosition = startScrollTop + distance;
-
-            // Scroll to the new position
-            window.scrollTo({
-                top: newScrollPosition,
-                behavior: 'auto' // 'auto' for instant scrolling without smooth effect
-            });
-        }, { passive: true });
 
 
 
