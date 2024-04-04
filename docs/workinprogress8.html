@@ -647,35 +647,40 @@
 
         
 
-        (function() {
+        document.addEventListener('DOMContentLoaded', function() {
+            var initialWidth = document.body.offsetWidth;
+            var initialHeight = document.body.offsetHeight;
             var initialScale = 1 / window.devicePixelRatio;
 
-            function resetZoom() {
-                // Adjust the scale of the webpage content to simulate resetting the zoom level
-                document.body.style.transform = 'scale(' + initialScale + ')';
+            function applyInitialSize() {
+                // Scale the body to its initial size
+                var scaleX = window.innerWidth / initialWidth;
+                var scaleY = window.innerHeight / initialHeight;
+                document.body.style.transform = `scale(${scaleX}, ${scaleY})`;
                 document.body.style.transformOrigin = '0 0';
             }
 
-            window.addEventListener('resize', function() {
-                // Check if the device width is 768 pixels or less
+            function resetZoom() {
                 if (window.innerWidth <= 768) {
-                    // Check if the zoom factor has changed; if it has, reset the zoom
                     var currentScale = 1 / window.devicePixelRatio;
                     if (currentScale !== initialScale) {
-                        initialScale = currentScale; // Update the initial scale
-                        resetZoom();
+                        // If the scale has changed, apply the initial size
+                        applyInitialSize();
+                        initialScale = currentScale; // Update the initial scale for future checks
                     }
                 } else {
-                    // If the device width is more than 768 pixels, reset any scaling applied
+                    // Reset any scaling applied for larger screens
                     document.body.style.transform = 'none';
                 }
-            });
-
-            // Initial setup: Apply zoom reset if the device width is 768 pixels or less
-            if (window.innerWidth <= 768) {
-                resetZoom();
             }
-        })();
+
+            window.addEventListener('resize', resetZoom);
+
+            // Apply the initial size if on a small device
+            if (window.innerWidth <= 768) {
+                applyInitialSize();
+            }
+        });
 
         
 
