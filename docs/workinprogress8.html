@@ -655,21 +655,32 @@
 
         
         let startY = 0;
-        let scrollTop = 0;
+        let startTime = 0;
 
         document.addEventListener('touchstart', function(e) {
             startY = e.touches[0].clientY;
-            scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-        }, false);
+            startTime = new Date().getTime(); // Capture the start time of the touch
+        }, { passive: true });
 
-        document.addEventListener('touchmove', function(e) {
-            // Calculate the distance moved
-            const moveY = e.touches[0].clientY;
-            const distance = startY - moveY;
+        document.addEventListener('touchend', function(e) {
+            const endY = e.changedTouches[0].clientY;
+            const endTime = new Date().getTime();
 
-            // Scroll the page using the calculated distance
-            window.scrollTo(0, scrollTop + distance);
-        }, false);
+            const distance = startY - endY;
+            const timeTaken = endTime - startTime;
+
+            const speed = distance / timeTaken; // Calculate speed of swipe
+
+            // Determine the final scroll position
+            const finalScrollPosition = document.scrollingElement.scrollTop - distance * 2; // Example multiplier for effect amplification
+
+            // Use a smooth scroll function or library here to scroll to finalScrollPosition
+            // This could be window.scrollTo with behavior: 'smooth' or a library like Lenis or Smooth Scrollbar
+            window.scrollTo({
+                top: finalScrollPosition,
+                behavior: 'smooth'
+            });
+        }, { passive: true });
 
 
         
