@@ -155,6 +155,8 @@
             transition: color 0.3s ease;
             max-width: 100vw;
             overflow-x: hidden;
+   
+            overflow-y: auto;
             
             
         }
@@ -647,40 +649,7 @@
 
         
 
-        document.addEventListener('DOMContentLoaded', function() {
-            var initialWidth = document.body.offsetWidth;
-            var initialHeight = document.body.offsetHeight;
-            var initialScale = 1 / window.devicePixelRatio;
 
-            function applyInitialSize() {
-                // Scale the body to its initial size
-                var scaleX = window.innerWidth / initialWidth;
-                var scaleY = window.innerHeight / initialHeight;
-                document.body.style.transform = `scale(${scaleX}, ${scaleY})`;
-                document.body.style.transformOrigin = '0 0';
-            }
-
-            function resetZoom() {
-                if (window.innerWidth <= 768) {
-                    var currentScale = 1 / window.devicePixelRatio;
-                    if (currentScale !== initialScale) {
-                        // If the scale has changed, apply the initial size
-                        applyInitialSize();
-                        initialScale = currentScale; // Update the initial scale for future checks
-                    }
-                } else {
-                    // Reset any scaling applied for larger screens
-                    document.body.style.transform = 'none';
-                }
-            }
-
-            window.addEventListener('resize', resetZoom);
-
-            // Apply the initial size if on a small device
-            if (window.innerWidth <= 768) {
-                applyInitialSize();
-            }
-        });
 
         
 
