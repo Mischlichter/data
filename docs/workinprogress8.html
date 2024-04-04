@@ -618,6 +618,27 @@
         
 //////// MOUSE SMOOTHING ////////
 
+        let startY = 0;
+        let scrollTop = 0;
+
+        document.addEventListener('touchstart', function(e) {
+            startY = e.touches[0].clientY;
+            scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        }, false);
+
+        document.addEventListener('touchmove', function(e) {
+            // Calculate the distance moved
+            const moveY = e.touches[0].clientY;
+            const distance = startY - moveY;
+
+            // Scroll the page using the calculated distance
+            window.scrollTo(0, scrollTop + distance);
+        }, false);
+
+
+
+
+
         const lenis = new Lenis()
 
         lenis.on('scroll', (e) => {
