@@ -2055,7 +2055,11 @@
           if (event.ctrlKey) { event.preventDefault(); }
         }, { passive: false });
 
-
+        document.addEventListener('touchstart', function(event) {
+          if (event.touches.length > 1) {
+            event.preventDefault();
+          }
+        }, { passive: false });
     
         // Add event listener to resize in case the viewport size changes
         window.addEventListener('resize', updateVirtualCanvasSize);
