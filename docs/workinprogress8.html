@@ -404,7 +404,7 @@
         :root {
           --viewer-width: 1024px;
           --viewer-height: 2048px;
-          --total-width: 1024px; /* New variable for total width */
+          --total-width: 3072px; /* New variable for total width */
 
         }
 
@@ -425,7 +425,6 @@
           background-size: cover;
           background-repeat: no-repeat;
           z-index: 15;
-          overflow: hidden;
 
         }
 
@@ -478,13 +477,14 @@
 
 
         :root {
-     
+            --background-total-width: 4096px;
+            --background-total-height: 3072px;
         }
 
         #backgroundRoot {
             --viewer-width: 1024px;
             --viewer-height: 2048px;
-            --total-width: 1024px; /* New variable for total width */
+            --total-width: 3072px; /* New variable for total width */
         }
 
         #backgroundContainer {
@@ -496,7 +496,6 @@
             width: var(--total-width); /* Assuming this is set to 3072px or as needed */
             height: var(--viewer-height); /* Assuming this is set to 2048px */
             margin: 0 auto; /* Center the container */
-            overflow: hidden;
         }
 
         #backgroundInterfaceContainer {
@@ -1467,7 +1466,7 @@
             // Ensure FontAwesome is included in your HTML to see the icons
             const footerContainer = document.createElement('div');
             footerContainer.style.width = '100vw'; // Width of the viewport
-            footerContainer.style.height = '256px'; // Footer height
+            footerContainer.style.height = '9000px'; // Footer height
             footerContainer.style.backgroundColor = 'black'; // Footer background color
             footerContainer.style.color = 'white'; // Text color
             footerContainer.style.display = 'flex'; // Use flexbox for layout
@@ -1475,11 +1474,12 @@
             footerContainer.style.alignItems = 'center'; // Center items horizontally
             footerContainer.style.justifyContent = 'center'; // Center items vertically
             footerContainer.style.position = 'relative'; // To apply z-index
-            footerContainer.style.zIndex = '1000'; // Ensure it's on top
+            footerContainer.style.zIndex = '50'; // Ensure it's on top
             footerContainer.style.marginTop = '256px'; // Space before the footer
+            footerContainer.style.boxShadow = '0px -50px 30px -20px rgba(0, 0, 0, 0.5)';
 
             footerContainer.innerHTML = `
-                <div style="display: flex; align-items: center; justify-content: center; flex-wrap: wrap;">
+                <div style="display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; margin-top: -8900px;">
                     <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button" style="color: white; margin: 0 10px;"><i class="fab fa-facebook-f"></i></a>
                     <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button" style="color: white; margin: 0 10px;"><i class="fab fa-twitter"></i></a>
                     <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button" style="color: white; margin: 0 10px;"><i class="fab fa-google"></i></a>
@@ -1506,6 +1506,8 @@
             
         }
 
+
+
         function observeImagesForAnimation() {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -1523,51 +1525,59 @@
 
 
         function ensureFooterIsLastScrollPoint(footerElement) {
-            let lastScrollTop = 0; // Keep track of the last scroll position
+            let lastScrollTop = window.scrollY || document.documentElement.scrollTop;
+            let footerEverInView = false; // Indicates if the footer has been in view after last reset
+            let autoScrolledToFooter = false; // Tracks if we've automatically scrolled to the footer
 
             // Create an Intersection Observer instance
             const observer = new IntersectionObserver(entries => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        // Footer is intersecting with the viewport
-
-                        window.addEventListener('scroll', scrollHandler);
-                    } else {
-                        // Footer is not intersecting with the viewport
-                        window.removeEventListener('scroll', scrollHandler);
+                        // Mark that the footer is in view
+                        footerEverInView = true;
                     }
                 });
-            });
+            }, { threshold: 0.1 });
 
-            // Start observing the footer element
-            observer.observe(footerElement);
+            observer.observe(footerElement); // Start observing the footer element
 
-            // Scroll event handler
             function scrollHandler() {
                 let currentScrollTop = window.scrollY || document.documentElement.scrollTop;
+                const documentHeight = document.body.scrollHeight;
+                const viewportHeight = window.innerHeight;
 
-                // Determine scroll direction
                 if (currentScrollTop > lastScrollTop) {
                     // Scrolling down
-                    const viewportHeight = window.innerHeight;
-                    const footerTop = footerElement.getBoundingClientRect().top;
-
-                    if (footerTop < viewportHeight) {
-                        // If the footer is starting to enter the viewport from the bottom
-
-                        window.scrollTo({
-                            top: document.body.scrollHeight - viewportHeight,
-                            behavior: 'smooth'
-                        });
-                        
+                    if (footerEverInView) {
+                        // If the footer has ever been in view, check if we need to auto-scroll to it
+                        let footerRect = footerElement.getBoundingClientRect();
+                        if ((footerRect.bottom > viewportHeight && !autoScrolledToFooter) || footerRect.top < viewportHeight) {
+                            // If the footer is below the viewport and hasn't been auto-scrolled to yet
+                            // Or if the top of the footer is within the viewport
+                            const scrollAboveFooter = footerRect.top + window.scrollY - 800;
+                            window.scrollTo({
+                                top: scrollAboveFooter,
+                                behavior: 'smooth'
+                            });
+                            autoScrolledToFooter = true; // Indicate that we've auto-scrolled to the footer
+                        }
                     }
                 } else {
-                    // Scrolling up, allow natural behavior
+                    // Scrolling up
+                    let footerRect = footerElement.getBoundingClientRect();
+                    if (currentScrollTop + viewportHeight < documentHeight - footerRect.height) {
+                        // If the user has scrolled up past the footer after it was auto-scrolled to
+                        autoScrolledToFooter = false; // Allow auto-scrolling to the footer again
+                    }
                 }
 
-                lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // For Mobile or negative scrolling
+                lastScrollTop = currentScrollTop; // Update the last scroll position
             }
+
+            window.addEventListener('scroll', scrollHandler, { passive: true });
         }
+
+
 
 
 
