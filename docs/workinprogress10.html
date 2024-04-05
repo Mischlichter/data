@@ -1498,18 +1498,34 @@
             `;
             document.body.appendChild(footerContainer);
 
+            const preventScrollBeyondFooter = () => {
+                    // Calculate the maximum Y position users should be able to scroll to
+                    // This is the document's height minus the viewport's height and the footer's height
+                    const maxScrollY = document.body.offsetHeight - window.innerHeight - footerContainer.offsetHeight + 256; // 256px is the margin top of the footer
+
+                    if (window.scrollY > maxScrollY) {
+                        // If the user scrolls beyond the max Y position, scroll them back to the max Y position
+                        window.scrollTo(0, maxScrollY);
+                    }
+                };
+
+                // Call the function right away in case the page is already scrolled beyond the footer
+                preventScrollBeyondFooter();
+
+                // Add a 'scroll' event listener to the window to invoke the function whenever the user scrolls
+                window.addEventListener('scroll', preventScrollBeyondFooter);
 
 
             currentSceneData = scene;
 
             // Update containers when loading a new scene
             updateAllContainers(scene);
-            ensureFooterIsLastScrollPoint(footerContainer);
-
+            
             highlightActiveMenuItem(`menuContainer${index}`);
             observeImagesForAnimation();
             
         }
+
 
 
 
@@ -1529,66 +1545,7 @@
         }
 
 
-        function ensureFooterIsLastScrollPoint(footerElement) {
-            let lastScrollTop = window.scrollY || document.documentElement.scrollTop;
-            let footerEverInView = false; // Indicates if the footer has been in view after last reset
-            let autoScrolledToFooter = false; // Tracks if we've automatically scrolled to the footer
-
-            // Create an Intersection Observer instance
-            const observer = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        // Mark that the footer is in view
-                        footerEverInView = true;
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            observer.observe(footerElement); // Start observing the footer element
-
-            function scrollHandler() {
-                let currentScrollTop = window.scrollY || document.documentElement.scrollTop;
-                const documentHeight = document.body.scrollHeight;
-                const viewportHeight = window.innerHeight;
-
-                if (currentScrollTop > lastScrollTop) {
-                    // Scrolling down
-                    if (footerEverInView) {
-                        // If the footer has ever been in view, check if we need to auto-scroll to it
-                        let footerRect = footerElement.getBoundingClientRect();
-                        if ((footerRect.bottom > viewportHeight && !autoScrolledToFooter) || footerRect.top < viewportHeight) {
-                            // If the footer is below the viewport and hasn't been auto-scrolled to yet
-                            // Or if the top of the footer is within the viewport
-                            const scrollAboveFooter = footerRect.top + window.scrollY - 680;
-                            window.scrollTo({
-                                top: scrollAboveFooter,
-                                behavior: 'smooth'
-                            });
-                            autoScrolledToFooter = true; // Indicate that we've auto-scrolled to the footer
-                        }
-                    }
-                } else {
-                    // Scrolling up
-                    let footerRect = footerElement.getBoundingClientRect();
-                    if (currentScrollTop + viewportHeight < documentHeight - footerRect.height) {
-                        // If the user has scrolled up past the footer after it was auto-scrolled to
-                        autoScrolledToFooter = false; // Allow auto-scrolling to the footer again
-                        resetFooterScrollVariables()
-                    }
-                }
-
-                lastScrollTop = currentScrollTop; // Update the last scroll position
-            }
-
-            window.addEventListener('scroll', scrollHandler, { passive: true });
-        }
-
-
-        function resetFooterScrollVariables() {
-            lastScrollTop = 0;
-            footerEverInView = false;
-            autoScrolledToFooter = false;
-        }
+        
 
 
 
@@ -1600,7 +1557,7 @@
 
             // Assuming the container's height is directly based on its content (the images)
             // We calculate the number of tiles needed to fill the container plus one for overflow
-            const numTiles = 11; // Since you mentioned wanting about 10 tiles
+            const numTiles = 6; // Since you mentioned wanting about 10 tiles
 
             for (let i = 0; i < numTiles; i++) {
                 const img = document.createElement('img');
