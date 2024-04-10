@@ -133,10 +133,6 @@ The Journey Unfolds - The story of HogeAI is far from static; it's an ongoing sa
     text-transform: none;
 }
 
-#container13 {
-    text-transform: none;
-}
-
 SCENE03:
 
 P01:
