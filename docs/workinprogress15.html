@@ -902,9 +902,11 @@
 
 
         function parseText(text) {
+            console.log("Original text:", text); // Print the original text
 
             // Split the text into scenes
             let scenes = text.split(/SCENE\d+:/);
+            console.log("Scenes after initial split:", scenes); // Print scenes after initial split
 
             // Remove the first empty element if it exists
             if (scenes[0].trim() === '') {
@@ -914,6 +916,7 @@
             let parsedData = [];
 
             scenes.forEach((scene, index) => {
+                console.log(`Processing scene ${index + 1}:`, scene); // Print the current scene being processed
 
                 let sceneData = {
                     sceneKey: `scene${index + 1}`,
@@ -923,9 +926,11 @@
 
                 // Split the scene into paragraphs and CSS
                 let parts = scene.split(/#container\d+ \{/);
-                
+                console.log(`Parts for scene ${index + 1}:`, parts); // Print the parts after splitting by container
+
                 // First part is always paragraphs. Exclude the paragraph numbers.
                 let paragraphs = parts[0].trim().split(/\n\nP\d+:\n/).filter(p => p).map(paragraph => paragraph.replace(/P\d+:\n/, '').trim());
+                console.log(`Paragraphs for scene ${index + 1}:`, paragraphs); // Print the paragraphs for the current scene
 
                 // Calculate the number of containers
                 sceneData.numberOfContainers = paragraphs.length;
@@ -938,13 +943,16 @@
                         text: paragraphs[i - 1],
                         style: css
                     };
+                    console.log(`Container ${containerKey} for scene ${index + 1}:`, sceneData.containers[containerKey]); // Print each container's data
                 }
 
                 parsedData.push(sceneData);
             });
 
+            console.log("Parsed data:", parsedData); // Print the final parsed data
             return parsedData;
         }
+
 
 
         async function fetchImage() {
