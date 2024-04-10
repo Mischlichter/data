@@ -19,8 +19,6 @@ P06:
 We invite you to be part of this adventure, to share your creations, to inspire and be inspired, and to unlock the limitless potential of your imagination.
 
 
-
-
 #container01 {
 
     font-family: 'JetBrainsMono-ExtraBold', sans-serif;
@@ -47,7 +45,6 @@ We invite you to be part of this adventure, to share your creations, to inspire 
     text-transform: none;
 }
 
-
 SCENE02:
 
 P01:
@@ -72,15 +69,11 @@ P07:
 Evolving the Bot - Alongside HogeAI’s development, the bot came to life — a nexus of interaction, creativity, and community. It wasn't merely a tool but a partner in creation, shaped by ongoing feedback from beta testers, with a keen focus on security and an engaging user experience.
 
 
-
-
-
 #container01 {
 
     font-family: 'JetBrainsMono-ExtraBold', sans-serif;
     margin-top: 25%;
 }
-
 
 #container02 {
     text-transform: none;
