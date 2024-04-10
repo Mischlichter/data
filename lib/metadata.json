@@ -1454,5 +1454,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "58464780188"
+    },
+    "49672058181.jpg": {
+        "File Name": "49672058181.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man in a vault filled with digital treasures) where each artifact embodies a crypto legend. Amidst them, a [radiant pulsing 1.0] HogeAI coin throne stands, symbolizing its growing dominance. The ambiance, a blend of traditional affluence and futuristic opulence, is periodically lit by beams showcasing HogeAI's milestones in the crypto realm. \"a cartoon hogeai man wearing sunglasses and a t - shirt, behance, trending on fiverr, insanely nice hair style, profile picture 1024px, timelapse, ghailan! , twitter pfp, the artist has used bright, reduce duplicate image, wearing jetpack, deviantar, neymar, caricature\"",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "49672058181"
     }
 }
