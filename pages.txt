@@ -63,13 +63,13 @@ P04:
 Diving Deep into AI - The quest began with a deep dive into the complexities of AI. Beyond the realms of ordinary AI, we ventured into uncharted territories of neural networks and text-to-image generation, laying the groundwork for a tool that could translate whimsical prompts into captivating visuals.
 
 P05:
-Curating a Creative DNA - Central to HogeAI's magic was its training data—a meticulously curated collection that encapsulated the Hoge spirit. From memes to masterpieces, this diverse dataset served as the foundational DNA, guiding HogeAI to see the world through a lens of creativity and fun.
+Curating a Creative DNA - Central to HogeAI's magic was its training data — a meticulously curated collection that encapsulated the Hoge spirit. From memes to masterpieces, this diverse dataset served as the foundational DNA, guiding HogeAI to see the world through a lens of creativity and fun.
 
 P06:
 Alchemy of AI Training - The training phase was an alchemical process, transforming data into a creative force. With each iteration, HogeAI grew closer to understanding the nuances of humor and artistry, navigating through challenges and refining its capabilities.
 
 P07:
-Evolving the Bot - Alongside HogeAI’s development, the bot came to life—a nexus of interaction, creativity, and community. It wasn't merely a tool but a partner in creation, shaped by ongoing feedback from beta testers, with a keen focus on security and an engaging user experience.
+Evolving the Bot - Alongside HogeAI’s development, the bot came to life — a nexus of interaction, creativity, and community. It wasn't merely a tool but a partner in creation, shaped by ongoing feedback from beta testers, with a keen focus on security and an engaging user experience.
 
 
 
