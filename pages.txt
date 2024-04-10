@@ -1,7 +1,7 @@
 SCENE01:
 
 P01:
-Welcome to HogeAI
+Welcome to HogeAI2
 
 P02:
 Dive into the vibrant world of HogeAI, where your words become the brush, and imagination paints the canvas. At the core of HogeAI is a revolutionary tool designed to transform your textual descriptions into stunning visual artworks. Whether you're a seasoned artist or new to the realm of digital creation, HogeAI offers an accessible gateway to unleashing your creativity.
