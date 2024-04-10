@@ -50,25 +50,45 @@ We invite you to be part of this adventure, to share your creations, to inspire 
 SCENE02:
 
 P01:
-THIS IS A NEW SCENE
+Immersed in the vibrant world of memes and creativity, a groundbreaking idea emerged from the Hoge community: to create HogeAI, an AI not just any AI, but one infused with the essence of Hoge. This journey, from concept to creation, unfolds a story of passion, innovation, and community spirit, each step marked by vivid visuals that bring to life the essence of HogeAI.
 
 P02:
-The beauty of HogeAI? There's no right or wrong. Play around, experiment, and most importantly, have a blast! From serene landscapes to wacky adventures, the Hoge universe is yours to explore. The beauty of HogeAI? There's no right or wrong. Play around, experiment, and most importantly, have a blast! From serene landscapes to wacky adventures, the Hoge universe is yours to explore. The beauty of HogeAI? There's no right or wrong. Play around, experiment, and most importantly, have a blast! From serene landscapes to wacky adventures, the Hoge universe is yours to explore. The beauty of HogeAI? There's no right or wrong. Play around, experiment, and most importantly, have a blast! From serene landscapes to wacky adventures, the Hoge universe is yours to explore.
+Spark of Innovation: 
+In the dynamic exchanges of the Hoge community, a playful idea ignited a visionary project. The challenge? To harness AI in a way that truly captures the spirit of creativity and humor unique to Hoge.
 
 P03:
-Got questions? Ideas? Or just want to share a masterpiece you made with HogeAI? Don't be a stranger! Our community thrives on your insights, feedback, and, of course, those delightful Hoge memes.
+Diving Deep into AI: 
+The quest began with a deep dive into the complexities of AI. Beyond the realms of ordinary AI, we ventured into uncharted territories of neural networks and text-to-image generation, laying the groundwork for a tool that could translate whimsical prompts into captivating visuals.
+
+P04:
+Curating a Creative DNA: 
+Central to HogeAI's magic was its training data—a meticulously curated collection that encapsulated the Hoge spirit. From memes to masterpieces, this diverse dataset served as the foundational DNA, guiding HogeAI to see the world through a lens of creativity and fun.
+
+P05:
+Alchemy of AI Training: 
+The training phase was an alchemical process, transforming data into a creative force. With each iteration, HogeAI grew closer to understanding the nuances of humor and artistry, navigating through challenges and refining its capabilities.
 
 
 #container01 {
+
+    font-family: 'JetBrainsMono-ExtraBold', sans-serif;
     margin-top: 25%;
 }
 
 #container02 {
-
+    text-transform: none;
 }
 
 #container03 {
+    text-transform: none;
+}
 
+#container04 {
+    text-transform: none;
+}
+
+#container05 {
+    text-transform: none;
 }
 
 SCENE03:
