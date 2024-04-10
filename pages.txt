@@ -66,8 +66,7 @@ Alchemy of AI Training - The training phase was an alchemical process, transform
 
 
 #container01 {
-
-    font-family: 'JetBrainsMono-ExtraBold', sans-serif;
+    text-transform: none;
     margin-top: 25%;
 }
 
