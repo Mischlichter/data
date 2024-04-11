@@ -181,7 +181,7 @@ P10:
 Hoge Generosity - Spread the Hoge love! Gift credits to a buddy with /credits [amount] @Username or rain it on a bunch with /credits [amount] rain [number of users].
 
 P11:
-The Premium Perks - Beyond the velvet rope lies the crème de la Hoge. Advanced tools, premium models, and a world where your creativity is the only limit.
+The Premium Perks - Ever wanted a magic wand for your digital art? HogeAI’s premium features are it! With four fantastical models to choose from, craft your art your way—pinpoint precision with inpainting or a total makeover with img2img. All you need to do is select your magic tool, upload an image, and voilà, watch as your creation transforms right before your eyes. Dive in and let your imagination run wild, no holds barred!
 
 P12:
 The HogeAI Promise - We're all in for wild imaginations, but we've got a filter to keep things PG. After all, HogeAI is a family fiesta.
