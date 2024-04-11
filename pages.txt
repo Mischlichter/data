@@ -20,9 +20,9 @@ We invite you to be part of this adventure, to share your creations, to inspire 
 
 
 #container01 {
-
     font-family: 'JetBrainsMono-ExtraBold', sans-serif;
     margin-top: 25%;
+    pointer-events: none;
 }
 
 #container02 {
@@ -43,7 +43,9 @@ We invite you to be part of this adventure, to share your creations, to inspire 
 
 #container06 {
     text-transform: none;
+    pointer-events: none;
 }
+
 
 SCENE02:
 
@@ -87,51 +89,64 @@ The Journey Unfolds - The saga of HogeAI is an ever-evolving narrative of creati
 #container01 {
     font-family: 'JetBrainsMono-ExtraBold', sans-serif;
     margin-top: 25%;
+    pointer-events: none;
 }
 
 #container02 {
     text-transform: none;
+    pointer-events: none;
 }
 
 #container03 {
     text-transform: none;
+    pointer-events: none;
 }
 
 #container04 {
     text-transform: none;
+    pointer-events: none;
 }
 
 #container05 {
     text-transform: none;
+    pointer-events: none;
 }
 
 #container06 {
     text-transform: none;
+    pointer-events: none;
 }
 
 #container07 {
     text-transform: none;
+    pointer-events: none;
 }
 
 #container08 {
     text-transform: none;
+    pointer-events: none;
 }
 
 #container09 {
     text-transform: none;
+    pointer-events: none;
 }
 
 #container10 {
     text-transform: none;
+    pointer-events: none;
 }
 
 #container11 {
     text-transform: none;
+    pointer-events: none;
 }
 
-#container12{
+#container12 {
     text-transform: none;
+    pointer-events: none;
 }
+
 
 SCENE03:
 
@@ -139,7 +154,7 @@ P01
 THE HOGEAI BOT - Dive Deep, Dive Hoge
 
 P02
-Kickstarting Your HogeAI Journey - First off, hop into the >>> @OfficialHogeCommunity <<< on Telegram. That's where all the Hoge magic unfolds. To awaken the HogeAI Bot from its digital slumber, simply type /start. Quick tip: Make sure you're whispering (or, well, typing) to the right bot – our very own 'HogeAI bot'. A Little Lost? Hey, Hoge woods can be dense! If you ever need a guiding star, /help has got your back, laying out all the commands you'll need.
+Kickstarting Your HogeAI Journey - First off, hop into the @OfficialHogeCommunity on Telegram. That's where all the Hoge magic unfolds. To awaken the HogeAI Bot from its digital slumber, simply type /start. Quick tip: Make sure you're whispering (or, well, typing) to the right bot – our very own 'HogeAI bot'. A Little Lost? Hey, Hoge woods can be dense! If you ever need a guiding star, /help has got your back, laying out all the commands you'll need.
 
 P03
 From Words to Hoge-tastic Visuals - With the hai: command, your words are the paint, and HogeAI is the canvas. And if you want our star, Hoge, in the scene, just drop his name in your tale.
@@ -202,6 +217,7 @@ Experiment & Explore - The beauty of HogeAI? There's no right or wrong. Play aro
 #container01 {
     font-family: 'JetBrainsMono-ExtraBold', sans-serif;
     margin-top: 25%;
+    pointer-events: none;
 }
 
 #container02 {
@@ -211,79 +227,99 @@ Experiment & Explore - The beauty of HogeAI? There's no right or wrong. Play aro
 
 #container03 {
     text-transform: none;
+    pointer-events: none;
 }
 
 #container04 {
     text-transform: none;
+    pointer-events: none;
 }
 
 #container05 {
     text-transform: none;
+    pointer-events: none;
 }
 
 #container06 {
     text-transform: none;
+    pointer-events: none;
 }
 
 #container07 {
     text-transform: none;
+    pointer-events: none;
 }
 
 #container08 {
     text-transform: none;
+    pointer-events: none;
 }
 
 #container09 {
     text-transform: none;
+    pointer-events: none;
 }
 
 #container10 {
     text-transform: none;
+    pointer-events: none;
 }
 
 #container11 {
     text-transform: none;
+    pointer-events: none;
 }
 
 #container12 {
     text-transform: none;
+    pointer-events: none;
 }
 
 #container13 {
     text-transform: none;
+    pointer-events: none;
 }
 
 #container14 {
     text-transform: none;
+    pointer-events: none;
 }
 
 #container15 {
     text-transform: none;
+    pointer-events: none;
 }
 
 #container16 {
     text-transform: none;
+    pointer-events: none;
 }
 
 #container17 {
     text-transform: none;
+    pointer-events: none;
 }
 
 #container18 {
     text-transform: none;
+    pointer-events: none;
 }
 
 #container19 {
     text-transform: none;
+    pointer-events: none;
 }
 
 #container20 {
     text-transform: none;
+    pointer-events: none;
 }
 
 #container21 {
     text-transform: none;
+    pointer-events: none;
 }
+
 
 SCENE04:
 
