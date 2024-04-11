@@ -231,7 +231,7 @@
             overflow: hidden; /* Ensures nothing spills outside the rounded corners */
             box-sizing: border-box;
             background-color: black;
-            pointer-events: none;
+            
             /* Removed flexbox styles since we're using absolute positioning for the image */
         }
 
@@ -243,7 +243,7 @@
             height: 105%; /* Keep the image square and slightly larger */
             transform: translate(-50%, -50%); /* Center the image */
             object-fit: cover; /* Ensures the image covers the available area */
-            pointer-events: none;
+            
         }
 
 
@@ -262,13 +262,13 @@
             text-transform: uppercase;
            
             z-index: 2;
-            pointer-events: none;
+        
             
             border: 2px solid #00ffcc; /* Green border */
             border-radius: 20px; /* Rounded corners */
             padding: 8px 15px; /* Adjust padding as needed */
             background-color: black;
-            pointer-events: none;
+            
             
         }
         
@@ -276,7 +276,7 @@
             white-space: nowrap;
             display: inline-block;
             margin: 0 5px 5px 0;
-            pointer-events: none;
+            
         }
 
 
@@ -1417,14 +1417,10 @@
         }
 
         function loadScene(index) {
-          
-            
-
             const scene = scenesData[index];
             const sceneImages = scenesiData[index]; // Assuming scenesiData is structured similarly
 
             if (!scene) return;
-
 
             // Remove all existing containers and dynamic styles
             const existingContainers = document.querySelectorAll('.flex-container, .flex-icontainer');
@@ -1434,7 +1430,6 @@
             clearDynamicStyles();
 
             loadInterface(index);
-
 
             let formattedSceneKey = scene.sceneKey.length === 6 ? `scene0${scene.sceneKey.charAt(5)}` : scene.sceneKey;
 
@@ -1461,39 +1456,28 @@
 
             // Create containers in sorted order
             combinedData.forEach(item => {
+                const container = document.createElement('div');
+                container.id = item.key;
+                container.className = item.type === 'text' ? 'flex-container' : 'flex-icontainer';
+                document.body.appendChild(container);
+
                 if (item.type === 'text') {
-                    const container = document.createElement('div');
-                    container.id = item.key;
-                    container.className = 'flex-container';
-                    document.body.appendChild(container);
+                    attachLinkToContainer(container, item.content.style);
+                }
 
-                    const style = document.createElement('style');
-                    style.innerHTML = item.content.style;
-                    document.head.appendChild(style);
-                    dynamicStyles.push(style);
+                const style = document.createElement('style');
+                style.innerHTML = item.content.style;
+                document.head.appendChild(style);
+                dynamicStyles.push(style);
 
-                
-                } else {
-                    const imageContainer = document.createElement('div');
-                    imageContainer.id = item.key;
-                    imageContainer.className = 'flex-icontainer';
-                    document.body.appendChild(imageContainer);
-
-                    if (item.content.style) {
-                        const style = document.createElement('style');
-                        style.innerHTML = item.content.style;
-                        document.head.appendChild(style);
-                        dynamicStyles.push(style);
-                    }
-
+                if (item.type === 'image') {
                     const image = document.createElement('img');
                     image.src = item.content.src;
-                    imageContainer.appendChild(image);
+                    container.appendChild(image);
                 }
             });
-            
-        // Create and style the footer
-            // Ensure FontAwesome is included in your HTML to see the icons
+
+            // Create and style the footer
             createStyledFooter()
 
             currentSceneData = scene;
@@ -1501,37 +1485,29 @@
             // Update containers when loading a new scene
             updateAllContainers(scene);
 
-            
             highlightActiveMenuItem(`menuContainer${index}`);
             observeImagesForAnimation();
-            
         }
-
 
         function extractLinkFromCSS(css) {
-            const linkPattern = /\/\* link: (.*) \*\//; // Regex to find URL in CSS comment
+            const linkPattern = /\/\* link: (.*) \*\//; // Pattern to extract URL from comment
             const match = css.match(linkPattern);
-            return match ? match[1].trim() : null; // Return the link if found, otherwise null
+            if (match) {
+                console.log("Extracted link:", match[1].trim());
+                return match[1].trim();
+            } else {
+                console.log("No link found in CSS.");
+                return null;
+            }
         }
 
-
-        function attachLinkToContainer(containerId, content, link, parentElement) {
-            const container = document.createElement('div');
-            container.id = containerId;
-            container.className = 'flex-container';
-
-            // Check if a link is available
+        function attachLinkToContainer(container, css) {
+            const link = extractLinkFromCSS(css);
             if (link) {
-                const anchor = document.createElement('a');
-                anchor.href = link;
-                anchor.setAttribute('target', '_blank'); // Open link in a new tab
-                anchor.textContent = content; // Set the text content of the anchor
-                container.appendChild(anchor);
-            } else {
-                container.textContent = content; // Set text directly if no link
+                console.log("Attaching link", link, "to container", container.id);
+                container.style.cursor = 'pointer'; // Changes the cursor to pointer to indicate it's clickable
+                container.onclick = () => window.open(link, '_blank'); // Opens the link in a new tab when clicked
             }
-
-            parentElement.appendChild(container);
         }
 
 
