@@ -148,7 +148,7 @@ P04
 Example - hai: Hoge basking in the golden glow of twilight.
 
 P05
-Unleashing The Wild(side) With Wildcards - Add a twist with wildcards. They're placeholders that HogeAI fills with fun, unpredictable inputs.
+Unleashing The Wild(side) With Wildcards - Dive into the fun of HogeAI's wildcard feature, which acts like a roll of the dice in your storytelling. Wildcards are dynamic placeholders that can vary from simple elements, styles, to  fully fleshed-out prompts. By using the /wildcard command, you can access our curated list. When you include a wildcard in your prompt, HogeAI randomly selects from the specified category, adding a unique and unpredictable twist to your creation. This feature enriches your narratives, allowing for spontaneous and creative results that surprise and delight.
 
 P06
 Example - hai: Hoge just discovered a !object! at the heart of !place!. System might surprise you with what Hoge discovers and where!
