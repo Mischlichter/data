@@ -135,13 +135,153 @@ The Journey Unfolds - The saga of HogeAI is an ever-evolving narrative of creati
 
 SCENE03:
 
-P01:
-HANDBOOK
+P01
+THE HOGEAI BOT - Dive Deep, Dive Hoge
+
+P02
+Kickstarting Your HogeAI Journey - First off, hop into the @OfficialHogeCommunity on Telegram. That's where all the Hoge magic unfolds. To awaken the HogeAI Bot from its digital slumber, simply type /start. Quick tip: Make sure you're whispering (or, well, typing) to the right bot – our very own 'HogeAI bot'. A Little Lost? Hey, Hoge woods can be dense! If you ever need a guiding star, /help has got your back, laying out all the commands you'll need.
+
+P03
+From Words to Hoge-tastic Visuals - With the hai: command, your words are the paint, and HogeAI is the canvas. And if you want our star, Hoge, in the scene, just drop his name in your tale.
+
+P04
+Example - hai: Hoge basking in the golden glow of twilight.
+
+P05
+Unleashing The Wild(side) With Wildcards - Add a twist with wildcards. They're placeholders that HogeAI fills with fun, unpredictable inputs.
+
+P06
+Example - hai: Hoge just discovered a !object! at the heart of !place!. System might surprise you with what Hoge discovers and where!
+
+P07
+Models - The Artistic Arsenal of HogeAI - Select Your Style! Every story deserves its unique brush. From the trusty stable diffusion 1.5 to the snazzy SDXL model, the choice is yours. Inpainting: It's like giving you superpowers to reshape images. Whether you're into memes or modern art, this tool's your best pal. Img2Img: Ever dreamt of turning sketches into vibrant art or black & white snaps into colorful memories? Say no more!
+
+P08
+Credit Where Credit's Due - Why Credits? The HogeAI experience thrives on credits. These tiny tokens cover our operational gears, ensuring your experience is nothing short of fabulous.
+
+P09
+First Sips on the House - Dive into HogeAI and splash around for free initially. Once you've had your fill of free credits, there's a brief cooldown. Think of it as our digital artists grabbing a quick Hoge-coffee. VIP, the Hoge Way: Craving the full Hoge experience? Stack up on credits and zoom straight into premium land. Keep tabs with /credits and refuel with /buy as needed.
+
+P10
+Hoge Generosity - Spread the Hoge love! Gift credits to a buddy with /credits [amount] @Username or rain it on a bunch with /credits [amount] rain [number of users].
+
+P11
+The Premium Perks - Beyond the velvet rope lies the crème de la Hoge. Advanced tools, premium models, and a world where your creativity is the only limit.
+
+P12
+The HogeAI Promise - We're all in for wild imaginations, but we've got a filter to keep things PG. After all, HogeAI is a family fiesta.
+
+P13
+Your Secrets Are Safe - Crafted a Hoge masterpiece? Relish it, share it, but don't worry about storage. Once your session wraps up, it vanishes—privacy with a Hoge guarantee.
+
+P14
+Sharing, Not Selling - Enjoy the freedom to share your HogeAI-created visuals with the world. Our licensing allows for free sharing while prohibiting commercial use, maintaining the spirit of community and creativity.
+
+P15
+PROMPT GUIDE - Crafting Your Hoge Tale
+
+P16
+Setting the Stage - Alright, adventurer! Before you unleash your creativity, let's lay down some ground rules. Crafting the perfect prompt is like whipping up a magical potion: a dash of description, a sprinkle of specifics, and a big ol' dollop of imagination.
+
+P17
+The Basics - Be descriptive: The more you tell, the more we show. Instead of "Hoge with a hat", try "Hoge rocking a neon-green cowboy hat under a disco ball". See the difference? Set the mood and setting: Is it a sunny day at the beach or a mysterious moonlit forest? Your choice, your story.
+
+P18
+Dive Deeper - Colors & Textures: Add some flair! "Hoge's silky blue scarf" paints a clearer picture than just "Hoge's scarf". Actions & Emotions: What's Hoge up to? Is he dancing, meditating, or maybe feeling ecstatic or pensive? Let us know!
+
+P19
+Pro Tips - Keep It Clear: While details are awesome, don't overload. "Hoge having a picnic with unicorns, dragons, and robots on Mars while a meteor shower is happening" might just leave the AI scratching its digital head. Use wildcards for an element of surprise. If you're ever feeling indecisive, let the wildcard decide!
+
+P20
+Advanced Prompting Tactics - Order Matters: Start with the main idea, then sprinkle in the details. Words at the beginning carry more weight. Ditch "very big". Opt for "gigantic" or "colossal". Aim for a blueprint that outlines the Main Subject, Environment/Setting, and Style/Mood.
+
+P21
+Experiment & Explore - The beauty of HogeAI? There's no right or wrong. Play around, experiment, and most importantly, have a blast! From serene landscapes to wacky adventures, the Hoge universe is yours to explore.
 
 
 #container01 {
-
     font-family: 'JetBrainsMono-ExtraBold', sans-serif;
+    margin-top: 25%;
+}
+
+#container02 {
+    text-transform: none;
+}
+
+#container03 {
+    text-transform: none;
+}
+
+#container04 {
+    text-transform: none;
+}
+
+#container05 {
+    text-transform: none;
+}
+
+#container06 {
+    text-transform: none;
+}
+
+#container07 {
+    text-transform: none;
+}
+
+#container08 {
+    text-transform: none;
+}
+
+#container09 {
+    text-transform: none;
+}
+
+#container10 {
+    text-transform: none;
+}
+
+#container11 {
+    text-transform: none;
+}
+
+#container12 {
+    text-transform: none;
+}
+
+#container13 {
+    text-transform: none;
+}
+
+#container14 {
+    text-transform: none;
+}
+
+#container15 {
+    text-transform: none;
+}
+
+#container16 {
+    text-transform: none;
+}
+
+#container17 {
+    text-transform: none;
+}
+
+#container18 {
+    text-transform: none;
+}
+
+#container19 {
+    text-transform: none;
+}
+
+#container20 {
+    text-transform: none;
+}
+
+#container21 {
+    text-transform: none;
 }
 
 SCENE04:
