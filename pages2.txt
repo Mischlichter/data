@@ -1,0 +1,200 @@
+SCENE01:
+
+P01:
+Welcome to HogeAI
+
+P02:
+Dive into the vibrant world of HogeAI, where your words become the brush, and imagination paints the canvas. At the core of HogeAI is a revolutionary tool designed to transform your textual descriptions into stunning visual artworks. Whether you're a seasoned artist or new to the realm of digital creation, HogeAI offers an accessible gateway to unleashing your creativity.
+
+P03:
+Imagine being able to depict any scene, idea, or story simply by describing it. Want to see the Hoge character exploring distant galaxies, lounging in an enchanted forest, or starring in your very own custom tale? HogeAI makes it possible. Our platform is built on cutting-edge AI technology, finely tuned to interpret your prompts and generate images that capture your vision with breathtaking detail and creativity.
+
+P04:
+Dive into a user-friendly experience designed for everyone. Through a simple interaction with our Telegram bot, you can enter descriptions and watch as HogeAI brings them to life. This seamless blend of technology and artistry opens up a world of possibilities, inviting you to explore, experiment, and create like never before.
+
+P05:
+HogeAI goes beyond just being a tool; it's a journey into the heart of creativity, driven by our community. 
+
+P06:
+We invite you to be part of this adventure, to share your creations, to inspire and be inspired, and to unlock the limitless potential of your imagination.
+
+
+#container01 {
+
+    font-family: 'JetBrainsMono-ExtraBold', sans-serif;
+    margin-top: 25%;
+}
+
+#container02 {
+    text-transform: none;
+}
+
+#container03 {
+    text-transform: none;
+}
+
+#container04 {
+    text-transform: none;
+}
+
+#container05 {
+    text-transform: none;
+}
+
+#container06 {
+    text-transform: none;
+}
+
+SCENE02:
+
+P01:
+Devellopment Journey
+
+P02: 
+The Spark of Innovation - In the bustling chats of the Hoge community, amidst a whirlwind of memes, a revolutionary idea was born. What if we could craft an AI that generates Hogethemed visuals on demand? This question set the stage for an incredible journey, transforming a fleeting thought into a groundbreaking project.
+
+P03:
+Diving Deep into AI - Our journey began with an exploration of existing AI technologies, quickly realizing that standard models fell short in capturing the unique Hoge character. This led us into the depths of AI training, where we decided to fine-tune existing models specifically to bring our character to life. This pivotal step set the stage for a tool adept at turning whimsical Hoge prompts into captivating visuals.
+
+P04:
+Creative DNA - Preparing HogeAI for its artistic mission involved an unprecedented creative endeavor. We embarked on a meticulous process of handcrafting each training image from scratch. This creative journey ensured that every piece of data reflected the essence of Hoge, embedding the AI with a deep understanding of our character's distinctive appeal.
+
+P05:
+Alchemy of AI Training - The training phase was an alchemical process, transforming data into a creative force. Imagine teaching a robot to paint, starting with stick figures and evolving to masterpieces. With each iteration, HogeAI grew closer to understanding the nuances of humor and artistry, navigating through challenges and refining its capabilities.
+
+P06:
+Evolving the Bot - Parallel to the training process, the development of the HogeAI bot commenced. This bot was not just a vessel for the AI but evolved into a sophisticated platform equipped with numerous functions, all designed with security and user-friendliness in mind. From its inception, the bot underwent constant evolution, incorporating feedback from beta testing conducted by a dedicated group of community members. Their feedback was overwhelmingly positive, fueling further development and improvements.
+
+P07:
+A Commitment to Security - Amidst the fun and creation, the commitment to security remained unwavering. From sophisticated NSFW filters to robust data protection measures, ensuring a safe and welcoming environment for all was paramount.
+
+P08:
+Beta Phase Insights - The beta testing phase unveiled the vibrant enthusiasm of the Hoge community, their participation vital in refining HogeAI. Direct feedback from beta testers led to tangible enhancements, optimizing both the bot’s functionality and user interface. Their insights helped identify crucial adjustments, particularly in user interaction and security features, ensuring HogeAI not only met but exceeded community expectations. This collaborative feedback loop was instrumental in validating HogeAI’s appeal and its capacity to engage and amuse its audience, highlighting the importance of community input in the developmental journey.
+
+P09:
+Expanding Creative Horizons - Embraced by the community, the drive for diversity fueled the creation of more models, diversifying HogeAI's artistic arsenal. The unveiling of the img2img feature introduced a transformative avenue for creative exploration, allowing users to pair an image with a text prompt. HogeAI reinterprets this combination, effectively transforming the initial image through the lens of the prompt, merging a familiar form with novel interpretations. This feature not only expands artistic boundaries but also enriches the user experience with unparalleled opportunities for customization and expression.
+
+P10:
+Gallery of Wonders – A Home for Creativity - Recognizing the artistry of the community, the development of our website began. This wasn't just a gallery; it was a home for the community's creations, a place for easy sharing, and a beacon for new visitors to witness the magic of HogeAI. It symbolized the journey from an idea to a thriving hub of creativity.
+
+P11:
+Empowered by Community Spirit - At every twist and turn of HogeAI’s journey, the vibrant pulse of the community has been its driving force. From the spark of its inception to every leap forward in its development, it was the enthusiastic support, insightful feedback, and creative contributions of the Hoge community that transformed a budding idea into a groundbreaking reality. This project stands as a testament not just to technological innovation, but to the power of collective vision and collaboration, where the community's spirit has been both the inspiration and the catalyst for HogeAI's evolution.
+
+P12:
+The Journey Unfolds - The story of HogeAI is far from static; it's an ongoing saga of creativity, learning, and community. With each new feature, every piece of feedback, and every creation shared, HogeAI continues to evolve, driven by the spirit of fun, innovation, and the collective imagination of its community.P01:
+Devellopment Journey
+
+P02: 
+The Spark of Innovation - In the bustling chats of the Hoge community, amidst a whirlwind of memes, a revolutionary idea was born. What if we could craft an AI that generates Hogethemed visuals on demand? This question set the stage for an incredible journey, transforming a fleeting thought into a groundbreaking project.
+
+P03:
+Diving Deep into AI - Our journey began with an exploration of existing AI technologies, quickly realizing that standard models fell short in capturing the unique Hoge character. This led us into the depths of AI training, where we decided to fine-tune existing models specifically to bring our character to life. This pivotal step set the stage for a tool adept at turning whimsical Hoge prompts into captivating visuals.
+
+P04:
+Creative DNA - Preparing HogeAI for its artistic mission involved an unprecedented creative endeavor. We embarked on a meticulous process of handcrafting each training image from scratch. This creative journey ensured that every piece of data reflected the essence of Hoge, embedding the AI with a deep understanding of our character's distinctive appeal.
+
+P05:
+Alchemy of AI Training - The training phase was an alchemical process, transforming data into a creative force. Imagine teaching a robot to paint, starting with stick figures and evolving to masterpieces. With each iteration, HogeAI grew closer to understanding the nuances of humor and artistry, navigating through challenges and refining its capabilities.
+
+P06:
+Evolving the Bot - Parallel to the training process, the development of the HogeAI bot commenced. This bot was not just a vessel for the AI but evolved into a sophisticated platform equipped with numerous functions, all designed with security and user-friendliness in mind. From its inception, the bot underwent constant evolution, incorporating feedback from beta testing conducted by a dedicated group of community members. Their feedback was overwhelmingly positive, fueling further development and improvements.
+
+P07:
+A Commitment to Security - Amidst the fun and creation, the commitment to security remained unwavering. From sophisticated NSFW filters to robust data protection measures, ensuring a safe and welcoming environment for all was paramount.
+
+P08:
+Beta Phase Insights - The beta testing phase unveiled the vibrant enthusiasm of the Hoge community, their participation vital in refining HogeAI. Direct feedback from beta testers led to tangible enhancements, optimizing both the bot’s functionality and user interface. Their insights helped identify crucial adjustments, particularly in user interaction and security features, ensuring HogeAI not only met but exceeded community expectations. This collaborative feedback loop was instrumental in validating HogeAI’s appeal and its capacity to engage and amuse its audience, highlighting the importance of community input in the developmental journey.
+
+P09:
+Expanding Creative Horizons - Embraced by the community, the drive for diversity fueled the creation of more models, diversifying HogeAI's artistic arsenal. The unveiling of the img2img feature introduced a transformative avenue for creative exploration, allowing users to pair an image with a text prompt. HogeAI reinterprets this combination, effectively transforming the initial image through the lens of the prompt, merging a familiar form with novel interpretations. This feature not only expands artistic boundaries but also enriches the user experience with unparalleled opportunities for customization and expression.
+
+P10:
+Gallery of Wonders – A Home for Creativity - Recognizing the artistry of the community, the development of our website began. This wasn't just a gallery; it was a home for the community's creations, a place for easy sharing, and a beacon for new visitors to witness the magic of HogeAI. It symbolized the journey from an idea to a thriving hub of creativity.
+
+P11:
+Empowered by Community Spirit - At every twist and turn of HogeAI’s journey, the vibrant pulse of the community has been its driving force. From the spark of its inception to every leap forward in its development, it was the enthusiastic support, insightful feedback, and creative contributions of the Hoge community that transformed a budding idea into a groundbreaking reality. This project stands as a testament not just to technological innovation, but to the power of collective vision and collaboration, where the community's spirit has been both the inspiration and the catalyst for HogeAI's evolution.
+
+P12:
+The Journey Unfolds - The story of HogeAI is far from static; it's an ongoing saga of creativity, learning, and community. With each new feature, every piece of feedback, and every creation shared, HogeAI continues to evolve, driven by the spirit of fun, innovation, and the collective imagination of its community.
+
+
+#container01 {
+    font-family: 'JetBrainsMono-ExtraBold', sans-serif;
+    margin-top: 25%;
+}
+
+#container02 {
+    text-transform: none;
+}
+
+#container03 {
+    text-transform: none;
+}
+
+#container04 {
+    text-transform: none;
+}
+
+#container05 {
+    text-transform: none;
+}
+
+#container06 {
+    text-transform: none;
+}
+
+#container07 {
+    text-transform: none;
+}
+
+#container08 {
+    text-transform: none;
+}
+
+#container09 {
+    text-transform: none;
+}
+
+#container10 {
+    text-transform: none;
+}
+
+#container11 {
+    text-transform: none;
+}
+
+#container12{
+    text-transform: none;
+}
+
+SCENE03:
+
+P01:
+HANDBOOK
+
+
+#container01 {
+
+    font-family: 'JetBrainsMono-ExtraBold', sans-serif;
+}
+
+SCENE04:
+
+P01: GALLERY
+ 
+
+#container01 {
+	display: none;
+    font-family: 'JetBrainsMono-ExtraBold', sans-serif;
+}
+
+SCENE05:
+
+P01: THEATRE
+ 
+
+#container01 {
+	display: none;
+    font-family: 'JetBrainsMono-ExtraBold', sans-serif;
+}
+
