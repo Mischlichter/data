@@ -139,7 +139,7 @@ P01
 THE HOGEAI BOT - Dive Deep, Dive Hoge
 
 P02
-Kickstarting Your HogeAI Journey - First off, hop into the @<a href="https://t.me/officialhogecommunity" target="_blank">OfficialHogeCommunity</a> on Telegram. That's where all the Hoge magic unfolds. To awaken the HogeAI Bot from its digital slumber, simply type /start. Quick tip: Make sure you're whispering (or, well, typing) to the right bot – our very own 'HogeAI bot'. A Little Lost? Hey, Hoge woods can be dense! If you ever need a guiding star, /help has got your back, laying out all the commands you'll need.
+Kickstarting Your HogeAI Journey - First off, hop into the @OfficialHogeCommunity on Telegram. That's where all the Hoge magic unfolds. To awaken the HogeAI Bot from its digital slumber, simply type /start. Quick tip: Make sure you're whispering (or, well, typing) to the right bot – our very own 'HogeAI bot'. A Little Lost? Hey, Hoge woods can be dense! If you ever need a guiding star, /help has got your back, laying out all the commands you'll need.
 
 P03
 From Words to Hoge-tastic Visuals - With the hai: command, your words are the paint, and HogeAI is the canvas. And if you want our star, Hoge, in the scene, just drop his name in your tale.
