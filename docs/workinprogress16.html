@@ -929,7 +929,13 @@
                 console.log(`Parts for scene ${index + 1}:`, parts); // Print the parts after splitting by container
 
                 // First part is always paragraphs. Exclude the paragraph numbers.
-                let paragraphs = parts[0].trim().split(/\n+\s*P\d+:\s*/).filter(p => p).map(paragraph => paragraph.replace(/^P\d+:\s*/, '').trim());
+                let paragraphs = parts[0].trim()
+                    .split(/\n+\s*P\d+:?\s*/) // Split at paragraph markers, optional colon
+                    .filter(p => p) // Remove empty strings from the array
+                    .map((paragraph, index) => 
+                        index === 0 ? paragraph.replace(/^P\d+:?\s*/, '').trim() : paragraph.trim()
+                    );
+
 
 
                 console.log(`Paragraphs for scene ${index + 1}:`, paragraphs); // Print the paragraphs for the current scene
