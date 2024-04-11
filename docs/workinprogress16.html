@@ -1471,6 +1471,8 @@
                     style.innerHTML = item.content.style;
                     document.head.appendChild(style);
                     dynamicStyles.push(style);
+
+                
                 } else {
                     const imageContainer = document.createElement('div');
                     imageContainer.id = item.key;
@@ -1504,6 +1506,36 @@
             observeImagesForAnimation();
             
         }
+
+
+        function extractLinkFromCSS(css) {
+            const linkPattern = /\/\* link: (.*) \*\//; // Regex to find URL in CSS comment
+            const match = css.match(linkPattern);
+            return match ? match[1].trim() : null; // Return the link if found, otherwise null
+        }
+
+
+        function attachLinkToContainer(containerId, content, link, parentElement) {
+            const container = document.createElement('div');
+            container.id = containerId;
+            container.className = 'flex-container';
+
+            // Check if a link is available
+            if (link) {
+                const anchor = document.createElement('a');
+                anchor.href = link;
+                anchor.setAttribute('target', '_blank'); // Open link in a new tab
+                anchor.textContent = content; // Set the text content of the anchor
+                container.appendChild(anchor);
+            } else {
+                container.textContent = content; // Set text directly if no link
+            }
+
+            parentElement.appendChild(container);
+        }
+
+
+
 
         function createStyledFooter() {
             removeStyledFooter();
