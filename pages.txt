@@ -50,6 +50,7 @@ SCENE02:
 P01:
 Devellopment Journey
 
+
 P02: 
 The Spark of Innovation - In the bustling chats of the Hoge community, amidst a whirlwind of memes, a revolutionary idea was born. What if we could craft an AI that generates Hogethemed visuals on demand? This question set the stage for an incredible journey, transforming a fleeting thought into a groundbreaking project.
 
