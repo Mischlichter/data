@@ -206,6 +206,7 @@ Experiment & Explore - The beauty of HogeAI? There's no right or wrong. Play aro
 
 #container02 {
     text-transform: none;
+    /* link: https://t.me/officialhogecommunity */
 }
 
 #container03 {
