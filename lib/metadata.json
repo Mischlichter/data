@@ -1470,5 +1470,37 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "54862889532"
+    },
+    "9489010510.jpg": {
+        "File Name": "9489010510.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hai Hasselblad photo, chibi hogeai, (white furry HogeAI man as a time-traveling detective solving interdimensional mysteries) amidst a dog pound cafe, having pizza with Elon Musk,Gears turn revealing alternate histories, sandglasses show possible futures, and they're both showing off their memes from their iphones. A timeline of cyberspace vibrant neon colors and crypto memes, 4K, next gen, 3d octane rendering, unreal engine 5, temporal intrigue, inspired by the genius of Hieronymus Bosch and Yoshitaka Amano, a quest through epochs Hasselblad photo, chibi hogeai, (white furry HogeAI man lounging on a crescent moon enveloped in tendrils of smoke, with a joint in hand) above an enchanted forest awash with iridescent colors. The moon casts a serene, silver glow, accentuating the whimsical atmosphere of the celestial tableau. Ethereal, translucent butterflies flutter around, adding delicate movement to the composition.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "9489010510"
+    },
+    "38627651023.jpg": {
+        "File Name": "38627651023.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "No prompt",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "38627651023"
+    },
+    "80315171867.jpg": {
+        "File Name": "80315171867.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "No prompt",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "80315171867"
+    },
+    "35184503665.jpg": {
+        "File Name": "35184503665.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "No prompt",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "35184503665"
     }
 }
