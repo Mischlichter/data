@@ -902,11 +902,11 @@
 
 
         function parseText(text) {
-            console.log("Original text:", text); // Print the original text
+            //console.log("Original text:", text); // Print the original text
 
             // Split the text into scenes
             let scenes = text.split(/SCENE\d+:/);
-            console.log("Scenes after initial split:", scenes); // Print scenes after initial split
+            //console.log("Scenes after initial split:", scenes); // Print scenes after initial split
 
             // Remove the first empty element if it exists
             if (scenes[0].trim() === '') {
@@ -916,7 +916,7 @@
             let parsedData = [];
 
             scenes.forEach((scene, index) => {
-                console.log(`Processing scene ${index + 1}:`, scene); // Print the current scene being processed
+                //console.log(`Processing scene ${index + 1}:`, scene); // Print the current scene being processed
 
                 let sceneData = {
                     sceneKey: `scene${index + 1}`,
@@ -926,7 +926,7 @@
 
                 // Split the scene into paragraphs and CSS
                 let parts = scene.split(/#container\d+ \{/);
-                console.log(`Parts for scene ${index + 1}:`, parts); // Print the parts after splitting by container
+                //console.log(`Parts for scene ${index + 1}:`, parts); // Print the parts after splitting by container
 
                 // First part is always paragraphs. Exclude the paragraph numbers.
                 let paragraphs = parts[0].trim()
@@ -938,7 +938,7 @@
 
 
 
-                console.log(`Paragraphs for scene ${index + 1}:`, paragraphs); // Print the paragraphs for the current scene
+                //console.log(`Paragraphs for scene ${index + 1}:`, paragraphs); // Print the paragraphs for the current scene
 
                 // Calculate the number of containers
                 sceneData.numberOfContainers = paragraphs.length;
@@ -951,13 +951,13 @@
                         text: paragraphs[i - 1],
                         style: css
                     };
-                    console.log(`Container ${containerKey} for scene ${index + 1}:`, sceneData.containers[containerKey]); // Print each container's data
+                    //console.log(`Container ${containerKey} for scene ${index + 1}:`, sceneData.containers[containerKey]); // Print each container's data
                 }
 
                 parsedData.push(sceneData);
             });
 
-            console.log("Parsed data:", parsedData); // Print the final parsed data
+            //console.log("Parsed data:", parsedData); // Print the final parsed data
             return parsedData;
         }
 
@@ -975,22 +975,22 @@
 
         
         function parseImage(text) {
-            console.log("Starting image parsing...");
+            //console.log("Starting image parsing...");
 
             // Split the text into scenes
             let scenes = text.split(/SCENE\d+:/);
-            console.log("Scenes identified:", scenes.length);
+            //console.log("Scenes identified:", scenes.length);
 
             // Remove the first empty element if it exists
             if (scenes[0].trim() === '') {
                 scenes.shift();
-                console.log("Removed empty first element.");
+                //console.log("Removed empty first element.");
             }
 
             let parsedImageData = [];
 
             scenes.forEach((scene, index) => {
-                console.log(`Processing scene ${index + 1}`);
+                //console.log(`Processing scene ${index + 1}`);
 
                 let sceneImageData = {
                     sceneKey: `scene${index + 1}`,
@@ -1016,13 +1016,13 @@
                         src: imageMatch[1].trim(),
                         style: imageCSS
                     };
-                    console.log(`Found image: ${imageKey} -> ${imageMatch[1].trim()}, CSS: ${imageCSS}`);
+                    //console.log(`Found image: ${imageKey} -> ${imageMatch[1].trim()}, CSS: ${imageCSS}`);
                 }
 
                 parsedImageData.push(sceneImageData);
             });
 
-            console.log("Image parsing complete:", parsedImageData);
+            //console.log("Image parsing complete:", parsedImageData);
             return parsedImageData;
         }
 
@@ -1055,7 +1055,7 @@
                 const text = await response.text();
                 return parseMenuText(text);
             } catch (error) {
-                console.error("Error fetching menu data:", error);
+                //console.error("Error fetching menu data:", error);
                 return [];
             }
         }
@@ -1265,7 +1265,7 @@
             if (preparedMenuItems[containerId]) {
                 startLineAnimation(preparedMenuItems[containerId]);
             } else {
-                console.log("No prepared data for container:", containerId);
+                //console.log("No prepared data for container:", containerId);
             }
         }
 
@@ -1435,7 +1435,7 @@
 
             // Update the iframe with the new scene
             updateIframe(formattedSceneKey);
-            console.log('Formatted Scene Key:', formattedSceneKey);
+            //console.log('Formatted Scene Key:', formattedSceneKey);
             // Merge and sort text and image containers
             let combinedData = [];
             Object.keys(scene.containers).forEach(key => {
@@ -1493,10 +1493,10 @@
             const linkPattern = /\/\* link: (.*) \*\//; // Pattern to extract URL from comment
             const match = css.match(linkPattern);
             if (match) {
-                console.log("Extracted link:", match[1].trim());
+                //console.log("Extracted link:", match[1].trim());
                 return match[1].trim();
             } else {
-                console.log("No link found in CSS.");
+                //console.log("No link found in CSS.");
                 return null;
             }
         }
@@ -1504,7 +1504,7 @@
         function attachLinkToContainer(container, css) {
             const link = extractLinkFromCSS(css);
             if (link) {
-                console.log("Attaching link", link, "to container", container.id);
+                //console.log("Attaching link", link, "to container", container.id);
                 container.style.cursor = 'pointer'; // Changes the cursor to pointer to indicate it's clickable
                 container.onclick = () => window.open(link, '_blank'); // Opens the link in a new tab when clicked
             }
@@ -1573,7 +1573,7 @@
         // Function to toggle the removal activation
         function toggleRemoveFooterActivation() {
             isRemoveFooterActive = !isRemoveFooterActive;
-            console.log(`RemoveStyledFooter is now ${isRemoveFooterActive ? 'active' : 'inactive'}.`);
+            //console.log(`RemoveStyledFooter is now ${isRemoveFooterActive ? 'active' : 'inactive'}.`);
         }
 
         // Modified removeStyledFooter function
@@ -1582,31 +1582,31 @@
         function removeStyledFooter() {
             // Check if the action is active
             if (!isRemoveFooterActive) {
-                console.log('RemoveStyledFooter is inactive. Exiting function.');
+                //console.log('RemoveStyledFooter is inactive. Exiting function.');
                 return; // Exit the function if not active
             }
             
             const footerContainer = document.getElementById('customStyledFooter');
             if (footerContainer) {
                 document.body.removeChild(footerContainer);
-                console.log('Styled footer removed.');
+                //console.log('Styled footer removed.');
                 removeStyledFooterCounter++; // Increment the counter after a successful removal
                 
                 // Check if the function has run 2 times
                 if (removeStyledFooterCounter >= 2) {
                     isRemoveFooterActive = false; // Deactivate the function
-                    console.log('RemoveStyledFooter has been set to inactive after running 2 times.');
+                    //console.log('RemoveStyledFooter has been set to inactive after running 2 times.');
                 }
                 
             } else {
-                console.log('No styled footer found to remove.');
+                //console.log('No styled footer found to remove.');
             }
         }
 
 
         function resetRemoveStyledFooterCounter() {
             removeStyledFooterCounter = 0;
-            console.log('The counter for removeStyledFooter has been reset.');
+            //console.log('The counter for removeStyledFooter has been reset.');
         }
 
 
@@ -1978,7 +1978,7 @@
             if (preparedContainers[containerId]) {
                 startLineAnimation(preparedContainers[containerId]);
             } else {
-                console.log("No prepared data for container:", containerId);
+                //console.log("No prepared data for container:", containerId);
             }
         }
       
@@ -2147,7 +2147,7 @@
         function adjustContainerSizesBasedOnVirtualCanvas() {
             var virtualCanvas = document.getElementById('virtualcanvas');
             if (!virtualCanvas) {
-                console.error('Virtual canvas not found.');
+                //console.error('Virtual canvas not found.');
                 return;
             }
 
