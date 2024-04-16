@@ -1638,5 +1638,21 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "80785517486"
+    },
+    "92703636972.jpg": {
+        "File Name": "92703636972.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "No prompt",
+        "Model": "Unknown model",
+        "Creator": "Unknown creator",
+        "Seed": "92703636972"
+    },
+    "59068237147.jpg": {
+        "File Name": "59068237147.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "No prompt",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "59068237147"
     }
 }
