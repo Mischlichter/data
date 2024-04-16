@@ -1662,5 +1662,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "53309109944"
+    },
+    "73812930690.jpg": {
+        "File Name": "73812930690.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man unlocking a dimensional gate) with a crystalline key, bob ross painting of surreal connections, raytracing, hdr, 8k uhd. Beyond the gateway lies realms of floating islands, waterfalls defying gravity, mystical creatures of legend and lore, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Frank Frazetta, bayard wu, greg rutkowski, colors swirling with deep reds and ethereal whites, a symphony of mysteries unfolding. \"a cartoon hogeai man wearing sunglasses and a t - shirt, behance, trending on fiverr, insanely nice hair style, profile picture 1024px, timelapse, ghailan! , twitter pfp, the artist has used bright, reduce duplicate image, wearing jetpack, deviantar, neymar, caricature\" Within an intergalactic bazaar set on a floating asteroid, multiple HogeAI traders barter in a marketplace that blends cosmic wonders with digital innova...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "73812930690"
     }
 }
