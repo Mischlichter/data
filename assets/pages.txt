@@ -331,9 +331,21 @@ P01: GALLERY
     font-family: 'JetBrainsMono-ExtraBold', sans-serif;
 }
 
+
 SCENE05:
 
 P01: THEATRE
+ 
+
+#container01 {
+	display: none;
+    font-family: 'JetBrainsMono-ExtraBold', sans-serif;
+}
+
+
+SCENE06:
+
+P01: CONNECT
  
 
 #container01 {
