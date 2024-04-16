@@ -669,6 +669,9 @@
             const mouseOverlay = document.getElementById('mouseOverlay');
             const bodyGalleryContainer = document.getElementById('bodyGalleryContainer');
 
+
+
+
             unhideElementsByClass("foreground-image-container");
 
             // Remove existing iframe and clear body gallery content
@@ -682,8 +685,8 @@
 
             if (sceneKey === 'scene04') {
                 // Logic for scene04 (Gallery)
-                toggleRemoveFooterActivation();
-                resetRemoveStyledFooterCounter();
+                toggleRemoveFooterActivation()
+                resetRemoveStyledFooterCounter()
                 iframeContainer.style.display = 'none';
                 if (mouseOverlay) {
                     mouseOverlay.style.display = 'none';
@@ -693,61 +696,37 @@
                 loadGallery(); // Load the gallery for scene04
                 unhideBackground();
                 scrollToTop();
+
             } else if (sceneKey === 'scene05') {
                 // Logic for scene05 (Clipz)
                 hideElementsByClass("foreground-image-container");
                 setupIframe('clipz2.html'); // Load clipz.html for scene05
-            } else if (sceneKey === 'scene06') {
-                // Logic for scene05 (Clipz)
-                hideElementsByClass("foreground-image-container");
-                setupIframe('clipz2.html'); // Load clipz.html for scene05    
-            } else if (sceneKey === 'scene07') {
-                // Logic for scene06 (Telegram)
-                hideElementsByClass("foreground-image-container");
-                setupTelegramIframe('https://web.telegram.org/k/#@officialhogecommunity');
             } else {
                 // Logic for other scenes
                 setupIframe(`depthyxx14.html?scene=${sceneKey}`);
             }
-        }
 
-        function setupIframe(src) {
-            const iframeContainer = document.getElementById('iframeContainer');
-            const mouseOverlay = document.getElementById('mouseOverlay');
-            const bodyGalleryContainer = document.getElementById('bodyGalleryContainer');
+            function setupIframe(src) {
+                
+                iframeContainer.style.display = 'block';
+                if (mouseOverlay) {
+                    mouseOverlay.style.display = 'block';
+                    mouseOverlay.style.zIndex = '1';
+                }
+                bodyGalleryContainer.style.display = 'none';
 
-            iframeContainer.style.display = 'block';
-            if (mouseOverlay) {
-                mouseOverlay.style.display = 'block';
-                mouseOverlay.style.zIndex = '1';
+                let newIframe = document.createElement('iframe');
+                newIframe.id = 'sceneIframe';
+                newIframe.style.width = '100%';
+                newIframe.style.height = '100vh';
+                newIframe.style.border = 'none';
+                newIframe.src = src;
+                iframeContainer.appendChild(newIframe);
+
+                hideBackground();
+                scrollToTop();
+
             }
-            bodyGalleryContainer.style.display = 'none';
-
-            let newIframe = document.createElement('iframe');
-            newIframe.id = 'sceneIframe';
-            newIframe.style.width = '100%';
-            newIframe.style.height = '100vh';
-            newIframe.style.border = 'none';
-            newIframe.src = src;
-            iframeContainer.appendChild(newIframe);
-
-            hideBackground();
-            scrollToTop();
-        }
-
-        function setupTelegramIframe(src) {
-            const iframeContainer = document.getElementById('iframeContainer');
-
-            // Clearing any existing iframes specifically for Telegram scenario
-            iframeContainer.innerHTML = '';
-
-            let newIframe = document.createElement('iframe');
-            newIframe.id = 'sceneIframe';
-            newIframe.style.width = '100%'; // Full width
-            newIframe.style.height = '100vh'; // Full viewport height
-            newIframe.style.border = 'none'; // No border
-            newIframe.src = src;
-            iframeContainer.appendChild(newIframe);
         }
 
 
