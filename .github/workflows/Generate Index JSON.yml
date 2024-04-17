@@ -2,10 +2,9 @@ name: Generate Index JSON
 
 on:
   push:
-    # Now watching all directories including 'lib' for changes
     paths-ignore:
       - 'docs/**'
-      - 'gallerycom/**'
+      - 'gallerycom/**'  # Ignore changes in specified paths to prevent triggering the workflow
 
 jobs:
   build:
@@ -13,23 +12,21 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v4  # Checkout the repository
 
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.x'  # Specify the Python version
 
-    - name: Change to lib directory and run script
+    - name: Run indexing script
       run: |
-        cd lib
-        python indexing.py  # Make sure this script writes to 'index.json' in the current directory
+        python ./lib/indexing.py  # Run the script directly without changing directory
 
     - name: Commit and push if changes
       run: |
-        cd lib  # Ensure we are in the correct directory to find index.json
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add index.json  # Adds index.json from the current directory
+        git add ./lib/index.json  # Make sure to point to the correct path where index.json is generated
         git commit -m "Update index.json" -a || echo "No changes to commit"
         git push
