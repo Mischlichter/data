@@ -1710,5 +1710,21 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "75971484555"
+    },
+    "85289683141.jpg": {
+        "File Name": "85289683141.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hasselblad photo, chibi hogeai, (extremely cute white furry hogeai man making art with his mobile phone) green details, octane render photorealistic by cosmicwonder, hdr, photography by cosmicwonder, high definition, symmetrical face, volumetric lighting, dusty haze, photo, high octane render, 24mm, 4k, 24mm, DSLR, high quality, 60 fps, ultra realistic, The artwork showcases a heavily filtered, art media hogeai man influencer, using his creative atributes to get attention,posing with a smartphone, surrounded by images of symbols such as brush, color palettes, and artistic shapes The influencer is depicted with exaggerated features, and an overly enthusiastic expression1. 8 displaying hogeai phone  The background is filled with various artstyle sketches and symbolsdrawn in a chaotic and flashy style1. 5 to emphasise the overwhelming and inauthentic nature of the character's online presence. The illustration employs bold...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "85289683141"
+    },
+    "60092128360.jpg": {
+        "File Name": "60092128360.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hasselblad photo, chibi hogeai, (extremely cute white furry hogeai man making art with his mobile phone) green details, octane render photorealistic by cosmicwonder, hdr, photography by cosmicwonder, high definition, symmetrical face, volumetric lighting, dusty haze, photo, high octane render, 24mm, 4k, 24mm, DSLR, high quality, 60 fps, ultra realistic, The artwork showcases a heavily filtered, art media hogeai man influencer, using his creative atributes to get attention,posing with a smartphone, surrounded by images of symbols such as brush, color palettes, and artistic shapes The influencer is depicted with exaggerated features, and an overly enthusiastic expression1. 8 displaying hogeai phone  The background is filled with various artstyle sketches and symbolsdrawn in a chaotic and flashy style1. 5 to emphasise the overwhelming and inauthentic nature of the character's online presence. Masterpiece, digital illustra...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "60092128360"
     }
 }
