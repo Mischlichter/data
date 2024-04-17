@@ -2,10 +2,10 @@ name: Generate Index JSON
 
 on:
   push:
+    # Now watching all directories including 'lib' for changes
     paths-ignore:
       - 'docs/**'
       - 'gallerycom/**'
-      # Removed 'lib/**' from paths-ignore to ensure changes in lib are considered
 
 jobs:
   build:
@@ -20,15 +20,16 @@ jobs:
       with:
         python-version: '3.x'  # Specify the Python version
 
-    - name: Generate Index JSON
+    - name: Change to lib directory and run script
       run: |
         cd lib
-        python indexing.py  # Executes indexing.py which writes to index.json directly in the lib directory
+        python indexing.py  # Make sure this script writes to 'index.json' in the current directory
 
     - name: Commit and push if changes
       run: |
+        cd lib  # Ensure we are in the correct directory to find index.json
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add index.json  # Adds index.json from the current directory which is 'lib'
+        git add index.json  # Adds index.json from the current directory
         git commit -m "Update index.json" -a || echo "No changes to commit"
         git push
