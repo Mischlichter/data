@@ -15,16 +15,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'  # Specify Python version
-        cache: 'pip'  # Enable caching for pip
-
-    - name: Install Dependencies
-      run: |
-        pip install pathlib
-
     - name: Generate Index JSON
       run: |
         cd lib
