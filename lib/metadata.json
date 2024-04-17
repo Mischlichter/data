@@ -1702,5 +1702,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "91994427772"
+    },
+    "75971484555.jpg": {
+        "File Name": "75971484555.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hasselblad photo, chibi hogeai, (extremely cute white furry hogeai man with open arms and open heart) , green details, octane render photorealistic by cosmicwonder, hdr, photography by cosmicwonder, high definition, symmetrical face, volumetric lighting, dusty haze, photo, high octane render, 24mm, 4k, 24mm, DSLR, high quality, 60 fps, ultra realistic High in a realm where the skies tell stories of aeons past, HogeAI man soars among clouds that are canvases for celestial narratives. This sky kingdom, where each cloud formation is a chapter in a cosmic saga, is a place of tranquility and awe. The air is crisp with the essence of creation, carrying the scent of stardust and the echoes of cosmic events. As HogeAI glides through this aerial domain, he encounters cloud beings, each a custodian of galactic tales, their voices a chorus that weaves the fabric of the universe's history.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "75971484555"
     }
 }
