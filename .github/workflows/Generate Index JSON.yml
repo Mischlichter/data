@@ -13,10 +13,10 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3 # Updated to the latest major version
+      uses: actions/checkout@v4  # Updated to support Node.js 20
 
     - name: Set up Python
-      uses: actions/setup-python@v4 # Updated to the latest major version
+      uses: actions/setup-python@latest  # Ensure this is the latest version supporting Node.js 20
       with:
         python-version: '3.x'
 
