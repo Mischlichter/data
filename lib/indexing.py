@@ -12,8 +12,7 @@ def get_file_info():
 
 def main():
     files_info = get_file_info()
-    os.makedirs('lib', exist_ok=True)  # Ensure the 'lib' directory exists
-    with open('lib/index.json', 'w') as json_file:  # Corrected the path here
+    with open('index.json', 'w') as json_file:  # Note: 'lib/' is removed
         json.dump(files_info, json_file, indent=2)
 
 if __name__ == "__main__":
