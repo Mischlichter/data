@@ -357,7 +357,3 @@ GET IN TOUCH
     font-family: 'JetBrainsMono-ExtraBold', sans-serif;
 }
 
-#container02 {
-    text-transform: none;
-    pointer-events: none;
-}
