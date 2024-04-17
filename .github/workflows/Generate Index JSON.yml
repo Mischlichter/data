@@ -5,7 +5,7 @@ on:
     paths-ignore:
       - 'docs/**'
       - 'gallerycom/**'
-
+      # Removed 'lib/**' from paths-ignore to ensure changes in lib are considered
 
 jobs:
   build:
@@ -23,12 +23,12 @@ jobs:
     - name: Generate Index JSON
       run: |
         cd lib
-        python indexing.py  # Make sure this script does not reference the 'lib/' prefix when opening 'index.json'
+        python indexing.py  # Executes indexing.py which writes to index.json directly in the lib directory
 
     - name: Commit and push if changes
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add index.json  # Make sure this path is correct
+        git add index.json  # Adds index.json from the current directory which is 'lib'
         git commit -m "Update index.json" -a || echo "No changes to commit"
         git push
