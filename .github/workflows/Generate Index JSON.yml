@@ -12,7 +12,7 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4  # Checkout the repository
+      uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v5
@@ -21,12 +21,12 @@ jobs:
 
     - name: Run indexing script
       run: |
-        python ./lib/indexing.py  # Run the script directly without changing directory
+        python indexing.py  # Run the script from the repository root
 
     - name: Commit and push if changes
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add ./lib/index.json  # Make sure to point to the correct path where index.json is generated
+        git add index.json  # Add the index.json file from the root directory
         git commit -m "Update index.json" -a || echo "No changes to commit"
         git push
