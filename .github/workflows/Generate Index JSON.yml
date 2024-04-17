@@ -23,12 +23,12 @@ jobs:
     - name: Generate Index JSON
       run: |
         cd lib
-        python indexing.py  # Assumes indexing.py will write to 'index.json' directly in the current directory
+        python indexing.py  # Make sure this script does not reference the 'lib/' prefix when opening 'index.json'
 
     - name: Commit and push if changes
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add index.json  # Correct path based on the output location
+        git add index.json  # Make sure this path is correct
         git commit -m "Update index.json" -a || echo "No changes to commit"
         git push
