@@ -345,7 +345,11 @@ P01: THEATRE
 
 SCENE06:
 
-P01: CONNECT
+P01: 
+CONNECT
+
+P02: 
+GET IN TOUCH
  
 
 #container01 {
@@ -353,3 +357,7 @@ P01: CONNECT
     font-family: 'JetBrainsMono-ExtraBold', sans-serif;
 }
 
+#container02 {
+    text-transform: none;
+    pointer-events: none;
+}
