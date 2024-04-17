@@ -20,7 +20,7 @@ jobs:
 
     - name: Install Python Dependencies
       run: |
-        pip install Pillow  # Add any other necessary Python dependencies
+        pip install Pillow
 
     - name: Install exiftool
       run: |
@@ -29,15 +29,22 @@ jobs:
 
     - name: Run Metadata Extraction Script
       run: python lib/library_and_pages_x.py
-      
+
+    - name: Stash any changes
+      run: git stash  # Stashes any unstaged changes
+
+    - name: Pull latest changes from the repository
+      run: git pull --rebase  # Now should work with a clean working directory
+
+    - name: Pop the stash
+      run: git stash pop  # Restores the changes
+
     - name: Commit and Push Changes
       run: |
         git config --global user.name 'Mischlichter'
         git config --global user.email 'alex.stephan.weimar@web.de'
         git add lib/metadata.json
-        git add docs/sharing/*.html  # Add this line to include HTML files
+        git add docs/sharing/*.html
         git add docs/sharing/*_favicon.ico
-        echo "Waiting for 2 minute before committing and pushing..."
-        sleep 71  # Wait for 1 minute
         git commit -m "Update image metadata, HTML pages, and favicons" || echo "No changes to commit"
-        git push
+        git push || echo "Failed to push changes. Check for potential conflicts or issues."
