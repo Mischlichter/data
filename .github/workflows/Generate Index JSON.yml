@@ -4,7 +4,6 @@ on:
   push:
     paths-ignore:
       - 'docs/**'
-      - 'gallerycom/**'  # Ignore changes in specified paths to prevent triggering the workflow
 
 jobs:
   build:
