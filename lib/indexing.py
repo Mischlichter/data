@@ -4,10 +4,11 @@ from pathlib import Path
 from datetime import datetime, timezone
 
 def get_file_info():
-    base_path = Path('.')  # Assuming the script runs at the root of your local repo clone
+    # Change the working directory to the repository root
+    os.chdir(Path(__file__).parent.parent)  # Move up to the main directory
+    base_path = Path('.')  # Now the base path is the root of your repository
     all_files = {}
-    for path in base_path.rglob('*'):  # Using rglob to recursively find all files
-        # Check if it's a directory and include it even if it's empty
+    for path in base_path.rglob('*'):  # Recursively find all files and folders
         if path.is_dir():
             dir_path = str(path.relative_to(base_path)) + '/'
             all_files[dir_path] = {}
@@ -20,8 +21,8 @@ def get_file_info():
 
 def main():
     files_info = get_file_info()
-    with open('index.json', 'w') as json_file:
-        json.dump(files_info, json_file, indent=4)  # Using indent for better readability
+    with open('index.json', 'w') as json_file:  # Make sure this path is correct relative to the script's new working directory
+        json.dump(files_info, json_file, indent=4)
 
 if __name__ == "__main__":
     main()
