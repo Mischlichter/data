@@ -15,15 +15,20 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'  # Specify the Python version
+
     - name: Generate Index JSON
       run: |
         cd lib
-        python indexing.py
+        python indexing.py  # Assumes indexing.py will write to 'index.json' directly in the current directory
 
     - name: Commit and push if changes
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add lib/index.json
-        git commit -m "Update index.json in lib directory" -a || echo "No changes to commit"
+        git add index.json  # Correct path based on the output location
+        git commit -m "Update index.json" -a || echo "No changes to commit"
         git push
