@@ -1,44 +1,39 @@
-const CACHE_NAME = 'dynamic-assets-cache-v1';
-const INDEX_JSON_URL = 'https://raw.githubusercontent.com/Mischlichter/data/main/index.json';
+const CACHE_NAME = 'site-assets';
+const ASSETS_MANIFEST_URL = 'https://raw.githubusercontent.com/Mischlichter/data/main/index.json';
+const EXTRA_ASSETS_URL = 'https://raw.githubusercontent.com/Mischlichter/data/main/pagesi.txt';
 
-// Pre-cache the index.json and assets listed within it
 self.addEventListener('install', event => {
     event.waitUntil(
-        fetchAndCacheAssets()
-    );
-});
-
-// Fetch and cache assets listed in index.json
-function fetchAndCacheAssets() {
-    return caches.open(CACHE_NAME).then(cache => {
-        return fetch(INDEX_JSON_URL)
-            .then(response => response.json())
-            .then(assets => {
-                // Assume 'assets' is an array of URLs
-                const urlsToCache = assets.map(asset => asset.url);
-                return cache.addAll(urlsToCache);
-            })
-            .catch(error => console.error('Error fetching assets: ', error));
-    });
-}
-
-// Intercept fetch requests and serve cached assets if available
-self.addEventListener('fetch', event => {
-    event.respondWith(
-        caches.match(event.request).then(cachedResponse => {
-            return cachedResponse || fetch(event.request).then(fetchResponse => {
-                return caches.open(CACHE_NAME).then(cache => {
-                    cache.put(event.request, fetchResponse.clone());
-                    return fetchResponse;
-                });
-            });
+        caches.open(CACHE_NAME).then(cache => {
+            return Promise.all([
+                fetch(ASSETS_MANIFEST_URL)
+                    .then(response => response.json())
+                    .then(assets => cache.addAll(assets.map(asset => asset.url))),
+                fetch(EXTRA_ASSETS_URL)
+                    .then(response => response.text())
+                    .then(text => {
+                        const urls = text.split('\n').filter(line => line.startsWith('http'));
+                        return cache.addAll(urls);
+                    })
+            ]).then(() => self.skipWaiting());
         })
     );
 });
 
-// Optional: Handle updates to assets based on index.json
 self.addEventListener('activate', event => {
-    event.waitUntil(
-        fetchAndCacheAssets() // Re-fetch and cache assets upon activation
+    event.waitUntil(clients.claim());
+});
+
+self.addEventListener('fetch', event => {
+    event.respondWith(
+        caches.match(event.request).then(cachedResponse => {
+            return cachedResponse || fetch(event.request);
+        })
     );
+});
+
+self.addEventListener('message', event => {
+    if (event.data.action === 'checkStatus') {
+        event.source.postMessage({type: 'statusUpdate', loaded: true});
+    }
 });
