@@ -576,12 +576,10 @@
 <body>
     
     <div id="preloader">
-        <div>
-            <p>Loading...</p>
-            <progress id="loadProgress" max="100" value="0"></progress>
-            <button id="enterSite" onclick="enterSite()" disabled>Enter Site</button>
-        </div>
+        <progress id="loadProgress" max="100" value="0"></progress>
+        <button id="enterSite" disabled>Enter Site</button>
     </div>
+
 
 
 
@@ -639,64 +637,44 @@
 
     
     <script>
-    
         document.addEventListener('DOMContentLoaded', function() {
             if ('serviceWorker' in navigator) {
-                console.log('Service Worker is supported');
-                navigator.serviceWorker.register('./scripts/service-worker.js').then(registration => {
-                    console.log('Service Worker registered with scope:', registration.scope);
-
-                    // Function to send a message to the Service Worker
-                    function sendStatusCheck(worker) {
-                        console.log('Sending status check message to Service Worker.');
-                        worker.postMessage({action: 'checkStatus'});
-                    }
-
-                    if (registration.active) {
-                        console.log('Service Worker is already active.');
-                        sendStatusCheck(registration.active);
-                    }
-
-                    // Listen for the Service Worker to become active
-                    registration.addEventListener('updatefound', () => {
-                        const newWorker = registration.installing;
-                        newWorker.addEventListener('statechange', () => {
-                            if (newWorker.state === 'activated') {
-                                sendStatusCheck(newWorker);
-                            }
-                        });
+                navigator.serviceWorker.register('/scripts/service-worker.js').then(function(registration) {
+                    // Listen for messages from the service worker
+                    navigator.serviceWorker.addEventListener('message', event => {
+                        if (event.data.type === 'progress') {
+                            updateProgress(event.data.percentage);
+                        }
                     });
 
-                }).catch(err => {
-                    console.log('Service Worker registration failed:', err);
-                });
+                    // Periodically check progress
+                    setInterval(() => {
+                        if (navigator.serviceWorker.controller) {
+                            navigator.serviceWorker.controller.postMessage({ action: 'checkProgress' });
+                        }
+                    }, 1000);
 
-                // Listen for messages from the Service Worker
-                navigator.serviceWorker.addEventListener('message', event => {
-                    console.log('Message from Service Worker:', event.data);
-                    if (event.data.type === 'statusUpdate') {
-                        console.log('Status update received:', event.data.loaded);
-                        if (event.data.loaded) {
-                            document.getElementById('loadProgress').value = 100;
-                            document.getElementById('enterSite').disabled = false;
-                            console.log('Assets are fully loaded and cached.');
+                    function updateProgress(percentage) {
+                        const progressBar = document.getElementById('loadProgress');
+                        progressBar.value = percentage;
+                        console.log(`Current loading progress: ${percentage}%`);
+                        if (percentage === 100) {
+                            document.getElementById('enterSite').disabled = false; // Enable the button when done
                         }
                     }
+                }).catch(function(err) {
+                    console.error('Service Worker registration failed:', err);
                 });
-            } else {
-                console.log('Service Worker is not supported in this browser');
             }
 
-            // Button click handler to hide the preloader
+            // Button to hide preloader and show content
             document.getElementById('enterSite').addEventListener('click', function() {
-                console.log('Entering site, hiding preloader.');
                 document.getElementById('preloader').style.display = 'none';
+                // Show main content or perform other actions when entering the site
             });
         });
-   
-
-
     </script>
+
 
     <script>
 
