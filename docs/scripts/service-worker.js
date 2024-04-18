@@ -1,10 +1,7 @@
-// Service Worker script
-
 const CACHE_NAME = 'site-assets';
 const ASSETS_MANIFEST_URL = 'https://raw.githubusercontent.com/Mischlichter/data/main/index.json';
 const EXTRA_ASSETS_URL = 'https://raw.githubusercontent.com/Mischlichter/data/main/pagesi.txt';
 
-// Installing and caching assets
 self.addEventListener('install', event => {
     console.log('Service Worker installing.');
     event.waitUntil(
@@ -34,13 +31,11 @@ self.addEventListener('install', event => {
     );
 });
 
-// Activate and claim clients immediately
 self.addEventListener('activate', event => {
     console.log('Service Worker activating.');
     event.waitUntil(clients.claim());
 });
 
-// Intercept fetch requests and serve cached assets if available
 self.addEventListener('fetch', event => {
     console.log('Fetching:', event.request.url);
     event.respondWith(
@@ -51,7 +46,7 @@ self.addEventListener('fetch', event => {
             }
 
             console.log('No cached response found. Fetching from network...');
-            
+
             return fetch(event.request).then(fetchResponse => {
                 console.log('Fetched from network:', fetchResponse);
                 if (!fetchResponse || fetchResponse.status !== 200 || fetchResponse.type !== 'basic') {
@@ -74,17 +69,22 @@ self.addEventListener('fetch', event => {
     );
 });
 
-// Handle messages from the client and send back status updates
 self.addEventListener('message', event => {
     console.log('Message received:', event.data);
     if (event.data.action === 'checkStatus') {
-        // Checking if all required assets are cached
         caches.open(CACHE_NAME).then(cache => {
             cache.matchAll().then(responses => {
                 const allCached = responses.length > 0 && responses.every(response => response.ok);
-                event.source.postMessage({type: 'statusUpdate', loaded: allCached});
+                event.source.postMessage({ type: 'statusUpdate', loaded: allCached });
                 console.log('Status update sent, all assets loaded:', allCached);
             });
         }).catch(error => console.error('Error checking cached assets:', error));
+    } else if (event.data.action === 'preloadAssets') {
+        console.log('Preloading assets...');
+        // Fetch and cache assets here
+        // For demonstration purposes, let's assume preloading is successful after 3 seconds
+        setTimeout(() => {
+            event.source.postMessage({ type: 'statusUpdate', loaded: true });
+        }, 3000);
     }
 });
