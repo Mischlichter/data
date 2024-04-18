@@ -1,5 +1,3 @@
-
-
 const CACHE_NAME = 'site-assets';
 const ASSETS_MANIFEST_URL = 'https://raw.githubusercontent.com/Mischlichter/data/main/index.json';
 const EXTRA_ASSETS_URL = 'https://raw.githubusercontent.com/Mischlichter/data/main/pagesi.txt';
@@ -34,10 +32,22 @@ self.addEventListener('install', event => {
     );
 });
 
-
 self.addEventListener('activate', event => {
     console.log('Service Worker activating.');
-    event.waitUntil(clients.claim());
+
+    // Remove outdated caches
+    event.waitUntil(
+        caches.keys().then(cacheNames => {
+            return Promise.all(
+                cacheNames.filter(cacheName => cacheName !== CACHE_NAME).map(cacheName => {
+                    return caches.delete(cacheName);
+                })
+            );
+        })
+    );
+
+    // Claim clients
+    event.waitUntil(self.clients.claim());
 });
 
 self.addEventListener('fetch', event => {
