@@ -1,9 +1,8 @@
 const CACHE_NAME = 'site-assets';
 const ASSETS_MANIFEST_URL = 'https://raw.githubusercontent.com/Mischlichter/data/main/index.json';
-const EXTRA_ASSETS_URL = 'https://raw.githubusercontent.com/Mischlichter/data/main/pagesi.txt';
+const EXTRA_ASSETS_URL = 'https://raw.githubusercontent.com/Mischlichter/data/main/assets/pagesi.txt';
 
-// CORS Proxy URL
-const CORS_PROXY_URL = 'https://cors-anywhere.herokuapp.com/';
+
 
 self.addEventListener('install', event => {
     console.log('Service Worker installing.');
