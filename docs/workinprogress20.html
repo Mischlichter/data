@@ -8,7 +8,6 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/Mischlichter/data/main/gallerycom/65411740980.jpg">
     <title>HOGE AI</title>
-
     <style>
         @font-face {
             font-family: 'JetBrainsMono-Regular';
@@ -566,21 +565,37 @@
             background: black;
             color: white;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
+            font-size: 2rem;
             z-index: 10000;
         }
-        
+        #enterSite {
+            padding: 10px 20px;
+            font-size: 1.5rem;
+            display: none; /* Hidden initially */
+            margin-top: 20px;
+            cursor: pointer;
+            background: white;
+            color: black;
+        }
+        progress {
+            width: 80%;
+            margin: 20px;
+        }
+
+
 
     </style>
 </head>
 <body>
     
     <div id="preloader">
-        <progress id="loadProgress" max="100" value="0"></progress>
-        <button id="enterSite" disabled>Enter Site</button>
+        Loading...
+        <progress id="loadProgress" value="0" max="100"></progress>
+        <button id="enterSite" onclick="enterSite()">Enter Site</button>
     </div>
-
 
 
 
@@ -632,42 +647,54 @@
 
 
     <script src="scripts/bodygallery.js"></script>
-
-
-
-
+    
     <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./scripts/service-worker.js')
-                .then((reg) => {
-                    console.log('Service Worker registered with scope:', reg.scope);
+        document.addEventListener('DOMContentLoaded', function() {
+            const ASSETS_MANIFEST_URL = 'https://raw.githubusercontent.com/Mischlichter/data/main/index.json';
+            const EXTRA_ASSETS_URL = 'https://raw.githubusercontent.com/Mischlichter/data/main/pagesi.txt';
+            const cacheName = 'site-assets';
 
-                    // Check if the test asset is cached
-                    navigator.serviceWorker.ready.then((registration) => {
-                        registration.active.postMessage('checkCacheStatus');
-                    });
+            async function preloadAssets() {
+                const cache = await caches.open(cacheName);
+                const [assets, extra] = await Promise.all([
+                    fetch(ASSETS_MANIFEST_URL).then(res => res.json()),
+                    fetch(EXTRA_ASSETS_URL).then(res => res.text())
+                ]);
 
-                    navigator.serviceWorker.addEventListener('message', (event) => {
-                        console.log('Message from Service Worker:', event.data);
-                    });
-                })
-                .catch((error) => {
-                    console.log('Service Worker registration failed:', error);
-                });
-        }
+                const urlsToCache = assets.map(asset => asset.url);
+                const extraUrls = extra.split('\n').filter(line => line.startsWith('http')).map(line => line.trim());
+
+                const allUrls = [...urlsToCache, ...extraUrls];
+                let loaded = 0;
+                const total = allUrls.length;
+
+                for (let url of allUrls) {
+                    try {
+                        await cache.add(url);
+                        loaded++;
+                        document.getElementById('loadProgress').value = (loaded / total) * 100;
+                    } catch (error) {
+                        console.error(`Could not cache ${url}: ${error}`);
+                    }
+                }
+
+                document.getElementById('enterSite').style.display = 'block'; // Show the enter button
+            }
+
+            function enterSite() {
+                document.getElementById('preloader').style.display = 'none';
+            }
+
+            preloadAssets();
+        });
     </script>
 
 
 
 
-
-
     <script>
-
+        
 //////// MOUSE SMOOTHING ////////
-
-
-
 
         const lenis = new Lenis()
 
@@ -705,6 +732,7 @@
 
         
 
+//////// Interface Loadin //////
         
 
         
