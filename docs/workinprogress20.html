@@ -648,29 +648,24 @@
                 navigator.serviceWorker.register('/scripts/service-worker.js').then(function(registration) {
                     console.log('Service Worker registered with scope:', registration.scope);
 
-                    navigator.serviceWorker.addEventListener('message', event => {
-                        console.log('Message from Service Worker:', event.data);
-                        if (event.data.type === 'statusUpdate' && event.data.loaded) {
-                            document.getElementById('loadProgress').value = 100; // Update progress
-                            document.getElementById('enterSite').disabled = false;
-                            console.log('Assets are fully loaded and cached.');
-                        }
+                    // Listen for controllerchange event to ensure service worker activation
+                    navigator.serviceWorker.addEventListener('controllerchange', function() {
+                        console.log('New service worker activated and now controlling the page.');
+                        // Now that a new service worker is controlling the page, we can send messages to it
+                        initiatePreloading();
                     });
 
-                    console.log('Initiating preloading...');
-                    navigator.serviceWorker.controller.postMessage({ action: 'preloadAssets' });
-
-                    setInterval(() => {
-                        if (navigator.serviceWorker.controller) {
-                            console.log('Checking status with Service Worker...');
-                            navigator.serviceWorker.controller.postMessage({ action: 'checkStatus' });
-                        }
-                    }, 1000); // Periodic check every second
                 }).catch(function(err) {
                     console.log('Service Worker registration failed:', err);
                 });
             } else {
                 console.log('Service Worker is not supported in this browser');
+            }
+
+            function initiatePreloading() {
+                // Send message to service worker to initiate preloading
+                console.log('Initiating preloading...');
+                navigator.serviceWorker.controller.postMessage({ action: 'preloadAssets' });
             }
 
             function enterSite() {
