@@ -2,17 +2,22 @@ const CACHE_NAME = 'site-assets';
 const ASSETS_MANIFEST_URL = 'https://raw.githubusercontent.com/Mischlichter/data/main/index.json';
 const EXTRA_ASSETS_URL = 'https://raw.githubusercontent.com/Mischlichter/data/main/pagesi.txt';
 
-// Helper function to parse JSON and text assets
+// Fetch and cache assets
 async function fetchAndCache(url, cache, isJSON = false) {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error(`Failed to fetch ${url}`);
-    const data = isJSON ? await response.json() : await response.text();
-    const urls = isJSON ? data.map(asset => asset.url) : data.split('\n').filter(line => line.startsWith('http'));
-    await cache.addAll(urls);
-    return urls;  // Returning URLs for logging
+    try {
+        const response = await fetch(url, { mode: 'cors' }); // Ensure CORS is handled
+        if (!response.ok) throw new Error(`Failed to fetch ${url}`);
+        const data = isJSON ? await response.json() : response.text();
+        const urlsToCache = isJSON ? data.map(asset => asset.url) : data.split('\n').filter(line => line.startsWith('http'));
+        await cache.addAll(urlsToCache);
+        console.log(`Cached assets from ${url}:`, urlsToCache);
+        return urlsToCache;  // Returning URLs for logging
+    } catch (error) {
+        console.error(`Error fetching or caching from ${url}:`, error);
+        throw error;
+    }
 }
 
-// Install event - handle caching
 self.addEventListener('install', event => {
     console.log('Service Worker installing.');
     event.waitUntil(
@@ -22,13 +27,12 @@ self.addEventListener('install', event => {
                 fetchAndCache(EXTRA_ASSETS_URL, cache)
             ]).then(() => {
                 console.log('All assets have been cached');
-                self.skipWaiting();
-            }).catch(error => console.error('Error during fetch and cache:', error));
+                self.skipWaiting();  // Forces the waiting Service Worker to become the active Service Worker
+            }).catch(error => console.error('Error during installation:', error));
         })
     );
 });
 
-// Activate event - clean up old caches
 self.addEventListener('activate', event => {
     console.log('Service Worker activating.');
     event.waitUntil(
@@ -39,16 +43,16 @@ self.addEventListener('activate', event => {
             );
         }).then(() => {
             console.log('Old caches cleaned.');
-            return self.clients.claim();
+            return self.clients.claim();  // Claim clients immediately for the activated Service Worker
         })
     );
 });
 
-// Fetch event - serve cached content
 self.addEventListener('fetch', event => {
     event.respondWith(
         caches.match(event.request).then(cachedResponse => {
             if (cachedResponse) {
+                console.log('Serving from cache:', event.request.url);
                 return cachedResponse;
             }
             return fetch(event.request).then(fetchResponse => {
@@ -60,16 +64,17 @@ self.addEventListener('fetch', event => {
                     cache.put(event.request, responseToCache);
                 });
                 return fetchResponse;
+            }).catch(error => {
+                console.error('Fetch failed:', error);
+                throw error;
             });
         })
     );
 });
 
-// Handle messages from the client
 self.addEventListener('message', event => {
-    console.log('Message received:', event.data);
-    if (event.data.action === 'preloadAssets') {
-        console.log('Preloading assets...');
+    console.log('Message received from the main script:', event.data);
+    if (event.data.action === 'checkStatus') {
         caches.open(CACHE_NAME).then(cache => {
             cache.matchAll().then(responses => {
                 const allCached = responses.length > 0 && responses.every(response => response.ok);
@@ -78,8 +83,8 @@ self.addEventListener('message', event => {
                         client.postMessage({ type: 'statusUpdate', loaded: allCached });
                     });
                 });
-                console.log('Cache status updated:', allCached);
+                console.log('Cache status sent to the client:', allCached);
             });
-        });
+        }).catch(error => console.error('Error during cache check:', error));
     }
 });
