@@ -4,16 +4,17 @@ const EXTRA_ASSETS_URL = 'https://raw.githubusercontent.com/Mischlichter/data/ma
 
 async function fetchAndCacheAssets(cache) {
     try {
-        const responses = await Promise.all([
-            fetch(ASSETS_MANIFEST_URL, { mode: 'cors' }).then(response => response.json()),
-            fetch(EXTRA_ASSETS_URL, { mode: 'cors' }).then(response => response.text())
-        ]);
+        const jsonResponse = await fetch(ASSETS_MANIFEST_URL, { mode: 'cors' });
+        const assets = await jsonResponse.json();
+        const assetUrls = assets.map(asset => asset.url);
 
-        const assetUrls = responses[0].map(asset => asset.url);
-        const extraUrls = responses[1].split('\n').filter(line => line.startsWith('http'));
+        const txtResponse = await fetch(EXTRA_ASSETS_URL, { mode: 'cors' });
+        const text = await txtResponse.text();
+        const extraUrls = text.split('\n').filter(line => line.startsWith('http'));
 
-        await cache.addAll([...assetUrls, ...extraUrls]);
-        console.log('Assets have been successfully fetched and cached:', [...assetUrls, ...extraUrls]);
+        const urlsToCache = [...assetUrls, ...extraUrls];
+        await cache.addAll(urlsToCache);
+        console.log('Assets have been successfully fetched and cached:', urlsToCache);
     } catch (error) {
         console.error('Error during asset fetching and caching:', error);
     }
@@ -23,11 +24,10 @@ self.addEventListener('install', event => {
     console.log('Service Worker installing.');
     event.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
-            console.log('Cache opened for initial asset fetching.');
             return fetchAndCacheAssets(cache);
         }).then(() => {
-            console.log('Initial asset caching complete.');
-            self.skipWaiting();  // Force activation of new SW
+            console.log('Assets cached during install.');
+            self.skipWaiting();
         })
     );
 });
@@ -35,41 +35,53 @@ self.addEventListener('install', event => {
 self.addEventListener('activate', event => {
     console.log('Service Worker activating.');
     event.waitUntil(
-        caches.open(CACHE_NAME).then(cache => {
-            console.log('Cache opened for activation asset fetching.');
-            return fetchAndCacheAssets(cache);
+        caches.keys().then(cacheNames => {
+            return Promise.all(
+                cacheNames.filter(cacheName => cacheName !== CACHE_NAME)
+                          .map(cacheName => {
+                              console.log('Deleting cache:', cacheName);
+                              return caches.delete(cacheName);
+                          })
+            );
         }).then(() => {
-            console.log('Activation asset caching complete.');
-            return clients.claim();  // Claim clients immediately
+            console.log('Old caches cleared.');
+            return self.clients.claim();
         })
     );
 });
 
 self.addEventListener('fetch', event => {
-    console.log('Fetching from Service Worker:', event.request.url);
+    console.log('Fetch event for:', event.request.url);
     event.respondWith(
         caches.match(event.request).then(cachedResponse => {
-            return cachedResponse || fetch(event.request).then(fetchResponse => {
-                if (!fetchResponse || fetchResponse.status !== 200 || fetchResponse.type !== 'basic') {
-                    return fetchResponse;
+            if (cachedResponse) {
+                console.log('Found ', event.request.url, ' in cache');
+                return cachedResponse;
+            }
+            console.log('Network request for ', event.request.url);
+            return fetch(event.request).then(response => {
+                if (!response.ok) {
+                    console.log('Fetch error:', response.statusText);
+                    throw Error(response.statusText);
                 }
-                const responseToCache = fetchResponse.clone();
-                caches.open(CACHE_NAME).then(cache => {
-                    cache.put(event.request, responseToCache);
+                return caches.open(CACHE_NAME).then(cache => {
+                    cache.put(event.request.url, response.clone());
+                    console.log('Fetched and cached', event.request.url);
+                    return response;
                 });
-                return fetchResponse;
             });
-        })
+        }).catch(error => console.error('Error in fetch handler:', error))
     );
 });
 
 self.addEventListener('message', event => {
-    console.log('Message received in Service Worker:', event.data);
+    console.log('Received message in Service Worker:', event.data);
     if (event.data.action === 'checkStatus') {
+        console.log('Checking cache status...');
         caches.open(CACHE_NAME).then(cache => {
             cache.matchAll().then(responses => {
-                const allCached = responses.length > 0 && responses.every(response => response.ok);
-                console.log('Cache status checked:', allCached);
+                const allCached = responses.every(response => response.ok);
+                console.log('Cache status: ', allCached ? 'All assets cached.' : 'Some assets not cached.');
                 event.source.postMessage({ type: 'statusUpdate', loaded: allCached });
             });
         });
