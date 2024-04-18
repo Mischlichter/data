@@ -642,14 +642,11 @@
         document.addEventListener('DOMContentLoaded', function() {
             if ('serviceWorker' in navigator) {
                 console.log('Service Worker is supported');
-
-                navigator.serviceWorker.register('/scripts/service-worker.js').then(function(registration) {
+                navigator.serviceWorker.register('https://raw.githubusercontent.com/Mischlichter/data/main/docs/scripts/service-worker.js').then(function(registration) {
                     console.log('Service Worker registered with scope:', registration.scope);
-
                     registration.addEventListener('updatefound', () => {
                         const newWorker = registration.installing;
                         console.log('New service worker found:', newWorker);
-
                         newWorker.addEventListener('statechange', () => {
                             console.log('New service worker state:', newWorker.state);
                             if (newWorker.state === 'activated') {
@@ -658,7 +655,6 @@
                             }
                         });
                     });
-
                     if (registration.active) {
                         console.log('Service Worker is already active.');
                         initiatePreloading(registration.active);
@@ -696,6 +692,7 @@
                 }
             });
         });
+
     </script>
 
     <script>
