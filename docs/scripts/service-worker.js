@@ -4,13 +4,11 @@ const EXTRA_ASSETS_URL = 'https://raw.githubusercontent.com/Mischlichter/data/ma
 
 self.addEventListener('install', event => {
     console.log('Service Worker installing.');
-
-    // Perform caching of assets
+    // Caching of assets during installation
     event.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
             console.log('Cache opened successfully.');
             return Promise.all([
-                // Fetch and cache assets from JSON manifest
                 fetch(ASSETS_MANIFEST_URL)
                     .then(response => response.json())
                     .then(assets => {
@@ -19,7 +17,6 @@ self.addEventListener('install', event => {
                         console.log('URLs to cache:', urlsToCache);
                         return cache.addAll(urlsToCache);
                     }).catch(error => console.error('Failed to fetch or cache assets from JSON:', error)),
-                // Fetch and cache extra assets from TXT file
                 fetch(EXTRA_ASSETS_URL)
                     .then(response => response.text())
                     .then(text => {
@@ -36,8 +33,7 @@ self.addEventListener('install', event => {
 
 self.addEventListener('activate', event => {
     console.log('Service Worker activating.');
-
-    // Remove outdated caches
+    // Removing outdated caches during activation
     event.waitUntil(
         caches.keys().then(cacheNames => {
             return Promise.all(
@@ -47,8 +43,7 @@ self.addEventListener('activate', event => {
             );
         })
     );
-
-    // Claim clients
+    // Claiming clients
     event.waitUntil(self.clients.claim());
 });
 
@@ -60,22 +55,17 @@ self.addEventListener('fetch', event => {
                 console.log('Cached response found:', cachedResponse);
                 return cachedResponse;
             }
-
             console.log('No cached response found. Fetching from network...');
-
             return fetch(event.request).then(fetchResponse => {
                 console.log('Fetched from network:', fetchResponse);
                 if (!fetchResponse || fetchResponse.status !== 200 || fetchResponse.type !== 'basic') {
                     return fetchResponse;
                 }
-
                 const responseToCache = fetchResponse.clone();
-
                 caches.open(CACHE_NAME).then(cache => {
                     console.log('Caching response:', responseToCache);
                     cache.put(event.request, responseToCache);
                 });
-
                 return fetchResponse;
             }).catch(error => {
                 console.error(`Failed to fetch ${event.request.url}:`, error);
@@ -89,7 +79,7 @@ self.addEventListener('message', event => {
     console.log('Message received:', event.data);
     if (event.data.action === 'preloadAssets') {
         console.log('Preloading assets...');
-        // Simulate preloading by waiting for 3 seconds
+        // Simulating preloading by waiting for 3 seconds
         setTimeout(() => {
             self.clients.matchAll().then(clients => {
                 clients.forEach(client => {
@@ -99,4 +89,3 @@ self.addEventListener('message', event => {
         }, 3000);
     }
 });
-
