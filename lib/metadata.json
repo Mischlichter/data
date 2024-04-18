@@ -1734,5 +1734,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "12637038477"
+    },
+    "8869895319.jpg": {
+        "File Name": "8869895319.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man dressed as matador, riding a big bull with horns, high fidelity magazine cover",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "8869895319"
     }
 }
