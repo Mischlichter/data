@@ -685,8 +685,28 @@
                     }
                 }
 
+                // Verify all assets are cached
+                await verifyCache(cache, allUrls);
+
                 document.getElementById('enterSite').style.display = 'block';  // Show the enter button
                 console.log('Preloading complete');
+            }
+
+            async function verifyCache(cache, urls) {
+                console.log('Verifying cached assets');
+                const cacheKeys = await cache.keys();
+                let verifiedCount = 0;
+
+                for (let url of urls) {
+                    if (cacheKeys.some(request => request.url === url)) {
+                        verifiedCount++;
+                        console.log(`Verified: ${url}`);
+                    } else {
+                        console.error(`Verification failed for: ${url}`);
+                    }
+                }
+
+                console.log(`Total verified URLs: ${verifiedCount}`);
             }
 
             function parseAssets(node, urls) {
@@ -708,6 +728,7 @@
 
             function enterSite() {
                 document.getElementById('preloader').style.display = 'none';
+                initializeMenu();
             }
 
             // Add this button event listener inside your script to avoid scope issues
@@ -717,6 +738,7 @@
         });
 
     </script>
+
 
 
 
@@ -1149,10 +1171,7 @@
                 }
             });
         }
-        // Call this function when the page loads
-        window.addEventListener('DOMContentLoaded', (event) => {
-            initializeMenu();
-        });
+
 
 
         async function fetchAndParseMenuData() {
