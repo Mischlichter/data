@@ -639,45 +639,62 @@
 
     
     <script>
+    
         document.addEventListener('DOMContentLoaded', function() {
             if ('serviceWorker' in navigator) {
                 console.log('Service Worker is supported');
-                navigator.serviceWorker.register('./scripts/service-worker.js').then(function(registration) {
+                navigator.serviceWorker.register('./scripts/service-worker.js').then(registration => {
                     console.log('Service Worker registered with scope:', registration.scope);
+
+                    // Function to send a message to the Service Worker
+                    function sendStatusCheck(worker) {
+                        console.log('Sending status check message to Service Worker.');
+                        worker.postMessage({action: 'checkStatus'});
+                    }
+
                     if (registration.active) {
                         console.log('Service Worker is already active.');
-                        registration.active.postMessage({ action: 'checkStatus' });
+                        sendStatusCheck(registration.active);
                     }
+
+                    // Listen for the Service Worker to become active
                     registration.addEventListener('updatefound', () => {
                         const newWorker = registration.installing;
                         newWorker.addEventListener('statechange', () => {
                             if (newWorker.state === 'activated') {
-                                newWorker.postMessage({ action: 'checkStatus' });
+                                sendStatusCheck(newWorker);
                             }
                         });
                     });
-                }).catch(function(err) {
+
+                }).catch(err => {
                     console.log('Service Worker registration failed:', err);
                 });
 
                 // Listen for messages from the Service Worker
                 navigator.serviceWorker.addEventListener('message', event => {
                     console.log('Message from Service Worker:', event.data);
-                    if (event.data.type === 'statusUpdate' && event.data.loaded) {
-                        document.getElementById('loadProgress').value = 100;
-                        document.getElementById('enterSite').disabled = false;
-                        console.log('Assets are fully loaded and cached.');
+                    if (event.data.type === 'statusUpdate') {
+                        console.log('Status update received:', event.data.loaded);
+                        if (event.data.loaded) {
+                            document.getElementById('loadProgress').value = 100;
+                            document.getElementById('enterSite').disabled = false;
+                            console.log('Assets are fully loaded and cached.');
+                        }
                     }
                 });
             } else {
                 console.log('Service Worker is not supported in this browser');
             }
 
+            // Button click handler to hide the preloader
             document.getElementById('enterSite').addEventListener('click', function() {
                 console.log('Entering site, hiding preloader.');
                 document.getElementById('preloader').style.display = 'none';
             });
         });
+   
+
 
     </script>
 

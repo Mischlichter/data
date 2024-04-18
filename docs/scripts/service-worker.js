@@ -66,14 +66,18 @@ self.addEventListener('fetch', event => {
 });
 
 // Handle messages from the client
+// Handle messages from the client
 self.addEventListener('message', event => {
+    console.log('Message received:', event.data);
     if (event.data.action === 'checkStatus') {
         console.log('Checking cache status...');
         caches.open(CACHE_NAME).then(cache => {
-            cache.matchAll().then(responses => {
-                const allCached = responses.length > 0 && responses.every(response => response.ok);
-                event.source.postMessage({type: 'statusUpdate', loaded: allCached});
-            });
-        });
+            return cache.matchAll()
+                .then(responses => {
+                    const allCached = responses.length > 0 && responses.every(response => response.ok);
+                    event.source.postMessage({type: 'statusUpdate', loaded: allCached});
+                    console.log('Cache status response sent:', allCached);
+                });
+        }).catch(error => console.error('Error checking cache status:', error));
     }
 });
