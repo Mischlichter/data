@@ -10,6 +10,7 @@ self.addEventListener('install', event => {
         caches.open(CACHE_NAME).then(cache => {
             console.log('Cache opened successfully.');
             return Promise.all([
+                // Fetch and cache assets from JSON manifest
                 fetch(ASSETS_MANIFEST_URL)
                     .then(response => response.json())
                     .then(assets => {
@@ -18,6 +19,7 @@ self.addEventListener('install', event => {
                         console.log('URLs to cache:', urlsToCache);
                         return cache.addAll(urlsToCache);
                     }).catch(error => console.error('Failed to fetch or cache assets from JSON:', error)),
+                // Fetch and cache extra assets from TXT file
                 fetch(EXTRA_ASSETS_URL)
                     .then(response => response.text())
                     .then(text => {
@@ -85,15 +87,7 @@ self.addEventListener('fetch', event => {
 
 self.addEventListener('message', event => {
     console.log('Message received:', event.data);
-    if (event.data.action === 'checkStatus') {
-        caches.open(CACHE_NAME).then(cache => {
-            cache.matchAll().then(responses => {
-                const allCached = responses.length > 0 && responses.every(response => response.ok);
-                event.source.postMessage({ type: 'statusUpdate', loaded: allCached });
-                console.log('Status update sent, all assets loaded:', allCached);
-            });
-        }).catch(error => console.error('Error checking cached assets:', error));
-    } else if (event.data.action === 'preloadAssets') {
+    if (event.data.action === 'preloadAssets') {
         console.log('Preloading assets...');
         // Fetch and cache assets here
         // For demonstration purposes, let's assume preloading is successful after 3 seconds

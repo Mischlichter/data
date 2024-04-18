@@ -648,23 +648,22 @@
                 navigator.serviceWorker.register('./scripts/service-worker.js').then(function(registration) {
                     console.log('Service Worker registered with scope:', registration.scope);
 
-                    // Wait for the service worker to become active
+                    registration.addEventListener('updatefound', () => {
+                        const newWorker = registration.installing;
+                        console.log('New service worker found:', newWorker);
+
+                        newWorker.addEventListener('statechange', () => {
+                            console.log('New service worker state:', newWorker.state);
+                            if (newWorker.state === 'activated') {
+                                console.log('Service worker activated. Initiating preloading...');
+                                initiatePreloading(newWorker);
+                            }
+                        });
+                    });
+
                     if (registration.active) {
                         console.log('Service Worker is already active.');
                         initiatePreloading(registration.active);
-                    } else {
-                        registration.addEventListener('updatefound', () => {
-                            const newWorker = registration.installing;
-                            console.log('New service worker found:', newWorker);
-
-                            newWorker.addEventListener('statechange', () => {
-                                console.log('New service worker state:', newWorker.state);
-                                if (newWorker.state === 'activated') {
-                                    console.log('Service worker activated. Initiating preloading...');
-                                    initiatePreloading(newWorker);
-                                }
-                            });
-                        });
                     }
                 }).catch(function(err) {
                     console.log('Service Worker registration failed:', err);
@@ -681,8 +680,15 @@
             function enterSite() {
                 console.log('Entering site, hiding preloader.');
                 document.getElementById('preloader').style.display = 'none';
+                document.getElementById('enterSite').style.display = 'none';
             }
+
+            // Button click event
+            document.getElementById('enterSite').addEventListener('click', function() {
+                enterSite();
+            });
         });
+
 
 
 
