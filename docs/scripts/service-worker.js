@@ -1,3 +1,5 @@
+// Service Worker script
+
 const CACHE_NAME = 'site-assets';
 const ASSETS_MANIFEST_URL = 'https://raw.githubusercontent.com/Mischlichter/data/main/index.json';
 const EXTRA_ASSETS_URL = 'https://raw.githubusercontent.com/Mischlichter/data/main/pagesi.txt';
@@ -89,9 +91,9 @@ self.addEventListener('message', event => {
     console.log('Message received:', event.data);
     if (event.data.action === 'preloadAssets') {
         console.log('Preloading assets...');
-        // Fetch and cache assets here
-        // For demonstration purposes, let's assume preloading is successful after 3 seconds
+        // Simulate preloading by waiting for 3 seconds
         setTimeout(() => {
+            console.log('Preloading complete.');
             event.source.postMessage({ type: 'statusUpdate', loaded: true });
         }, 3000);
     }
