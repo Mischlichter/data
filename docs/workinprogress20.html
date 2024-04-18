@@ -687,7 +687,18 @@
             document.getElementById('enterSite').addEventListener('click', function() {
                 enterSite();
             });
+
+            // Listen for messages from the service worker
+            navigator.serviceWorker.addEventListener('message', event => {
+                console.log('Message from Service Worker:', event.data);
+                if (event.data.type === 'statusUpdate' && event.data.loaded) {
+                    document.getElementById('loadProgress').value = 100; // Update progress
+                    document.getElementById('enterSite').style.display = 'block'; // Show the button
+                    console.log('Assets are fully loaded and cached.');
+                }
+            });
         });
+
 
 
 
