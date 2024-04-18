@@ -640,37 +640,48 @@
     
     <script>
 ////////// LOADING ///////
+        
+        document.addEventListener('DOMContentLoaded', function() {
+
+            if ('serviceWorker' in navigator) {
+                console.log('Service Worker is supported');
+                // Your existing Service Worker registration code...
+            } else {
+                console.log('Service Worker is not supported in this browser');
+            }
 
 
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/scripts/service-worker.js').then(function(registration) {
-                console.log('Service Worker registered with scope:', registration.scope);
 
-                setInterval(() => {
-                    if (navigator.serviceWorker.controller) {
-                        console.log('Checking status with Service Worker...');
-                        navigator.serviceWorker.controller.postMessage({action: 'checkStatus'});
-                    }
-                }, 1000);  // Periodic check every second
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/scripts/service-worker.js').then(function(registration) {
+                    console.log('Service Worker registered with scope:', registration.scope);
 
-                navigator.serviceWorker.addEventListener('message', event => {
-                    console.log('Message from Service Worker:', event.data);
-                    if (event.data.type === 'statusUpdate' && event.data.loaded) {
-                        document.getElementById('loadProgress').value = 100; // Update progress
-                        document.getElementById('enterSite').disabled = false;
-                        console.log('Assets are fully loaded and cached.');
-                    }
+                    setInterval(() => {
+                        if (navigator.serviceWorker.controller) {
+                            console.log('Checking status with Service Worker...');
+                            navigator.serviceWorker.controller.postMessage({action: 'checkStatus'});
+                        }
+                    }, 1000);  // Periodic check every second
+
+                    navigator.serviceWorker.addEventListener('message', event => {
+                        console.log('Message from Service Worker:', event.data);
+                        if (event.data.type === 'statusUpdate' && event.data.loaded) {
+                            document.getElementById('loadProgress').value = 100; // Update progress
+                            document.getElementById('enterSite').disabled = false;
+                            console.log('Assets are fully loaded and cached.');
+                        }
+                    });
+                }, function(err) {
+                    console.log('Service Worker registration failed:', err);
                 });
-            }, function(err) {
-                console.log('Service Worker registration failed:', err);
-            });
-        }
+            }
 
-        function enterSite() {
-            console.log('Entering site, hiding preloader.');
-            document.getElementById('preloader').style.display = 'none';
-            document.getElementById('content').style.display = 'block';
-        }
+            function enterSite() {
+                console.log('Entering site, hiding preloader.');
+                document.getElementById('preloader').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+            }
+        });
 
 
 
