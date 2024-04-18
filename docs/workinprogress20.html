@@ -674,6 +674,7 @@
 
             function initiatePreloading(worker) {
                 console.log('Initiating preloading...');
+                // Send message to service worker to initiate preloading
                 worker.postMessage({ action: 'preloadAssets' });
             }
 
@@ -698,6 +699,7 @@
                 }
             });
         });
+
 
 
 
