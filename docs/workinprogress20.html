@@ -637,43 +637,52 @@
 
     
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/scripts/service-worker.js').then(function(registration) {
-                    // Listen for messages from the service worker
-                    navigator.serviceWorker.addEventListener('message', event => {
-                        if (event.data.type === 'progress') {
-                            updateProgress(event.data.percentage);
+    document.addEventListener('DOMContentLoaded', function() {
+        if ('serviceWorker' in navigator) {
+            console.log('Service Worker is supported');
+            navigator.serviceWorker.register('scripts/service-worker.js').then(function(registration) {
+                console.log('Service Worker registered with scope:', registration.scope);
+                // Checking if the SW is already active
+                if (registration.active) {
+                    console.log('Service Worker is already active.');
+                    initiatePreloading(registration.active);
+                }
+                // Listen for new SW installations
+                registration.addEventListener('updatefound', () => {
+                    const newWorker = registration.installing;
+                    console.log('New service worker found:', newWorker);
+                    newWorker.addEventListener('statechange', () => {
+                        console.log('New service worker state:', newWorker.state);
+                        if (newWorker.state === 'activated') {
+                            console.log('Service worker activated. Initiating preloading...');
+                            initiatePreloading(newWorker);
                         }
                     });
-
-                    // Periodically check progress
-                    setInterval(() => {
-                        if (navigator.serviceWorker.controller) {
-                            navigator.serviceWorker.controller.postMessage({ action: 'checkProgress' });
-                        }
-                    }, 1000);
-
-                    function updateProgress(percentage) {
-                        const progressBar = document.getElementById('loadProgress');
-                        progressBar.value = percentage;
-                        console.log(`Current loading progress: ${percentage}%`);
-                        if (percentage === 100) {
-                            document.getElementById('enterSite').disabled = false; // Enable the button when done
-                        }
-                    }
-                }).catch(function(err) {
-                    console.error('Service Worker registration failed:', err);
                 });
-            }
-
-            // Button to hide preloader and show content
-            document.getElementById('enterSite').addEventListener('click', function() {
-                document.getElementById('preloader').style.display = 'none';
-                // Show main content or perform other actions when entering the site
+            }).catch(function(err) {
+                console.log('Service Worker registration failed:', err);
             });
+        } else {
+            console.log('Service Worker is not supported in this browser');
+        }
+
+        function initiatePreloading(worker) {
+            console.log('Initiating preloading...');
+            worker.postMessage({ action: 'checkStatus' });
+        }
+
+        // Listen for messages from the service worker
+        navigator.serviceWorker.addEventListener('message', event => {
+            console.log('Message from Service Worker:', event.data);
+            if (event.data.type === 'statusUpdate' && event.data.loaded) {
+                document.getElementById('loadProgress').value = 100; // Update progress
+                document.getElementById('enterSite').disabled = false; // Enable the button
+                console.log('Assets are fully loaded and cached.');
+            }
         });
+    });
     </script>
+
 
 
     <script>
