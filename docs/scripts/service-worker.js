@@ -1,9 +1,13 @@
+
+
 const CACHE_NAME = 'site-assets';
 const ASSETS_MANIFEST_URL = 'https://raw.githubusercontent.com/Mischlichter/data/main/index.json';
 const EXTRA_ASSETS_URL = 'https://raw.githubusercontent.com/Mischlichter/data/main/pagesi.txt';
 
 self.addEventListener('install', event => {
     console.log('Service Worker installing.');
+
+    // Perform caching of assets
     event.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
             console.log('Cache opened successfully.');
@@ -25,11 +29,11 @@ self.addEventListener('install', event => {
                     }).catch(error => console.error('Failed to fetch or cache assets from TXT:', error))
             ]).then(() => {
                 console.log('All assets have been cached');
-                self.skipWaiting(); // Force activation of new SW
             });
         }).catch(error => console.error('Failed to open cache:', error))
     );
 });
+
 
 self.addEventListener('activate', event => {
     console.log('Service Worker activating.');
