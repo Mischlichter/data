@@ -646,27 +646,33 @@
             navigator.serviceWorker.register('/scripts/service-worker.js').then(function(registration) {
                 console.log('Service Worker registered with scope:', registration.scope);
 
-                navigator.serviceWorker.addEventListener('message', event => {
-                    if (event.data.type === 'statusUpdate' && event.data.loaded) {
-                        document.getElementById('enterSite').disabled = false;
-                        document.getElementById('loadProgress').value = 100; // Assume complete for demo
-                    }
-                });
-
                 setInterval(() => {
                     if (navigator.serviceWorker.controller) {
+                        console.log('Checking status with Service Worker...');
                         navigator.serviceWorker.controller.postMessage({action: 'checkStatus'});
                     }
                 }, 1000);  // Periodic check every second
+
+                navigator.serviceWorker.addEventListener('message', event => {
+                    console.log('Message from Service Worker:', event.data);
+                    if (event.data.type === 'statusUpdate' && event.data.loaded) {
+                        document.getElementById('loadProgress').value = 100; // Update progress
+                        document.getElementById('enterSite').disabled = false;
+                        console.log('Assets are fully loaded and cached.');
+                    }
+                });
             }, function(err) {
                 console.log('Service Worker registration failed:', err);
             });
         }
 
         function enterSite() {
+            console.log('Entering site, hiding preloader.');
             document.getElementById('preloader').style.display = 'none';
             document.getElementById('content').style.display = 'block';
         }
+
+
 
 
 
