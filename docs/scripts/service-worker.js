@@ -45,14 +45,15 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
+    console.log(`Fetching from network: ${event.request.url}`);
     event.respondWith(
         caches.match(event.request).then(cachedResponse => {
             if (cachedResponse) {
                 console.log(`Serving from cache: ${event.request.url}`);
                 return cachedResponse;
             }
-            console.log(`Fetching from network: ${event.request.url}`);
             return fetch(event.request).then(fetchResponse => {
+                console.log(`Response from network received: ${event.request.url}`);
                 if (!fetchResponse || fetchResponse.status !== 200 || fetchResponse.type !== 'basic') {
                     return fetchResponse;
                 }

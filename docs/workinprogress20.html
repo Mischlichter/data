@@ -640,25 +640,23 @@
     document.addEventListener('DOMContentLoaded', function() {
         if ('serviceWorker' in navigator) {
             console.log('Service Worker is supported');
-            navigator.serviceWorker.register('scripts/service-worker.js').then(function(registration) {
+            navigator.serviceWorker.register('/scripts/service-worker.js').then(function(registration) {
                 console.log('Service Worker registered with scope:', registration.scope);
-                // Checking if the SW is already active
-                if (registration.active) {
-                    console.log('Service Worker is already active.');
-                    initiatePreloading(registration.active);
-                }
-                // Listen for new SW installations
-                registration.addEventListener('updatefound', () => {
-                    const newWorker = registration.installing;
-                    console.log('New service worker found:', newWorker);
-                    newWorker.addEventListener('statechange', () => {
-                        console.log('New service worker state:', newWorker.state);
-                        if (newWorker.state === 'activated') {
-                            console.log('Service worker activated. Initiating preloading...');
-                            initiatePreloading(newWorker);
-                        }
-                    });
+
+                // Set up a listener for receiving messages from the Service Worker
+                navigator.serviceWorker.addEventListener('message', event => {
+                    console.log('Message from Service Worker:', event.data);
+                    if (event.data.type === 'statusUpdate') {
+                        document.getElementById('loadProgress').value = 100; // Update progress
+                        document.getElementById('enterSite').disabled = !event.data.loaded; // Enable the button based on load status
+                        console.log('Assets are fully loaded and cached:', event.data.loaded);
+                    }
                 });
+
+                if (registration.active) {
+                    console.log('Service Worker is already active. Initiating preloading...');
+                    registration.active.postMessage({ action: 'checkStatus' });
+                }
             }).catch(function(err) {
                 console.log('Service Worker registration failed:', err);
             });
@@ -666,22 +664,19 @@
             console.log('Service Worker is not supported in this browser');
         }
 
-        function initiatePreloading(worker) {
-            console.log('Initiating preloading...');
-            worker.postMessage({ action: 'checkStatus' });
+        function enterSite() {
+            console.log('Entering site, hiding preloader.');
+            document.getElementById('preloader').style.display = 'none';
+            document.getElementById('enterSite').style.display = 'none';
         }
 
-        // Listen for messages from the service worker
-        navigator.serviceWorker.addEventListener('message', event => {
-            console.log('Message from Service Worker:', event.data);
-            if (event.data.type === 'statusUpdate' && event.data.loaded) {
-                document.getElementById('loadProgress').value = 100; // Update progress
-                document.getElementById('enterSite').disabled = false; // Enable the button
-                console.log('Assets are fully loaded and cached.');
-            }
+        // Button click event
+        document.getElementById('enterSite').addEventListener('click', function() {
+            enterSite();
         });
     });
     </script>
+
 
 
 
