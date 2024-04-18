@@ -661,29 +661,43 @@
                 ]);
 
                 const urlsToCache = [];
-                parseAssets(assets, urlsToCache); // Parse through JSON object for URLs
-                const extraUrls = parseExtraAssets(extra); // Get additional URLs from pagesi.txt
+                parseAssets(assets, urlsToCache);
+                const extraUrls = parseExtraAssets(extra);
                 const allUrls = [...urlsToCache, ...extraUrls];
 
                 let loaded = 0;
+                let cacheSuccess = true;
                 for (let url of allUrls) {
                     try {
                         await cache.add(url);
                         loaded++;
-                        console.log(`Cached: ${url}`);
                         document.getElementById('loadProgress').value = (loaded / allUrls.length) * 100;
                     } catch (error) {
                         console.error(`Could not cache ${url}: ${error}`);
+                        cacheSuccess = false;
                     }
                 }
 
-                // Check if we need to reload to use the newly cached assets
-                if (!localStorage.getItem(reloadFlagKey)) {
-                    localStorage.setItem(reloadFlagKey, 'true');
-                    window.location.reload(); // Reload the page to use cached assets
+                if (cacheSuccess && loaded === allUrls.length) {
+                    // Verify all files are cached
+                    const cacheVerification = await Promise.all(
+                        allUrls.map(url => cache.match(url))
+                    );
+                    const allCached = cacheVerification.every(response => response !== undefined);
+
+                    if (allCached) {
+                        if (!localStorage.getItem(reloadFlagKey)) {
+                            localStorage.setItem(reloadFlagKey, 'true');
+                            window.location.reload(); // Reload the page to use cached assets
+                        } else {
+                            document.getElementById('enterSite').style.display = 'block';  // Show the enter button
+                            console.log('Preloading complete and page reloaded');
+                        }
+                    } else {
+                        console.error('Some assets did not cache properly, please check the URLs and network.');
+                    }
                 } else {
-                    document.getElementById('enterSite').style.display = 'block';  // Show the enter button
-                    console.log('Preloading complete and page reloaded');
+                    console.error('Failed to cache all assets.');
                 }
             }
 
@@ -706,17 +720,31 @@
 
             function enterSite() {
                 document.getElementById('preloader').style.display = 'none';
-                // Reset the reload flag when entering the site to prepare for next caching cycle
                 localStorage.removeItem(reloadFlagKey);
+
+                const background = document.createElement('div');
+                background.style.position = 'absolute';
+                background.style.top = '0';
+                background.style.left = '0';
+                background.style.width = '100%';
+                background.style.height = '50000vh';
+                background.style.zIndex = '-2';
+                background.style.backgroundColor = 'rgba(0, 0, 0, 0)'; // 10% grey
+                // Add more styles or content to the background as needed
+
+                document.body.insertBefore(background, document.body.firstChild);
+
+                initializeMenu();
+
             }
 
             document.getElementById('enterSite').addEventListener('click', enterSite);
 
-            // Initiate preloading of assets
             if (document.getElementById('preloader').style.display !== 'none') {
                 preloadAssets();
             }
         });
+
 
     </script>
 
@@ -978,19 +1006,6 @@
 
 
 
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const background = document.createElement('div');
-            background.style.position = 'absolute';
-            background.style.top = '0';
-            background.style.left = '0';
-            background.style.width = '100%';
-            background.style.height = '50000vh';
-            background.style.zIndex = '-2';
-            background.style.backgroundColor = 'rgba(0, 0, 0, 0)'; // 10% grey
-            // Add more styles or content to the background as needed
-
-            document.body.insertBefore(background, document.body.firstChild);
-        });
 
 
 //////// IMAGE LOADING ////////////////////
@@ -1151,10 +1166,7 @@
                 }
             });
         }
-        // Call this function when the page loads
-        window.addEventListener('DOMContentLoaded', (event) => {
-            initializeMenu();
-        });
+
 
 
         async function fetchAndParseMenuData() {
