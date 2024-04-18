@@ -2,19 +2,20 @@ const CACHE_NAME = 'site-assets';
 const ASSETS_MANIFEST_URL = 'https://raw.githubusercontent.com/Mischlichter/data/main/index.json';
 const EXTRA_ASSETS_URL = 'https://raw.githubusercontent.com/Mischlichter/data/main/pagesi.txt';
 
-// Fetch and cache assets
-async function fetchAndCache(url, cache, isJSON = false) {
+async function fetchAndCacheAssets(cache) {
     try {
-        const response = await fetch(url, { mode: 'cors' }); // Ensure CORS is handled
-        if (!response.ok) throw new Error(`Failed to fetch ${url}`);
-        const data = isJSON ? await response.json() : response.text();
-        const urlsToCache = isJSON ? data.map(asset => asset.url) : data.split('\n').filter(line => line.startsWith('http'));
-        await cache.addAll(urlsToCache);
-        console.log(`Cached assets from ${url}:`, urlsToCache);
-        return urlsToCache;  // Returning URLs for logging
+        const responses = await Promise.all([
+            fetch(ASSETS_MANIFEST_URL, { mode: 'cors' }).then(response => response.json()),
+            fetch(EXTRA_ASSETS_URL, { mode: 'cors' }).then(response => response.text())
+        ]);
+
+        const assetUrls = responses[0].map(asset => asset.url);
+        const extraUrls = responses[1].split('\n').filter(line => line.startsWith('http'));
+
+        await cache.addAll([...assetUrls, ...extraUrls]);
+        console.log('Assets have been successfully fetched and cached:', [...assetUrls, ...extraUrls]);
     } catch (error) {
-        console.error(`Error fetching or caching from ${url}:`, error);
-        throw error;
+        console.error('Error during asset fetching and caching:', error);
     }
 }
 
@@ -22,13 +23,11 @@ self.addEventListener('install', event => {
     console.log('Service Worker installing.');
     event.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
-            return Promise.all([
-                fetchAndCache(ASSETS_MANIFEST_URL, cache, true),
-                fetchAndCache(EXTRA_ASSETS_URL, cache)
-            ]).then(() => {
-                console.log('All assets have been cached');
-                self.skipWaiting();  // Forces the waiting Service Worker to become the active Service Worker
-            }).catch(error => console.error('Error during installation:', error));
+            console.log('Cache opened for initial asset fetching.');
+            return fetchAndCacheAssets(cache);
+        }).then(() => {
+            console.log('Initial asset caching complete.');
+            self.skipWaiting();  // Force activation of new SW
         })
     );
 });
@@ -36,26 +35,21 @@ self.addEventListener('install', event => {
 self.addEventListener('activate', event => {
     console.log('Service Worker activating.');
     event.waitUntil(
-        caches.keys().then(cacheNames => {
-            return Promise.all(
-                cacheNames.filter(cacheName => cacheName !== CACHE_NAME)
-                          .map(cacheName => caches.delete(cacheName))
-            );
+        caches.open(CACHE_NAME).then(cache => {
+            console.log('Cache opened for activation asset fetching.');
+            return fetchAndCacheAssets(cache);
         }).then(() => {
-            console.log('Old caches cleaned.');
-            return self.clients.claim();  // Claim clients immediately for the activated Service Worker
+            console.log('Activation asset caching complete.');
+            return clients.claim();  // Claim clients immediately
         })
     );
 });
 
 self.addEventListener('fetch', event => {
+    console.log('Fetching from Service Worker:', event.request.url);
     event.respondWith(
         caches.match(event.request).then(cachedResponse => {
-            if (cachedResponse) {
-                console.log('Serving from cache:', event.request.url);
-                return cachedResponse;
-            }
-            return fetch(event.request).then(fetchResponse => {
+            return cachedResponse || fetch(event.request).then(fetchResponse => {
                 if (!fetchResponse || fetchResponse.status !== 200 || fetchResponse.type !== 'basic') {
                     return fetchResponse;
                 }
@@ -64,27 +58,20 @@ self.addEventListener('fetch', event => {
                     cache.put(event.request, responseToCache);
                 });
                 return fetchResponse;
-            }).catch(error => {
-                console.error('Fetch failed:', error);
-                throw error;
             });
         })
     );
 });
 
 self.addEventListener('message', event => {
-    console.log('Message received from the main script:', event.data);
+    console.log('Message received in Service Worker:', event.data);
     if (event.data.action === 'checkStatus') {
         caches.open(CACHE_NAME).then(cache => {
             cache.matchAll().then(responses => {
                 const allCached = responses.length > 0 && responses.every(response => response.ok);
-                self.clients.matchAll().then(clients => {
-                    clients.forEach(client => {
-                        client.postMessage({ type: 'statusUpdate', loaded: allCached });
-                    });
-                });
-                console.log('Cache status sent to the client:', allCached);
+                console.log('Cache status checked:', allCached);
+                event.source.postMessage({ type: 'statusUpdate', loaded: allCached });
             });
-        }).catch(error => console.error('Error during cache check:', error));
+        });
     }
 });

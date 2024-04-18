@@ -639,37 +639,31 @@
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./scripts/service-worker.js').then(function(registration) {
+            navigator.serviceWorker.register('/scripts/service-worker.js').then(registration => {
                 console.log('Service Worker registered with scope:', registration.scope);
-
-                registration.addEventListener('updatefound', () => {
-                    const newWorker = registration.installing;
-                    console.log('New service worker detected:', newWorker);
-
-                    newWorker.addEventListener('statechange', () => {
-                        console.log('Service Worker state changed:', newWorker.state);
-                        if (newWorker.state === 'activated') {
-                            console.log('Service worker activated.');
-                            newWorker.postMessage({ action: 'checkStatus' });
-                        }
-                    });
-                });
 
                 if (registration.active) {
                     console.log('Service Worker is already active. Checking cache status...');
                     registration.active.postMessage({ action: 'checkStatus' });
                 }
-            }).catch(function(err) {
-                console.log('Service Worker registration failed:', err);
-            });
 
-            // Listen for messages from the Service Worker
+                registration.addEventListener('updatefound', () => {
+                    const newWorker = registration.installing;
+                    newWorker.addEventListener('statechange', () => {
+                        if (newWorker.state === 'installed') {
+                            console.log('New Service Worker installed.');
+                            newWorker.postMessage({ action: 'checkStatus' });
+                        }
+                    });
+                });
+            }).catch(err => console.log('Service Worker registration failed:', err));
+
             navigator.serviceWorker.addEventListener('message', event => {
                 console.log('Message from Service Worker:', event.data);
                 if (event.data.type === 'statusUpdate') {
                     if (event.data.loaded) {
-                        document.getElementById('loadProgress').value = 100; // Set progress to 100
-                        document.getElementById('enterSite').disabled = false; // Enable the button
+                        document.getElementById('loadProgress').value = 100;
+                        document.getElementById('enterSite').disabled = false;
                         console.log('Assets are fully loaded and cached.');
                     } else {
                         console.log('Assets are still loading...');
@@ -681,6 +675,7 @@
         }
     });
     </script>
+
 
 
 
