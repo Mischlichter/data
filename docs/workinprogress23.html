@@ -690,6 +690,7 @@
 
                 document.getElementById('enterSite').style.display = 'block';  // Show the enter button
                 console.log('Preloading complete');
+                initializeFirstScene();
             }
 
             async function verifyCache(cache, urls) {
@@ -1401,7 +1402,7 @@
                 startAnimationForMenuContainer(containerId);
 
             if (containerId === 'menuContainer0') {
-                initializeFirstScene();
+                
             }
             });
         }
