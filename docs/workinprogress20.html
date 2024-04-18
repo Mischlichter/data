@@ -645,37 +645,27 @@
             if ('serviceWorker' in navigator) {
                 console.log('Service Worker is supported');
 
-                navigator.serviceWorker.register('/scripts/service-worker.js').then(function(registration) {
+                navigator.serviceWorker.register('./scripts/service-worker.js').then(function(registration) {
                     console.log('Service Worker registered with scope:', registration.scope);
 
-                    registration.addEventListener('updatefound', () => {
-                        const newWorker = registration.installing;
-                        console.log('New service worker found:', newWorker);
+                    // Wait for the service worker to become active
+                    if (registration.active) {
+                        console.log('Service Worker is already active.');
+                        initiatePreloading(registration.active);
+                    } else {
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            console.log('New service worker found:', newWorker);
 
-                        newWorker.addEventListener('statechange', () => {
-                            console.log('New service worker state:', newWorker.state);
-                            if (newWorker.state === 'activated') {
-                                console.log('Service worker activated. Initiating preloading...');
-                                newWorker.postMessage({ action: 'preloadAssets' });
-                            }
+                            newWorker.addEventListener('statechange', () => {
+                                console.log('New service worker state:', newWorker.state);
+                                if (newWorker.state === 'activated') {
+                                    console.log('Service worker activated. Initiating preloading...');
+                                    initiatePreloading(newWorker);
+                                }
+                            });
                         });
-                    });
-
-                    navigator.serviceWorker.addEventListener('message', event => {
-                        console.log('Message from Service Worker:', event.data);
-                        if (event.data.type === 'statusUpdate' && event.data.loaded) {
-                            document.getElementById('loadProgress').value = 100; // Update progress
-                            document.getElementById('enterSite').disabled = false;
-                            console.log('Assets are fully loaded and cached.');
-                        }
-                    });
-
-                    setInterval(() => {
-                        if (navigator.serviceWorker.controller) {
-                            console.log('Checking status with Service Worker...');
-                            navigator.serviceWorker.controller.postMessage({ action: 'checkStatus' });
-                        }
-                    }, 1000); // Periodic check every second
+                    }
                 }).catch(function(err) {
                     console.log('Service Worker registration failed:', err);
                 });
@@ -683,11 +673,17 @@
                 console.log('Service Worker is not supported in this browser');
             }
 
+            function initiatePreloading(worker) {
+                console.log('Initiating preloading...');
+                worker.postMessage({ action: 'preloadAssets' });
+            }
+
             function enterSite() {
                 console.log('Entering site, hiding preloader.');
                 document.getElementById('preloader').style.display = 'none';
             }
         });
+
 
 
     </script>
