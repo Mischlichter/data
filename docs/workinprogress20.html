@@ -642,7 +642,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             if ('serviceWorker' in navigator) {
                 console.log('Service Worker is supported');
-                navigator.serviceWorker.register('hogeai.com/scripts/service-worker.js').then(function(registration) {
+                navigator.serviceWorker.register('./scripts/service-worker.js').then(function(registration) {
                     console.log('Service Worker registered with scope:', registration.scope);
                     registration.addEventListener('updatefound', () => {
                         const newWorker = registration.installing;
