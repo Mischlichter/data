@@ -637,44 +637,26 @@
 
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/scripts/service-worker.js').then(registration => {
-                console.log('Service Worker registered with scope:', registration.scope);
+            navigator.serviceWorker.register('/path/to/service-worker.js')
+                .then((reg) => {
+                    console.log('Service Worker registered with scope:', reg.scope);
 
-                if (registration.active) {
-                    console.log('Service Worker is already active. Checking cache status...');
-                    registration.active.postMessage({ action: 'checkStatus' });
-                }
-
-                registration.addEventListener('updatefound', () => {
-                    const newWorker = registration.installing;
-                    newWorker.addEventListener('statechange', () => {
-                        if (newWorker.state === 'installed') {
-                            console.log('New Service Worker installed.');
-                            newWorker.postMessage({ action: 'checkStatus' });
-                        }
+                    // Check if the test asset is cached
+                    navigator.serviceWorker.ready.then((registration) => {
+                        registration.active.postMessage('checkCacheStatus');
                     });
-                });
-            }).catch(err => console.log('Service Worker registration failed:', err));
 
-            navigator.serviceWorker.addEventListener('message', event => {
-                console.log('Message from Service Worker:', event.data);
-                if (event.data.type === 'statusUpdate') {
-                    if (event.data.loaded) {
-                        document.getElementById('loadProgress').value = 100;
-                        document.getElementById('enterSite').disabled = false;
-                        console.log('Assets are fully loaded and cached.');
-                    } else {
-                        console.log('Assets are still loading...');
-                    }
-                }
-            });
-        } else {
-            console.log('Service Worker is not supported in this browser');
+                    navigator.serviceWorker.addEventListener('message', (event) => {
+                        console.log('Message from Service Worker:', event.data);
+                    });
+                })
+                .catch((error) => {
+                    console.log('Service Worker registration failed:', error);
+                });
         }
-    });
     </script>
+
 
 
 
