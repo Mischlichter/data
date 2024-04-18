@@ -91,7 +91,12 @@ self.addEventListener('message', event => {
         console.log('Preloading assets...');
         // Simulate preloading by waiting for 3 seconds
         setTimeout(() => {
-            event.source.postMessage({ type: 'statusUpdate', loaded: true });
+            self.clients.matchAll().then(clients => {
+                clients.forEach(client => {
+                    client.postMessage({ type: 'statusUpdate', loaded: true });
+                });
+            });
         }, 3000);
     }
 });
+
