@@ -750,7 +750,7 @@
 
             function generateRandomCharacter() {
                 const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()[]{}|';
-                disableScroll();
+               
                 return characters.charAt(Math.floor(Math.random() * characters.length));
             }
 
@@ -950,7 +950,7 @@
 
             function enterSite() {
                 initializeMenu();
-                enableScroll();
+
                 const centerContainer = document.querySelector('.center-container-XL');
                 if (centerContainer) {
                     centerContainer.style.opacity = '0';
