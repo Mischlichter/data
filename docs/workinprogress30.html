@@ -686,7 +686,7 @@
                 "                /    |                ", 
                 "               V__) ||                ",
                 "**************************************",
-                "*** LOADING DATA *** IMAGE LIBRARY ***",
+                "**** LOADING HOGEAI WEBSITE FILES ****",
                 "**************************************"
             ];
 
@@ -845,7 +845,7 @@
 
             }
                 
-            loadInterface(0);
+            
 
             async function preloadAssets() {
                 console.log('Starting to preload assets');
@@ -867,6 +867,7 @@
                 const allUrls = [...urlsToCache, ...extraUrls];
                 console.log(`Total URLs to cache: ${allUrls.length}`);
                 let loaded = 0;
+                const delay = 30; // Delay in milliseconds after loading each asset
 
                 if (loadingPercentage < 100) { // Only process loading if not already completed
                     for (let url of allUrls) {
@@ -875,6 +876,7 @@
                             loaded++;
                             console.log(`Cached: ${url}`);
                             loadingPercentage = Math.floor((loaded / allUrls.length) * 100); // Update loading percentage
+                            await new Promise(resolve => setTimeout(resolve, delay)); // Wait for a tiny break after each asset is loaded
                         } catch (error) {
                             console.error(`Could not cache ${url}: ${error}`);
                         }
@@ -885,13 +887,12 @@
 
                 if (!localStorage.getItem(firstLoadCompleteFlag)) {
                     localStorage.setItem(firstLoadCompleteFlag, 'true');
-                    fadeOutAsciiLinesXL()
-                     // Reload to start second caching cycle
+                    fadeOutAsciiLinesXL();
+                    setTimeout(() => window.location.reload(), 1000); // Reload after fade out
                 } else if (!localStorage.getItem(secondLoadCompleteFlag)) {
                     localStorage.setItem(secondLoadCompleteFlag, 'true');
-                    fadeOutAsciiLinesXL()
-                    
-
+                    fadeOutAsciiLinesXL();
+                    setTimeout(() => window.location.reload(), 1000); // Reload after fade out
                 } else {
                     enterSite();
                 }
@@ -954,7 +955,7 @@
                     centerContainer.style.opacity = '0';
                     setTimeout(() => {
                         centerContainer.style.display = 'none';
-                    }, 1000); // Adjust the time as needed for the fade out transition
+                    }, 500); // Adjust the time as needed for the fade out transition
                 } else {
                     console.error("Center container not found.");
                 }
