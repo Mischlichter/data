@@ -1095,7 +1095,7 @@
                     overlay.style.visibility = 'hidden';
                     overlay.remove(); // This ensures the overlay is completely removed from the DOM
                     
-                    setupGyroToMouse()
+                    setupMotionToMouse()
 
                     enterSite();
 
@@ -1156,23 +1156,28 @@
 
             var mouseX = 0, mouseY = 0;
 
-            // Function to setup and handle orientation events
-            function setupGyroToMouse() {
-                if (window.DeviceOrientationEvent) {
-                    window.addEventListener('deviceorientation', handleOrientation);
+            function setupMotionToMouse() {
+                if (window.DeviceMotionEvent) {
+                    window.addEventListener('devicemotion', handleMotion);
+                    console.log('DeviceMotionEvent listener added.');
+                } else {
+                    console.log('DeviceMotionEvent is not supported by your browser.');
                 }
             }
 
-            function handleOrientation(event) {
-                const beta = event.beta;  // Tilt front and back (-180 to 180 degrees).
-                const gamma = event.gamma; // Tilt left and right (-90 to 90 degrees).
+            function handleMotion(event) {
+                const rotationRate = event.rotationRate;
+                if (rotationRate) {
+                    // Scale and adjust these values based on your device's sensitivity and screen size
+                    mouseX += rotationRate.gamma; // Adjust this scaling factor as needed
+                    mouseY += rotationRate.beta;  // Adjust this scaling factor as needed
+                    
+                    // Constrain mouseX and mouseY to your screen dimensions
+                    mouseX = Math.max(0, Math.min(window.innerWidth, mouseX));
+                    mouseY = Math.max(0, Math.min(window.innerHeight, mouseY));
 
-                // Map the gyroscope data to mouseX and mouseY
-                mouseX = ((gamma + 90) / 180) * window.innerWidth;  // Normalize gamma
-                mouseY = ((beta + 180) / 360) * window.innerHeight; // Normalize beta
-
-                // Debugging output to check values
-                console.log(`Mouse X: ${mouseX}, Mouse Y: ${mouseY}`);
+                    console.log(`Mouse X: ${mouseX}, Mouse Y: ${mouseY}`); // Debug output to check values
+                }
             }
 
 
