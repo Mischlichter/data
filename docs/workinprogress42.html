@@ -1095,7 +1095,11 @@
             var throttleInterval = 36; // Throttle interval in milliseconds
             var gyroMouseX = 0;
             var gyroMouseY = 0;
-            var gyroSensitivityMultiplier = 36.0;  // Default multiplier
+            var initialGamma = 0;
+            var initialBeta = 0;
+            var isCalibrated = false;
+            var gyroSensitivityMultiplier = 36.0; // Default multiplier
+
 
             function handleOrientation(event) {
                 var now = Date.now();
@@ -1103,20 +1107,31 @@
                     // Update last execution time
                     lastExecution = now;
 
-                    // Apply the multiplier to the raw beta and gamma values
-                    gyroMouseX = event.gamma * gyroSensitivityMultiplier; // Adjusting the horizontal tilt sensitivity
-                    gyroMouseY = event.beta * gyroSensitivityMultiplier;  // Adjusting the vertical tilt sensitivity
+                    // Check if the orientation has been calibrated
+                    if (!isCalibrated) {
+                        // Set initial orientation values
+                        initialGamma = event.gamma;
+                        initialBeta = event.beta;
+                        isCalibrated = true; // Ensure calibration happens only once
+                        console.log('Calibration set: Gamma = ' + initialGamma + ', Beta = ' + initialBeta);
+                    }
+
+                    // Apply the multiplier to the adjusted raw beta and gamma values
+                    gyroMouseX = (event.gamma - initialGamma) * gyroSensitivityMultiplier; // Adjusting the horizontal tilt sensitivity
+                    gyroMouseY = (event.beta - initialBeta) * gyroSensitivityMultiplier;  // Adjusting the vertical tilt sensitivity
 
                     // Update UI elements for debugging or display purposes
                     var betaDisplay = document.getElementById('betaValue');
                     var gammaDisplay = document.getElementById('gammaValue');
-                    
+                    if (betaDisplay && gammaDisplay) {
+                        betaDisplay.textContent = gyroMouseY.toFixed(2);
+                        gammaDisplay.textContent = gyroMouseX.toFixed(2);
+                    }
 
                     // Send the updated gyro mouse coordinates directly to the iframe
                     sendMouseEventToIframe('mousemove', {clientX: gyroMouseX, clientY: gyroMouseY});
                 }
             }
-
 
 
 
