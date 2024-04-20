@@ -1301,19 +1301,41 @@
 
 
         // Gyroscope Handling
-        function handleOrientation(event) {
-            const beta = event.beta;  // Degrees in the range [-180,180]
-            const gamma = event.gamma; // Degrees in the range [-90,90]
+        function simulateTouchEvent(x, y) {
+            const touchObj = new Touch({
+                identifier: Date.now(),
+                target: document.elementFromPoint(x, y),
+                clientX: x,
+                clientY: y,
+                radiusX: 2.5,
+                radiusY: 2.5,
+                rotationAngle: 10,
+                force: 0.5,
+            });
 
-            // Normalize gamma to map it from [-90, 90] to [0, window.innerWidth]
-            targetMouseX = ((gamma + 90) / 180) * window.innerWidth;
-            // Normalize beta to map it from [-180, 180] to [0, window.innerHeight]
-            targetMouseY = ((beta + 180) / 360) * window.innerHeight;
+            const touchEvent = new TouchEvent('touchmove', {
+                bubbles: true,
+                cancelable: true,
+                touches: [touchObj],
+                targetTouches: [],
+                changedTouches: [touchObj],
+                shiftKey: true,
+            });
 
-            console.log(`Target Mouse X: ${targetMouseX}, Target Mouse Y: ${targetMouseY}`); // Debug output
+            // Dispatch the event to the target element or a general element like document
+            touchObj.target.dispatchEvent(touchEvent);
         }
 
+        function handleOrientation(event) {
+            // Assuming these are already mapped to screen coordinates
+            const beta = event.beta;  // [-180,180]
+            const gamma = event.gamma; // [-90,90]
 
+            const screenX = ((gamma + 90) / 180) * window.innerWidth;
+            const screenY = ((beta + 180) / 360) * window.innerHeight;
+
+            simulateTouchEvent(screenX, screenY);
+        }
 
 
 
