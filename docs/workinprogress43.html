@@ -2816,8 +2816,7 @@
             }
         }
 
-        var lastScaleFactor = null; // Tracks the last scale factor for portrait mode
-        var cumulativeScaleChange = 0; // Accumulates scale changes for portrait mode
+    
 
         function updateVirtualCanvasSize() {
             var virtualcanvas = document.getElementById('virtualcanvas');
@@ -2839,7 +2838,7 @@
                 // Calculate new height based on smooth aspect ratio and check against last height
                 var newHeight = viewportHeight / smoothAspectRatio;
                 var stepSize = 40;  // Step size for adjustments
-                var offset = 20;    // Offset to fine-tune the step transition
+                var offset = 0;    // Offset to fine-tune the step transition
 
                 // Adjust the comparison logic to use the step size and offset
                 if (!virtualcanvas.lastHeight || Math.abs(newHeight - (virtualcanvas.lastHeight + offset)) > stepSize) {
