@@ -1317,38 +1317,27 @@
                 DeviceOrientationEvent.requestPermission().then(permissionState => {
                     if (permissionState === 'granted') {
                         window.addEventListener('deviceorientation', handleOrientation);
-                        fadeOutOverlay(() => enterSite()); // Call enterSite after fading out
                     } else {
                         alert("Permission to access device orientation was denied.");
-                        // Optionally enter the site with limited functionality
-                        fadeOutOverlay(() => enterSite()); // Consider fading and then entering
                     }
+                    fadeOutOverlay();
                 }).catch(console.error);
             } else {
                 window.addEventListener('deviceorientation', handleOrientation);
-                fadeOutOverlay(() => enterSite()); // Direct fade out and enter for non-iOS
+                fadeOutOverlay();
             }
         }
 
-        function fadeOutOverlay(callback) {
+
+        function fadeOutOverlay() {
             var overlay = document.getElementById('permissionOverlay');
             overlay.style.opacity = '0';
-            setTimeout(() => { 
-                overlay.style.visibility = 'hidden'; 
-                if (callback) callback();
-                initializeMenu();
-
-                const centerContainer = document.querySelector('.center-container-XL');
-                if (centerContainer) {
-                    centerContainer.style.opacity = '0';
-                    setTimeout(() => {
-                        centerContainer.style.display = 'none';
-                    }, 500); // Adjust the time as needed for the fade out transition
-                } else {
-                    console.error("Center container not found.");
-                }
+            setTimeout(() => {
+                overlay.style.visibility = 'hidden';
+                enterSite();  // Always enter the site after the overlay fades out
             }, 500);
         }
+
 
         function showOverlay() {
             var overlay = document.getElementById('permissionOverlay');
@@ -1360,6 +1349,7 @@
                 }, 10); // Short delay to ensure the transition occurs
             }
         }
+
 
 
         function triggerPermissionRequest() {
