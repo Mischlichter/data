@@ -705,9 +705,6 @@
 
     <div id="permissionOverlay">
         <button id="enableButton">Enable Device Orientation</button>
-        <p>Beta: <span id="betaValue">Waiting...</span>°</p>
-        <p>Gamma: <span id="gammaValue">Waiting...</span>°</p>
-
     </div>
       
     </div>
@@ -1112,10 +1109,7 @@
                     // Update UI elements for debugging or display purposes
                     var betaDisplay = document.getElementById('betaValue');
                     var gammaDisplay = document.getElementById('gammaValue');
-                    if (betaDisplay && gammaDisplay) {
-                        betaDisplay.textContent = event.beta ? (event.beta * gyroSensitivityMultiplier).toFixed(2) : 'No data';
-                        gammaDisplay.textContent = event.gamma ? (event.gamma * gyroSensitivityMultiplier).toFixed(2) : 'No data';
-                    }
+                    
 
                     // Send the updated gyro mouse coordinates directly to the iframe
                     sendMouseEventToIframe('mousemove', {clientX: gyroMouseX, clientY: gyroMouseY});
