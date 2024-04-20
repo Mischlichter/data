@@ -1198,10 +1198,34 @@
                     enableButton.style.opacity = '0'; // Start from transparent
                     setTimeout(() => {
                         enableButton.style.opacity = '1'; // Fade to fully visible
+                        // Setup event listeners after the button is fully visible
+                        setupButtonEventListeners();
                     }, 10); // Short delay to ensure the transition occurs
                 }
             }
 
+            function setupButtonEventListeners() {
+                var enableButton = document.getElementById('enableButton');
+
+                if (enableButton) {
+                    // Handle touch start
+                    enableButton.addEventListener('touchstart', function(e) {
+                        console.log('Touch start on button');
+                        e.preventDefault(); // Prevent the default mouse event behavior
+                        enableButton.style.backgroundColor = 'lightblue'; // Change button style on touch start
+                    });
+
+                    // Handle touch end
+                    enableButton.addEventListener('touchend', function(e) {
+                        console.log('Touch end on button');
+                        e.preventDefault();  // Prevent any default behavior
+                        enableButton.style.backgroundColor = ''; // Reset to default or CSS styled color
+                        requestGyroAccess();  // Execute function to request gyroscope access
+                    });
+                } else {
+                    console.log('Enable button not found.');
+                }
+            }
 
 
 
@@ -1503,31 +1527,7 @@
         }
         
 
-        document.addEventListener('DOMContentLoaded', function() {
-            var enableButton = document.getElementById('enableButton');
-
-            if (enableButton) {
-                // Handle touch start
-                enableButton.addEventListener('touchstart', function(e) {
-                    console.log('Touch start on button');
-                    // You can prevent the default mouse event behavior if necessary
-                    e.preventDefault();
-                    // Perhaps change the button style or feedback to the user
-                    enableButton.style.backgroundColor = 'lightblue'; 
-                });
-
-                // Handle touch end
-                enableButton.addEventListener('touchend', function(e) {
-                    console.log('Touch end on button');
-                    e.preventDefault();  // Prevent any default behavior
-                    // Reset styles or perform the action
-                    enableButton.style.backgroundColor = ''; // Reset to default or CSS styled color
-                    requestGyroAccess();  // For example, execute function to request gyroscope access
-                });
-            } else {
-                console.log('Enable button not found.');
-            }
-        });
+        
 
 
         document.addEventListener('DOMContentLoaded', (event) => {
