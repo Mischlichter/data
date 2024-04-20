@@ -1180,7 +1180,10 @@
 
 
             function showOverlay() {
-                var overlay = document.getElementById('permissionOverlay', 'enableButton');
+                var overlay = document.getElementById('permissionOverlay');
+                var enableButton = document.getElementById('enableButton');
+
+                // Show and fade in the overlay
                 if (overlay) {
                     overlay.style.visibility = 'visible';
                     overlay.style.opacity = '0'; // Start from transparent
@@ -1188,7 +1191,17 @@
                         overlay.style.opacity = '1'; // Fade to fully visible
                     }, 10); // Short delay to ensure the transition occurs
                 }
+
+                // Show and fade in the enable button
+                if (enableButton) {
+                    enableButton.style.visibility = 'visible';
+                    enableButton.style.opacity = '0'; // Start from transparent
+                    setTimeout(() => {
+                        enableButton.style.opacity = '1'; // Fade to fully visible
+                    }, 10); // Short delay to ensure the transition occurs
+                }
             }
+
 
 
 
