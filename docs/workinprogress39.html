@@ -1077,19 +1077,20 @@
             var screenWidth = window.innerWidth;
             var screenHeight = window.innerHeight;
 
-
-
             function setupMotionToMouse() {
                 window.addEventListener('deviceorientation', function(event) {
+                    // Calculate mouse positions from gyro data
                     var beta = event.beta;  // Pitch, range -180 to 180
                     var gamma = event.gamma; // Roll, range -90 to 90
+                    var screenWidth = window.innerWidth;
+                    var screenHeight = window.innerHeight;
 
                     // Convert gyro data to screen coordinates
                     mouseX = ((gamma + 90) / 180) * screenWidth;
                     mouseY = ((beta + 180) / 360) * screenHeight;
 
-                    // Immediately send the updated position to the iframe
-                    sendMouseEventToIframe('mousemove', { mouseX: mouseX, mouseY: mouseY });
+                    // Send the gyro-based mouse event to the iframe
+                    sendMouseEventToIframe('mousemove', { mouseX: mouseX, mouseY: mouseY }, true);
                 }, true);
             }
 
@@ -1477,18 +1478,23 @@
         requestAnimationFrame(animate);
 
         // Update sendMouseEventToIframe to use coordinates
-        function sendMouseEventToIframe(eventType, event) {
+        function sendMouseEventToIframe(eventType, event, isFromGyro = false) {
             const iframe = document.getElementById('sceneIframe');
             if (iframe && iframe.contentWindow) {
-                // Post message directly to the iframe with the provided mouse coordinates
+                // Use gyro data if from gyro, otherwise use data from the event
+                let posX = isFromGyro ? event.mouseX : event.clientX;
+                let posY = isFromGyro ? event.mouseY : event.clientY;
+
+                // Log to console to debug the values being sent
+                
+
                 iframe.contentWindow.postMessage({
                     type: eventType,
-                    mouseX: event.mouseX,  // X-coordinate from the gyro data
-                    mouseY: event.mouseY   // Y-coordinate from the gyro data
+                    mouseX: posX,
+                    mouseY: posY
                 }, '*');
             }
         }
-
         
 
         
