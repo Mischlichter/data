@@ -1041,17 +1041,17 @@
 
             // Check and control the load progress visibility based on the phase of loading
             if (!localStorage.getItem(firstLoadCompleteFlag) || !localStorage.getItem(secondLoadCompleteFlag)) {
-            preloadAssets();
+                preloadAssets();
             } else {
-
+                // Removed direct calls to enterSite() here to ensure it's managed within triggerPermissionRequest
                 if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                    triggerPermissionRequest();
+                    triggerPermissionRequest(); // This will handle entering the site after permissions
                 } else {
                     // Directly add event listener if not on iOS
                     window.addEventListener('deviceorientation', handleOrientation);
+                    enterSite(); // Non-iOS or no permissions needed, proceed to enter the site
                 }
-                
-                enterSite();
+
                 localStorage.removeItem(firstLoadCompleteFlag);
                 localStorage.removeItem(secondLoadCompleteFlag);
             }
@@ -1303,27 +1303,26 @@
                 DeviceOrientationEvent.requestPermission().then(permissionState => {
                     if (permissionState === 'granted') {
                         window.addEventListener('deviceorientation', handleOrientation);
-                        fadeOutOverlay();
+                        fadeOutOverlay(() => enterSite()); // Call enterSite after fading out
                     } else {
                         alert("Permission to access device orientation was denied.");
+                        // Optionally enter the site with limited functionality
+                        fadeOutOverlay(() => enterSite()); // Consider fading and then entering
                     }
                 }).catch(console.error);
             } else {
                 window.addEventListener('deviceorientation', handleOrientation);
-                fadeOutOverlay();
+                fadeOutOverlay(() => enterSite()); // Direct fade out and enter for non-iOS
             }
         }
 
-        function fadeOutOverlay() {
+        function fadeOutOverlay(callback) {
             var overlay = document.getElementById('permissionOverlay');
             overlay.style.opacity = '0';
-            setTimeout(() => { overlay.style.visibility = 'hidden'; }, 500);
-        }
-
-        function showOverlay() {
-            var overlay = document.getElementById('permissionOverlay');
-            overlay.style.visibility = 'visible';
-            overlay.style.opacity = '1';
+            setTimeout(() => { 
+                overlay.style.visibility = 'hidden'; 
+                if (callback) callback(); // Execute the callback after the fade
+            }, 500);
         }
 
         function triggerPermissionRequest() {
