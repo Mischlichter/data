@@ -1186,7 +1186,21 @@
                 }
             }
 
-            
+            document.addEventListener('touchstart', function(e) {
+                // Get the touch point
+                var touch = e.touches[0];
+                console.log(`Touch started at (${touch.pageX}, ${touch.pageY})`);
+            });
+
+            document.addEventListener('touchmove', function(e) {
+                var touch = e.touches[0];
+                console.log(`Touch moving through (${touch.pageX}, ${touch.pageY})`);
+            });
+
+            document.addEventListener('touchend', function(e) {
+                console.log('Touch ended');
+            });
+
 
 
             // Check and control the load progress visibility based on the phase of loading
