@@ -1326,10 +1326,10 @@
                         setupOrientationListener();
                     } else {
                         // Handle the denial of permission if necessary
-                        updateStatus('Permission denied by user.', false);
+                        console.error('Permission denied by user.'); // Using console for debugging
                     }
                 }).catch(error => {
-                    updateStatus('Error requesting permission: ' + error, false);
+                    console.error('Error requesting permission: ' + error); // Using console for debugging
                 });
             } else {
                 // For non-iOS or older iOS versions where permission request isn't needed
@@ -1337,18 +1337,17 @@
             }
         }
 
-
         function fadeOutOverlay() {
             var overlay = document.getElementById('permissionOverlay');
+            if (!overlay) return; // Ensure that the overlay is present
+
             overlay.style.opacity = '0';
             setTimeout(() => {
                 overlay.style.visibility = 'hidden';
                 overlay.remove(); // This ensures the overlay is completely removed from the DOM
-                enterSite();  // Always enter the site after the overlay fades out
+                enterSite();  // Call the function to enter the site after the overlay fades out
             }, 500);
         }
-
-
 
         function showOverlay() {
             var overlay = document.getElementById('permissionOverlay');
@@ -1360,25 +1359,6 @@
                 }, 10); // Short delay to ensure the transition occurs
             }
         }
-        function updateStatus(message, isSuccess) {
-            var statusElement = document.getElementById('status');
-            if (!statusElement) {
-                statusElement = document.createElement('div');
-                statusElement.id = 'status'; // Ensure the element can be re-used
-                document.body.appendChild(statusElement);
-            }
-            statusElement.textContent = message;
-            statusElement.style.color = isSuccess ? 'green' : 'red';
-            statusElement.style.fontSize = '20px';
-            statusElement.style.position = 'fixed';
-            statusElement.style.top = '10px';
-            statusElement.style.left = '10px';
-            statusElement.style.backgroundColor = 'white';
-            statusElement.style.border = '1px solid #ccc';
-            statusElement.style.padding = '5px';
-        }
-
-
 
         function triggerPermissionRequest() {
             // Call this function when you want to show the overlay, e.g., after preloader
@@ -1386,6 +1366,7 @@
         }
 
         document.getElementById('enableButton').addEventListener('click', requestGyroAccess);
+
 
 
 
