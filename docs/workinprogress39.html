@@ -1074,23 +1074,19 @@
             }
 
             var mouseX = 0, mouseY = 0;
-            var screenWidth = window.innerWidth;
-            var screenHeight = window.innerHeight;
+            var lastSentTime = 0;
+            var throttleInterval = 100; // Time in milliseconds to throttle updates
 
             function setupMotionToMouse() {
                 window.addEventListener('deviceorientation', function(event) {
-                    // Calculate mouse positions from gyro data
-                    var beta = event.beta;  // Pitch, range -180 to 180
-                    var gamma = event.gamma; // Roll, range -90 to 90
-                    var screenWidth = window.innerWidth;
-                    var screenHeight = window.innerHeight;
+                    var currentTime = Date.now();
+                    if (currentTime - lastSentTime > throttleInterval) {
+                        // Update the last sent time
+                        lastSentTime = currentTime;
 
-                    // Convert gyro data to screen coordinates
-                    mouseX = ((gamma + 90) / 180) * screenWidth;
-                    mouseY = ((beta + 180) / 360) * screenHeight;
-
-                    // Send the gyro-based mouse event to the iframe
-                    sendMouseEventToIframe('mousemove', { mouseX: mouseX, mouseY: mouseY }, true);
+                        // Send the beta and gamma values directly as mouseX and mouseY
+                        sendMouseEventToIframe('mousemove', { mouseX: event.beta, mouseY: event.gamma });
+                    }
                 }, true);
             }
 
