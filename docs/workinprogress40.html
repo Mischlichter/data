@@ -1442,7 +1442,6 @@
 
 
 
-        // Animation Frame Function
         function animate() {
             if (applySmoothing) {
                 var dx = targetMouseX - mouseX;
@@ -1468,7 +1467,27 @@
             requestAnimationFrame(animate);
         }
 
-        //requestAnimationFrame(animate);
+        // Only start the animation if the device should not be excluded
+        if (!shouldExcludeAnimation()) {
+            requestAnimationFrame(animate);
+        } else {
+            console.log('Animation loop is excluded on this device.');
+        }
+
+        function shouldExcludeAnimation() {
+            // Check for mobile devices based on user-agent string
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+            // Check for touch capability
+            const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+
+            // Check for gyroscope
+            const hasGyroscope = 'DeviceOrientationEvent' in window;
+
+            return isMobile || hasTouch || hasGyroscope;
+        }
+
+
 
         // Update sendMouseEventToIframe to use coordinates
         function sendMouseEventToIframe(eventType, coordinates) {
