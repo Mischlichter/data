@@ -1302,7 +1302,7 @@
 
         // Gyroscope Handling
         function handleOrientation(event) {
-            if (!isMouseInArea) {  // Only update if mouse is not controlling the movement
+            if (!isMouseInArea) { // Only update if mouse is not controlling the movement
                 const beta = event.beta;  // Degrees in the range [-180,180]
                 const gamma = event.gamma; // Degrees in the range [-90,90]
 
@@ -1313,11 +1313,11 @@
             }
         }
 
-        // Request Gyroscope Access
+
         function requestGyroAccess() {
             function setupOrientationListener() {
                 window.addEventListener('deviceorientation', handleOrientation);
-                fadeOutOverlay();  // Call fadeOutOverlay here after setting up the listener
+                // Any additional setup you need when permission is granted
             }
 
             if (typeof DeviceOrientationEvent.requestPermission === 'function') {
@@ -1326,6 +1326,7 @@
                     if (permissionState === 'granted') {
                         setupOrientationListener();
                     } else {
+                        // Handle the denial of permission if necessary
                         console.error('Permission denied by user.'); // Using console for debugging
                     }
                 }).catch(error => {
@@ -1337,9 +1338,9 @@
             }
         }
 
-        // Fade Out Overlay and Remove It
         function fadeOutOverlay() {
             var overlay = document.getElementById('permissionOverlay');
+            console.log('Attempting to fade out overlay...'); // Debug
             if (!overlay) {
                 console.log('Overlay not found.'); // Check if the overlay exists
                 return;
@@ -1349,11 +1350,12 @@
             setTimeout(() => {
                 overlay.style.visibility = 'hidden';
                 overlay.remove(); // This ensures the overlay is completely removed from the DOM
+                enterSite();  // Always enter the site after the overlay fades out
                 console.log('Overlay should be faded out and removed.'); // Debug
             }, 500);
         }
 
-        // Show Overlay
+
         function showOverlay() {
             var overlay = document.getElementById('permissionOverlay');
             if (overlay) {
@@ -1365,15 +1367,12 @@
             }
         }
 
-        // Attach event listener to button when DOM is fully loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            var enableButton = document.getElementById('enableButton');
-            if (enableButton) {
-                enableButton.addEventListener('click', requestGyroAccess);
-            } else {
-                console.log('Enable button not found.');
-            }
-        });
+        function triggerPermissionRequest() {
+            // Call this function when you want to show the overlay, e.g., after preloader
+            showOverlay();
+        }
+
+        document.getElementById('enableButton').addEventListener('click', requestGyroAccess);
 
 
 
@@ -1421,6 +1420,14 @@
         }
         
 
+        document.addEventListener('DOMContentLoaded', function() {
+            var enableButton = document.getElementById('enableButton');
+            if (enableButton) {
+                enableButton.addEventListener('click', requestGyroAccess);
+            } else {
+                console.log('Enable button not found.');
+            }
+        });
 
 
         document.addEventListener('DOMContentLoaded', (event) => {
