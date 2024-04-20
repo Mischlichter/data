@@ -1348,12 +1348,10 @@
             var overlay = document.getElementById('permissionOverlay');
             if (overlay) {
                 overlay.style.visibility = 'visible';
-                overlay.style.opacity = '0'; // Start from transparent
-                setTimeout(() => {
-                    overlay.style.opacity = '1'; // Fade to fully visible
-                }, 10); // Short delay to ensure the transition occurs
+                overlay.style.opacity = '1'; // Directly set to fully visible
             }
         }
+
 
 
         function triggerPermissionRequest() {
