@@ -653,7 +653,18 @@
             visibility: hidden;
         }
 
-
+        #colorSurface {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.5s;
+            color: white;
+            font-size: 24px;
+            text-align: center;
+             z-index: 11111111;
+        }
 
     </style>
 </head>
@@ -678,7 +689,7 @@
         <div id="mouseOverlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;z-index: 1;"></div>
  
     </div>
-
+    <div id="colorSurface">Move your device to change the color.</div>
     <div id="bodyGalleryContainer">
 
     </div>
@@ -1060,7 +1071,9 @@
 
             function requestMotionAccess() {
                 function setupMotionListener() {
-                    setupMotionToMouse();
+                    setupMotionToColor();
+                
+                
                     fadeOutOverlay();  // This is triggered after setting up motion to hide the overlay.
                 }
 
@@ -1163,6 +1176,34 @@
                     console.log(`Motion-based Mouse X: ${mouseX}, Y: ${mouseY}`); // Debug output
                 }
             }
+
+
+
+            const colorSurface = document.getElementById('colorSurface');
+
+                function setupMotionToColor() {
+                    if (window.DeviceMotionEvent) {
+                        window.addEventListener('devicemotion', handleMotion, true);
+                    } else {
+                        colorSurface.textContent = "DeviceMotionEvent is not supported by your browser.";
+                    }
+                }
+
+                function handleMotion(event) {
+                    const x = event.accelerationIncludingGravity.x;
+                    const y = event.accelerationIncludingGravity.y;
+                    const z = event.accelerationIncludingGravity.z;
+
+                    // Normalize and scale the motion data to [0, 255]
+                    const red = Math.abs(Math.round((x / 10) * 255)) % 256;
+                    const green = Math.abs(Math.round((y / 10) * 255)) % 256;
+                    const blue = Math.abs(Math.round((z / 10) * 255)) % 256;
+
+                    // Change the background color
+                    colorSurface.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
+                    colorSurface.textContent = `RGB(${red}, ${green}, ${blue})`;
+                }
+
 
 
             // Check and control the load progress visibility based on the phase of loading
