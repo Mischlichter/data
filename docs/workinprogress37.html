@@ -1331,7 +1331,7 @@
             const gamma = event.gamma; // Tilt left and right (-90 to 90 degrees).
 
             // Exaggerate the effect by using a multiplier
-            const multiplier = 2;  // Increase this to exaggerate more
+            const multiplier = 20;  // Increase this to exaggerate more
 
             // Calculate exaggerated screen coordinates
             const screenX = Math.max(0, Math.min(window.innerWidth, window.innerWidth / 2 + (gamma * multiplier)));
@@ -1412,7 +1412,7 @@
         function showOverlay() {
             var overlay = document.getElementById('permissionOverlay');
             if (overlay) {
-                overlay.style.visibility = 'visible';
+                
                 overlay.style.opacity = '0'; // Start from transparent
                 setTimeout(() => {
                     overlay.style.opacity = '1'; // Fade to fully visible
