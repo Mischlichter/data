@@ -1049,7 +1049,7 @@
                 }
             }
 
-            
+
 
             // Check and control the load progress visibility based on the phase of loading
             if (!localStorage.getItem(firstLoadCompleteFlag) || !localStorage.getItem(secondLoadCompleteFlag)) {
@@ -1403,7 +1403,7 @@
             setTimeout(() => {
                 overlay.style.visibility = 'hidden';
                 overlay.remove(); // This ensures the overlay is completely removed from the DOM
-                enterSite();  // Always enter the site after the overlay fades out
+               
                 console.log('Overlay should be faded out and removed.'); // Debug
             }, 500);
         }
