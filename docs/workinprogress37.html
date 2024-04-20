@@ -1334,9 +1334,11 @@
             overlay.style.opacity = '0';
             setTimeout(() => {
                 overlay.style.visibility = 'hidden';
+                overlay.remove(); // This ensures the overlay is completely removed from the DOM
                 enterSite();  // Always enter the site after the overlay fades out
             }, 500);
         }
+
 
 
         function showOverlay() {
