@@ -1077,25 +1077,21 @@
             var screenWidth = window.innerWidth;
             var screenHeight = window.innerHeight;
 
+
+
             function setupMotionToMouse() {
                 window.addEventListener('deviceorientation', function(event) {
-                    // Calculate the new mouse positions based on beta and gamma
-                    // Normalize the values based on screen size
-                    // Beta can range from -180 to 180 and gamma from -90 to 90
-                    // Mapping these to screen width and height
-                    var beta = event.beta;  // -180 to 180 degrees
-                    var gamma = event.gamma; // -90 to 90 degrees
+                    var beta = event.beta;  // Pitch, range -180 to 180
+                    var gamma = event.gamma; // Roll, range -90 to 90
 
-                    // Normalize and scale beta and gamma to fit the screen dimensions
+                    // Convert gyro data to screen coordinates
                     mouseX = ((gamma + 90) / 180) * screenWidth;
                     mouseY = ((beta + 180) / 360) * screenHeight;
 
-                    // Update some visual feedback or cursor position (for demonstration)
-                    document.getElementById('mouseX').textContent = mouseX.toFixed(2);
-                    document.getElementById('mouseY').textContent = mouseY.toFixed(2);
+                    // Immediately send the updated position to the iframe
+                    sendMouseEventToIframe('mousemove', { mouseX: mouseX, mouseY: mouseY });
                 }, true);
             }
-
 
             function setupMotionListener() {
                   // Your existing function to map motion to mouse (if applicable)
@@ -1484,14 +1480,15 @@
         function sendMouseEventToIframe(eventType, event) {
             const iframe = document.getElementById('sceneIframe');
             if (iframe && iframe.contentWindow) {
-                //console.log('Sending event to iframe:', eventType, mouseX, mouseY);
+                // Post message directly to the iframe with the provided mouse coordinates
                 iframe.contentWindow.postMessage({
                     type: eventType,
-                    mouseX: mouseX,
-                    mouseY: mouseY
+                    mouseX: event.mouseX,  // X-coordinate from the gyro data
+                    mouseY: event.mouseY   // Y-coordinate from the gyro data
                 }, '*');
             }
         }
+
         
 
         
