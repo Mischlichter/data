@@ -615,21 +615,20 @@
 
 
         #permissionOverlay {
-            width: 100vw;
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
+            width: 100vw;   /* Full width of the viewport */
+            height: 100vh;  /* Full height of the viewport */
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: rgba(0, 0, 0, 0.8); // Semi-transparent black
-            transition: opacity 0.5s ease; // Only transition opacity
-            opacity: 1;
-            visibility: hidden; // Start as hidden
-            z-index: 1111111;
+            background-color: rgba(0,0,0,0.8); /* Slightly transparent black */
+            transition: opacity 0.5s ease-in-out;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 1111111; /* Ensure it's above all other content */
+            position: fixed; /* Fixed positioning to cover the entire screen */
+            top: 0;
+            left: 0;
         }
-
 
 
         #enableButton {
@@ -1336,22 +1335,22 @@
         function fadeOutOverlay(callback) {
             var overlay = document.getElementById('permissionOverlay');
             overlay.style.opacity = '0';
-            // Ensure the timeout matches or exceeds the CSS transition time
-            setTimeout(() => {
-                overlay.style.visibility = 'hidden';
+            setTimeout(() => { 
+                overlay.style.visibility = 'hidden'; 
                 if (callback) callback(); // Execute the callback after the fade
-            }, 550); // A little longer than the CSS transition to ensure it completes
+            }, 500);
         }
-
 
         function showOverlay() {
             var overlay = document.getElementById('permissionOverlay');
             if (overlay) {
                 overlay.style.visibility = 'visible';
-                overlay.style.opacity = '1'; // Directly set to fully visible
+                overlay.style.opacity = '0'; // Start from transparent
+                setTimeout(() => {
+                    overlay.style.opacity = '1'; // Fade to fully visible
+                }, 10); // Short delay to ensure the transition occurs
             }
         }
-
 
 
         function triggerPermissionRequest() {
