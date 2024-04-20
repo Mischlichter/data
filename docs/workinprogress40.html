@@ -1097,7 +1097,7 @@
             var throttleInterval = 100; // Throttle interval in milliseconds
             var gyroMouseX = 0;
             var gyroMouseY = 0;
-
+            var gyroSensitivityMultiplier = 3.0;  // Default multiplier
 
             function handleOrientation(event) {
                 var now = Date.now();
@@ -1105,22 +1105,23 @@
                     // Update last execution time
                     lastExecution = now;
 
-                    // Use raw beta and gamma values directly for gyroMouseX and gyroMouseY
-                    gyroMouseX = event.gamma; // Gamma ranges from -90 to 90
-                    gyroMouseY = event.beta;  // Beta ranges from -180 to 180
+                    // Apply the multiplier to the raw beta and gamma values
+                    gyroMouseX = event.gamma * gyroSensitivityMultiplier; // Adjusting the horizontal tilt sensitivity
+                    gyroMouseY = event.beta * gyroSensitivityMultiplier;  // Adjusting the vertical tilt sensitivity
 
                     // Update UI elements for debugging or display purposes
                     var betaDisplay = document.getElementById('betaValue');
                     var gammaDisplay = document.getElementById('gammaValue');
                     if (betaDisplay && gammaDisplay) {
-                        betaDisplay.textContent = event.beta ? event.beta.toFixed(2) : 'No data';
-                        gammaDisplay.textContent = event.gamma ? event.gamma.toFixed(2) : 'No data';
+                        betaDisplay.textContent = event.beta ? (event.beta * gyroSensitivityMultiplier).toFixed(2) : 'No data';
+                        gammaDisplay.textContent = event.gamma ? (event.gamma * gyroSensitivityMultiplier).toFixed(2) : 'No data';
                     }
 
                     // Send the updated gyro mouse coordinates directly to the iframe
                     sendMouseEventToIframe('mousemove', {clientX: gyroMouseX, clientY: gyroMouseY});
                 }
             }
+
 
 
 
