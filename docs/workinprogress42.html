@@ -2287,7 +2287,7 @@
                     if (element) {
                         element.style.opacity = 1; // Set opacity to 1
                         if (isIOS()) {
-                            element.style.transition = 'opacity 1s ease-in-out'; // Remove transitions for iOS
+                            element.style.transition = 'none'; // Remove transitions for iOS
                         } else {
                             element.style.transition = 'opacity 1s ease-in-out'; // Apply transitions for non-iOS
                         }
