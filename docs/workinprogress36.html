@@ -620,15 +620,16 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: rgba(0,0,0,0.8); /* Slightly transparent black */
+            background-color: rgba(0, 0, 0, 0); /* Totally transparent */
             transition: opacity 0.5s ease-in-out;
-            opacity: 0;
+            opacity: 0; /* Starts fully transparent */
             visibility: hidden;
             z-index: 1111111; /* Ensure it's above all other content */
             position: fixed; /* Fixed positioning to cover the entire screen */
             top: 0;
             left: 0;
         }
+
 
 
         #enableButton {
@@ -1334,16 +1335,12 @@
 
         function fadeOutOverlay(callback) {
             var overlay = document.getElementById('permissionOverlay');
-            if (!overlay) return;  // Early return if the overlay doesn't exist
-
-            overlay.style.opacity = '0'; // Start the fade-out by setting opacity to 0
-            setTimeout(() => {
-                overlay.style.visibility = 'hidden';  // Make the overlay invisible
-                overlay.remove(); // Completely remove the overlay element from the DOM
-                if (callback) callback(); // Execute the callback after the fade and removal
-            }, 3000); // Set timeout to match the transition duration in CSS
+            overlay.style.opacity = '0';
+            setTimeout(() => { 
+                overlay.style.visibility = 'hidden'; 
+                if (callback) callback(); // Execute the callback after the fade
+            }, 500);
         }
-
 
         function showOverlay() {
             var overlay = document.getElementById('permissionOverlay');
