@@ -615,20 +615,21 @@
 
 
         #permissionOverlay {
-            width: 100vw;   /* Full width of the viewport */
-            height: 100vh;  /* Full height of the viewport */
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: rgba(0, 0, 0, 0); /* Totally transparent */
-            transition: opacity 0.5s ease-in-out;
-            opacity: 0; /* Starts fully transparent */
+            background-color: rgba(0, 0, 0, 0.8); // Ensure this is visible when opacity is 1
+            opacity: 0; // Start fully transparent if initially hidden
             visibility: hidden;
-            z-index: 1111111; /* Ensure it's above all other content */
-            position: fixed; /* Fixed positioning to cover the entire screen */
-            top: 0;
-            left: 0;
+            transition: opacity 0.5s ease-in-out; // Smooth transition for opacity
+            z-index: 1111111;
         }
+
 
 
 
