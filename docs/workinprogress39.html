@@ -1073,12 +1073,33 @@
                
             }
 
+            var mouseX = 0, mouseY = 0;
+            var screenWidth = window.innerWidth;
+            var screenHeight = window.innerHeight;
 
+            function setupMotionToMouse() {
+                window.addEventListener('deviceorientation', function(event) {
+                    // Calculate the new mouse positions based on beta and gamma
+                    // Normalize the values based on screen size
+                    // Beta can range from -180 to 180 and gamma from -90 to 90
+                    // Mapping these to screen width and height
+                    var beta = event.beta;  // -180 to 180 degrees
+                    var gamma = event.gamma; // -90 to 90 degrees
+
+                    // Normalize and scale beta and gamma to fit the screen dimensions
+                    mouseX = ((gamma + 90) / 180) * screenWidth;
+                    mouseY = ((beta + 180) / 360) * screenHeight;
+
+                    // Update some visual feedback or cursor position (for demonstration)
+                    document.getElementById('mouseX').textContent = mouseX.toFixed(2);
+                    document.getElementById('mouseY').textContent = mouseY.toFixed(2);
+                }, true);
+            }
 
 
             function setupMotionListener() {
                   // Your existing function to map motion to mouse (if applicable)
-
+                setupMotionToMouse();
                 // Check for DeviceOrientationEvent support
                 if ('DeviceOrientationEvent' in window) {
                     // Request permission for iOS 13+ devices
@@ -1113,7 +1134,7 @@
             }
 
 
-            
+
 
             function fadeOutOverlay() {
                 var overlay = document.getElementById('permissionOverlay');
@@ -1391,7 +1412,7 @@
 //////// MOUSE HANDLING ///////////        
 
         // Initialize Variables
-        var mouseX = 0, mouseY = 0;
+        
         var targetMouseX = window.innerWidth / 2, targetMouseY = window.innerHeight / 2;
         var maxSmoothingFactor = 0.111; // Maximum smoothing factor
         var isMouseInArea = false;
