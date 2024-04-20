@@ -1074,25 +1074,28 @@
             }
 
             var mouseX = 0, mouseY = 0;
-            var lastSentTime = 0;
-            var throttleInterval = 100; // Time in milliseconds to throttle updates
+            
 
-            function setupMotionToMouse() {
+            function setupGyroToMouse() {
                 window.addEventListener('deviceorientation', function(event) {
-                    var currentTime = Date.now();
-                    if (currentTime - lastSentTime > throttleInterval) {
-                        // Update the last sent time
-                        lastSentTime = currentTime;
+                    // Check if mouse interactions are inactive
+                    if (!isMouseInArea) {
+                        var beta = event.beta;  // Tilt front to back (pitch), ranges from -180 to 180
+                        var gamma = event.gamma; // Tilt left to right (roll), ranges from -90 to 90
 
-                        // Send the beta and gamma values directly as mouseX and mouseY
-                        sendMouseEventToIframe('mousemove', { mouseX: event.beta, mouseY: event.gamma });
+                        var screenWidth = window.innerWidth;
+                        var screenHeight = window.innerHeight;
+
+                        // Map gyro values to screen coordinates
+                        targetMouseX = screenWidth * ((gamma + 90) / 180); // Normalizing -90 to 90 to 0 to screenWidth
+                        targetMouseY = screenHeight * ((beta + 180) / 360); // Normalizing -180 to 180 to 0 to screenHeight
                     }
-                }, true);
+                });
             }
 
             function setupMotionListener() {
                   // Your existing function to map motion to mouse (if applicable)
-                setupMotionToMouse();
+                setupGyroToMouse();
                 fadeOutOverlay();
                 // Check for DeviceOrientationEvent support
                 if ('DeviceOrientationEvent' in window) {
@@ -1452,7 +1455,7 @@
         mouseOverlay.addEventListener('mousemove', handleMouseMove);
 
 
-
+        
         
 
 
@@ -1465,12 +1468,11 @@
                 var dx = targetMouseX - mouseX;
                 var dy = targetMouseY - mouseY;
                 var distance = Math.sqrt(dx * dx + dy * dy);
-                var smoothingFactor = Math.min(distance / 100, maxSmoothingFactor); // Dynamic smoothing factor
+                var smoothingFactor = Math.min(distance / 100, maxSmoothingFactor);
 
                 mouseX += dx * smoothingFactor;
                 mouseY += dy * smoothingFactor;
 
-                // Disable smoothing when close enough
                 if (distance < 1) {
                     applySmoothing = false;
                     mouseX = targetMouseX;
@@ -1484,27 +1486,22 @@
             sendMouseEventToIframe('mousemove', { clientX: mouseX, clientY: mouseY });
             requestAnimationFrame(animate);
         }
-
         requestAnimationFrame(animate);
 
-        // Update sendMouseEventToIframe to use coordinates
-        function sendMouseEventToIframe(eventType, event, isFromGyro = false) {
+
+        function sendMouseEventToIframe(eventType, event) {
             const iframe = document.getElementById('sceneIframe');
             if (iframe && iframe.contentWindow) {
-                // Use gyro data if from gyro, otherwise use data from the event
-                let posX = isFromGyro ? event.mouseX : event.clientX;
-                let posY = isFromGyro ? event.mouseY : event.clientY;
-
-                // Log to console to debug the values being sent
-                
-
+                //console.log('Sending event to iframe:', eventType, mouseX, mouseY);
                 iframe.contentWindow.postMessage({
                     type: eventType,
-                    mouseX: posX,
-                    mouseY: posY
+                    mouseX: mouseX,
+                    mouseY: mouseY
                 }, '*');
             }
         }
+
+
         
 
         
