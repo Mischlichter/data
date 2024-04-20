@@ -1097,7 +1097,7 @@
             var throttleInterval = 100; // Throttle interval in milliseconds
             var gyroMouseX = 0;
             var gyroMouseY = 0;
-            var gyroSensitivityMultiplier = 10.0;  // Default multiplier
+            var gyroSensitivityMultiplier = 50.0;  // Default multiplier
 
             function handleOrientation(event) {
                 var now = Date.now();
@@ -1465,7 +1465,7 @@
             }
 
             sendMouseEventToIframe('mousemove', { clientX: mouseX, clientY: mouseY });
-            //requestAnimationFrame(animate);
+            requestAnimationFrame(animate);
         }
 
         //requestAnimationFrame(animate);
