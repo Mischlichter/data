@@ -1023,6 +1023,9 @@
             function enterSite() {
                 initializeMenu();
 
+
+
+
                 const centerContainer = document.querySelector('.center-container-XL');
                 if (centerContainer) {
                     centerContainer.style.opacity = '0';
@@ -1041,6 +1044,13 @@
             preloadAssets();
             } else {
 
+                if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                    triggerPermissionRequest();
+                } else {
+                    // Directly add event listener if not on iOS
+                    window.addEventListener('deviceorientation', handleOrientation);
+                }
+                
                 enterSite();
                 localStorage.removeItem(firstLoadCompleteFlag);
                 localStorage.removeItem(secondLoadCompleteFlag);
@@ -1323,15 +1333,7 @@
 
         document.getElementById('enableButton').addEventListener('click', requestGyroAccess);
 
-        function preloaderComplete() {
-            // Check if on iOS
-            if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                triggerPermissionRequest();
-            } else {
-                // Directly add event listener if not on iOS
-                window.addEventListener('deviceorientation', handleOrientation);
-            }
-        }
+
 
 
         // Animation Frame Function
