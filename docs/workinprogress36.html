@@ -621,14 +621,17 @@
             justify-content: center;
             align-items: center;
             background-color: rgba(0,0,0,0.8); /* Slightly transparent black */
-            transition: opacity 0.5s ease-out;
+            transition: opacity 0.5s ease-in-out;
             opacity: 0;
             visibility: hidden;
-            z-index: 1111111111;
+
         }
+
         #enableButton {
             padding: 10px 20px;
+            font-family: 'JetBrainsMono-Bold';
             font-size: 16px;
+            margin: 0; /* Adjust as needed */
             background-color: white;
             color: black;
             border: none;
@@ -1285,34 +1288,27 @@
         mouseOverlay.addEventListener('mouseleave', handleMouseLeave);
         mouseOverlay.addEventListener('mousemove', handleMouseMove);
 
-        // Gyroscope Handling
-        function handleOrientation(event) {
-            if (!isMouseInArea) { // Only update if mouse is not controlling the movement
-                const beta = event.beta;  // In degree in the range [-180,180]
-                const gamma = event.gamma; // In degree in the range [-90,90]
 
-                // Normalize gamma to fit window width (left-right motion)
-                targetMouseX = ((gamma + 90) / 180) * window.innerWidth;
-                // Normalize beta to fit window height (up-down motion)
-                targetMouseY = ((beta + 180) / 360) * window.innerHeight;
-            }
-        }
+
+        // Gyroscope Handling
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.getElementById('enableButton').addEventListener('click', requestGyroAccess);
+        });
 
         function requestGyroAccess() {
             if (typeof DeviceOrientationEvent.requestPermission === 'function') {
                 DeviceOrientationEvent.requestPermission().then(permissionState => {
                     if (permissionState === 'granted') {
                         window.addEventListener('deviceorientation', handleOrientation);
-                        fadeOutOverlay(() => enterSite()); // Call enterSite after fading out
+                        fadeOutOverlay(() => enterSite());
                     } else {
                         alert("Permission to access device orientation was denied.");
-                        // Optionally enter the site with limited functionality
-                        fadeOutOverlay(() => enterSite()); // Consider fading and then entering
+                        fadeOutOverlay(() => enterSite()); // Optional: enter with limited functionality
                     }
                 }).catch(console.error);
             } else {
                 window.addEventListener('deviceorientation', handleOrientation);
-                fadeOutOverlay(() => enterSite()); // Direct fade out and enter for non-iOS
+                fadeOutOverlay(() => enterSite());
             }
         }
 
@@ -1321,16 +1317,23 @@
             overlay.style.opacity = '0';
             setTimeout(() => { 
                 overlay.style.visibility = 'hidden'; 
-                if (callback) callback(); // Execute the callback after the fade
+                if (callback) callback();
             }, 500);
+        }
+
+        function showOverlay() {
+            var overlay = document.getElementById('permissionOverlay');
+            overlay.style.visibility = 'visible';
+            overlay.style.opacity = '0'; 
+            setTimeout(() => {
+                overlay.style.opacity = '1';
+            }, 10);
         }
 
         function triggerPermissionRequest() {
             // Call this function when you want to show the overlay, e.g., after preloader
             showOverlay();
         }
-
-        document.getElementById('enableButton').addEventListener('click', requestGyroAccess);
 
 
 
