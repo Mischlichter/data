@@ -1051,35 +1051,7 @@
                 }
             }
 
-            // Gyroscope Handling
-            function simulateTouchEvent(x, y) {
-                const touchObj = new Touch({
-                    identifier: Date.now(),
-                    target: document.elementFromPoint(x, y),
-                    clientX: x,
-                    clientY: y,
-                    radiusX: 2.5,
-                    radiusY: 2.5,
-                    rotationAngle: 10,
-                    force: 0.5,
-                });
 
-                const touchEvent = new TouchEvent('touchmove', {
-                    bubbles: true,
-                    cancelable: true,
-                    touches: [touchObj],
-                    targetTouches: [],
-                    changedTouches: [touchObj],
-                    shiftKey: true,
-                });
-
-                // Dispatch the event to the target element or a general element like document
-                touchObj.target.dispatchEvent(touchEvent);
-            }
-
-            const touchArea = document.getElementById('touchArea');
-            let centerX = window.innerWidth / 2;
-            let centerY = window.innerHeight / 2;
 
             function initOrientationListener() {
                 if (window.DeviceOrientationEvent) {
@@ -1087,60 +1059,14 @@
                 }
             }
 
-            function handleOrientation(event) {
-                const beta = event.beta;  // Tilt front and back (-180 to 180 degrees).
-                const gamma = event.gamma; // Tilt left and right (-90 to 90 degrees).
-
-                // Map gamma to screen width: gamma ranges from -90 to +90
-                // Normalize gamma to a range from 0 to window.innerWidth
-                const screenX = (gamma + 90) / 180 * window.innerWidth;
-
-                // Map beta to screen height: beta ranges from -180 to +180
-                // Normalize beta to a range from 0 to window.innerHeight
-                const screenY = (beta + 180) / 360 * window.innerHeight;
-
-                simulateTouchMove(screenX, screenY);
-            }
-
-
-            function simulateTouchMove(x, y) {
-                let target = document.elementFromPoint(x, y);
-                if (!target) {
-                    console.log("No target element at the calculated coordinates.");
-                    return;
-                }
-
-                let touchPoint = new Touch({
-                    identifier: Date.now(),
-                    target: target,
-                    clientX: x,
-                    clientY: y,
-                    screenX: x,
-                    screenY: y,
-                    radiusX: 2.5,
-                    radiusY: 2.5,
-                    rotationAngle: 0,
-                    force: 1
-                });
-
-                let touchEvent = new TouchEvent('touchmove', {
-                    bubbles: true,
-                    cancelable: true,
-                    touches: [touchPoint],
-                    targetTouches: [touchPoint],
-                    changedTouches: [touchPoint]
-                });
-
-                console.log(`Simulating touch move at x: ${x}, y: ${y}`);
-                target.dispatchEvent(touchEvent);
-            }
+         
 
 
 
 
             function requestGyroAccess() {
                 function setupOrientationListener() {
-                    initOrientationListener();
+                    setupGyroToMouse();
                     fadeOutOverlay();  // Ensure this runs here to hide the overlay
                 }
 
@@ -1156,7 +1082,7 @@
                     });
                 } else {
                     // For non-iOS or older iOS versions where permission request isn't needed
-                    setupOrientationListener();
+                    setupGyroToMouse()
                 }
             }
 
@@ -1173,7 +1099,11 @@
                 setTimeout(() => {
                     overlay.style.visibility = 'hidden';
                     overlay.remove(); // This ensures the overlay is completely removed from the DOM
+                    
+                    setupGyroToMouse()
+
                     enterSite();
+
                     console.log('Overlay should be faded out and removed.'); // Debug
                 }, 500);
             }
@@ -1227,6 +1157,28 @@
                 }
             }
 
+           
+
+            var mouseX = 0, mouseY = 0;
+
+            // Function to setup and handle orientation events
+            function setupGyroToMouse() {
+                if (window.DeviceOrientationEvent) {
+                    window.addEventListener('deviceorientation', handleOrientation);
+                }
+            }
+
+            function handleOrientation(event) {
+                const beta = event.beta;  // Tilt front and back (-180 to 180 degrees).
+                const gamma = event.gamma; // Tilt left and right (-90 to 90 degrees).
+
+                // Map the gyroscope data to mouseX and mouseY
+                mouseX = ((gamma + 90) / 180) * window.innerWidth;  // Normalize gamma
+                mouseY = ((beta + 180) / 360) * window.innerHeight; // Normalize beta
+
+                // Debugging output to check values
+                console.log(`Mouse X: ${mouseX}, Mouse Y: ${mouseY}`);
+            }
 
 
             // Check and control the load progress visibility based on the phase of loading
