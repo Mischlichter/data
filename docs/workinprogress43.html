@@ -2845,7 +2845,7 @@
 
             // Using last recorded dimensions to apply threshold
             var lastDimensions = virtualcanvas.lastDimensions || { width: 0, height: 0 };
-            if (Math.abs(canvasWidth - lastDimensions.width) > 40 || Math.abs(canvasHeight - lastDimensions.height) > 40) {
+            if (Math.abs(canvasWidth - lastDimensions.width) > 50 || Math.abs(canvasHeight - lastDimensions.height) > 40) {
                 virtualcanvas.lastDimensions = { width: canvasWidth, height: canvasHeight }; // Update last dimensions
                 var size = { width: canvasWidth, height: canvasHeight };
                 var scaleFactor = Math.min(size.width / 1536, size.height / 1024);
