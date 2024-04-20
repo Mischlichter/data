@@ -1049,6 +1049,15 @@
                 }
             }
 
+            function setupButtonListener() {
+                var enableButton = document.getElementById('enableButton');
+                if (enableButton) {
+                    enableButton.addEventListener('click', requestGyroAccess);
+                    console.log('Event listener attached to enableButton successfully.');
+                } else {
+                    console.error('Enable button not found in the DOM.');
+                }
+            }
 
 
             // Check and control the load progress visibility based on the phase of loading
@@ -1057,6 +1066,7 @@
             } else {
                 // Removed direct calls to enterSite() here to ensure it's managed within triggerPermissionRequest
                 if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                    setupButtonListener()
                     triggerPermissionRequest();
                     enterSite(); // This will handle entering the site after permissions
                 } else {
