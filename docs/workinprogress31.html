@@ -2020,8 +2020,12 @@
             images.forEach(image => observer.observe(image));
         }
 
+        function isIOS() {
+            return /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        }
 
         function fadeInElements() {
+            if (isIOS()) return;
             const selectors = ['#interfaceContainer', '#backgroundContainer', '#iframeContainer', '#bodyGalleryContainer', '.flex-icontainer', '.flex-container'];
             selectors.forEach(selector => {
                 const elements = document.querySelectorAll(selector);
@@ -2036,6 +2040,10 @@
 
         function fadeOutElements() {
             return new Promise((resolve, reject) => {
+                if (isIOS()) {
+                    resolve();  // Resolve immediately if on an iOS device
+                    return;
+                }        
                 const selectors = ['#interfaceContainer', '#backgroundContainer', '.flex-icontainer', '#bodyGalleryContainer', '.flex-container', '#iframeContainer'];
                 const elementsToFadeOut = [];
                 selectors.forEach(selector => {
