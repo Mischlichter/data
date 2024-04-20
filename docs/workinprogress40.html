@@ -1093,22 +1093,34 @@
                 
             }
 
+            var lastExecution = 0;
+            var throttleInterval = 100; // Throttle interval in milliseconds
             var gyroMouseX = 0;
             var gyroMouseY = 0;
-            var gyroSensitivityMultiplier = 1.0; // Adjust this to test different sensitivity settings
+            var gyroSensitivityMultiplier = 3.0;  // Default multiplier
 
             function handleOrientation(event) {
-                // Apply the multiplier to the raw beta and gamma values
-                gyroMouseX = event.gamma * gyroSensitivityMultiplier;
-                gyroMouseY = event.beta * gyroSensitivityMultiplier;
+                var now = Date.now();
+                if (now - lastExecution > throttleInterval) {
+                    // Update last execution time
+                    lastExecution = now;
 
-                // Log the coordinates for debugging purposes
-                console.log("Gyro coordinates:", gyroMouseX, gyroMouseY);
+                    // Apply the multiplier to the raw beta and gamma values
+                    gyroMouseX = event.gamma * gyroSensitivityMultiplier; // Adjusting the horizontal tilt sensitivity
+                    gyroMouseY = event.beta * gyroSensitivityMultiplier;  // Adjusting the vertical tilt sensitivity
 
-                // Send the gyro coordinates directly to the iframe
-                sendMouseEventToIframe('mousemove', { clientX: gyroMouseX, clientY: gyroMouseY });
+                    // Update UI elements for debugging or display purposes
+                    var betaDisplay = document.getElementById('betaValue');
+                    var gammaDisplay = document.getElementById('gammaValue');
+                    if (betaDisplay && gammaDisplay) {
+                        betaDisplay.textContent = event.beta ? (event.beta * gyroSensitivityMultiplier).toFixed(2) : 'No data';
+                        gammaDisplay.textContent = event.gamma ? (event.gamma * gyroSensitivityMultiplier).toFixed(2) : 'No data';
+                    }
+
+                    // Send the updated gyro mouse coordinates directly to the iframe
+                    sendMouseEventToIframe('mousemove', {clientX: gyroMouseX, clientY: gyroMouseY});
+                }
             }
-
 
 
 
@@ -1458,13 +1470,10 @@
 
         requestAnimationFrame(animate);
 
+        // Update sendMouseEventToIframe to use coordinates
         function sendMouseEventToIframe(eventType, coordinates) {
             const iframe = document.getElementById('sceneIframe');
             if (iframe && iframe.contentWindow) {
-                // Debug output to confirm data being sent
-                console.log("Sending to iframe:", eventType, "X:", coordinates.clientX, "Y:", coordinates.clientY);
-
-                // Post the gyro data to the iframe
                 iframe.contentWindow.postMessage({
                     type: eventType,
                     mouseX: coordinates.clientX,
@@ -1472,7 +1481,6 @@
                 }, '*');
             }
         }
-
 
 
 
