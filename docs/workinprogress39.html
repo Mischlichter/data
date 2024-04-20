@@ -1056,39 +1056,50 @@
 
 
 
-            function setupMotionListener() {
-                 // Your existing function to map motion to mouse (if applicable)
 
-                // Adding gyroscope event listener
-                window.addEventListener('deviceorientation', function(event) {
-                    // Update beta and gamma values
-                    var betaDisplay = document.getElementById('betaValue');
-                    var gammaDisplay = document.getElementById('gammaValue');
-                    if (betaDisplay && gammaDisplay) {
-                        betaDisplay.textContent = event.beta ? event.beta.toFixed(2) : 'No data';
-                        gammaDisplay.textContent = event.gamma ? event.gamma.toFixed(2) : 'No data';
-                    }
-                }, true);
-                
-               
+
+            var targetMouseX = window.innerWidth / 2;
+            var targetMouseY = window.innerHeight / 2;
+            var isMouseInArea = false;  // Mouse area status flag
+            var useGyroInput = false;   // Flag to control input source
+
+            // Detect if DeviceOrientation is available and it's likely a mobile device
+            if ('DeviceOrientationEvent' in window && /Mobi|Android/i.test(navigator.userAgent)) {
+                useGyroInput = true;
+                setupGyroToMouse();
+            } else {
+                useGyroInput = false;
+                setupMouseControls();
             }
 
-
-            // Function to set up gyro handling
+            // Setup Gyro Controls
             function setupGyroToMouse() {
                 window.addEventListener('deviceorientation', function(event) {
-                    if (!isMouseInArea) {  // Only update if mouse interactions are not active
-                        var beta = event.beta;  // Tilt front to back (pitch), ranges from -180 to 180
-                        var gamma = event.gamma; // Tilt left to right (roll), ranges from -90 to 90
-
-                        // Calculating screen dimensions might often be better inside the event listener if they can change (e.g., on resize)
+                    if (useGyroInput && !isMouseInArea) { // Only update from gyro if allowed and mouse is not active
+                        var beta = event.beta;
+                        var gamma = event.gamma;
                         var screenWidth = window.innerWidth;
                         var screenHeight = window.innerHeight;
-
-                        // Map gyro values to screen coordinates
-                        targetMouseX = screenWidth * ((gamma + 90) / 180); // Normalizing -90 to 90 to 0 to screenWidth
-                        targetMouseY = screenHeight * ((beta + 180) / 360); // Normalizing -180 to 180 to 0 to screenHeight
+                        targetMouseX = ((gamma + 90) / 180) * screenWidth;
+                        targetMouseY = ((beta + 180) / 360) * screenHeight;
                     }
+                });
+            }
+
+            // Setup Mouse Controls
+            function setupMouseControls() {
+                var mouseOverlay = document.getElementById('mouseOverlay');
+                mouseOverlay.addEventListener('mousemove', function(e) {
+                    if (!useGyroInput) {
+                        targetMouseX = e.clientX - mouseOverlay.offsetLeft - mouseOverlay.offsetWidth / 2;
+                        targetMouseY = e.clientY - mouseOverlay.offsetTop - mouseOverlay.offsetHeight / 2;
+                    }
+                });
+                mouseOverlay.addEventListener('mouseenter', function() {
+                    isMouseInArea = true;  // Disable gyro input when using the mouse
+                });
+                mouseOverlay.addEventListener('mouseleave', function() {
+                    isMouseInArea = false; // Enable gyro input when not using the mouse
                 });
             }
 
