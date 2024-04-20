@@ -1058,54 +1058,16 @@
 
 
 
-            var targetMouseX = window.innerWidth / 2;
-            var targetMouseY = window.innerHeight / 2;
-            var isMouseInArea = false;  // Mouse area status flag
-            var useGyroInput = false;   // Flag to control input source
+        
+        
 
-            // Detect if DeviceOrientation is available and it's likely a mobile device
-            if ('DeviceOrientationEvent' in window && /Mobi|Android/i.test(navigator.userAgent)) {
-                useGyroInput = true;
-                setupGyroToMouse();
-            } else {
-                useGyroInput = false;
-                setupMouseControls();
-            }
+    
 
-            // Setup Gyro Controls
-            function setupGyroToMouse() {
-                window.addEventListener('deviceorientation', function(event) {
-                    if (useGyroInput && !isMouseInArea) { // Only update from gyro if allowed and mouse is not active
-                        var beta = event.beta;
-                        var gamma = event.gamma;
-                        var screenWidth = window.innerWidth;
-                        var screenHeight = window.innerHeight;
-                        targetMouseX = ((gamma + 90) / 180) * screenWidth;
-                        targetMouseY = ((beta + 180) / 360) * screenHeight;
-                    }
-                });
-            }
 
-            // Setup Mouse Controls
-            function setupMouseControls() {
-                var mouseOverlay = document.getElementById('mouseOverlay');
-                mouseOverlay.addEventListener('mousemove', function(e) {
-                    if (!useGyroInput) {
-                        targetMouseX = e.clientX - mouseOverlay.offsetLeft - mouseOverlay.offsetWidth / 2;
-                        targetMouseY = e.clientY - mouseOverlay.offsetTop - mouseOverlay.offsetHeight / 2;
-                    }
-                });
-                mouseOverlay.addEventListener('mouseenter', function() {
-                    isMouseInArea = true;  // Disable gyro input when using the mouse
-                });
-                mouseOverlay.addEventListener('mouseleave', function() {
-                    isMouseInArea = false; // Enable gyro input when not using the mouse
-                });
-            }
 
             function setupMotionListener() {
                   // Your existing function to map motion to mouse (if applicable)
-                setupGyroToMouse();
+               
                 fadeOutOverlay();
                 // Check for DeviceOrientationEvent support
                 if ('DeviceOrientationEvent' in window) {
@@ -1132,13 +1094,22 @@
             }
 
             function handleOrientation(event) {
+                // Use raw beta and gamma values directly for mouseX and mouseY
+                mouseX = event.gamma; // Gamma ranges from -90 to 90
+                mouseY = event.beta;  // Beta ranges from -180 to 180
+
+                // Update UI elements for debugging or display purposes
                 var betaDisplay = document.getElementById('betaValue');
                 var gammaDisplay = document.getElementById('gammaValue');
                 if (betaDisplay && gammaDisplay) {
                     betaDisplay.textContent = event.beta ? event.beta.toFixed(2) : 'No data';
                     gammaDisplay.textContent = event.gamma ? event.gamma.toFixed(2) : 'No data';
                 }
+
+                // Send the updated mouse coordinates directly to the iframe
+                sendMouseEventToIframe('mousemove', {clientX: mouseX, clientY: mouseY});
             }
+
 
 
 
@@ -1199,20 +1170,6 @@
                 }
             }
 
-            document.addEventListener('touchstart', function(e) {
-                // Get the touch point
-                var touch = e.touches[0];
-                console.log(`Touch started at (${touch.pageX}, ${touch.pageY})`);
-            });
-
-            document.addEventListener('touchmove', function(e) {
-                var touch = e.touches[0];
-                console.log(`Touch moving through (${touch.pageX}, ${touch.pageY})`);
-            });
-
-            document.addEventListener('touchend', function(e) {
-                console.log('Touch ended');
-            });
 
 
 
@@ -1432,14 +1389,12 @@
 
 //////// MOUSE HANDLING ///////////        
 
-        // Initialize Variables
-        
         var targetMouseX = window.innerWidth / 2, targetMouseY = window.innerHeight / 2;
+        
         var maxSmoothingFactor = 0.111; // Maximum smoothing factor
-        var mouseX = 0;
-        var mouseY = 0;
-        var applySmoothing = false;
         var isMouseInArea = false;
+        var applySmoothing = false;
+
         var mouseOverlay = document.getElementById('mouseOverlay');
 
         // Event Handlers
@@ -1479,11 +1434,12 @@
                 var dx = targetMouseX - mouseX;
                 var dy = targetMouseY - mouseY;
                 var distance = Math.sqrt(dx * dx + dy * dy);
-                var smoothingFactor = Math.min(distance / 100, maxSmoothingFactor);
+                var smoothingFactor = Math.min(distance / 100, maxSmoothingFactor); // Dynamic smoothing factor
 
                 mouseX += dx * smoothingFactor;
                 mouseY += dy * smoothingFactor;
 
+                // Disable smoothing when close enough
                 if (distance < 1) {
                     applySmoothing = false;
                     mouseX = targetMouseX;
@@ -1497,20 +1453,21 @@
             sendMouseEventToIframe('mousemove', { clientX: mouseX, clientY: mouseY });
             requestAnimationFrame(animate);
         }
+
         requestAnimationFrame(animate);
 
-
-        function sendMouseEventToIframe(eventType, event) {
+        // Update sendMouseEventToIframe to use coordinates
+        function sendMouseEventToIframe(eventType, coordinates) {
             const iframe = document.getElementById('sceneIframe');
             if (iframe && iframe.contentWindow) {
-                //console.log('Sending event to iframe:', eventType, mouseX, mouseY);
                 iframe.contentWindow.postMessage({
                     type: eventType,
-                    mouseX: mouseX,
-                    mouseY: mouseY
+                    mouseX: coordinates.clientX,
+                    mouseY: coordinates.clientY
                 }, '*');
             }
         }
+
 
 
         
@@ -2546,10 +2503,6 @@
             }
         }
 
-        window.addEventListener('load', () => {
-            loadInterface(0); // Load with the initial scene index
-            requestAnimationFrame(updateParallax);
-        });
 
 
 
