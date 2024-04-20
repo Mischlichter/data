@@ -648,7 +648,7 @@
             top: auto;
             left: auto;
             width: auto;                        /* Auto width to fit content */
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* Slight shadow for depth */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0); /* Slight shadow for depth */
             opacity: 0;
             visibility: hidden;
         }
@@ -1100,6 +1100,7 @@
             function setupMotionListener() {
                   // Your existing function to map motion to mouse (if applicable)
                 setupMotionToMouse();
+                fadeOutOverlay();
                 // Check for DeviceOrientationEvent support
                 if ('DeviceOrientationEvent' in window) {
                     // Request permission for iOS 13+ devices
@@ -1142,7 +1143,7 @@
                     overlay.style.opacity = '0';
                     setTimeout(() => {
                         overlay.style.visibility = 'hidden';
-                        overlay.remove(); // Remove the overlay from the DOM.
+                         // Remove the overlay from the DOM.
                         enterSite(); // Transition to the main functionality of the site.
                         console.log('Overlay should be faded out and removed.'); // Debug output
                     }, 500);
