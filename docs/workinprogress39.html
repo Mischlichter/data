@@ -781,7 +781,7 @@
                 });
                 container.appendChild(lineDiv);
                 hideAllAsciiLinesXL();
-                loadInterface(0);
+                
             });
 
             function preventDefault(e) {
@@ -1073,16 +1073,15 @@
                
             }
 
-            var mouseX = 0, mouseY = 0;
-            
 
+            // Function to set up gyro handling
             function setupGyroToMouse() {
                 window.addEventListener('deviceorientation', function(event) {
-                    // Check if mouse interactions are inactive
-                    if (!isMouseInArea) {
+                    if (!isMouseInArea) {  // Only update if mouse interactions are not active
                         var beta = event.beta;  // Tilt front to back (pitch), ranges from -180 to 180
                         var gamma = event.gamma; // Tilt left to right (roll), ranges from -90 to 90
 
+                        // Calculating screen dimensions might often be better inside the event listener if they can change (e.g., on resize)
                         var screenWidth = window.innerWidth;
                         var screenHeight = window.innerHeight;
 
@@ -1426,9 +1425,10 @@
         
         var targetMouseX = window.innerWidth / 2, targetMouseY = window.innerHeight / 2;
         var maxSmoothingFactor = 0.111; // Maximum smoothing factor
-        var isMouseInArea = false;
+        var mouseX = 0;
+        var mouseY = 0;
         var applySmoothing = false;
-
+        var isMouseInArea = false;
         var mouseOverlay = document.getElementById('mouseOverlay');
 
         // Event Handlers
@@ -1455,7 +1455,7 @@
         mouseOverlay.addEventListener('mousemove', handleMouseMove);
 
 
-        
+
         
 
 
