@@ -1165,8 +1165,12 @@ const galleryHTML = `
 
         function showSlideshow() {
             const slideshow = document.getElementById('slideshow');
-            slideshow.style.display = 'block'; // Show the slideshow
+            if (!slideshow) {
+                return; // Exit the function early if the slideshow does not exist
+            }
+            slideshow.style.display = 'block'; // Show the slideshow only if it exists
         }
+
 
 
 
