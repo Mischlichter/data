@@ -2024,26 +2024,29 @@
             return /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
         }
 
+        function isIOS() {
+            return /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        }
+
         function fadeInElements() {
-            if (isIOS()) return;
             const selectors = ['#interfaceContainer', '#backgroundContainer', '#iframeContainer', '#bodyGalleryContainer', '.flex-icontainer', '.flex-container'];
             selectors.forEach(selector => {
                 const elements = document.querySelectorAll(selector);
                 elements.forEach(element => {
                     if (element) {
-                        element.style.opacity = 1; // Fade in by setting opacity to 1
+                        element.style.opacity = 1; // Set opacity to 1
+                        if (isIOS()) {
+                            element.style.transition = 'none'; // Remove transitions for iOS
+                        } else {
+                            element.style.transition = 'opacity 1s ease-in-out'; // Apply transitions for non-iOS
+                        }
                     }
                 });
             });
         }
 
-
         function fadeOutElements() {
             return new Promise((resolve, reject) => {
-                if (isIOS()) {
-                    resolve();  // Resolve immediately if on an iOS device
-                    return;
-                }        
                 const selectors = ['#interfaceContainer', '#backgroundContainer', '.flex-icontainer', '#bodyGalleryContainer', '.flex-container', '#iframeContainer'];
                 const elementsToFadeOut = [];
                 selectors.forEach(selector => {
@@ -2056,13 +2059,19 @@
                 });
 
                 elementsToFadeOut.forEach(element => {
-                    element.style.opacity = 0; // Fade out by setting opacity to 0
+                    element.style.opacity = 0; // Set opacity to 0
+                    if (isIOS()) {
+                        element.style.transition = 'none'; // Remove transitions for iOS
+                    } else {
+                        element.style.transition = 'opacity 1s ease-in-out'; // Apply transitions for non-iOS
+                    }
                 });
 
-                // Assuming the transition duration is 1 second as set in CSS
-                setTimeout(resolve, 1000); // Resolve after 1 second
+                // Assuming the transition duration is 1 second as set in CSS for non-iOS devices
+                setTimeout(resolve, isIOS() ? 0 : 1000); // Resolve immediately for iOS
             });
         }
+
 
 
 
