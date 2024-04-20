@@ -1317,16 +1317,14 @@
         function requestGyroAccess() {
             function setupOrientationListener() {
                 window.addEventListener('deviceorientation', handleOrientation);
-                // Any additional setup you need when permission is granted
+                fadeOutOverlay();  // Ensure this runs here to hide the overlay
             }
 
             if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-                // For iOS 13 and above
                 DeviceOrientationEvent.requestPermission().then(permissionState => {
                     if (permissionState === 'granted') {
                         setupOrientationListener();
                     } else {
-                        // Handle the denial of permission if necessary
                         console.error('Permission denied by user.'); // Using console for debugging
                     }
                 }).catch(error => {
@@ -1337,6 +1335,7 @@
                 setupOrientationListener();
             }
         }
+
 
         function fadeOutOverlay() {
             var overlay = document.getElementById('permissionOverlay');
