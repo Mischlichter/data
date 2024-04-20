@@ -1060,8 +1060,9 @@
 
             function setupMotionListener() {
                   // Your existing function to map motion to mouse (if applicable)
-               
+                
                 fadeOutOverlay();
+                enterSite()
                 // Check for DeviceOrientationEvent support
                 if ('DeviceOrientationEvent' in window) {
                     // Request permission for iOS 13+ devices
