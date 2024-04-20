@@ -2833,29 +2833,34 @@
             var isPortrait = viewportWidth < viewportHeight;
             var smoothAspectRatio = getSmoothAspectRatio(viewportWidth, viewportHeight);
             var fixedAspectRatio = 1536 / 1024; // Fixed aspect ratio
-            var canvasWidth, canvasHeight;
 
+            var canvasWidth, canvasHeight, sizeChanged = false;
             if (isPortrait) {
-                canvasHeight = viewportHeight / smoothAspectRatio;
-                canvasWidth = canvasHeight * fixedAspectRatio;
+                // Calculate new height based on smooth aspect ratio and check against last height
+                var newHeight = viewportHeight / smoothAspectRatio;
+                if (!virtualcanvas.lastHeight || Math.abs(newHeight - virtualcanvas.lastHeight) > 45) {
+                    // Adjust height in steps of 40px
+                    virtualcanvas.lastHeight = newHeight;
+                    sizeChanged = true;
+                    canvasHeight = newHeight;
+                    canvasWidth = canvasHeight * fixedAspectRatio;
+                }
             } else {
+                // Landscape mode: scale normally without steps
                 canvasWidth = viewportWidth;
                 canvasHeight = canvasWidth / smoothAspectRatio;
+                sizeChanged = true;
             }
 
-            // Using last recorded dimensions to apply threshold
-            var lastDimensions = virtualcanvas.lastDimensions || { width: 0, height: 0 };
-            if (Math.abs(canvasWidth - lastDimensions.width) > 50 || Math.abs(canvasHeight - lastDimensions.height) > 40) {
-                virtualcanvas.lastDimensions = { width: canvasWidth, height: canvasHeight }; // Update last dimensions
-                var size = { width: canvasWidth, height: canvasHeight };
-                var scaleFactor = Math.min(size.width / 1536, size.height / 1024);
+            if (sizeChanged) {
+                var scaleFactor = Math.min(canvasWidth / 1536, canvasHeight / 1024);
 
                 document.querySelectorAll('.scale-wrapper-background, .scale-wrapper-interface').forEach(element => {
                     element.style.transform = `translate(-50%, -50%) scale(${scaleFactor})`;
                 });
 
-                virtualcanvas.style.width = size.width + 'px';
-                virtualcanvas.style.height = size.height + 'px';
+                virtualcanvas.style.width = canvasWidth + 'px';
+                virtualcanvas.style.height = canvasHeight + 'px';
                 virtualcanvas.style.left = '50%';
                 virtualcanvas.style.position = 'absolute';
                 virtualcanvas.style.transform = 'translate(-50%, -50%)';
@@ -2863,6 +2868,7 @@
                 virtualcanvas.style.zIndex = '-100';
             }
         }
+
 
 
         function adjustContainerSizesBasedOnVirtualCanvas() {
