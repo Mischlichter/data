@@ -1060,7 +1060,7 @@
 
             function setupMotionListener() {
                   // Your existing function to map motion to mouse (if applicable)
-                enterSite()
+                enterSite();
                 fadeOutOverlay();
                 // Check for DeviceOrientationEvent support
                 if ('DeviceOrientationEvent' in window) {
@@ -1091,7 +1091,6 @@
             var gyroMouseX = 0;
             var gyroMouseY = 0;
             var gyroSensitivityMultiplier = 36.0;  // Default multiplier
-
 
             function handleOrientation(event) {
                 var now = Date.now();
@@ -1189,9 +1188,9 @@
                     showOverlay();
                 } else {
                     // Directly add event listener if not on iOS
-                    fadeOutOverlay();
-                    enterSite(); // Non-iOS or no permissions needed, proceed to enter the site
                     
+                    enterSite(); // Non-iOS or no permissions needed, proceed to enter the site
+                    fadeOutOverlay()
                 }
 
                 localStorage.removeItem(firstLoadCompleteFlag);
