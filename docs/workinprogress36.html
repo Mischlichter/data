@@ -624,6 +624,7 @@
             transition: opacity 0.5s ease-out;
             opacity: 0;
             visibility: hidden;
+            z-index: 1111111111;
         }
         #enableButton {
             padding: 10px 20px;
@@ -1039,7 +1040,7 @@
             if (!localStorage.getItem(firstLoadCompleteFlag) || !localStorage.getItem(secondLoadCompleteFlag)) {
             preloadAssets();
             } else {
-                
+
                 enterSite();
                 localStorage.removeItem(firstLoadCompleteFlag);
                 localStorage.removeItem(secondLoadCompleteFlag);
