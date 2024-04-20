@@ -1307,11 +1307,18 @@
                 const gamma = event.gamma; // Degrees in the range [-90,90]
 
                 // Normalize gamma to map it from [-90, 90] to [0, window.innerWidth]
-                targetMouseX = ((gamma + 90) / 180) * window.innerWidth;
+                var tempMouseX = ((gamma + 90) / 180) * window.innerWidth;
                 // Normalize beta to map it from [-180, 180] to [0, window.innerHeight]
-                targetMouseY = ((beta + 180) / 360) * window.innerHeight;
+                var tempMouseY = ((beta + 180) / 360) * window.innerHeight;
+
+                // Update global mouseX and mouseY
+                mouseX = tempMouseX;
+                mouseY = tempMouseY;
+
+                console.log(`Mouse X: ${mouseX}, Mouse Y: ${mouseY}`); // Debug output
             }
         }
+
 
 
         function requestGyroAccess() {
