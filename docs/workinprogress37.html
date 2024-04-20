@@ -1339,15 +1339,21 @@
 
         function fadeOutOverlay() {
             var overlay = document.getElementById('permissionOverlay');
-            if (!overlay) return; // Ensure that the overlay is present
+            console.log('Attempting to fade out overlay...'); // Debug
+            if (!overlay) {
+                console.log('Overlay not found.'); // Check if the overlay exists
+                return;
+            }
 
             overlay.style.opacity = '0';
             setTimeout(() => {
                 overlay.style.visibility = 'hidden';
                 overlay.remove(); // This ensures the overlay is completely removed from the DOM
-                enterSite();  // Call the function to enter the site after the overlay fades out
+                enterSite();  // Always enter the site after the overlay fades out
+                console.log('Overlay should be faded out and removed.'); // Debug
             }, 500);
         }
+
 
         function showOverlay() {
             var overlay = document.getElementById('permissionOverlay');
