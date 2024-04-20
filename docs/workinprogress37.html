@@ -1180,15 +1180,22 @@
 
 
             function showOverlay() {
-                var overlay = document.getElementById('permissionOverlay', 'enableButton');
-                if (overlay) {
-                    overlay.style.visibility = 'visible';
-                    overlay.style.opacity = '0'; // Start from transparent
-                    setTimeout(() => {
-                        overlay.style.opacity = '1'; // Fade to fully visible
-                    }, 10); // Short delay to ensure the transition occurs
+                var overlay = document.getElementById('permissionOverlay');
+                console.log('Attempting to fade out overlay...'); // Debug
+                if (!overlay) {
+                    console.log('Overlay not found.'); // Check if the overlay exists
+                    return;
                 }
+
+                overlay.style.opacity = '1';
+                setTimeout(() => {
+                    overlay.style.visibility = 'visible';
+                    overlay.remove(); // This ensures the overlay is completely removed from the DOM
+                   
+                    console.log('Overlay should be faded out and removed.'); // Debug
+                }, 500);
             }
+         
 
 
 
