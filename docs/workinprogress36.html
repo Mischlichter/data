@@ -1037,9 +1037,6 @@
             function enterSite() {
                 initializeMenu();
 
-
-
-
                 const centerContainer = document.querySelector('.center-container-XL');
                 if (centerContainer) {
                     centerContainer.style.opacity = '0';
@@ -1338,7 +1335,18 @@
             overlay.style.opacity = '0';
             setTimeout(() => { 
                 overlay.style.visibility = 'hidden'; 
-                if (callback) callback(); // Execute the callback after the fade
+                if (callback) callback();
+                initializeMenu();
+
+                const centerContainer = document.querySelector('.center-container-XL');
+                if (centerContainer) {
+                    centerContainer.style.opacity = '0';
+                    setTimeout(() => {
+                        centerContainer.style.display = 'none';
+                    }, 500); // Adjust the time as needed for the fade out transition
+                } else {
+                    console.error("Center container not found.");
+                }
             }, 500);
         }
 
