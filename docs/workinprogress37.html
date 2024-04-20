@@ -1314,18 +1314,26 @@
 
 
         function requestGyroAccess() {
+            function setupOrientationListener() {
+                window.addEventListener('deviceorientation', handleOrientation);
+                // Any additional setup you need when permission is granted
+            }
+
             if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                // For iOS 13 and above
                 DeviceOrientationEvent.requestPermission().then(permissionState => {
                     if (permissionState === 'granted') {
-                        window.addEventListener('deviceorientation', handleOrientation);
+                        setupOrientationListener();
                     } else {
-                        alert("Permission to access device orientation was denied.");
+                        // Handle the denial of permission if necessary
+                        updateStatus('Permission denied by user.', false);
                     }
-                    fadeOutOverlay();
-                }).catch(console.error);
+                }).catch(error => {
+                    updateStatus('Error requesting permission: ' + error, false);
+                });
             } else {
-                window.addEventListener('deviceorientation', handleOrientation);
-                fadeOutOverlay();
+                // For non-iOS or older iOS versions where permission request isn't needed
+                setupOrientationListener();
             }
         }
 
@@ -1351,6 +1359,23 @@
                     overlay.style.opacity = '1'; // Fade to fully visible
                 }, 10); // Short delay to ensure the transition occurs
             }
+        }
+        function updateStatus(message, isSuccess) {
+            var statusElement = document.getElementById('status');
+            if (!statusElement) {
+                statusElement = document.createElement('div');
+                statusElement.id = 'status'; // Ensure the element can be re-used
+                document.body.appendChild(statusElement);
+            }
+            statusElement.textContent = message;
+            statusElement.style.color = isSuccess ? 'green' : 'red';
+            statusElement.style.fontSize = '20px';
+            statusElement.style.position = 'fixed';
+            statusElement.style.top = '10px';
+            statusElement.style.left = '10px';
+            statusElement.style.backgroundColor = 'white';
+            statusElement.style.border = '1px solid #ccc';
+            statusElement.style.padding = '5px';
         }
 
 
