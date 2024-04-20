@@ -1076,28 +1076,44 @@
 
 
 
-            function requestMotionAccess() {
-                function setupMotionListener() {
-                    setupMotionListener();
-                     // This is triggered after setting up motion to hide the overlay.
+            function setupMotionListener() {
+                  // Your existing function to map motion to mouse (if applicable)
+
+                // Check for DeviceOrientationEvent support
+                if ('DeviceOrientationEvent' in window) {
+                    // Request permission for iOS 13+ devices
+                    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                        DeviceOrientationEvent.requestPermission().then(permissionState => {
+                            if (permissionState === 'granted') {
+                                window.addEventListener('deviceorientation', handleOrientation, true);
+                            } else {
+                                console.error('Permission denied by user.'); // Log for debugging
+                            }
+                        }).catch(error => {
+                            console.error('Error requesting permission: ' + error); // Log for debugging
+                        });
+                    } else {
+                        // Automatically grant access if not iOS or no permission needed
+                        window.addEventListener('deviceorientation', handleOrientation, true);
+                    }
+                } else {
+                    console.error("Your device does not support gyroscope.");
                 }
 
-                // Check if the browser requires permissions for DeviceMotionEvent (iOS 13+).
-                if (typeof DeviceMotionEvent.requestPermission === 'function') {
-                    DeviceMotionEvent.requestPermission().then(permissionState => {
-                        if (permissionState === 'granted') {
-                            setupMotionListener();
-                        } else {
-                            console.error('Permission denied by user.'); // Log for debugging
-                        }
-                    }).catch(error => {
-                        console.error('Error requesting permission: ' + error); // Log for debugging
-                    });
-                } else {
-                    // Setup motion listener directly if no permissions are required.
-                    setupMotionListener();
+                 // Fade out overlay after setting up motion and gyroscope
+            }
+
+            function handleOrientation(event) {
+                var betaDisplay = document.getElementById('betaValue');
+                var gammaDisplay = document.getElementById('gammaValue');
+                if (betaDisplay && gammaDisplay) {
+                    betaDisplay.textContent = event.beta ? event.beta.toFixed(2) : 'No data';
+                    gammaDisplay.textContent = event.gamma ? event.gamma.toFixed(2) : 'No data';
                 }
             }
+
+
+            
 
             function fadeOutOverlay() {
                 var overlay = document.getElementById('permissionOverlay');
@@ -1147,7 +1163,7 @@
                     enableButton.addEventListener('touchend', function(e) {
                         e.preventDefault(); // Prevent any default behavior
                         enableButton.style.backgroundColor = ''; // Reset button color
-                        requestMotionAccess(); // Request motion access on touch end
+                        setupMotionListener(); // Request motion access on touch end
                         console.log('Touch end on button');
                     });
                 } else {
