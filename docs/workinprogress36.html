@@ -615,8 +615,8 @@
 
 
         #permissionOverlay {
-            width: 100%;
-            height: 100%;
+            width: 100vw;   /* Full width of the viewport */
+            height: 100vh;  /* Full height of the viewport */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -624,23 +624,31 @@
             transition: opacity 0.5s ease-in-out;
             opacity: 0;
             visibility: hidden;
-            z-index: 1111111;
-
+            z-index: 1111111; /* Ensure it's above all other content */
+            position: fixed; /* Fixed positioning to cover the entire screen */
+            top: 0;
+            left: 0;
         }
+
 
         #enableButton {
             padding: 10px 20px;
-            font-family: 'JetBrainsMono-Bold';
-            font-size: 16px;
-            margin: 0; /* Adjust as needed */
-            background-color: white;
-            color: black;
-            border: none;
-            border-radius: 10px;
+            font-family: 'JetBrainsMono-Bold';  /* Consistent with the menu */
+            font-size: 16px;                    /* Size from the menu */
+            background-color: black;            /* Background color like the menu */
+            color: #00ffcc;                     /* Highlight color for the text, matching the menu border */
+            border: 2px solid #00ffcc;          /* Border color to match the menu */
+            border-radius: 20px;                /* Rounded corners like the menu */
             cursor: pointer;
             outline: none;
             z-index: 1111111;
+            position: relative;                 /* Ensure positioning context is correct */
+            top: auto;
+            left: auto;
+            width: auto;                        /* Auto width to fit content */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* Slight shadow for depth */
         }
+
 
 
     </style>
