@@ -778,7 +778,7 @@
                 });
                 container.appendChild(lineDiv);
                 hideAllAsciiLinesXL();
-                
+                loadInterface(0);
             });
 
             function preventDefault(e) {
@@ -1054,14 +1054,13 @@
 
 
             
-         
 
 
 
 
             function requestGyroAccess() {
                 function setupOrientationListener() {
-                    setupGyroToMouse();
+                    
                     fadeOutOverlay();  // Ensure this runs here to hide the overlay
                 }
 
@@ -1077,7 +1076,7 @@
                     });
                 } else {
                     // For non-iOS or older iOS versions where permission request isn't needed
-                    setupGyroToMouse()
+                    setupOrientationListener();
                 }
             }
 
@@ -1094,11 +1093,8 @@
                 setTimeout(() => {
                     overlay.style.visibility = 'hidden';
                     overlay.remove(); // This ensures the overlay is completely removed from the DOM
-                    
-                    setupMotionToMouse()
-
                     enterSite();
-
+                    setupGyroToMouse()
                     console.log('Overlay should be faded out and removed.'); // Debug
                 }, 500);
             }
@@ -1156,28 +1152,23 @@
 
             var mouseX = 0, mouseY = 0;
 
-            function setupMotionToMouse() {
-                if (window.DeviceMotionEvent) {
-                    window.addEventListener('devicemotion', handleMotion);
-                    console.log('DeviceMotionEvent listener added.');
-                } else {
-                    console.log('DeviceMotionEvent is not supported by your browser.');
+            // Function to setup and handle orientation events
+            function setupGyroToMouse() {
+                if (window.DeviceOrientationEvent) {
+                    window.addEventListener('deviceorientation', handleOrientation);
                 }
             }
 
-            function handleMotion(event) {
-                const rotationRate = event.rotationRate;
-                if (rotationRate) {
-                    // Scale and adjust these values based on your device's sensitivity and screen size
-                    mouseX += rotationRate.gamma; // Adjust this scaling factor as needed
-                    mouseY += rotationRate.beta;  // Adjust this scaling factor as needed
-                    
-                    // Constrain mouseX and mouseY to your screen dimensions
-                    mouseX = Math.max(0, Math.min(window.innerWidth, mouseX));
-                    mouseY = Math.max(0, Math.min(window.innerHeight, mouseY));
+            function handleOrientation(event) {
+                const beta = event.beta;  // Tilt front and back (-180 to 180 degrees).
+                const gamma = event.gamma; // Tilt left and right (-90 to 90 degrees).
 
-                    console.log(`Mouse X: ${mouseX}, Mouse Y: ${mouseY}`); // Debug output to check values
-                }
+                // Map the gyroscope data to mouseX and mouseY
+                mouseX = ((gamma + 90) / 180) * window.innerWidth;  // Normalize gamma
+                mouseY = ((beta + 180) / 360) * window.innerHeight; // Normalize beta
+
+                // Debugging output to check values
+                console.log(`Mouse X: ${mouseX}, Mouse Y: ${mouseY}`);
             }
 
 
