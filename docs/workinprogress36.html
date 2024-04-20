@@ -1291,24 +1291,34 @@
 
 
         // Gyroscope Handling
-        document.addEventListener('DOMContentLoaded', (event) => {
-            document.getElementById('enableButton').addEventListener('click', requestGyroAccess);
-        });
+        function handleOrientation(event) {
+            if (!isMouseInArea) { // Only update if mouse is not controlling the movement
+                const beta = event.beta;  // Degrees in the range [-180,180]
+                const gamma = event.gamma; // Degrees in the range [-90,90]
+
+                // Normalize gamma to map it from [-90, 90] to [0, window.innerWidth]
+                targetMouseX = ((gamma + 90) / 180) * window.innerWidth;
+                // Normalize beta to map it from [-180, 180] to [0, window.innerHeight]
+                targetMouseY = ((beta + 180) / 360) * window.innerHeight;
+            }
+        }
+
 
         function requestGyroAccess() {
             if (typeof DeviceOrientationEvent.requestPermission === 'function') {
                 DeviceOrientationEvent.requestPermission().then(permissionState => {
                     if (permissionState === 'granted') {
                         window.addEventListener('deviceorientation', handleOrientation);
-                        fadeOutOverlay(() => enterSite());
+                        fadeOutOverlay(() => enterSite()); // Call enterSite after fading out
                     } else {
                         alert("Permission to access device orientation was denied.");
-                        fadeOutOverlay(() => enterSite()); // Optional: enter with limited functionality
+                        // Optionally enter the site with limited functionality
+                        fadeOutOverlay(() => enterSite()); // Consider fading and then entering
                     }
                 }).catch(console.error);
             } else {
                 window.addEventListener('deviceorientation', handleOrientation);
-                fadeOutOverlay(() => enterSite());
+                fadeOutOverlay(() => enterSite()); // Direct fade out and enter for non-iOS
             }
         }
 
@@ -1317,23 +1327,28 @@
             overlay.style.opacity = '0';
             setTimeout(() => { 
                 overlay.style.visibility = 'hidden'; 
-                if (callback) callback();
+                if (callback) callback(); // Execute the callback after the fade
             }, 500);
         }
 
         function showOverlay() {
             var overlay = document.getElementById('permissionOverlay');
-            overlay.style.visibility = 'visible';
-            overlay.style.opacity = '0'; 
-            setTimeout(() => {
-                overlay.style.opacity = '1';
-            }, 10);
+            if (overlay) {
+                overlay.style.visibility = 'visible';
+                overlay.style.opacity = '0'; // Start from transparent
+                setTimeout(() => {
+                    overlay.style.opacity = '1'; // Fade to fully visible
+                }, 10); // Short delay to ensure the transition occurs
+            }
         }
+
 
         function triggerPermissionRequest() {
             // Call this function when you want to show the overlay, e.g., after preloader
             showOverlay();
         }
+
+        document.getElementById('enableButton').addEventListener('click', requestGyroAccess);
 
 
 
