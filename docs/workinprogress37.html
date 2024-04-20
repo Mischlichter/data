@@ -1173,29 +1173,22 @@
                 setTimeout(() => {
                     overlay.style.visibility = 'hidden';
                     overlay.remove(); // This ensures the overlay is completely removed from the DOM
-                   
+                    enterSite();
                     console.log('Overlay should be faded out and removed.'); // Debug
                 }, 500);
             }
 
 
             function showOverlay() {
-                var overlay = document.getElementById('permissionOverlay');
-                console.log('Attempting to fade out overlay...'); // Debug
-                if (!overlay) {
-                    console.log('Overlay not found.'); // Check if the overlay exists
-                    return;
-                }
-
-                overlay.style.opacity = '1';
-                setTimeout(() => {
+                var overlay = document.getElementById('permissionOverlay', 'enableButton');
+                if (overlay) {
                     overlay.style.visibility = 'visible';
-                    overlay.remove(); // This ensures the overlay is completely removed from the DOM
-                   
-                    console.log('Overlay should be faded out and removed.'); // Debug
-                }, 500);
+                    overlay.style.opacity = '0'; // Start from transparent
+                    setTimeout(() => {
+                        overlay.style.opacity = '1'; // Fade to fully visible
+                    }, 10); // Short delay to ensure the transition occurs
+                }
             }
-         
 
 
 
@@ -1205,8 +1198,9 @@
             } else {
                 // Removed direct calls to enterSite() here to ensure it's managed within triggerPermissionRequest
                 if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                    
+                     // This will handle entering the site after permissions
                     showOverlay();
-                    enterSite(); // This will handle entering the site after permissions
                 } else {
                     // Directly add event listener if not on iOS
                     window.addEventListener('deviceorientation', handleOrientation);
