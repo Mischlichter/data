@@ -651,7 +651,21 @@
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* Slight shadow for depth */
         }
 
-
+        #touchArea {
+            width: 100vw;
+            height: 100vh;
+            background-color: #f0f0f0;
+            position: relative;
+            overflow: hidden;
+        }
+        .touchPoint {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            border-radius: 50%;
+            transition: transform 0.1s linear;
+        }
 
     </style>
 </head>
@@ -1326,51 +1340,46 @@
             touchObj.target.dispatchEvent(touchEvent);
         }
 
+        const touchArea = document.getElementById('touchArea');
+        let centerX = window.innerWidth / 2;
+        let centerY = window.innerHeight / 2;
+
+        function initOrientationListener() {
+            if (window.DeviceOrientationEvent) {
+                window.addEventListener('deviceorientation', handleOrientation);
+            }
+        }
+
         function handleOrientation(event) {
-            const beta = event.beta;  // Tilt front and back (-180 to 180 degrees).
-            const gamma = event.gamma; // Tilt left and right (-90 to 90 degrees).
+            const alpha = event.alpha; // Compass direction
+            const beta = event.beta;  // Front-to-back tilt
+            const gamma = event.gamma; // Left-to-right tilt
 
-            // Exaggerate the effect by using a multiplier
-            const multiplier = 20;  // Increase this to exaggerate more
+            // Normalize gamma and beta to use as coordinates (modifying these factors will change sensitivity)
+            const x = centerX + gamma * 10; // Multiplying to increase the effect of the tilt
+            const y = centerY + beta * 10; // Multiplying to increase the effect of the tilt
 
-            // Calculate exaggerated screen coordinates
-            const screenX = Math.max(0, Math.min(window.innerWidth, window.innerWidth / 2 + (gamma * multiplier)));
-            const screenY = Math.max(0, Math.min(window.innerHeight, window.innerHeight / 2 + (beta * multiplier)));
-
-            simulateTouchMove(screenX, screenY);
+            simulateTouch(x, y);
         }
 
+        function simulateTouch(x, y) {
+            // Remove previous points to simulate a single moving point
+            while (touchArea.firstChild) {
+                touchArea.removeChild(touchArea.firstChild);
+            }
 
-        function simulateTouchMove(x, y) {
-            let touchPoint = new Touch({
-                identifier: 'simulated',
-                target: document.elementFromPoint(x, y),
-                clientX: x,
-                clientY: y,
-                screenX: x,
-                screenY: y
-            });
+            const touchPoint = document.createElement('div');
+            touchPoint.className = 'touchPoint';
+            touchPoint.style.transform = `translate(${x - 5}px, ${y - 5}px)`; // Center the dot
 
-            let touchEvent = new TouchEvent('touchmove', {
-                bubbles: true,
-                cancelable: true,
-                touches: [touchPoint],
-                targetTouches: [touchPoint],
-                changedTouches: [touchPoint],
-                shiftKey: false
-            });
-
-            console.log(`Simulating touch move at x: ${x}, y: ${y}`);  // Debug output to observe values
-            touchPoint.target.dispatchEvent(touchEvent);
+            touchArea.appendChild(touchPoint);
         }
-
-
 
 
 
         function requestGyroAccess() {
             function setupOrientationListener() {
-                window.addEventListener('deviceorientation', handleOrientation);
+                initOrientationListener();
                 fadeOutOverlay();  // Ensure this runs here to hide the overlay
             }
 
@@ -1412,7 +1421,7 @@
         function showOverlay() {
             var overlay = document.getElementById('permissionOverlay');
             if (overlay) {
-                
+                overlay.style.visibility = 'visible';
                 overlay.style.opacity = '0'; // Start from transparent
                 setTimeout(() => {
                     overlay.style.opacity = '1'; // Fade to fully visible
