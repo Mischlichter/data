@@ -1050,7 +1050,151 @@
                 }
             }
 
+            // Gyroscope Handling
+            function simulateTouchEvent(x, y) {
+                const touchObj = new Touch({
+                    identifier: Date.now(),
+                    target: document.elementFromPoint(x, y),
+                    clientX: x,
+                    clientY: y,
+                    radiusX: 2.5,
+                    radiusY: 2.5,
+                    rotationAngle: 10,
+                    force: 0.5,
+                });
 
+                const touchEvent = new TouchEvent('touchmove', {
+                    bubbles: true,
+                    cancelable: true,
+                    touches: [touchObj],
+                    targetTouches: [],
+                    changedTouches: [touchObj],
+                    shiftKey: true,
+                });
+
+                // Dispatch the event to the target element or a general element like document
+                touchObj.target.dispatchEvent(touchEvent);
+            }
+
+            const touchArea = document.getElementById('touchArea');
+            let centerX = window.innerWidth / 2;
+            let centerY = window.innerHeight / 2;
+
+            function initOrientationListener() {
+                if (window.DeviceOrientationEvent) {
+                    window.addEventListener('deviceorientation', handleOrientation);
+                }
+            }
+
+            function handleOrientation(event) {
+                const beta = event.beta;  // Tilt front and back (-180 to 180 degrees).
+                const gamma = event.gamma; // Tilt left and right (-90 to 90 degrees).
+
+                // Map gamma to screen width: gamma ranges from -90 to +90
+                // Normalize gamma to a range from 0 to window.innerWidth
+                const screenX = (gamma + 90) / 180 * window.innerWidth;
+
+                // Map beta to screen height: beta ranges from -180 to +180
+                // Normalize beta to a range from 0 to window.innerHeight
+                const screenY = (beta + 180) / 360 * window.innerHeight;
+
+                simulateTouchMove(screenX, screenY);
+            }
+
+
+            function simulateTouchMove(x, y) {
+                let target = document.elementFromPoint(x, y);
+                if (!target) {
+                    console.log("No target element at the calculated coordinates.");
+                    return;
+                }
+
+                let touchPoint = new Touch({
+                    identifier: Date.now(),
+                    target: target,
+                    clientX: x,
+                    clientY: y,
+                    screenX: x,
+                    screenY: y,
+                    radiusX: 2.5,
+                    radiusY: 2.5,
+                    rotationAngle: 0,
+                    force: 1
+                });
+
+                let touchEvent = new TouchEvent('touchmove', {
+                    bubbles: true,
+                    cancelable: true,
+                    touches: [touchPoint],
+                    targetTouches: [touchPoint],
+                    changedTouches: [touchPoint]
+                });
+
+                console.log(`Simulating touch move at x: ${x}, y: ${y}`);
+                target.dispatchEvent(touchEvent);
+            }
+
+
+
+
+            function requestGyroAccess() {
+                function setupOrientationListener() {
+                    initOrientationListener();
+                    fadeOutOverlay();  // Ensure this runs here to hide the overlay
+                }
+
+                if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                    DeviceOrientationEvent.requestPermission().then(permissionState => {
+                        if (permissionState === 'granted') {
+                            setupOrientationListener();
+                        } else {
+                            console.error('Permission denied by user.'); // Using console for debugging
+                        }
+                    }).catch(error => {
+                        console.error('Error requesting permission: ' + error); // Using console for debugging
+                    });
+                } else {
+                    // For non-iOS or older iOS versions where permission request isn't needed
+                    setupOrientationListener();
+                }
+            }
+
+
+            function fadeOutOverlay() {
+                var overlay = document.getElementById('permissionOverlay');
+                console.log('Attempting to fade out overlay...'); // Debug
+                if (!overlay) {
+                    console.log('Overlay not found.'); // Check if the overlay exists
+                    return;
+                }
+
+                overlay.style.opacity = '0';
+                setTimeout(() => {
+                    overlay.style.visibility = 'hidden';
+                    overlay.remove(); // This ensures the overlay is completely removed from the DOM
+                   
+                    console.log('Overlay should be faded out and removed.'); // Debug
+                }, 500);
+            }
+
+
+            function showOverlay() {
+                var overlay = document.getElementById('permissionOverlay', 'enableButton');
+                if (overlay) {
+                    overlay.style.visibility = 'visible';
+                    overlay.style.opacity = '0'; // Start from transparent
+                    setTimeout(() => {
+                        overlay.style.opacity = '1'; // Fade to fully visible
+                    }, 10); // Short delay to ensure the transition occurs
+                }
+            }
+
+            function triggerPermissionRequest() {
+                // Call this function when you want to show the overlay, e.g., after preloader
+                showOverlay();
+            }
+
+            
 
             // Check and control the load progress visibility based on the phase of loading
             if (!localStorage.getItem(firstLoadCompleteFlag) || !localStorage.getItem(secondLoadCompleteFlag)) {
@@ -1301,127 +1445,7 @@
 
 
 
-        // Gyroscope Handling
-        function simulateTouchEvent(x, y) {
-            const touchObj = new Touch({
-                identifier: Date.now(),
-                target: document.elementFromPoint(x, y),
-                clientX: x,
-                clientY: y,
-                radiusX: 2.5,
-                radiusY: 2.5,
-                rotationAngle: 10,
-                force: 0.5,
-            });
-
-            const touchEvent = new TouchEvent('touchmove', {
-                bubbles: true,
-                cancelable: true,
-                touches: [touchObj],
-                targetTouches: [],
-                changedTouches: [touchObj],
-                shiftKey: true,
-            });
-
-            // Dispatch the event to the target element or a general element like document
-            touchObj.target.dispatchEvent(touchEvent);
-        }
-
-        const touchArea = document.getElementById('touchArea');
-        let centerX = window.innerWidth / 2;
-        let centerY = window.innerHeight / 2;
-
-        function initOrientationListener() {
-            if (window.DeviceOrientationEvent) {
-                window.addEventListener('deviceorientation', handleOrientation);
-            }
-        }
-
-        function handleOrientation(event) {
-            const alpha = event.alpha; // Compass direction
-            const beta = event.beta;  // Front-to-back tilt
-            const gamma = event.gamma; // Left-to-right tilt
-
-            // Normalize gamma and beta to use as coordinates (modifying these factors will change sensitivity)
-            const x = centerX + gamma * 10; // Multiplying to increase the effect of the tilt
-            const y = centerY + beta * 10; // Multiplying to increase the effect of the tilt
-
-            simulateTouch(x, y);
-        }
-
-        function simulateTouch(x, y) {
-            // Remove previous points to simulate a single moving point
-            while (touchArea.firstChild) {
-                touchArea.removeChild(touchArea.firstChild);
-            }
-
-            const touchPoint = document.createElement('div');
-            touchPoint.className = 'touchPoint';
-            touchPoint.style.transform = `translate(${x - 5}px, ${y - 5}px)`; // Center the dot
-
-            touchArea.appendChild(touchPoint);
-        }
-
-
-
-        function requestGyroAccess() {
-            function setupOrientationListener() {
-                initOrientationListener();
-                fadeOutOverlay();  // Ensure this runs here to hide the overlay
-            }
-
-            if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-                DeviceOrientationEvent.requestPermission().then(permissionState => {
-                    if (permissionState === 'granted') {
-                        setupOrientationListener();
-                    } else {
-                        console.error('Permission denied by user.'); // Using console for debugging
-                    }
-                }).catch(error => {
-                    console.error('Error requesting permission: ' + error); // Using console for debugging
-                });
-            } else {
-                // For non-iOS or older iOS versions where permission request isn't needed
-                setupOrientationListener();
-            }
-        }
-
-
-        function fadeOutOverlay() {
-            var overlay = document.getElementById('permissionOverlay');
-            console.log('Attempting to fade out overlay...'); // Debug
-            if (!overlay) {
-                console.log('Overlay not found.'); // Check if the overlay exists
-                return;
-            }
-
-            overlay.style.opacity = '0';
-            setTimeout(() => {
-                overlay.style.visibility = 'hidden';
-                overlay.remove(); // This ensures the overlay is completely removed from the DOM
-               
-                console.log('Overlay should be faded out and removed.'); // Debug
-            }, 500);
-        }
-
-
-        function showOverlay() {
-            var overlay = document.getElementById('permissionOverlay', 'enableButton');
-            if (overlay) {
-                overlay.style.visibility = 'visible';
-                overlay.style.opacity = '0'; // Start from transparent
-                setTimeout(() => {
-                    overlay.style.opacity = '1'; // Fade to fully visible
-                }, 10); // Short delay to ensure the transition occurs
-            }
-        }
-
-        function triggerPermissionRequest() {
-            // Call this function when you want to show the overlay, e.g., after preloader
-            showOverlay();
-        }
-
-        document.getElementById('enableButton').addEventListener('click', requestGyroAccess);
+        
 
 
 
