@@ -624,9 +624,9 @@
             justify-content: center;
             align-items: center;
             background-color: rgba(0, 0, 0,)
-            opacity: 0; // Start fully transparent if initially hidden
+            opacity: 0; 
             visibility: hidden;
-            transition: opacity 0.5s ease-in-out; // Smooth transition for opacity
+            transition: opacity 0.5s ease-in-out; 
             z-index: 1111111;
         }
 
@@ -649,6 +649,7 @@
             left: auto;
             width: auto;                        /* Auto width to fit content */
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* Slight shadow for depth */
+            opacity: 0;
             visibility: hidden;
         }
 
@@ -1189,12 +1190,7 @@
                 }
             }
 
-            function triggerPermissionRequest() {
-                // Call this function when you want to show the overlay, e.g., after preloader
-                showOverlay();
-            }
 
-            
 
             // Check and control the load progress visibility based on the phase of loading
             if (!localStorage.getItem(firstLoadCompleteFlag) || !localStorage.getItem(secondLoadCompleteFlag)) {
@@ -1202,7 +1198,7 @@
             } else {
                 // Removed direct calls to enterSite() here to ensure it's managed within triggerPermissionRequest
                 if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                    triggerPermissionRequest();
+                    showOverlay();
                     enterSite(); // This will handle entering the site after permissions
                 } else {
                     // Directly add event listener if not on iOS
