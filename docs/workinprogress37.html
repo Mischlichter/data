@@ -1319,7 +1319,6 @@
         function requestGyroAccess() {
             function setupOrientationListener() {
                 window.addEventListener('deviceorientation', handleOrientation);
-                setupButtonListener()
                 // Any additional setup you need when permission is granted
             }
 
@@ -1341,15 +1340,7 @@
             }
         }
 
-        function setupButtonListener() {
-            var enableButton = document.getElementById('enableButton');
-            if (enableButton) {
-                enableButton.addEventListener('click', requestGyroAccess);
-                console.log('Event listener attached to enableButton successfully.');
-            } else {
-                console.error('Enable button not found in the DOM.');
-            }
-        }
+        
 
         function fadeOutOverlay() {
             var overlay = document.getElementById('permissionOverlay');
