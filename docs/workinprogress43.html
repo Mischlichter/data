@@ -2838,11 +2838,14 @@
             if (isPortrait) {
                 // Calculate new height based on smooth aspect ratio and check against last height
                 var newHeight = viewportHeight / smoothAspectRatio;
-                if (!virtualcanvas.lastHeight || Math.abs(newHeight - virtualcanvas.lastHeight) > 45) {
-                    // Adjust height in steps of 40px
-                    virtualcanvas.lastHeight = newHeight;
+                var stepSize = 40;  // Step size for adjustments
+                var offset = 20;    // Offset to fine-tune the step transition
+
+                // Adjust the comparison logic to use the step size and offset
+                if (!virtualcanvas.lastHeight || Math.abs(newHeight - (virtualcanvas.lastHeight + offset)) > stepSize) {
+                    virtualcanvas.lastHeight = newHeight - (newHeight % stepSize) + offset;
                     sizeChanged = true;
-                    canvasHeight = newHeight;
+                    canvasHeight = virtualcanvas.lastHeight;
                     canvasWidth = canvasHeight * fixedAspectRatio;
                 }
             } else {
@@ -2868,6 +2871,7 @@
                 virtualcanvas.style.zIndex = '-100';
             }
         }
+
 
 
 
