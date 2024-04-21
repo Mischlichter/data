@@ -2816,8 +2816,8 @@
             }
         }
 
-        function isIOS() {
-            return /iPad|iPhone|iPod/.test(navigator.userAgent) || navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1;
+        function isIOSDevice() {
+            return /iPad|iPhone|iPod/.test(navigator.platform) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
         }
 
         function updateVirtualCanvasSize() {
@@ -2838,8 +2838,10 @@
             var canvasWidth, canvasHeight, sizeChanged = false;
             if (isPortrait) {
                 var newHeight = viewportHeight / smoothAspectRatio;
-                var stepSize = 40;
-                var offset = 0;
+                var stepSize = 40;  // Define step size
+                var offset = 0;    // Offset to fine-tune the step transition
+
+                // Normalize to the nearest step then apply offset
                 var targetHeight = Math.round((newHeight - offset) / stepSize) * stepSize + offset;
 
                 if (!virtualcanvas.lastHeight || Math.abs(targetHeight - virtualcanvas.lastHeight) > stepSize) {
@@ -2849,6 +2851,7 @@
                     canvasWidth = canvasHeight * fixedAspectRatio;
                 }
             } else {
+                // Landscape mode: scale normally without steps
                 canvasWidth = viewportWidth;
                 canvasHeight = canvasWidth / smoothAspectRatio;
                 sizeChanged = true;
@@ -2856,6 +2859,7 @@
 
             if (sizeChanged) {
                 var scaleFactor = Math.min(canvasWidth / 1536, canvasHeight / 1024);
+
                 document.querySelectorAll('.scale-wrapper-background, .scale-wrapper-interface').forEach(element => {
                     element.style.transform = `translate(-50%, -50%) scale(${scaleFactor})`;
                 });
@@ -2865,14 +2869,14 @@
                 virtualcanvas.style.left = '50%';
                 virtualcanvas.style.position = 'absolute';
                 virtualcanvas.style.transform = 'translate(-50%, -50%)';
-                if (isIOS()) {
-                    virtualcanvas.style.top = 'calc(50% + 40px)'; // Apply the offset only for iOS devices
-                } else {
-                    virtualcanvas.style.top = '50%';
-                }
+                virtualcanvas.style.top = '50%';
                 virtualcanvas.style.zIndex = '-100';
+                if (isIOSDevice()) {
+                    virtualcanvas.style.top = 'calc(50% + 40px)'; // Apply the offset only for iOS devices
+                }
             }
         }
+
 
 
 
