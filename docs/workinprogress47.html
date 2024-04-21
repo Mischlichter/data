@@ -1123,11 +1123,18 @@
             var throttleInterval = 36; // Throttle interval in milliseconds
             var gyroMouseX = 0;
             var gyroMouseY = 0;
+            var gyroSensitivityMultiplier = 36.0; // Default multiplier
+            var lastLandscape = null;
+            var lastAngle = null;
+            var lastExecution = Date.now();
             var initialGamma = 0;
             var initialBeta = 0;
             var isCalibrated = false;
-            var gyroSensitivityMultiplier = 36.0; // Default multiplier
 
+            // Placeholder functions to simulate expected behavior
+            function sendMouseEventToIframe(eventType, coordinates) {
+                console.log(eventType, coordinates); // Log the mouse event simulation
+            }
 
             function handleOrientation(event) {
                 var now = Date.now();
@@ -1135,48 +1142,52 @@
                     // Update last execution time
                     lastExecution = now;
 
-                    // Determine the orientation of the device
-                    var landscape = window.innerWidth > window.innerHeight;
-                    var angle = window.orientation || 0; // Fallback to window.orientation if available
+                    // Determine the current orientation and angle
+                    var currentLandscape = window.innerWidth > window.innerHeight;
+                    var currentAngle = window.orientation || 0;
 
-                    // Check if the orientation has been calibrated
-                    if (!isCalibrated) {
-                        // Set initial orientation values
+                    // Check for orientation change or initial calibration need
+                    if (currentLandscape !== lastLandscape || currentAngle !== lastAngle || !isCalibrated) {
+                        isCalibrated = true;
                         initialGamma = event.gamma;
                         initialBeta = event.beta;
-                        isCalibrated = true; // Ensure calibration happens only once
-                        console.log('Calibration set: Gamma = ' + initialGamma + ', Beta = ' + initialBeta);
+                        lastLandscape = currentLandscape;
+                        lastAngle = currentAngle;
+
+                        console.log('Calibration set or reset: Gamma = ' + initialGamma + ', Beta = ' + initialBeta);
+
+                        // Reset mouse and gyro coordinates to the center
+                        gyroMouseX = window.innerWidth / 2;
+                        gyroMouseY = window.innerHeight / 2;
+                        sendMouseEventToIframe('mousemove', {clientX: gyroMouseX, clientY: gyroMouseY});
+
+                        return; // Exit early after recalibration and centering
                     }
 
-                    // Determine how to adjust the x and y coordinates based on orientation and rotation
+                    // Calculate adjusted gamma and beta values
                     var adjustedGamma = event.gamma - initialGamma;
                     var adjustedBeta = event.beta - initialBeta;
 
-                    // Adjust the multiplier to the adjusted raw beta and gamma values
-                    if (landscape) {
-                        // Check rotation direction in landscape mode
-                        if (angle === 90) {
-                            // Device is rotated to the left
-                            gyroMouseX = adjustedBeta * gyroSensitivityMultiplier;
-                            gyroMouseY = -adjustedGamma * gyroSensitivityMultiplier;
-                            isCalibrated = false;
-                        } else if (angle === -90 || angle === 270) {
-                            // Device is rotated to the right
-                            gyroMouseX = -adjustedBeta * gyroSensitivityMultiplier;
-                            gyroMouseY = adjustedGamma * gyroSensitivityMultiplier;
-                            isCalibrated = false;
-                        }
-                    } else {
-                        // Standard portrait mode
-                        gyroMouseX = adjustedGamma * gyroSensitivityMultiplier;
-                        gyroMouseY = adjustedBeta * gyroSensitivityMultiplier;
-                        isCalibrated = false;
-                    }
-
-  
+                    // Adjust the gyro mouse coordinates based on the orientation
+                    calculateGyroMouseCoordinates(currentLandscape, currentAngle, adjustedGamma, adjustedBeta);
 
                     // Send the updated gyro mouse coordinates directly to the iframe
                     sendMouseEventToIframe('mousemove', {clientX: gyroMouseX, clientY: gyroMouseY});
+                }
+            }
+
+            function calculateGyroMouseCoordinates(landscape, angle, gamma, beta) {
+                if (landscape) {
+                    if (angle === 90) {
+                        gyroMouseX = window.innerWidth / 2 + beta * gyroSensitivityMultiplier;
+                        gyroMouseY = window.innerHeight / 2 - gamma * gyroSensitivityMultiplier;
+                    } else if (angle === -90 || angle === 270) {
+                        gyroMouseX = window.innerWidth / 2 - beta * gyroSensitivityMultiplier;
+                        gyroMouseY = window.innerHeight / 2 + gamma * gyroSensitivityMultiplier;
+                    }
+                } else {
+                    gyroMouseX = window.innerWidth / 2 + gamma * gyroSensitivityMultiplier;
+                    gyroMouseY = window.innerHeight / 2 + beta * gyroSensitivityMultiplier;
                 }
             }
 
