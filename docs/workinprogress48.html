@@ -1843,6 +1843,7 @@
                     currentSceneIndex = index; // Update the current scene index
                     loadScene(currentSceneIndex); // Load the selected scene
                     highlightActiveMenuItem(`menuContainer${index}`);
+                    resetCalibrationFlag();
                 };
 
                 // Add event listeners
@@ -2233,7 +2234,7 @@
 
             // Update containers when loading a new scene
             updateAllContainers(scene);
-            resetCalibrationFlag();
+
             highlightActiveMenuItem(`menuContainer${index}`);
             observeImagesForAnimation();
         }
