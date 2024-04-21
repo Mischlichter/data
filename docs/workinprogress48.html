@@ -1839,11 +1839,12 @@
                         return;
                     }
                     isTouch = event.type === 'touchend';
+                    resetCalibrationFlag();
                     await fadeOutElements(); // Wait for the elements to fade out
                     currentSceneIndex = index; // Update the current scene index
                     loadScene(currentSceneIndex); // Load the selected scene
                     highlightActiveMenuItem(`menuContainer${index}`);
-                    resetCalibrationFlag();
+
                 };
 
                 // Add event listeners
