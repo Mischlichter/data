@@ -2816,8 +2816,8 @@
             }
         }
 
-        function isiPhone() {
-            return /iPhone/.test(navigator.userAgent) && !window.MSStream;
+        function isIOS() {
+            return /iPad|iPhone|iPod/.test(navigator.userAgent) || navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1;
         }
 
         function updateVirtualCanvasSize() {
@@ -2839,7 +2839,8 @@
             if (isPortrait) {
                 var newHeight = viewportHeight / smoothAspectRatio;
                 var stepSize = 40;
-                var targetHeight = Math.round(newHeight / stepSize) * stepSize;
+                var offset = 0;
+                var targetHeight = Math.round((newHeight - offset) / stepSize) * stepSize + offset;
 
                 if (!virtualcanvas.lastHeight || Math.abs(targetHeight - virtualcanvas.lastHeight) > stepSize) {
                     virtualcanvas.lastHeight = targetHeight;
@@ -2864,10 +2865,10 @@
                 virtualcanvas.style.left = '50%';
                 virtualcanvas.style.position = 'absolute';
                 virtualcanvas.style.transform = 'translate(-50%, -50%)';
-                if (isiPhone()) {
-                    virtualcanvas.style.top = 'calc(50% + 200px)'; // Apply the offset only for iPhones
+                if (isIOS()) {
+                    virtualcanvas.style.top = 'calc(50% + 40px)'; // Apply the offset only for iOS devices
                 } else {
-                    virtualcanvas.style.top = '50%'; // Default position for other devices
+                    virtualcanvas.style.top = '50%';
                 }
                 virtualcanvas.style.zIndex = '-100';
             }
