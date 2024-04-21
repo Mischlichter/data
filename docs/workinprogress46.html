@@ -2866,7 +2866,7 @@
 
             // Apply the scale factor for all modes without checking for changes
             document.querySelectorAll('.scale-wrapper-interface').forEach(element => {
-                var verticalOffset = isIOS ? '40px' : '-50%'; // Adjusting Y-offset for iOS devices
+                var verticalOffset = isIOS ? '50px' : '-50%'; // Adjusting Y-offset for iOS devices
                 element.style.transform = `translate(-50%, ${verticalOffset}) scale(${scaleFactor})`;
             });
 
