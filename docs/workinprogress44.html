@@ -2390,7 +2390,7 @@
         function delayedVirtualCanvasUpdate() {
             // Delay the call to updateVirtualCanvasSize
             
-            setTimeout(updateVirtualCanvasSize, 200); // Delay of 100 milliseconds
+            setTimeout(updateVirtualCanvasSize, 100); // Delay of 100 milliseconds
         }
 
         function loadInterface(currentSceneIndex) {
@@ -2816,67 +2816,47 @@
             }
         }
 
-        function isIOSDevice() {
-            return /iPad|iPhone|iPod/.test(navigator.platform) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-        }
-
-        function updateVirtualCanvasSize() {
-            var virtualcanvas = document.getElementById('virtualcanvas');
-            if (!virtualcanvas) {
-                virtualcanvas = document.createElement('div');
-                virtualcanvas.id = 'virtualcanvas';
-                document.body.appendChild(virtualcanvas);
-                virtualcanvas.style.transition = 'transform 0.5s ease, width 0.5s ease, height 0.5s ease';
+        function adjustContainerSizesBasedOnVirtualCanvas() {
+            var virtualCanvas = document.getElementById('virtualcanvas');
+            if (!virtualCanvas) {
+                //console.error('Virtual canvas not found.');
+                return;
             }
 
-            var viewportWidth = window.innerWidth;
-            var viewportHeight = window.innerHeight;
-            var isPortrait = viewportWidth < viewportHeight;
-            var smoothAspectRatio = getSmoothAspectRatio(viewportWidth, viewportHeight);
-            var fixedAspectRatio = 1536 / 1024;
+            var virtualCanvasWidth = virtualCanvas.offsetWidth;
 
-            var canvasWidth, canvasHeight, sizeChanged = false;
-            if (isPortrait) {
-                var newHeight = viewportHeight / smoothAspectRatio;
-                var stepSize = 40;  // Define step size
-                var offset = 0;    // Offset to fine-tune the step transition
+            // Determine if we are likely on a mobile device based on viewport width
+            var isMobile = window.innerWidth <= 768; // Mobile threshold
 
-                // Normalize to the nearest step then apply offset
-                var targetHeight = Math.round((newHeight - offset) / stepSize) * stepSize + offset;
+            // Detect orientation for mobile devices
+            var isPortrait = window.innerHeight > window.innerWidth;
+            
+            // Default to base width percentage for design
+            var baseWidthPercent = 39;
 
-                if (!virtualcanvas.lastHeight || Math.abs(targetHeight - virtualcanvas.lastHeight) > stepSize) {
-                    virtualcanvas.lastHeight = targetHeight;
-                    sizeChanged = true;
-                    canvasHeight = targetHeight;
-                    canvasWidth = canvasHeight * fixedAspectRatio;
+            // Define mobile adjustments: Adjust these values as needed for your design
+            var portraitAdjustment = 1.3; // 45% wider on mobile in portrait
+            var landscapeAdjustment = 1; // 20% wider on mobile in landscape
+
+            // Select the appropriate adjustment factor based on mobile status and orientation
+            var adjustmentFactor = 1; // Default for non-mobile or desktop
+            if (isMobile) {
+                adjustmentFactor = isPortrait ? portraitAdjustment : landscapeAdjustment;
+            }
+
+            var scaledWidthPx = (virtualCanvasWidth * baseWidthPercent / 100) * adjustmentFactor; // Apply selected adjustment
+
+            var flexContainers = document.querySelectorAll('.flex-container, .flex-icontainer');
+            flexContainers.forEach(function(container) {
+                // Set width adjusted for mobile orientation or use default for desktop
+                container.style.width = scaledWidthPx + 'px';
+
+                // For .flex-icontainer, adjust padding-top to maintain aspect ratio
+                if (container.classList.contains('flex-icontainer')) {
+                    container.style.paddingTop = scaledWidthPx + 'px';
                 }
-            } else {
-                // Landscape mode: scale normally without steps
-                canvasWidth = viewportWidth;
-                canvasHeight = canvasWidth / smoothAspectRatio;
-                sizeChanged = true;
-            }
-
-            if (sizeChanged) {
-                var scaleFactor = Math.min(canvasWidth / 1536, canvasHeight / 1024);
-
-                document.querySelectorAll('.scale-wrapper-background, .scale-wrapper-interface').forEach(element => {
-                    element.style.transform = `translate(-50%, -50%) scale(${scaleFactor})`;
-                });
-
-                virtualcanvas.style.width = canvasWidth + 'px';
-                virtualcanvas.style.height = canvasHeight + 'px';
-                virtualcanvas.style.left = '50%';
-                virtualcanvas.style.position = 'absolute';
-                virtualcanvas.style.transform = 'translate(-50%, -50%)';
-                virtualcanvas.style.top = '50%';
-                virtualcanvas.style.zIndex = '-100';
-                if (isIOSDevice()) {
-                    virtualcanvas.style.top = 'calc(50% + 40px)'; // Apply the offset only for iOS devices
-                }
-            }
+            });
         }
-
 
 
 
