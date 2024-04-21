@@ -1136,16 +1136,26 @@
                     lastExecution = now;
 
                     // Determine the orientation of the device
-                    var landscape = window.innerWidth > window.innerHeight;
-                    var angle = window.orientation || 0; // Fallback to window.orientation if available
+                    var newLandscape = window.innerWidth > window.innerHeight;
+                    var newAngle = window.orientation || 0; // Fallback to window.orientation if available
+
+                    // Check if the orientation has changed since last execution
+                    if (landscape !== newLandscape || angle !== newAngle) {
+                        // Reset calibration if orientation or angle has changed
+                        isCalibrated = false;
+                    }
+
+                    // Update current orientation and angle
+                    landscape = newLandscape;
+                    angle = newAngle;
 
                     // Check if the orientation has been calibrated
                     if (!isCalibrated) {
                         // Set initial orientation values
                         initialGamma = event.gamma;
                         initialBeta = event.beta;
-                        isCalibrated = true; // Ensure calibration happens only once
-                        console.log('Calibration set: Gamma = ' + initialGamma + ', Beta = ' + initialBeta);
+                        isCalibrated = true; // Ensure calibration happens only once until orientation changes
+                        console.log('Calibration reset: Gamma = ' + initialGamma + ', Beta = ' + initialBeta);
                     }
 
                     // Determine how to adjust the x and y coordinates based on orientation and rotation
@@ -1168,14 +1178,6 @@
                         // Standard portrait mode
                         gyroMouseX = adjustedGamma * gyroSensitivityMultiplier;
                         gyroMouseY = adjustedBeta * gyroSensitivityMultiplier;
-                    }
-
-                    // Update UI elements for debugging or display purposes
-                    var betaDisplay = document.getElementById('betaValue');
-                    var gammaDisplay = document.getElementById('gammaValue');
-                    if (betaDisplay && gammaDisplay) {
-                        betaDisplay.textContent = gyroMouseY.toFixed(2);
-                        gammaDisplay.textContent = gyroMouseX.toFixed(2);
                     }
 
                     // Send the updated gyro mouse coordinates directly to the iframe
