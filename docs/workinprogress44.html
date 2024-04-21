@@ -2819,7 +2819,7 @@
         var lastScaleFactor = null; // Tracks the last scale factor for portrait mode
         var cumulativeScaleChange = 0; // Accumulates scale changes for portrait mode
 
-        function updateVirtualCanvasSize() {
+        function updateVirtualCanvasSize(verticalOffset = 20) {  // Default offset is 0 if not specified
             var virtualcanvas = document.getElementById('virtualcanvas');
             if (!virtualcanvas) {
                 virtualcanvas = document.createElement('div');
@@ -2841,7 +2841,6 @@
             var canvasWidth, canvasHeight;
             if (isPortrait) {
                 var newHeight = viewportHeight / smoothAspectRatio;
-                // Implementing step logic
                 var stepSize = 40;  // Define the step size
                 var adjustedHeight = Math.round(newHeight / stepSize) * stepSize; // Adjust to the nearest step
                 canvasHeight = adjustedHeight;
@@ -2851,19 +2850,18 @@
                 canvasHeight = canvasWidth / smoothAspectRatio;
             }
 
-            var size = { width: canvasWidth, height: canvasHeight };
-            var scaleFactor = Math.min(size.width / 1536, size.height / 1024);
+            var scaleFactor = Math.min(canvasWidth / 1536, canvasHeight / 1024);
 
-            // Apply the scale factor for all modes without checking for changes
             document.querySelectorAll('.scale-wrapper-background, .scale-wrapper-interface').forEach(element => {
                 element.style.transform = `translate(-50%, -50%) scale(${scaleFactor})`;
             });
 
-            // Update the virtual canvas size
-            virtualcanvas.style.width = size.width + 'px';
-            virtualcanvas.style.height = size.height + 'px';
-            virtualcanvas.style.top = '50%';
+            // Update the virtual canvas size and position
+            virtualcanvas.style.width = canvasWidth + 'px';
+            virtualcanvas.style.height = canvasHeight + 'px';
+            virtualcanvas.style.top = `calc(50% + ${verticalOffset}px)`; // Dynamic adjustment based on the verticalOffset parameter
         }
+
 
 
         function adjustContainerSizesBasedOnVirtualCanvas() {
