@@ -1179,23 +1179,38 @@
             }
 
 
-               
+            function resetScrollPosition() {
+                // Assuming you want to center the content on the page horizontally
+                // You can modify this if you need to adjust vertically as well
+                var scrollWidth = document.body.scrollWidth;
+                var windowWidth = window.innerWidth;
+
+                // Calculate the new scroll position to center the content
+                var newScrollLeft = (scrollWidth - windowWidth) / 2;
+                newScrollLeft = Math.max(newScrollLeft, 0); // Ensure the scroll value is not negative
+
+                // Reset the horizontal scroll position
+                window.scrollTo(newScrollLeft, window.scrollY);
+                console.log("Scroll position reset to center horizontally.");
+            }
 
             function checkOrientationChange() {
                 var currentAngle = window.orientation || 0;
 
-                // Check if there has been a change in the device angle
                 if (currentAngle !== lastAngle) {
-                    isCalibrated = false; // Set recalibration flag to false on orientation change
+                    isCalibrated = false;
                     console.log("Orientation change detected. Recalibration required.");
 
                     // Update the last known angle
                     lastAngle = currentAngle;
+
+                    // Adjust the scroll position to re-center the content after the layout changes
+                    setTimeout(resetScrollPosition, 100); // Delay to allow the browser to reflow layout
                 }
             }
 
-            // Attach the event listener for orientation change
             window.addEventListener('orientationchange', checkOrientationChange);
+
 
 
 
