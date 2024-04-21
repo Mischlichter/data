@@ -1135,23 +1135,20 @@
                     // Update last execution time
                     lastExecution = now;
 
-                    // Determine the new orientation of the device
-                    var newLandscape = window.innerWidth > window.innerHeight;
-                    var newAngle = window.orientation || 0; // Fallback to window.orientation if available
+                    // Determine the orientation of the device
+                    var landscape = window.innerWidth > window.innerHeight;
+                    var angle = window.orientation || 0; // Fallback to window.orientation if available
 
-                    // Check if the orientation has changed since last execution
-                    if (landscape !== newLandscape || angle !== newAngle) {
-                        // Update the calibration since orientation or angle has changed
+                    // Check if the orientation has been calibrated
+                    if (!isCalibrated) {
+                        // Set initial orientation values
                         initialGamma = event.gamma;
                         initialBeta = event.beta;
-                        console.log('Calibration reset: Gamma = ' + initialGamma + ', Beta = ' + initialBeta);
+                        isCalibrated = true; // Ensure calibration happens only once
+                        console.log('Calibration set: Gamma = ' + initialGamma + ', Beta = ' + initialBeta);
                     }
 
-                    // Update current orientation and angle variables for future checks
-                    landscape = newLandscape;
-                    angle = newAngle;
-
-                    // Calculate the adjusted gamma and beta based on the new initial values
+                    // Determine how to adjust the x and y coordinates based on orientation and rotation
                     var adjustedGamma = event.gamma - initialGamma;
                     var adjustedBeta = event.beta - initialBeta;
 
@@ -1162,16 +1159,21 @@
                             // Device is rotated to the left
                             gyroMouseX = adjustedBeta * gyroSensitivityMultiplier;
                             gyroMouseY = -adjustedGamma * gyroSensitivityMultiplier;
+                            isCalibrated = false;
                         } else if (angle === -90 || angle === 270) {
                             // Device is rotated to the right
                             gyroMouseX = -adjustedBeta * gyroSensitivityMultiplier;
                             gyroMouseY = adjustedGamma * gyroSensitivityMultiplier;
+                            isCalibrated = false;
                         }
                     } else {
                         // Standard portrait mode
                         gyroMouseX = adjustedGamma * gyroSensitivityMultiplier;
                         gyroMouseY = adjustedBeta * gyroSensitivityMultiplier;
+                        isCalibrated = false;
                     }
+
+  
 
                     // Send the updated gyro mouse coordinates directly to the iframe
                     sendMouseEventToIframe('mousemove', {clientX: gyroMouseX, clientY: gyroMouseY});
