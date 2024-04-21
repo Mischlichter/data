@@ -344,7 +344,7 @@
 
         }
         
-        @media screen and (max-width: 768px) {
+        @media screen and (max-width: 768px), screen and (orientation: portrait) {
             .menu-bar {
                 display: flex; /* Enable flexbox */
                 flex-wrap: wrap; /* Allow wrapping into new lines */
@@ -359,19 +359,43 @@
                 padding: 5px; /* Adjust padding for items */
                 
             }
-  
+            
             .logo-small {
                 position: absolute;
                 left: 13.5%; /* 25% of the container's width is the first quarter */
                 top: 50%;
                 transform: translate(-50%, -50%); /* Center horizontally and vertically */
             }
-
-         
-
-
         }
 
+        @media screen and (min-width: 769px) and (orientation: landscape) {
+            .menu-bar {
+                display: flex;
+                justify-content: space-evenly; /* Evenly spaces the menu items */
+                align-items: center;
+                background-color: black; /* 20% grey color */
+                border: 2px solid #00ffcc;
+                border-radius: 20px;
+                position: fixed; /* Fixed to the top */
+                top: 0;
+                left: 0;
+                width: 100%;
+                padding: 10px 30px;
+                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+                z-index: 1000; /* Ensures it stays on top of other content */
+            }
+            
+            .menu-container {
+                font-family: 'JetBrainsMono-Bold';
+                font-size: 16px;
+                margin: 0; /* Adjust as needed */
+                cursor: default; /* Or 'pointer' if you want a hand cursor */
+                user-select: none; /* Prevent text selection */
+                -webkit-user-select: none; /* Safari */
+                -moz-user-select: none; /* Firefox */
+                -ms-user-select: none; /* Internet Explorer/Edge */
+            }
+        }
 
 
 
@@ -1802,16 +1826,23 @@
 
             if (!logoImg) return; // Exit the function early if the logo image does not exist
 
-            if (window.innerWidth <= 768) {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const isPortrait = width - 1 < height; // Add a buffer to ensure width is definitely less than height
+
+            // Check if screen width is <= 768 or if the device is in portrait orientation
+            if (width <= 768 || isPortrait) {
                 logoImg.src = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logoS.png'; 
                 logoImg.classList.add('logo-small');
                 fakeMenuItems.forEach(item => item.style.display = '');
             } else {
                 logoImg.src = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logo5.png'; 
                 logoImg.classList.remove('logo-small');
-                fakeMenuItems.forEach(item => item.style.display = 'none'); // Use empty string to reset the display property
+                fakeMenuItems.forEach(item => item.style.display = 'none');
             }
         }
+
+
 
 
 
@@ -2850,7 +2881,7 @@
 
             var viewportWidth = window.innerWidth;
             var viewportHeight = window.innerHeight;
-            var isPortrait = viewportWidth < viewportHeight;
+            var isPortrait = viewportWidth -1 < viewportHeight;
             var smoothAspectRatio = getSmoothAspectRatio(viewportWidth, viewportHeight);
             var fixedAspectRatio = 1536 / 1024;
 
