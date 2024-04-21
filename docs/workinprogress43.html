@@ -2816,8 +2816,6 @@
             }
         }
 
-    
-
         function updateVirtualCanvasSize() {
             var virtualcanvas = document.getElementById('virtualcanvas');
             if (!virtualcanvas) {
@@ -2835,16 +2833,17 @@
 
             var canvasWidth, canvasHeight, sizeChanged = false;
             if (isPortrait) {
-                // Calculate new height based on smooth aspect ratio and check against last height
                 var newHeight = viewportHeight / smoothAspectRatio;
-                var stepSize = 40;  // Step size for adjustments
+                var stepSize = 40;  // Define step size
                 var offset = 0;    // Offset to fine-tune the step transition
 
-                // Adjust the comparison logic to use the step size and offset
-                if (!virtualcanvas.lastHeight || Math.abs(newHeight - (virtualcanvas.lastHeight + offset)) > stepSize) {
-                    virtualcanvas.lastHeight = newHeight - (newHeight % stepSize) + offset;
+                // Normalize to the nearest step then apply offset
+                var targetHeight = Math.round((newHeight - offset) / stepSize) * stepSize + offset;
+
+                if (!virtualcanvas.lastHeight || Math.abs(targetHeight - virtualcanvas.lastHeight) > stepSize) {
+                    virtualcanvas.lastHeight = targetHeight;
                     sizeChanged = true;
-                    canvasHeight = virtualcanvas.lastHeight;
+                    canvasHeight = targetHeight;
                     canvasWidth = canvasHeight * fixedAspectRatio;
                 }
             } else {
@@ -2870,6 +2869,7 @@
                 virtualcanvas.style.zIndex = '-100';
             }
         }
+
 
 
 
