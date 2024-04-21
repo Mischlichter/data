@@ -2819,7 +2819,7 @@
         var lastScaleFactor = null; // Tracks the last scale factor for portrait mode
         var cumulativeScaleChange = 0; // Accumulates scale changes for portrait mode
 
-        function updateVirtualCanvasSize(verticalOffset = -10) {  // Default offset is 0 if not specified
+        function updateVirtualCanvasSize(verticalOffset = 30) {  // Default offset is 0 if not specified
             var virtualcanvas = document.getElementById('virtualcanvas');
             if (!virtualcanvas) {
                 virtualcanvas = document.createElement('div');
