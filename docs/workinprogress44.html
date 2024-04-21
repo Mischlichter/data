@@ -2840,8 +2840,8 @@
 
             var canvasWidth, canvasHeight;
             if (isPortrait) {
-                var newHeight = viewportHeight / smoothAspectRatio;
-                var stepSize = 80;  // Define the step size
+                var newHeight = (viewportHeight + verticalOffset) / smoothAspectRatio;  // Apply offset before scaling calculation
+                var stepSize = 40;  // Define the step size
                 var adjustedHeight = Math.round(newHeight / stepSize) * stepSize; // Adjust to the nearest step
                 canvasHeight = adjustedHeight;
                 canvasWidth = canvasHeight * fixedAspectRatio;
@@ -2859,8 +2859,9 @@
             // Update the virtual canvas size and position
             virtualcanvas.style.width = canvasWidth + 'px';
             virtualcanvas.style.height = canvasHeight + 'px';
-            virtualcanvas.style.top = `calc(50% + ${verticalOffset}px)`; // Dynamic adjustment based on the verticalOffset parameter
+            virtualcanvas.style.top = '50%';  // Keeps center alignment for non-portrait adjustments
         }
+
 
 
 
