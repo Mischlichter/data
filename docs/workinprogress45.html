@@ -464,7 +464,7 @@
         }
         @media screen and (max-width: 768px) {
           #interfaceViewerContainer {
-            top: 40px;
+            top: 1px;
           }
         }
 
@@ -1778,14 +1778,17 @@
           
 
             // Call updateMenu at the end
-            updateMenu(menuData);
             updateLogoVisibility();
+            updateMenu(menuData);
+            
         }
 
         function updateLogoVisibility() {
             const logoImg = document.getElementById('menuLogo');
             // Select only fake menu items using the data-fake attribute
             const fakeMenuItems = document.querySelectorAll('.menu-container[data-fake="true"]');
+
+            if (!logoImg) return; // Exit the function early if the logo image does not exist
 
             if (window.innerWidth <= 768) {
                 logoImg.src = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logoS.png'; 
@@ -1797,6 +1800,7 @@
                 fakeMenuItems.forEach(item => item.style.display = 'none'); // Use empty string to reset the display property
             }
         }
+
 
 
 
@@ -2860,7 +2864,7 @@
 
             // Apply the scale factor for all modes without checking for changes
             document.querySelectorAll('.scale-wrapper-interface').forEach(element => {
-                var verticalOffset = isIOS ? '-60%' : '-50%'; // Adjusting Y-offset for iOS devices
+                var verticalOffset = isIOS ? '-90%' : '-50%'; // Adjusting Y-offset for iOS devices
                 element.style.transform = `translate(-50%, ${verticalOffset}) scale(${scaleFactor})`;
             });
 
