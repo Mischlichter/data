@@ -1839,12 +1839,10 @@
                         return;
                     }
                     isTouch = event.type === 'touchend';
-                    resetCalibrationFlag();
                     await fadeOutElements(); // Wait for the elements to fade out
                     currentSceneIndex = index; // Update the current scene index
                     loadScene(currentSceneIndex); // Load the selected scene
                     highlightActiveMenuItem(`menuContainer${index}`);
-
                 };
 
                 // Add event listeners
@@ -2235,7 +2233,7 @@
 
             // Update containers when loading a new scene
             updateAllContainers(scene);
-
+            
             highlightActiveMenuItem(`menuContainer${index}`);
             observeImagesForAnimation();
         }
@@ -2505,7 +2503,7 @@
 
         function delayedVirtualCanvasUpdate() {
             // Delay the call to updateVirtualCanvasSize
-            
+            resetCalibrationFlag();
             setTimeout(updateVirtualCanvasSize, 100); // Delay of 100 milliseconds
         }
 
