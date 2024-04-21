@@ -2839,10 +2839,10 @@
             var fixedAspectRatio = 1536 / 1024;
 
             var canvasWidth, canvasHeight;
-            var offset = 20;  // Offset to adjust the starting point of the grid step calculation
+            var offset = 0;  // Offset to adjust the starting point of the grid step calculation
             if (isPortrait) {
                 var newHeight = viewportHeight / smoothAspectRatio;
-                var stepSize = 40;  // Define the step size
+                var stepSize = 80;  // Define the step size
                 var baseHeight = newHeight + offset;  // Add the offset before adjusting to step
                 var adjustedHeight = Math.round(baseHeight / stepSize) * stepSize;  // Adjust to the nearest step
                 canvasHeight = adjustedHeight - offset;  // Subtract the offset after adjustment to maintain original canvas size
