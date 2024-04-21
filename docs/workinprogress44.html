@@ -2819,7 +2819,7 @@
         var lastScaleFactor = null; // Tracks the last scale factor for portrait mode
         var cumulativeScaleChange = 0; // Accumulates scale changes for portrait mode
 
-        function updateVirtualCanvasSize(verticalOffset = 10) {  // Default offset is 0 if not specified
+        function updateVirtualCanvasSize(verticalOffset = 0) {  // Default offset is 0 if not specified
             var virtualcanvas = document.getElementById('virtualcanvas');
             if (!virtualcanvas) {
                 virtualcanvas = document.createElement('div');
@@ -2841,7 +2841,7 @@
             var canvasWidth, canvasHeight;
             if (isPortrait) {
                 var newHeight = viewportHeight / smoothAspectRatio;
-                var stepSize = 40;  // Define the step size
+                var stepSize = 50;  // Define the step size
                 var adjustedHeight = Math.round(newHeight / stepSize) * stepSize; // Adjust to the nearest step
                 canvasHeight = adjustedHeight;
                 canvasWidth = canvasHeight * fixedAspectRatio;
