@@ -1135,30 +1135,23 @@
                     // Update last execution time
                     lastExecution = now;
 
-                    // Determine the orientation of the device
+                    // Determine the new orientation of the device
                     var newLandscape = window.innerWidth > window.innerHeight;
                     var newAngle = window.orientation || 0; // Fallback to window.orientation if available
 
                     // Check if the orientation has changed since last execution
                     if (landscape !== newLandscape || angle !== newAngle) {
-                        // Reset calibration if orientation or angle has changed
-                        isCalibrated = false;
-                    }
-
-                    // Update current orientation and angle
-                    landscape = newLandscape;
-                    angle = newAngle;
-
-                    // Check if the orientation has been calibrated
-                    if (!isCalibrated) {
-                        // Set initial orientation values
+                        // Update the calibration since orientation or angle has changed
                         initialGamma = event.gamma;
                         initialBeta = event.beta;
-                        isCalibrated = true; // Ensure calibration happens only once until orientation changes
                         console.log('Calibration reset: Gamma = ' + initialGamma + ', Beta = ' + initialBeta);
                     }
 
-                    // Determine how to adjust the x and y coordinates based on orientation and rotation
+                    // Update current orientation and angle variables for future checks
+                    landscape = newLandscape;
+                    angle = newAngle;
+
+                    // Calculate the adjusted gamma and beta based on the new initial values
                     var adjustedGamma = event.gamma - initialGamma;
                     var adjustedBeta = event.beta - initialBeta;
 
