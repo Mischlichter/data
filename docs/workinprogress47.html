@@ -1179,19 +1179,33 @@
             }
 
 
-            function resetScrollPosition() {
-                // Assuming you want to center the content on the page horizontally
-                // You can modify this if you need to adjust vertically as well
-                var scrollWidth = document.body.scrollWidth;
-                var windowWidth = window.innerWidth;
+            function simulateTap() {
+                // Create the touch point at the center of the screen
+                var touchPoint = { clientX: window.innerWidth / 2, clientY: window.innerHeight / 2 };
 
-                // Calculate the new scroll position to center the content
-                var newScrollLeft = (scrollWidth - windowWidth) / 2;
-                newScrollLeft = Math.max(newScrollLeft, 0); // Ensure the scroll value is not negative
+                // Create a touchstart event
+                var touchStartEvent = new TouchEvent('touchstart', {
+                    bubbles: true,
+                    cancelable: true,
+                    changedTouches: [new Touch({ identifier: Date.now(), target: document.body, ...touchPoint })],
+                    targetTouches: [],
+                    touches: [new Touch({ identifier: Date.now(), target: document.body, ...touchPoint })]
+                });
 
-                // Reset the horizontal scroll position
-                window.scrollTo(newScrollLeft, window.scrollY);
-                console.log("Scroll position reset to center horizontally.");
+                // Create a touchend event
+                var touchEndEvent = new TouchEvent('touchend', {
+                    bubbles: true,
+                    cancelable: true,
+                    changedTouches: [new Touch({ identifier: Date.now(), target: document.body, ...touchPoint })],
+                    targetTouches: [],
+                    touches: []
+                });
+
+                // Dispatch the touchstart event
+                document.body.dispatchEvent(touchStartEvent);
+
+                // Dispatch the touchend event shortly after to mimic a tap
+                setTimeout(() => document.body.dispatchEvent(touchEndEvent), 100);
             }
 
             function checkOrientationChange() {
@@ -1205,7 +1219,7 @@
                     lastAngle = currentAngle;
 
                     // Adjust the scroll position to re-center the content after the layout changes
-                    setTimeout(resetScrollPosition, 100); // Delay to allow the browser to reflow layout
+                    setTimeout(simulateTap, 100); // Delay to allow the browser to reflow layout
                 }
             }
 
