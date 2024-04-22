@@ -758,11 +758,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
 
 
-
     <script src="scripts/bodygallery.js"></script>
-
-    <script src="./scripts/umd.js"></script>
-
     
     <script>
         document.addEventListener('DOMContentLoaded', async function() {
@@ -950,188 +946,82 @@
                 }
 
             }
-
-
-
-
                 
-            async function openDb() {
-              if (!('indexedDB' in window)) {
-                throw new Error('Browser doesn\'t support IndexedDB');
-              }
-              return idb.openDB('assets-db', 1, {
-                upgrade(db) {
-                  if (!db.objectStoreNames.contains('assets')) {
-                    const assetStore = db.createObjectStore('assets', { keyPath: 'url' });
-                    assetStore.createIndex('lastModified', 'lastModified', { unique: false });
-                  }
+            async function storeAssetsInDB(assets) {
+                const db = await openDatabase(); // Assume this function opens your IndexedDB database
+                const tx = db.transaction('assets', 'readwrite');
+                const store = tx.objectStore('assets');
+
+                for (let asset of assets) {
+                    let response = await fetch(asset.url);
+                    let blob = await response.blob();
+                    store.put({url: asset.url, blob: blob, lastModified: asset.lastModified});
                 }
-              });
+                
+                await tx.complete;
+                console.log('All assets are stored in IndexedDB');
             }
-
-            const dbPromise = openDb();
-
-            async function storeAssetInDB(asset) {
-              const db = await dbPromise;
-              const tx = db.transaction('assets', 'readwrite');
-              const store = tx.objectStore('assets');
-              await store.put(asset);
-              await tx.done; // Make sure to await tx.done
-            }
-
-            async function fetchAssetFromDB(url) {
-              const db = await dbPromise;
-              return db.get('assets', url);
-            }
+  
 
             async function preloadAssets() {
-              console.log('Starting to preload assets');
-              const cache = await caches.open(cacheName);
-              console.log('Cache opened successfully');
+                console.log('Starting to preload assets');
+                const cache = await caches.open(cacheName);
+                console.log('Cache opened successfully');
+                const [assets, extra] = await Promise.all([
+                    fetch(ASSETS_MANIFEST_URL).then(res => res.json()),
+                    fetch(EXTRA_ASSETS_URL).then(res => res.text())
+                ]);
+                console.log('Assets and extra assets fetched successfully');
 
-              const [assets, extraText] = await Promise.all([
-                fetch(ASSETS_MANIFEST_URL).then(res => res.json()),
-                fetch(EXTRA_ASSETS_URL).then(res => res.text())
-              ]);
-              console.log('Assets and extra assets fetched successfully');
+                const urlsToCache = [];
+                parseAssets(assets, urlsToCache); // Parse main assets
+                console.log('Main assets parsed');
 
-              const allowedFolders = ['Viewer/', 'interface/'];
-              const urlsToCache = [];
+                // Fetch and parse extra assets
+                const extraText = await fetch(EXTRA_ASSETS_URL).then(res => res.text());
+                const extraAssetUrls = parseExtraAssets(extraText);
+    
+                // Add these URLs to your main array of assets to cache
+                extraAssetUrls.forEach(url => urlsToCache.push({ url, lastModified: null }));
 
-              parseAssets(assets, urlsToCache, allowedFolders);
-              console.log('Main assets parsed');
+                console.log(`Total URLs to cache: ${urlsToCache.length}`);
+                let loaded = 0;
+                const delay = 11; // Delay in milliseconds after loading each asset
 
-              const extraAssetUrls = parseExtraAssets(extraText, assets);
-              urlsToCache.push(...extraAssetUrls);
+                for (let { url, lastModified } of urlsToCache) {
+                    try {
+                        const cacheResponse = await cache.match(url);
+                        let shouldCache = true;
 
-              console.log(`Total URLs to cache: ${urlsToCache.length}`);
-              let loaded = 0;
-              const delay = 15;
+                        if (cacheResponse && lastModified) {
+                            const cacheLastModified = cacheResponse.headers.get('last-modified');
+                            shouldCache = new Date(lastModified) > new Date(cacheLastModified);
+                        }
 
-              for (let { url, lastModified } of urlsToCache) {
-                try {
-                  const cacheResponse = await cache.match(url);
-                  let shouldCache = !cacheResponse;
-
-                  if (lastModified) {
-                    const cachedAsset = await fetchAssetFromDB(url);
-                    console.log(`Checking dates for ${url}: server date ${lastModified}, cached date ${cachedAsset?.lastModified}`);
-                    if (cachedAsset && new Date(lastModified) > new Date(cachedAsset.lastModified)) {
-                      shouldCache = true;
-                      console.log(`Newer version found for ${url}. Updating...`);
+                        if (shouldCache) {
+                            await cache.add(url);
+                            console.log(`Cached: ${url}`);
+                        }
+                        loaded++;
+                        loadingPercentage = Math.floor((loaded / urlsToCache.length) * 100); // Update loading percentage
+                        await new Promise(resolve => setTimeout(resolve, delay)); // Wait for a tiny break after each asset is loaded
+                    } catch (error) {
+                        console.error(`Could not cache ${url}: ${error}`);
                     }
-                  }
-
-
-                  if (shouldCache) {
-                    const response = await fetch(url);
-                    const blob = await response.blob();
-
-                    if (lastModified) {
-                      await storeAssetInDB({ url, lastModified, data: blob });
-                      console.log(`Cached in IndexedDB: ${url}`);
-                    } else {
-                      await cache.put(url, new Response(blob));
-                      console.log(`Cached in Cache API: ${url}`);
-                    }
-                  }
-
-                  loaded++;
-                  const loadingPercentage = Math.floor((loaded / urlsToCache.length) * 100);
-                  console.log(`Loading ${loadingPercentage}% complete`);
-                  await new Promise(resolve => setTimeout(resolve, delay));
-                } catch (error) {
-                  console.error(`Could not cache ${url}: ${error}`);
                 }
-              }
 
-              verifyCache(cache, urlsToCache).then(() => {
-                console.log('All assets verified successfully.');
-                localStorage.setItem('firstLoadCompleteFlag', 'true');
-                localStorage.setItem('secondLoadCompleteFlag', 'true');
+                await verifyCache(cache, urlsToCache.map(item => item.url));
+
+                // Set local storage flags to indicate loading completion
+                if (!localStorage.getItem(firstLoadCompleteFlag)) {
+                    localStorage.setItem(firstLoadCompleteFlag, 'true');
+                }
+                if (!localStorage.getItem(secondLoadCompleteFlag)) {
+                    localStorage.setItem(secondLoadCompleteFlag, 'true');
+                }
+
                 fadeOutAsciiLinesXL();
-              }).catch(error => {
-                console.error('Cache verification failed:', error);
-              });
             }
-
-            function verifyCache(cache, urls) {
-              return new Promise(async (resolve, reject) => {
-                console.log('Verifying cached assets');
-                try {
-                  const cacheRequests = await cache.keys();
-                  const cacheKeys = cacheRequests.map(request => request.url);
-                  console.log('Cache Keys Found:', cacheKeys);  // Log all cache keys
-
-                  let verifiedCount = 0;
-                  urls.forEach(url => {
-                    console.log('Verifying URL:', url.url);  // Log each URL being verified
-                    const matched = cacheKeys.includes(url.url);
-                    if (matched) {
-                      verifiedCount++;
-                      console.log(`Verified: ${url.url}`);
-                    } else {
-                      console.error(`Verification failed for: ${url.url}`);
-                    }
-                  });
-
-                  console.log(`Total verified URLs: ${verifiedCount}, Expected: ${urls.length}`);
-                  if (verifiedCount === urls.length) {
-                    resolve();
-                  } else {
-                    reject('Not all URLs were verified successfully');
-                  }
-                } catch (error) {
-                  console.error('Error during cache verification:', error);
-                  reject(error);
-                }
-              });
-            }
-
-
-
-
-            function parseAssets(jsonData, urls, allowedFolders) {
-                for (let key in jsonData) {
-                    if (jsonData.hasOwnProperty(key)) {
-                        // Check if the key is within the allowed folders.
-                        const isInAllowedFolder = allowedFolders.some(folder => key.startsWith(folder));
-                        const value = jsonData[key];
-                        // If the key starts with one of the allowed folders, or it's an extra asset with no date, add it to the URLs.
-                        if (isInAllowedFolder || value === null) {
-                            urls.push({
-                                url: `https://raw.githubusercontent.com/Mischlichter/data/main/${key}`,
-                                lastModified: value // If the value is null for extra assets, it will stay null.
-                            });
-                        }
-                    }
-                }
-            }
-
-            function parseExtraAssets(text, jsonData) {
-                // Split the text by new lines and filter out any lines that are not URLs
-                return text.split('\n').filter(line => {
-                    // Use a regular expression to test if the line is a valid URL
-                    const urlPattern = /^http[s]?:\/\/.+/;
-                    return urlPattern.test(line.trim());
-                }).map(line => {
-                    // Trim the line to remove any leading or trailing whitespace
-                    const url = line.trim();
-                    // Try to extract the key that matches this URL in the jsonData to find its lastModified date
-                    const lastModified = Object.keys(jsonData).reduce((acc, key) => {
-                        if (jsonData[key] && url.includes(key)) {
-                            return jsonData[key]; // Get the date from jsonData if the url includes the key
-                        }
-                        return acc;
-                    }, null);
-                    return {
-                        url: url,
-                        lastModified: lastModified
-                    };
-                });
-            }
-
-
 
 
 
@@ -1151,7 +1041,53 @@
             }
 
 
-        
+            async function verifyCache(cache, urls) {
+                console.log('Verifying cached assets');
+                const cacheKeys = await cache.keys();
+                let verifiedCount = 0;
+
+                for (let url of urls) {
+                    if (cacheKeys.some(request => request.url === url)) {
+                        verifiedCount++;
+                        console.log(`Verified: ${url}`);
+                    } else {
+                        console.error(`Verification failed for: ${url}`);
+                    }
+                }
+
+                console.log(`Total verified URLs: ${verifiedCount}`);
+            }
+
+            function parseAssets(node, urls) {
+                for (let key in node) {
+                    if (node.hasOwnProperty(key)) {
+                        const value = node[key];
+                        if (typeof value === 'object') {
+                            parseAssets(value, urls);
+                        } else if (key.startsWith('Viewer') || key.startsWith('interface')) {
+                            urls.push({ 
+                                url: `https://raw.githubusercontent.com/Mischlichter/data/main/${key}`,
+                                lastModified: value.date // Adjust this based on your JSON structure
+                            });
+                        }
+                    }
+                }
+            }
+
+
+            function parseExtraAssets(text) {
+                // Split the text by new lines and filter out any lines that are not URLs
+                return text.split('\n').filter(line => {
+                    // Use a regular expression to test if the line is a valid URL
+                    const urlPattern = /^http[s]?:\/\/.+/;
+                    return urlPattern.test(line.trim());
+                }).map(line => {
+                    // Trim the line to remove any leading or trailing whitespace
+                    return line.trim();
+                });
+            }
+
+
 
             function enterSite() {
                 
@@ -1374,24 +1310,23 @@
 
 
             // Check and control the load progress visibility based on the phase of loading
-            if (!localStorage.getItem('firstLoadCompleteFlag')) {
-                // If the first load is not complete, call preloadAssets to load and set the flag
+            if (!localStorage.getItem(firstLoadCompleteFlag) || !localStorage.getItem(secondLoadCompleteFlag)) {
                 preloadAssets();
             } else {
-                // Once the first load is confirmed complete, execute the following logic:
+                // Removed direct calls to enterSite() here to ensure it's managed within triggerPermissionRequest
                 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                    // This will handle entering the site after permissions for mobile devices
+                    
+                     // This will handle entering the site after permissions
                     showOverlay();
                 } else {
-                    // Directly add event listener if not on a mobile device
-                    enterSite();  // Non-iOS or no permissions needed, proceed to enter the site
-                    fadeOutOverlay();
+                    // Directly add event listener if not on iOS
+                    
+                    enterSite(); // Non-iOS or no permissions needed, proceed to enter the site
+                    fadeOutOverlay()
                 }
 
-                // Optionally, check and remove the second load flag if its purpose has been served
-                if (localStorage.getItem('secondLoadCompleteFlag')) {
-                    localStorage.removeItem('secondLoadCompleteFlag');  // Remove the second flag if needed
-                }
+                localStorage.removeItem(firstLoadCompleteFlag);
+                localStorage.removeItem(secondLoadCompleteFlag);
             }
            
         });
