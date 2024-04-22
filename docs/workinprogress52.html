@@ -1066,11 +1066,48 @@
 
 
 
-            async function verifyCache(cache, urls) {
-                if (!urls || urls.length === 0) {
-                    console.error("No URLs provided for verification.");
-                    return;
+            function parseAssets(jsonData, urls, allowedFolders) {
+                for (let key in jsonData) {
+                    if (jsonData.hasOwnProperty(key)) {
+                        // Check if the key is within the allowed folders.
+                        const isInAllowedFolder = allowedFolders.some(folder => key.startsWith(folder));
+                        const value = jsonData[key];
+                        // If the key starts with one of the allowed folders, or it's an extra asset with no date, add it to the URLs.
+                        if (isInAllowedFolder || value === null) {
+                            urls.push({
+                                url: `https://raw.githubusercontent.com/Mischlichter/data/main/${key}`,
+                                lastModified: value // If the value is null for extra assets, it will stay null.
+                            });
+                        }
+                    }
                 }
+            }
+
+            function parseExtraAssets(text, jsonData) {
+                // Split the text by new lines and filter out any lines that are not URLs
+                return text.split('\n').filter(line => {
+                    // Use a regular expression to test if the line is a valid URL
+                    const urlPattern = /^http[s]?:\/\/.+/;
+                    return urlPattern.test(line.trim());
+                }).map(line => {
+                    // Trim the line to remove any leading or trailing whitespace
+                    const url = line.trim();
+                    // Try to extract the key that matches this URL in the jsonData to find its lastModified date
+                    const lastModified = Object.keys(jsonData).reduce((acc, key) => {
+                        if (jsonData[key] && url.includes(key)) {
+                            return jsonData[key]; // Get the date from jsonData if the url includes the key
+                        }
+                        return acc;
+                    }, null);
+                    return {
+                        url: url,
+                        lastModified: lastModified
+                    };
+                });
+            }
+
+
+            async function verifyCache(cache, urls) {
                 console.log('Verifying cached assets');
                 const cacheKeys = await cache.keys();
                 let verifiedCount = 0;
@@ -1085,40 +1122,6 @@
                 }
 
                 console.log(`Total verified URLs: ${verifiedCount}`);
-            }
-
-            function parseAssets(jsonData, urls, allowedFolders) {
-                for (let key in jsonData) {
-                    if (jsonData.hasOwnProperty(key)) {
-                        const isInAllowedFolder = allowedFolders.some(folder => key.startsWith(folder));
-                        const value = jsonData[key];
-                        if (isInAllowedFolder && value !== undefined) {
-                            urls.push({
-                                url: `https://raw.githubusercontent.com/Mischlichter/data/main/${key}`,
-                                lastModified: value
-                            });
-                        }
-                    }
-                }
-            }
-
-            function parseExtraAssets(text, jsonData) {
-                return text.split('\n').filter(line => {
-                    const urlPattern = /^http[s]?:\/\/.+/;
-                    return urlPattern.test(line.trim());
-                }).map(line => {
-                    const url = line.trim();
-                    const lastModified = Object.keys(jsonData).reduce((acc, key) => {
-                        if (jsonData[key] && url.includes(key)) {
-                            return jsonData[key];
-                        }
-                        return acc;
-                    }, null);
-                    return {
-                        url: url,
-                        lastModified: lastModified
-                    };
-                });
             }
 
 
