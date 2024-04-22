@@ -1058,7 +1058,7 @@
                 fadeOutAsciiLinesXL();
             }
 
-            
+
             function verifyCache(cache, urls) {
               return new Promise(async (resolve, reject) => {
                 console.log('Verifying cached assets');
@@ -1378,24 +1378,26 @@
 
 
             // Check and control the load progress visibility based on the phase of loading
-            if (!localStorage.getItem(firstLoadCompleteFlag) || !localStorage.getItem(secondLoadCompleteFlag)) {
+            if (!localStorage.getItem('firstLoadCompleteFlag')) {
+                // If the first load is not complete, call preloadAssets to load and set the flag
                 preloadAssets();
             } else {
-                // Removed direct calls to enterSite() here to ensure it's managed within triggerPermissionRequest
+                // Once the first load is confirmed complete, execute the following logic:
                 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                    
-                     // This will handle entering the site after permissions
+                    // This will handle entering the site after permissions for mobile devices
                     showOverlay();
                 } else {
-                    // Directly add event listener if not on iOS
-                    
-                    enterSite(); // Non-iOS or no permissions needed, proceed to enter the site
-                    fadeOutOverlay()
+                    // Directly add event listener if not on a mobile device
+                    enterSite();  // Non-iOS or no permissions needed, proceed to enter the site
+                    fadeOutOverlay();
                 }
 
-                localStorage.removeItem(firstLoadCompleteFlag);
-                localStorage.removeItem(secondLoadCompleteFlag);
+                // Optionally, check and remove the second load flag if its purpose has been served
+                if (localStorage.getItem('secondLoadCompleteFlag')) {
+                    localStorage.removeItem('secondLoadCompleteFlag');  // Remove the second flag if needed
+                }
             }
+           
            
         });
 
