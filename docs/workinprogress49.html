@@ -288,7 +288,8 @@
             
         }
 
-                
+
+        
         .flex-container span {
             white-space: nowrap;
             display: inline-block;
@@ -3077,6 +3078,11 @@
             var adjustmentFactor = 1; // Default for non-mobile or desktop
             if (isMobile) {
                 adjustmentFactor = isPortrait ? portraitAdjustment : landscapeAdjustment;
+
+                var container01 = document.getElementById('container01');
+                if (container01) {
+                    container01.style.marginTop = '30%'; // Set margin top to 30% on mobile devices
+                }
             }
 
             var scaledWidthPx = (virtualCanvasWidth * baseWidthPercent / 100) * adjustmentFactor; // Apply selected adjustment
