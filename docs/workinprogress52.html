@@ -1107,26 +1107,6 @@
             }
 
 
-
-
-
-
-            function fadeOutAsciiLinesXL() {
-                const elements = document.querySelectorAll('.ascii-line-XL');
-                elements.forEach(function(element) {
-                    element.style.transition = 'opacity 1s ease-out'; // Ensure the transition is smooth
-                    element.style.opacity = '0'; // Set opacity to 0 to fade out
-                });
-
-                // Optional: Callback function to perform actions after the fade out completes
-                setTimeout(() => {
-                    window.location.reload();
-                    console.log('Fade out completed.');
-                    // Here you can add any action that should occur after the fade-out
-                }, 1111); // Delay should match the duration of the fade-out effect
-            }
-
-
             async function verifyCache(cache, urls) {
                 console.log('Verifying cached assets');
                 const cacheKeys = await cache.keys();
@@ -1146,18 +1126,25 @@
 
 
 
-
-            function parseExtraAssets(text) {
-                // Split the text by new lines and filter out any lines that are not URLs
-                return text.split('\n').filter(line => {
-                    // Use a regular expression to test if the line is a valid URL
-                    const urlPattern = /^http[s]?:\/\/.+/;
-                    return urlPattern.test(line.trim());
-                }).map(line => {
-                    // Trim the line to remove any leading or trailing whitespace
-                    return line.trim();
+            function fadeOutAsciiLinesXL() {
+                const elements = document.querySelectorAll('.ascii-line-XL');
+                elements.forEach(function(element) {
+                    element.style.transition = 'opacity 1s ease-out'; // Ensure the transition is smooth
+                    element.style.opacity = '0'; // Set opacity to 0 to fade out
                 });
+
+                // Optional: Callback function to perform actions after the fade out completes
+                setTimeout(() => {
+                    window.location.reload();
+                    console.log('Fade out completed.');
+                    // Here you can add any action that should occur after the fade-out
+                }, 1111); // Delay should match the duration of the fade-out effect
             }
+
+
+            
+
+
 
 
 
