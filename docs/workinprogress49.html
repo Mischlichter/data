@@ -2242,45 +2242,53 @@
         function createScrollToTopButton() {
             const button = document.createElement('button');
             button.id = 'scrollToTopButton';
-            // Wrap the triangle symbol in a span for finer control
-            button.innerHTML = '<span style="position: relative; top: -5px;">▲</span>'; 
+            button.innerHTML = '<span style="position: relative; top: -5px;">▲</span>'; // Triangle symbol adjusted
             button.style.cssText = `
                 position: fixed; 
-                bottom: 20px; 
-                right: 20px; 
-                width: 50px;  /* Increased width for a wider appearance */
-                height: 50px; /* Same as width to maintain circular shape */
+                bottom: 30px; 
+                right: 30px; 
+                width: 48px;  /* Increased width for a wider appearance */
+                height: 48px; /* Same as width to maintain circular shape */
                 line-height: 50px; /* Center the triangle vertically */
                 text-align: center; /* Center the triangle horizontally */
                 padding: 0;
                 font-size: 24px; /* Larger font size for the triangle */
-                background-color: black;
+                background-color: transparent; /* Background made transparent */
+                box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
                 color: #00ffcc;
                 border: 2px solid #00ffcc;
                 border-radius: 50%;
                 cursor: pointer;
-                z-index: 9999;
+                z-index: 17;
                 display: none;
                 opacity: 0;
-                transition: opacity 0.3s ease-in-out; /* Smooth transition for opacity */
+                transition: opacity 0.5s ease; /* Smooth transition for opacity */
             `;
             document.body.appendChild(button);
 
-            button.addEventListener('click', function() {
+            // Function to scroll to the top smoothly
+            function scrollToTop() {
                 window.scrollTo({
                     top: 0,
                     behavior: 'smooth'
                 });
+            }
+
+            // Listen to both click and touchend events
+            button.addEventListener('click', scrollToTop);
+            button.addEventListener('touchend', function(event) {
+                event.preventDefault();  // Prevent the mouse event from firing
+                scrollToTop();
             });
 
             // Show and hide button with fade effects when scrolling
             window.addEventListener('scroll', function() {
                 if (window.scrollY > 100) {
                     button.style.display = 'block';
-                    setTimeout(() => button.style.opacity = 1, 10); // Delay slightly to ensure display is set
+                    setTimeout(() => button.style.opacity = 1, 500); // Increased delay to 500ms for showing
                 } else {
                     button.style.opacity = 0;
-                    setTimeout(() => button.style.display = 'none', 300); // Delay hiding to allow opacity transition
+                    setTimeout(() => button.style.display = 'none', 300); // Keep delay at 300ms for hiding
                 }
             });
         }
@@ -2324,7 +2332,7 @@
             footerContainer.style.alignItems = 'center'; // Center items horizontally
             footerContainer.style.justifyContent = 'center'; // Center items vertically
             footerContainer.style.position = 'relative'; // To apply z-index
-            footerContainer.style.zIndex = '30'; // Ensure it's on top
+            footerContainer.style.zIndex = '16'; // Ensure it's on top
             footerContainer.style.marginTop = '256px'; // Space before the footer
             footerContainer.style.boxShadow = '0px -50px 30px -20px rgba(0, 0, 0, 0.5)';
 

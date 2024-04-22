@@ -417,12 +417,20 @@ const galleryHTML = `
                         // Wait for another 1 second after the opacity transition to remove the container
                         setTimeout(() => {
                             centerContainer.remove();
+                            scrollToTop()
                             enableScroll();
                         }, 1000); // Delay for the opacity transition
                     }, 1000); // Initial delay before starting the transition
                 }
             }
 
+        }
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                
+            });
         }
 
         
