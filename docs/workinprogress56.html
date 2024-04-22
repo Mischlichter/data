@@ -1011,6 +1011,8 @@
                 }
 
                 await verifyCache(cache, urlsToCache.map(item => item.url));
+                const fetchedAssets = await fetchAssets(urlsToCache); // Assuming this fetches all necessary asset data
+                await storeAssetsInDB(fetchedAssets);
 
                 // Set local storage flags to indicate loading completion
                 if (!localStorage.getItem(firstLoadCompleteFlag)) {
