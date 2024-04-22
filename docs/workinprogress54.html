@@ -985,74 +985,61 @@
             }
 
             async function preloadAssets() {
-              console.log('Starting to preload assets');
-              const cache = await caches.open(cacheName);
-              console.log('Cache opened successfully');
+                console.log('Starting to preload assets');
+                const [assets, extraText] = await Promise.all([
+                    fetch(ASSETS_MANIFEST_URL).then(res => res.json()),
+                    fetch(EXTRA_ASSETS_URL).then(res => res.text())
+                ]);
+                console.log('Assets and extra assets fetched successfully');
 
-              const [assets, extraText] = await Promise.all([
-                fetch(ASSETS_MANIFEST_URL).then(res => res.json()),
-                fetch(EXTRA_ASSETS_URL).then(res => res.text())
-              ]);
-              console.log('Assets and extra assets fetched successfully');
+                const allowedFolders = ['Viewer/', 'clipz/', 'interface/'];
+                const urlsToCache = [];
 
-              const allowedFolders = ['Viewer/', 'clipz/', 'interface/'];
-              const urlsToCache = [];
+                parseAssets(assets, urlsToCache, allowedFolders);
+                console.log('Main assets parsed');
 
-              parseAssets(assets, urlsToCache, allowedFolders);
-              console.log('Main assets parsed');
+                const extraAssetUrls = parseExtraAssets(extraText, assets);
+                urlsToCache.push(...extraAssetUrls);
 
-              const extraAssetUrls = parseExtraAssets(extraText, assets);
-              urlsToCache.push(...extraAssetUrls);
+                console.log(`Total URLs to cache: ${urlsToCache.length}`);
+                let loaded = 0;
+                const delay = 15;
 
-              console.log(`Total URLs to cache: ${urlsToCache.length}`);
-              let loaded = 0;
-              const delay = 15;
+                for (let { url, lastModified } of urlsToCache) {
+                    try {
+                        let shouldCache = true;
+                        const isVideoFile = url.endsWith('.mp4');  // Identify if it's a video file
+                        const cachedAsset = await fetchAssetFromDB(url);
 
-              for (let { url, lastModified } of urlsToCache) {
-                try {
-                  const cacheResponse = await cache.match(url);
-                  let shouldCache = !cacheResponse;
+                        if (lastModified) {
+                            if (cachedAsset && new Date(lastModified) > new Date(cachedAsset.lastModified)) {
+                                shouldCache = true;
+                            } else {
+                                shouldCache = false;  // If the asset is up-to-date, skip caching
+                            }
+                        }
 
-                  if (lastModified) {
-                    const cachedAsset = await fetchAssetFromDB(url);
-                    console.log(`Checking dates for ${url}: server date ${lastModified}, cached date ${cachedAsset?.lastModified}`);
-                    if (cachedAsset && new Date(lastModified) > new Date(cachedAsset.lastModified)) {
-                      shouldCache = true;
-                      console.log(`Newer version found for ${url}. Updating...`);
+                        if (shouldCache) {
+                            const response = await fetch(url);
+                            const blob = await response.blob();
+                            await storeAssetInDB({ url, lastModified, data: blob });  // Store all assets, including videos, in IndexedDB
+                            console.log(`Cached in IndexedDB: ${url}`);
+                        }
+
+                        loaded++;
+                        const loadingPercentage = Math.floor((loaded / urlsToCache.length) * 100);
+                        console.log(`Loading ${loadingPercentage}% complete`);
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                    } catch (error) {
+                        console.error(`Could not cache ${url}: ${error}`);
                     }
-                  }
-
-
-                  if (shouldCache) {
-                    const response = await fetch(url);
-                    const blob = await response.blob();
-
-                    if (lastModified) {
-                      await storeAssetInDB({ url, lastModified, data: blob });
-                      console.log(`Cached in IndexedDB: ${url}`);
-                    } else {
-                      await cache.put(url, new Response(blob));
-                      console.log(`Cached in Cache API: ${url}`);
-                    }
-                  }
-
-                  loaded++;
-                  const loadingPercentage = Math.floor((loaded / urlsToCache.length) * 100);
-                  console.log(`Loading ${loadingPercentage}% complete`);
-                  await new Promise(resolve => setTimeout(resolve, delay));
-                } catch (error) {
-                  console.error(`Could not cache ${url}: ${error}`);
                 }
-              }
 
-              verifyCache(cache, urlsToCache).then(() => {
-                console.log('All assets verified successfully.');
+                // Since videos are no longer part of the cache API, adjust verification accordingly
+                console.log('All assets processed successfully.');
                 localStorage.setItem('firstLoadCompleteFlag', 'true');
                 localStorage.setItem('secondLoadCompleteFlag', 'true');
                 fadeOutAsciiLinesXL();
-              }).catch(error => {
-                console.error('Cache verification failed:', error);
-              });
             }
 
             function verifyCache(cache, urls) {
@@ -1094,19 +1081,19 @@
             function parseAssets(jsonData, urls, allowedFolders) {
                 for (let key in jsonData) {
                     if (jsonData.hasOwnProperty(key)) {
-                        // Check if the key is within the allowed folders.
                         const isInAllowedFolder = allowedFolders.some(folder => key.startsWith(folder));
+                        const isVideoFile = key.endsWith('.mp4');  // Check if the file is a video
                         const value = jsonData[key];
-                        // If the key starts with one of the allowed folders, or it's an extra asset with no date, add it to the URLs.
-                        if (isInAllowedFolder || value === null) {
+                        if (isInAllowedFolder && !isVideoFile) {  // Exclude video files
                             urls.push({
                                 url: `https://raw.githubusercontent.com/Mischlichter/data/main/${key}`,
-                                lastModified: value // If the value is null for extra assets, it will stay null.
+                                lastModified: value  // Include last modified date for caching
                             });
                         }
                     }
                 }
             }
+
 
             function parseExtraAssets(text, jsonData) {
                 // Split the text by new lines and filter out any lines that are not URLs
