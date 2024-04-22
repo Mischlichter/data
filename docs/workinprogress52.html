@@ -1042,18 +1042,38 @@
                 }
               }
 
-              // Pass urlsToCache to verifyCache function
-              await verifyCache(cache, urlsToCache); // Include urlsToCache as an argument
-
-              if (!localStorage.getItem('firstLoadCompleteFlag')) {
+              verifyCache(cache, urlsToCache).then(() => {
+                console.log('All assets verified successfully.');
                 localStorage.setItem('firstLoadCompleteFlag', 'true');
-              }
-              if (!localStorage.getItem('secondLoadCompleteFlag')) {
                 localStorage.setItem('secondLoadCompleteFlag', 'true');
-              }
-
-              fadeOutAsciiLinesXL();
+                fadeOutAsciiLinesXL();
+              }).catch(error => {
+                console.error('Cache verification failed:', error);
+              });
             }
+
+            function verifyCache(cache, urls) {
+              return new Promise(async (resolve, reject) => {
+                console.log('Verifying cached assets');
+                const cacheKeys = await cache.keys();
+                let verifiedCount = 0;
+                urls.forEach(url => {
+                  if (cacheKeys.some(request => request.url === url.url)) {
+                    verifiedCount++;
+                    console.log(`Verified: ${url.url}`);
+                  } else {
+                    console.error(`Verification failed for: ${url.url}`);
+                  }
+                });
+                console.log(`Total verified URLs: ${verifiedCount}`);
+                if (verifiedCount === urls.length) {
+                  resolve();
+                } else {
+                  reject('Not all URLs were verified successfully');
+                }
+              });
+            }
+
 
 
             function parseAssets(jsonData, urls, allowedFolders) {
@@ -1096,22 +1116,6 @@
                 });
             }
 
-
-            function verifyCache(cache, urls) {
-              console.log('Verifying cached assets');
-              cache.keys().then(cacheKeys => {
-                let verifiedCount = 0;
-                urls.forEach(url => {
-                  if (cacheKeys.some(request => request.url === url.url)) {
-                    verifiedCount++;
-                    console.log(`Verified: ${url.url}`);
-                  } else {
-                    console.error(`Verification failed for: ${url.url}`);
-                  }
-                });
-                console.log(`Total verified URLs: ${verifiedCount}`);
-              });
-            }
 
 
 
