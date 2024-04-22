@@ -1056,16 +1056,21 @@
               return new Promise(async (resolve, reject) => {
                 console.log('Verifying cached assets');
                 const cacheKeys = await cache.keys();
+                console.log('Cache Keys Found:', cacheKeys.map(request => request.url));  // Log all cache keys
                 let verifiedCount = 0;
                 urls.forEach(url => {
-                  if (cacheKeys.some(request => request.url === url.url)) {
+                  const matched = cacheKeys.some(request => request.url === url.url);
+                  if (matched) {
                     verifiedCount++;
                     console.log(`Verified: ${url.url}`);
                   } else {
                     console.error(`Verification failed for: ${url.url}`);
+                    // Log the expected URL and what was actually found to help identify the mismatch
+                    console.error(`Expected: ${url.url}`);
+                    console.error('Actual URLs in Cache:', cacheKeys.map(request => request.url));
                   }
                 });
-                console.log(`Total verified URLs: ${verifiedCount}`);
+                console.log(`Total verified URLs: ${verifiedCount}, Expected: ${urls.length}`);
                 if (verifiedCount === urls.length) {
                   resolve();
                 } else {
@@ -1073,6 +1078,7 @@
                 }
               });
             }
+
 
 
 
