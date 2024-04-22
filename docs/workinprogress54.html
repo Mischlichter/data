@@ -986,6 +986,9 @@
 
             async function preloadAssets() {
                 console.log('Starting to preload assets');
+                const cache = await caches.open(cacheName);
+                console.log('Cache opened successfully');
+
                 const [assets, extraText] = await Promise.all([
                     fetch(ASSETS_MANIFEST_URL).then(res => res.json()),
                     fetch(EXTRA_ASSETS_URL).then(res => res.text())
@@ -1007,23 +1010,29 @@
 
                 for (let { url, lastModified } of urlsToCache) {
                     try {
-                        let shouldCache = true;
-                        const isVideoFile = url.endsWith('.mp4');  // Identify if it's a video file
-                        const cachedAsset = await fetchAssetFromDB(url);
+                        const isVideoFile = url.endsWith('.mp4'); // Check if the asset is a video
+                        let shouldCache = false;
 
-                        if (lastModified) {
-                            if (cachedAsset && new Date(lastModified) > new Date(cachedAsset.lastModified)) {
-                                shouldCache = true;
-                            } else {
-                                shouldCache = false;  // If the asset is up-to-date, skip caching
-                            }
+                        if (!isVideoFile) {
+                            const cacheResponse = await cache.match(url);
+                            shouldCache = !cacheResponse; // Only cache non-video files if they aren't already in the cache
+                        }
+
+                        const cachedAsset = await fetchAssetFromDB(url);
+                        if (lastModified && cachedAsset && new Date(lastModified) > new Date(cachedAsset.lastModified)) {
+                            shouldCache = true; // Re-cache if the asset in IndexedDB is older
                         }
 
                         if (shouldCache) {
                             const response = await fetch(url);
                             const blob = await response.blob();
-                            await storeAssetInDB({ url, lastModified, data: blob });  // Store all assets, including videos, in IndexedDB
+                            await storeAssetInDB({ url, lastModified, data: blob });
                             console.log(`Cached in IndexedDB: ${url}`);
+
+                            if (!isVideoFile) {
+                                await cache.put(url, new Response(blob));
+                                console.log(`Cached in Cache API: ${url}`);
+                            }
                         }
 
                         loaded++;
@@ -1035,13 +1044,21 @@
                     }
                 }
 
-                // Since videos are no longer part of the cache API, adjust verification accordingly
+                // Verify only the non-video URLs in the Cache API
+                await verifyCache(cache, urlsToCache.filter(u => !u.url.endsWith('.mp4')));
                 console.log('All assets processed successfully.');
-                localStorage.setItem('firstLoadCompleteFlag', 'true');
-                localStorage.setItem('secondLoadCompleteFlag', 'true');
+
+                if (!localStorage.getItem('firstLoadCompleteFlag')) {
+                    localStorage.setItem('firstLoadCompleteFlag', 'true');
+                }
+                if (!localStorage.getItem('secondLoadCompleteFlag')) {
+                    localStorage.setItem('secondLoadCompleteFlag', 'true');
+                }
+
                 fadeOutAsciiLinesXL();
             }
 
+            
             function verifyCache(cache, urls) {
               return new Promise(async (resolve, reject) => {
                 console.log('Verifying cached assets');
