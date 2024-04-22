@@ -19,6 +19,12 @@ P06:
 We invite you to be part of this adventure, to share your creations, to inspire and be inspired, and to unlock the limitless potential of your imagination.
 
 
+@media (max-width: 767px) {
+    #container01 {
+        margin-top: 30%;
+    }
+}
+
 #container01 {
     font-family: 'JetBrainsMono-ExtraBold', sans-serif;
     margin-top: 25%;
