@@ -1055,30 +1055,35 @@
             function verifyCache(cache, urls) {
               return new Promise(async (resolve, reject) => {
                 console.log('Verifying cached assets');
-                const cacheKeys = await cache.keys();
-                console.log('Cache Keys Found:', cacheKeys.map(request => request.url));  // Log all cache keys
+                try {
+                  const cacheRequests = await cache.keys();
+                  const cacheKeys = cacheRequests.map(request => request.url);
+                  console.log('Cache Keys Found:', cacheKeys);  // Log all cache keys
 
-                let verifiedCount = 0;
-                urls.forEach(url => {
-                  console.log('Verifying URL:', url.url);  // Log each URL being verified
-                  const matched = cacheKeys.some(request => request.url === url.url);
-                  if (matched) {
-                    verifiedCount++;
-                    console.log(`Verified: ${url.url}`);
+                  let verifiedCount = 0;
+                  urls.forEach(url => {
+                    console.log('Verifying URL:', url.url);  // Log each URL being verified
+                    const matched = cacheKeys.includes(url.url);
+                    if (matched) {
+                      verifiedCount++;
+                      console.log(`Verified: ${url.url}`);
+                    } else {
+                      console.error(`Verification failed for: ${url.url}`);
+                    }
+                  });
+
+                  console.log(`Total verified URLs: ${verifiedCount}, Expected: ${urls.length}`);
+                  if (verifiedCount === urls.length) {
+                    resolve();
                   } else {
-                    console.error(`Verification failed for: ${url.url}`);
+                    reject('Not all URLs were verified successfully');
                   }
-                });
-
-                console.log(`Total verified URLs: ${verifiedCount}, Expected: ${urls.length}`);
-                if (verifiedCount === urls.length) {
-                  resolve();
-                } else {
-                  reject('Not all URLs were verified successfully');
+                } catch (error) {
+                  console.error('Error during cache verification:', error);
+                  reject(error);
                 }
               });
             }
-
 
 
 
