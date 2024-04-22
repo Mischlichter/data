@@ -2262,7 +2262,7 @@
                 z-index: 17;
                 display: none;
                 opacity: 0;
-                transition: opacity 0.5s ease; /* Smooth transition for opacity */
+                transition: opacity 1.5s ease; /* Smooth transition for opacity */
             `;
             document.body.appendChild(button);
 
@@ -2283,12 +2283,12 @@
 
             // Show and hide button with fade effects when scrolling
             window.addEventListener('scroll', function() {
-                if (window.scrollY > 100) {
+                if (window.scrollY > 1111) {
                     button.style.display = 'block';
-                    setTimeout(() => button.style.opacity = 1, 500); // Increased delay to 500ms for showing
+                    setTimeout(() => button.style.opacity = 1, 1500); // Increased delay to 500ms for showing
                 } else {
                     button.style.opacity = 0;
-                    setTimeout(() => button.style.display = 'none', 300); // Keep delay at 300ms for hiding
+                    setTimeout(() => button.style.display = 'none', 100); // Keep delay at 300ms for hiding
                 }
             });
         }
