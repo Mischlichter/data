@@ -142,29 +142,6 @@
             });
         }
 
-        async function preloadAllAssets() {
-            const preloadPromises = [];
-            for (const sceneKey in assets) {
-                for (const number in assets[sceneKey]) {
-                    if (assets[sceneKey][number].image) {
-                        preloadPromises.push(delayedPreloadAndCacheImage(assets[sceneKey][number].image.url));
-                    }
-                    if (assets[sceneKey][number].depthmap) {
-                        preloadPromises.push(delayedPreloadAndCacheImage(assets[sceneKey][number].depthmap.url));
-                    }
-                }
-            }
-            await Promise.all(preloadPromises);
-        }
-
-        function delayedPreloadAndCacheImage(url) {
-            return new Promise(resolve => {
-                setTimeout(() => {
-                    resolve(preloadAndCacheImage(url));
-                }, 1000); // 1000 milliseconds = 1 second delay
-            });
-        }
-
         let assets;
         let currentSceneKey = 'scene01';
         let viewerContainers = [];
@@ -224,6 +201,23 @@
             //console.log("Loaded assets:", assets);
             await Promise.all(preloadPromises);
         }
+
+        async function preloadAllAssets() {
+            await loadAssets(); // Ensure that assets are loaded before preloading
+            const preloadPromises = [];
+            for (const sceneKey in assets) {
+                for (const number in assets[sceneKey]) {
+                    if (assets[sceneKey][number].image) {
+                        preloadPromises.push(preloadAndCacheImage(assets[sceneKey][number].image.url));
+                    }
+                    if (assets[sceneKey][number].depthmap) {
+                        preloadPromises.push(preloadAndCacheImage(assets[sceneKey][number].depthmap.url));
+                    }
+                }
+            }
+            await Promise.all(preloadPromises);
+        }
+
 
         function changeScene(sceneKey) {
             //console.log(sceneKey);
