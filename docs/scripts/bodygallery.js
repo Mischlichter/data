@@ -410,7 +410,9 @@ const galleryHTML = `
                 const centerContainer = document.querySelector('.center-container');
                 if (centerContainer) {
                     // Start by scrolling to the top smoothly
-                    window.scrollTo({top: 0, behavior: 'smooth'});
+                    window.scrollTo({
+                        top: 0,                 
+                    });
 
                     // Assume the scroll will take a certain amount of time (e.g., 500 ms)
                     setTimeout(() => {
