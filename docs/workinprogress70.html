@@ -951,27 +951,27 @@
 
                 
             async function storeAssetsInDB(assets) {
-                // Open the database using openDB provided by umd.js
-                const db = await idb.openDB('MyDatabase', 1, {
-                    upgrade(db, oldVersion, newVersion, transaction) {
-                        // Create the store if it doesn't already exist
-                        if (!db.objectStoreNames.contains('assets')) {
-                            db.createObjectStore('assets', { keyPath: 'url' });
+                try {
+                    const db = await idb.openDB('MyDatabase', 1, {
+                        upgrade(db, oldVersion, newVersion, transaction) {
+                            if (!db.objectStoreNames.contains('assets')) {
+                                db.createObjectStore('assets', { keyPath: 'url' });
+                            }
                         }
+                    });
+
+                    const tx = db.transaction('assets', 'readwrite');
+                    const store = tx.objectStore('assets');
+
+                    for (let asset of assets) {
+                        await store.put({ url: asset.url, blob: asset.blob, lastModified: asset.lastModified });
                     }
-                });
 
-                const tx = db.transaction('assets', 'readwrite');
-                const store = tx.objectStore('assets');
-
-                for (let asset of assets) {
-                    // Assuming blob is directly passed, no need to fetch the asset again
-                    console.log(`Storing ${asset.url} with last modified date: ${asset.lastModified}`);
-                    store.put({ url: asset.url, blob: asset.blob, lastModified: asset.lastModified });
+                    await tx.done;
+                    console.log('All assets are stored in IndexedDB');
+                } catch (error) {
+                    console.error('Error storing assets in IndexedDB:', error);
                 }
-
-                await tx.done;
-                console.log('All assets are stored in IndexedDB');
             }
 
 
