@@ -1094,21 +1094,30 @@
 
 
             function parseExtraAssets(text, manifest) {
-                // Split the text by new lines and process each line
-                return text.split('\n').map(line => {
+                const urls = [];
+                const lines = text.split('\n');
+                for (let line of lines) {
                     let trimmedLine = line.trim();
-                    // Regex to extract URL from possibly complex lines
-                    const urlMatch = trimmedLine.match(/https?:\/\/[^:\s]+/);
-                    if (urlMatch) {
-                        let url = urlMatch[0]; // Get the matched URL
-                        let pathKey = Object.keys(manifest).find(key => manifest[key].url === url); // Find corresponding entry in manifest
-                        let lastModified = pathKey ? new Date(manifest[pathKey].lastModified).toISOString() : new Date().toISOString(); // Use manifest date or current time
-                        let asset = { url, lastModified };
-                        console.log('Parsed Extra Asset:', asset);  // Log the extracted data
-                        return asset;
+                    if (trimmedLine.startsWith('https://')) {  // Checks if the line is a URL
+                        const url = trimmedLine;
+                        // Attempt to extract the key from the URL that matches the manifest
+                        const urlPath = new URL(url).pathname.split('/').pop();
+
+                        // Find the corresponding manifest entry by filename included in the URL
+                        let manifestEntry = Object.keys(manifest).find(key => key.endsWith(urlPath));
+                        if (manifestEntry) {
+                            let lastModified = new Date(manifest[manifestEntry]).toISOString();  // Use the date from the manifest
+                            let asset = { url, lastModified };
+                            console.log('Parsed Extra Asset:', asset);  // Log the extracted data
+                            urls.push(asset);
+                        } else {
+                            console.log(`No manifest entry found for URL: ${url}`);  // Handle or log URLs not found in the manifest
+                        }
                     }
-                }).filter(item => item); // Remove any undefined items that might result from lines without valid URLs
+                }
+                return urls;  // Return the list of parsed URLs with their last modified dates from the manifest
             }
+
 
 
 
