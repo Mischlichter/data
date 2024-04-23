@@ -951,8 +951,10 @@
 
                 
             async function storeAssetsInDB(assets) {
+                // Open the database using openDB provided by umd.js
                 const db = await idb.openDB('MyDatabase', 1, {
                     upgrade(db, oldVersion, newVersion, transaction) {
+                        // Create the store if it doesn't already exist
                         if (!db.objectStoreNames.contains('assets')) {
                             db.createObjectStore('assets', { keyPath: 'url' });
                         }
@@ -963,6 +965,7 @@
                 const store = tx.objectStore('assets');
 
                 for (let asset of assets) {
+                    // Assuming blob is directly passed, no need to fetch the asset again
                     console.log(`Storing ${asset.url} with last modified date: ${asset.lastModified}`);
                     store.put({ url: asset.url, blob: asset.blob, lastModified: asset.lastModified });
                 }
@@ -970,6 +973,11 @@
                 await tx.done;
                 console.log('All assets are stored in IndexedDB');
             }
+
+
+
+
+  
 
             async function preloadAssets() {
                 console.log('Starting to preload assets');
@@ -982,21 +990,20 @@
                 });
                 const cache = await caches.open(cacheName);
                 console.log('Cache opened successfully');
-
                 const [assetsJson, extraText, secondExtraText] = await Promise.all([
                     fetch(ASSETS_MANIFEST_URL).then(res => res.json()),
                     fetch(EXTRA_ASSETS_URL).then(res => res.text()),
                     fetch(SECOND_EXTRA_ASSETS_URL).then(res => res.text())
                 ]);
                 console.log('Assets and extra assets fetched successfully');
+                console.log('Assets JSON:', assetsJson);
 
                 const urlsToCache = [];
                 parseAssets(assetsJson, urlsToCache);
-                const extraAssetUrls = parseExtraAssets(extraText, assetsJson);
-                const secondExtraAssetUrls = parseExtraAssets(secondExtraText, assetsJson);
-                urlsToCache.push(...extraAssetUrls, ...secondExtraAssetUrls);
-                console.log(`Total URLs to cache: ${urlsToCache.length}`);
+                parseExtraAssets(extraText, urlsToCache, lastModifiedDates); // Ensure lastModifiedDates are passed if needed
+                parseExtraAssets(secondExtraText, urlsToCache, lastModifiedDates);
 
+                console.log(`Total URLs to cache: ${urlsToCache.length}`);
                 let loaded = 0;
                 const delay = 30;
                 let assetsToStore = [];
@@ -1004,12 +1011,10 @@
                 for (let { url, lastModified } of urlsToCache) {
                     let shouldFetch = true;
                     const idbResponse = await db.transaction('assets').objectStore('assets').get(url);
-
                     if (idbResponse && new Date(idbResponse.lastModified) >= new Date(lastModified)) {
                         console.log(`Loaded from IndexedDB: ${url}`);
                         shouldFetch = false;
                     }
-
                     if (shouldFetch) {
                         let response = await fetch(url);
                         if (response.ok) {
@@ -1017,66 +1022,89 @@
                             await cache.put(url, cloneForCache);
                             console.log(`Fetched and cached: ${url}`);
                             const blob = await response.blob();
-                            const lastModifiedHeader = response.headers.get('last-modified') || lastModified.toISOString();
+                            const lastModifiedHeader = response.headers.get('last-modified') || new Date(lastModified).toISOString();
                             console.log(`Preparing to store in DB: ${url}, Last Modified: ${lastModifiedHeader}`);
                             assetsToStore.push({ url, blob, lastModified: lastModifiedHeader });
                         } else {
-                            throw new Error(`HTTP error! Status: ${response.status}`);
+                            console.error(`HTTP error! Status: ${response.status}`);
                         }
                     }
                     loaded++;
                     requestAnimationFrame(() => console.log(`Loading: ${Math.floor((loaded / urlsToCache.length) * 100)}% complete`));
                     await new Promise(resolve => setTimeout(resolve, delay));
                 }
-
                 await storeAssetsInDB(assetsToStore);
-                await verifyCache(cache, urlsToCache.map(item => item.url));
-
                 if (!localStorage.getItem(firstLoadCompleteFlag)) {
                     localStorage.setItem(firstLoadCompleteFlag, 'true');
                 }
                 if (!localStorage.getItem(secondLoadCompleteFlag)) {
                     localStorage.setItem(secondLoadCompleteFlag, 'true');
                 }
-
-                fadeOutAsciiLinesXL();
+                fadeOutAsciiLinesXL(); // Assuming this is a function for UI effects
             }
 
-            function parseAssets(node, urls, manifest) {
-                for (let key in node) {
-                    if (node.hasOwnProperty(key)) {
-                        const value = node[key];
+
+
+
+
+            
+
+
+            async function verifyCache(cache, urls) {
+                console.log('Verifying cached assets');
+                const cacheKeys = await cache.keys();
+                let verifiedCount = 0;
+
+                for (let url of urls) {
+                    if (cacheKeys.some(request => request.url === url)) {
+                        verifiedCount++;
+                        console.log(`Verified: ${url}`);
+                    } else {
+                        console.error(`Verification failed for: ${url}`);
+                    }
+                }
+
+                console.log(`Total verified URLs: ${verifiedCount}`);
+            }
+
+            function parseAssets(manifest, urls) {
+                for (let key in manifest) {
+                    if (manifest.hasOwnProperty(key)) {
+                        const value = manifest[key];
                         if (typeof value === 'object') {
-                            parseAssets(value, urls, manifest);
-                        } else if (key.startsWith('Viewer') || key.startsWith('interface')) {
+                            // Assuming value has url and lastModified properties if it's an object
+                            parseAssets(value, urls); // Recurse into nested objects
+                        } else {
+                            // Handle the case where the value is a simple date string
                             let asset = {
                                 url: `https://raw.githubusercontent.com/Mischlichter/data/main/${key}`,
-                                lastModified: manifest[key] || null // Using the date from the manifest or null if not available
+                                lastModified: new Date(value).toISOString() // Convert the date to ISO format
                             };
-                            console.log('Parsed Asset:', asset);
+                            console.log('Parsed Asset:', asset);  // Log the extracted data
                             urls.push(asset);
                         }
                     }
                 }
             }
 
-            function parseExtraAssets(text, manifest) {
+
+
+
+            function parseExtraAssets(text, lastModifiedDates) {
+                // Split the text by new lines and process each line
                 return text.split('\n').map(line => {
                     let trimmedLine = line.trim();
                     const urlMatch = trimmedLine.match(/(https?:\/\/[^:\s]+)/);
-
                     if (urlMatch) {
-                        let url = urlMatch[1];
-                        let lastModified = manifest[url] || null;
+                        let url = urlMatch[1]; // Get the matched URL
+                        let lastModified = lastModifiedDates[url] ? new Date(lastModifiedDates[url]).toISOString() : new Date().toISOString();
                         let asset = { url, lastModified };
-                        console.log('Parsed Extra Asset:', asset);
+                        console.log('Parsed Extra Asset:', asset);  // Log the extracted data
                         return asset;
                     }
-                }).filter(item => item);
+                }).filter(item => item); // Remove any undefined items that might result from lines without valid URLs
             }
 
-
-        
 
 
 
