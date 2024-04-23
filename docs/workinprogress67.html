@@ -1002,6 +1002,7 @@
                 for (let key in assetsJson) {
                     if (assetsJson.hasOwnProperty(key)) {
                         lastModifiedDates[assetsJson[key].url] = new Date(assetsJson[key].lastModified);
+                        console.log(`Date added for ${assetsJson[key].url}: ${lastModifiedDates[assetsJson[key].url]}`);  // Logging each addition
                     }
                 }
 
