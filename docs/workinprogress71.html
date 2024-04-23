@@ -1100,14 +1100,16 @@
                     let trimmedLine = line.trim();
                     if (trimmedLine.startsWith('https://')) {  // Checks if the line is a URL
                         const url = trimmedLine;
-                        // Attempt to extract the key from the URL that matches the manifest
-                        const urlPath = new URL(url).pathname.split('/').pop();
+                        // Extract the path from the URL and form the key as stored in the manifest
+                        const urlPath = new URL(url).pathname.split('/').slice(-2).join('/');  // Get the last two parts for folder/file structure
 
-                        // Find the corresponding manifest entry by filename included in the URL
-                        let manifestEntry = Object.keys(manifest).find(key => key.endsWith(urlPath));
-                        if (manifestEntry) {
-                            let lastModified = new Date(manifest[manifestEntry]).toISOString();  // Use the date from the manifest
-                            let asset = { url, lastModified };
+                        // Find the corresponding manifest entry by the adjusted URL path
+                        let lastModified = manifest[urlPath];  // Directly use urlPath to match the manifest
+                        if (lastModified) {
+                            let asset = {
+                                url: url,
+                                lastModified: new Date(lastModified).toISOString()  // Convert the date to ISO format
+                            };
                             console.log('Parsed Extra Asset:', asset);  // Log the extracted data
                             urls.push(asset);
                         } else {
@@ -1117,6 +1119,8 @@
                 }
                 return urls;  // Return the list of parsed URLs with their last modified dates from the manifest
             }
+
+
 
 
 
