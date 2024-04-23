@@ -1906,7 +1906,11 @@
 
                     // Check if the clicked menu item is currently active
                     if (currentlyActiveMenuItemId === menuContainer.id) {
-                        scrollToTop(); // Scroll to top if the same item is clicked again
+                        window.scrollTo({
+                            top: 0,
+                            left: 0,
+                            behavior: 'smooth'  // Use the 'smooth' scroll behavior
+                        });
                         return;
                     }
 
