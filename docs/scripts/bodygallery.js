@@ -439,77 +439,84 @@ const galleryHTML = `
 
   
 
-        function fetchImageFilenames() {
+        async function fetchImageFilenames() {
+            const db = await idb.openDB('MyDatabase', 1, {
+                upgrade(db, oldVersion, newVersion, transaction) {
+                    if (!db.objectStoreNames.contains('images')) {
+                        db.createObjectStore('images', { keyPath: 'url' });
+                    }
+                }
+            });
+
             let imageMetadata = {};
             const galleryContainer = document.getElementById('gallery-container');
 
             // Fetch metadata
-            fetch('https://raw.githubusercontent.com/Mischlichter/data/main/lib/metadata.json')
-                .then(response => response.json())
-                .then(data => {
-                    imageMetadata = data;
+            try {
+                const responseMetadata = await fetch('https://raw.githubusercontent.com/Mischlichter/data/main/lib/metadata.json');
+                imageMetadata = await responseMetadata.json();
+                
+                const responseFiles = await fetch('https://api.github.com/repos/Mischlichter/data/contents/gallerycom');
+                const files = await responseFiles.json();
 
-                    // Fetch image URLs dynamically
-                    fetch('https://api.github.com/repos/Mischlichter/data/contents/gallerycom')
-                        .then(response => response.json())
-                        .then(files => {
-                            const totalImages = files.length;
-                            let loadedImages = 0;
+                const totalImages = files.length;
+                let loadedImages = 0;
 
-                            function loadImage(index) {
-                                if (index >= totalImages) {
-                                    return; // All images loaded
-                                }
+                async function loadImage(index) {
+                    if (index >= totalImages) {
+                        return; // All images loaded
+                    }
 
-                                const file = files[index];
-                                const imageContainer = document.createElement('div');
-                                imageContainer.classList.add('image-container');
+                    const file = files[index];
+                    const idbResponse = await db.transaction('images').objectStore('images').get(file.download_url);
 
-                                const img = document.createElement('img');
-                                img.src = file.download_url;
-                                img.classList.add('grid-image');
-                                dynamicImages.push(img.src); // Store the image URL
+                    let imgBlobUrl;
+                    if (idbResponse) {
+                        console.log(`Loaded from IndexedDB: ${file.download_url}`);
+                        imgBlobUrl = URL.createObjectURL(idbResponse.blob);
+                    } else {
+                        const imageResponse = await fetch(file.download_url);
+                        const blob = await imageResponse.blob();
+                        await db.transaction('images', 'readwrite').objectStore('images').put({ url: file.download_url, blob });
+                        imgBlobUrl = URL.createObjectURL(blob);
+                    }
 
-                                const metadata = imageMetadata[file.name] || {};
-                                const wordOverlay = document.createElement('div');
-                                wordOverlay.classList.add('word-overlay');
+                    const imageContainer = document.createElement('div');
+                    imageContainer.classList.add('image-container');
 
-                                imageContainer.appendChild(img);
-                                imageContainer.appendChild(wordOverlay);
-                                img.dataset.metadata = JSON.stringify(metadata);
+                    const img = document.createElement('img');
+                    img.src = imgBlobUrl;
+                    img.classList.add('grid-image');
 
-                                img.onload = () => {
-                                    loadedImages++;
-                                    updateLoadingStatus((loadedImages / totalImages) * 100);
+                    const metadata = imageMetadata[file.name] || {};
+                    const wordOverlay = document.createElement('div');
+                    wordOverlay.classList.add('word-overlay');
 
-                                    img.onclick = () => onImageClick(img.src);
-                                    //console.log("Image clicked:", img.src); // Log the clicked image
-                                    if (currentImageIndex !== -1) {
-                                            showSlideshow();
-                                        } else {
-                                            console.error("Clicked image index not found in dynamicImages array.");
-                                        }
-                                    if (loadedImages === totalImages) {
-                                        // Full load handling
-                                        //updateIndexOnFullLoad();
-                                    }
+                    imageContainer.appendChild(img);
+                    imageContainer.appendChild(wordOverlay);
+                    img.dataset.metadata = JSON.stringify(metadata);
 
-                                    galleryContainer.appendChild(imageContainer);
-                                    setTimeout(() => loadImage(index + 1), 7);
-                                };
+                    img.onload = () => {
+                        loadedImages++;
+                        updateLoadingStatus((loadedImages / totalImages) * 100);
 
-                                img.onerror = () => {
-                                    console.error(`Error loading image ${index}`);
-                                    loadImage(index + 1);
-                                };
-                            }
+                        img.onclick = () => onImageClick(img.src);
+                        galleryContainer.appendChild(imageContainer);
+                        loadImage(index + 1);
+                    };
 
-                            loadImage(0); // Start loading images
-                        })
-                        .catch(error => console.error('Error fetching file names:', error));
-                })
-                .catch(error => console.error('Error fetching metadata:', error));
+                    img.onerror = () => {
+                        console.error(`Error loading image ${index}`);
+                        loadImage(index + 1);
+                    };
+                }
+
+                loadImage(0); // Start loading images
+            } catch (error) {
+                console.error('Error fetching metadata or files:', error);
+            }
         }
+
 
         function updateLoadingStatus(percentage) {
             // Ensure the percentage is between 0 and 100
