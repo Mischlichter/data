@@ -1100,17 +1100,20 @@
                 // Split the text by new lines and process each line
                 return text.split('\n').map(line => {
                     let trimmedLine = line.trim();
-                    // Regex to extract URL from possibly complex lines
-                    const urlMatch = trimmedLine.match(/https?:\/\/[^:\s]+/);
+                    // Adjusted regex to stop at the first colon or space
+                    const urlMatch = trimmedLine.match(/(https?:\/\/[^:\s]+)/);
                     if (urlMatch) {
-                        let url = urlMatch[0]; // Get the matched URL
+                        let url = urlMatch[1]; // Get the matched URL
+                        // Check if URL parsing stopped at a colon and trim any possible metadata
+                        let cleanUrl = url.split(':')[0];
                         let lastModified = new Date().toISOString(); // Use the current time as last modified
-                        let asset = { url, lastModified };
+                        let asset = { url: cleanUrl, lastModified };
                         console.log('Parsed Extra Asset:', asset);  // Log the extracted data
                         return asset;
                     }
                 }).filter(item => item); // Remove any undefined items that might result from lines without valid URLs
             }
+
 
 
 
