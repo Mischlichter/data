@@ -953,14 +953,14 @@
                 const store = tx.objectStore('assets');
 
                 for (let asset of assets) {
-                    let response = await fetch(asset.url);
-                    let blob = await response.blob();
-                    store.put({url: asset.url, blob: blob, lastModified: asset.lastModified});
+                    // Assume asset is already a blob, no need to fetch again
+                    store.put({url: asset.url, blob: asset.blob, lastModified: asset.lastModified});
                 }
                 
                 await tx.complete;
                 console.log('All assets are stored in IndexedDB');
             }
+
   
 
             async function preloadAssets() {
@@ -996,7 +996,7 @@
                             shouldCache = new Date(lastModified) > new Date(cacheLastModified);
                         }
                         if (shouldCache) {
-                            await cache.put(url, response.clone());
+                            await cache.put(url, new Response(blob)); // Create a new response object for caching
                             console.log(`Cached: ${url}`);
                         }
 
