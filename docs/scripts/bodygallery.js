@@ -439,97 +439,99 @@ const galleryHTML = `
 
   
 
-        async function fetchImageFilenames() {
-            const db = await idb.openDB('MyDatabase', 1, {
-                upgrade(db, oldVersion, newVersion, transaction) {
-                    if (!db.objectStoreNames.contains('assets')) {
-                        db.createObjectStore('assets', { keyPath: 'url' });
-                    }
-                }
-            });
-
+        function fetchImageFilenames() {
             let imageMetadata = {};
             const galleryContainer = document.getElementById('gallery-container');
             let dynamicImages = [];
+            let currentImageIndex = -1; // You might have a way to set this index elsewhere in your code
 
-            try {
-                const responseMetadata = await fetch('https://raw.githubusercontent.com/Mischlichter/data/main/lib/metadata.json');
-                imageMetadata = await responseMetadata.json();
+            openDatabase().then(db => {
+                fetch('https://raw.githubusercontent.com/Mischlichter/data/main/lib/metadata.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        imageMetadata = data;
 
-                const responseFiles = await fetch('https://api.github.com/repos/Mischlichter/data/contents/gallerycom');
-                const files = await responseFiles.json();
+                        fetch('https://api.github.com/repos/Mischlichter/data/contents/gallerycom')
+                            .then(response => response.json())
+                            .then(files => {
+                                const totalImages = files.length;
+                                let loadedImages = 0;
 
-                const totalImages = files.length;
-                let loadedImages = 0;
-                let currentImageIndex = -1; // Assuming there's some way to set this, e.g., via another function or operation
+                                function loadImage(index) {
+                                    if (index >= totalImages) {
+                                        return; // All images loaded
+                                    }
 
-                async function loadImage(index) {
-                    if (index >= totalImages) {
-                        return; // All images loaded
-                    }
+                                    const file = files[index];
 
-                    const file = files[index];
-                    const transaction = db.transaction('assets', 'readonly');
-                    const store = transaction.objectStore('assets');
-                    const idbResponse = await store.get(file.download_url);
+                                    const transaction = db.transaction('assets', 'readonly');
+                                    const store = transaction.objectStore('assets');
+                                    store.get(file.download_url).then(idbResponse => {
+                                        if (idbResponse) {
+                                            console.log(`Loaded from IndexedDB: ${file.download_url}`);
+                                            createImageElement(idbResponse.blob, file, index);
+                                        } else {
+                                            fetch(file.download_url)
+                                                .then(response => response.blob())
+                                                .then(blob => {
+                                                    const putTransaction = db.transaction('assets', 'readwrite');
+                                                    const putStore = putTransaction.objectStore('assets');
+                                                    putStore.put({ url: file.download_url, blob });
+                                                    createImageElement(blob, file, index);
+                                                });
+                                        }
+                                    });
+                                }
 
-                    let imgBlobUrl;
-                    if (idbResponse) {
-                        console.log(`Loaded from IndexedDB: ${file.download_url}`);
-                        imgBlobUrl = URL.createObjectURL(idbResponse.blob);
-                    } else {
-                        const imageResponse = await fetch(file.download_url);
-                        const blob = await imageResponse.blob();
-                        const putTransaction = db.transaction('assets', 'readwrite');
-                        const putStore = putTransaction.objectStore('assets');
-                        await putStore.put({ url: file.download_url, blob });
-                        imgBlobUrl = URL.createObjectURL(blob);
-                    }
+                                function createImageElement(blob, file, index) {
+                                    const imgBlobUrl = URL.createObjectURL(blob);
+                                    const imageContainer = document.createElement('div');
+                                    imageContainer.classList.add('image-container');
 
-                    const imageContainer = document.createElement('div');
-                    imageContainer.classList.add('image-container');
+                                    const img = document.createElement('img');
+                                    img.src = imgBlobUrl;
+                                    img.classList.add('grid-image');
+                                    dynamicImages.push(img.src); // Store the image URL
 
-                    const img = document.createElement('img');
-                    img.src = imgBlobUrl;
-                    img.classList.add('grid-image');
-                    dynamicImages.push(img.src);
+                                    const metadata = imageMetadata[file.name] || {};
+                                    const wordOverlay = document.createElement('div');
+                                    wordOverlay.classList.add('word-overlay');
 
-                    const metadata = imageMetadata[file.name] || {};
-                    const wordOverlay = document.createElement('div');
-                    wordOverlay.classList.add('word-overlay');
-                    imageContainer.appendChild(img);
-                    imageContainer.appendChild(wordOverlay);
-                    img.dataset.metadata = JSON.stringify(metadata);
+                                    imageContainer.appendChild(img);
+                                    imageContainer.appendChild(wordOverlay);
+                                    img.dataset.metadata = JSON.stringify(metadata);
 
-                    img.onload = () => {
-                        loadedImages++;
-                        updateLoadingStatus((loadedImages / totalImages) * 100);
+                                    img.onload = () => {
+                                        loadedImages++;
+                                        updateLoadingStatus((loadedImages / totalImages) * 100);
 
-                        img.onclick = () => {
-                            currentImageIndex = dynamicImages.indexOf(img.src);
-                            if (currentImageIndex !== -1) {
-                                onImageClick(img.src);
-                                showSlideshow(); // Show slideshow if applicable
-                            } else {
-                                console.error("Clicked image index not found in dynamicImages array.");
-                            }
-                        };
-                        galleryContainer.appendChild(imageContainer);
-                        setTimeout(() => loadImage(index + 1), 7);
-                    };
+                                        img.onclick = () => {
+                                            currentImageIndex = dynamicImages.indexOf(img.src);
+                                            if (currentImageIndex !== -1) {
+                                                onImageClick(img.src);
+                                                showSlideshow();
+                                            } else {
+                                                console.error("Clicked image index not found in dynamicImages array.");
+                                            }
+                                        };
 
-                    img.onerror = () => {
-                        console.error(`Error loading image ${index}`);
-                        loadImage(index + 1);
-                    };
-                }
+                                        galleryContainer.appendChild(imageContainer);
+                                        setTimeout(() => loadImage(index + 1), 7);
+                                    };
 
-                loadImage(0);
-            } catch (error) {
-                console.error('Error fetching metadata or files:', error);
-            }
+                                    img.onerror = () => {
+                                        console.error(`Error loading image ${index}`);
+                                        loadImage(index + 1);
+                                    };
+                                }
+
+                                loadImage(0); // Start loading images
+                            })
+                            .catch(error => console.error('Error fetching file names:', error));
+                    })
+                    .catch(error => console.error('Error fetching metadata:', error));
+            });
         }
-
 
 
 
