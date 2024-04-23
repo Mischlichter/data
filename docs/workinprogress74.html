@@ -949,7 +949,7 @@
 
 
                 
-            async function storeAssetsInDB(assets, cache) {
+            async function storeAssetsInDB(assets) {
                 try {
                     const db = await idb.openDB('MyDatabase', 1, {
                         upgrade(db, oldVersion, newVersion, transaction) {
@@ -970,18 +970,8 @@
                     console.log('All assets are stored in IndexedDB');
                 } catch (error) {
                     console.error('Error storing assets in IndexedDB:', error);
-                    console.log('Falling back to caching assets');
-
-                    // Fallback to caching the assets if IndexedDB fails
-                    for (let asset of assets) {
-                        await cache.put(asset.url, new Response(asset.blob, {
-                            headers: { 'Last-Modified': asset.lastModified }
-                        }));
-                        console.log(`Asset cached as fallback: ${asset.url}`);
-                    }
                 }
             }
-
 
 
 
@@ -990,6 +980,13 @@
 
             async function preloadAssets() {
                 console.log('Starting to preload assets');
+                const db = await idb.openDB('MyDatabase', 1, {
+                    upgrade(db, oldVersion, newVersion, transaction) {
+                        if (!db.objectStoreNames.contains('assets')) {
+                            db.createObjectStore('assets', { keyPath: 'url' });
+                        }
+                    }
+                });
                 const cache = await caches.open(cacheName);
                 console.log('Cache opened successfully');
                 const [assetsJson, extraText] = await Promise.all([
@@ -997,11 +994,12 @@
                     fetch(EXTRA_ASSETS_URL).then(res => res.text()),
                 ]);
                 console.log('Assets and extra assets fetched successfully');
+                console.log('Assets JSON:', assetsJson);
 
                 const urlsToCache = [];
                 parseAssets(assetsJson, urlsToCache);
-                const extraAssetsUrls = parseExtraAssets(extraText, assetsJson);
-                urlsToCache.push(...extraAssetsUrls);
+                const extraAssetsUrls = parseExtraAssets(extraText, assetsJson); // Pass manifest to parseExtraAssets
+                urlsToCache.push(...extraAssetsUrls); // Add extra assets to urlsToCache
 
                 console.log(`Total URLs to cache: ${urlsToCache.length}`);
                 let loaded = 0;
@@ -1010,17 +1008,11 @@
 
                 for (let { url, lastModified } of urlsToCache) {
                     let shouldFetch = true;
-                    let idbResponse;
-                    try {
-                        idbResponse = await db.transaction('assets').objectStore('assets').get(url);
-                        if (idbResponse && new Date(idbResponse.lastModified) >= new Date(lastModified)) {
-                            console.log(`Loaded from IndexedDB: ${url}`);
-                            shouldFetch = false;
-                        }
-                    } catch (error) {
-                        console.error(`Failed to access IndexedDB: ${error}`);
+                    const idbResponse = await db.transaction('assets').objectStore('assets').get(url);
+                    if (idbResponse && new Date(idbResponse.lastModified) >= new Date(lastModified)) {
+                        console.log(`Loaded from IndexedDB: ${url}`);
+                        shouldFetch = false;
                     }
-
                     if (shouldFetch) {
                         let response = await fetch(url);
                         if (response.ok) {
@@ -1037,12 +1029,12 @@
                     }
                     loaded++;
                     requestAnimationFrame(() => {
-                        const loadingPercentage = Math.floor((loaded / urlsToCache.length) * 100);
+                        loadingPercentage = Math.floor((loaded / urlsToCache.length) * 100);
                         console.log(`Loading: ${loadingPercentage}% complete`);
                     });
                     await new Promise(resolve => setTimeout(resolve, delay));
                 }
-                await storeAssetsInDB(assetsToStore, cache);
+                await storeAssetsInDB(assetsToStore);
                 if (!localStorage.getItem(firstLoadCompleteFlag)) {
                     localStorage.setItem(firstLoadCompleteFlag, 'true');
                 }
@@ -1051,7 +1043,6 @@
                 }
                 fadeOutAsciiLinesXL(); // Assuming this is a function for UI effects
             }
-
 
 
 
