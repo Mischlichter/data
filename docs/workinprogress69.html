@@ -1100,7 +1100,7 @@
                 }
             }
 
-            function parseExtraAssets(text, lastModifiedDates) {
+            function parseExtraAssets(text, manifest) {
                 // Split the text by new lines and process each line
                 return text.split('\n').map(line => {
                     // Trim the line to remove any leading or trailing whitespace
@@ -1110,13 +1110,15 @@
 
                     if (urlMatch) {
                         let url = urlMatch[1]; // Get the matched URL, which excludes anything after a colon or space
-                        let lastModified = lastModifiedDates[url] || null; // Use the date from the manifest or null if not available
+                        let manifestKey = url.substring(url.lastIndexOf('/') + 1); // Extract the file name from the URL
+                        let lastModified = manifest[manifestKey] || null; // Use the date from the manifest or null if not available
                         let asset = { url, lastModified };
                         console.log('Parsed Extra Asset:', asset);  // Log the extracted data
                         return asset;
                     }
                 }).filter(item => item); // Remove any undefined items that might result from lines without valid URLs
             }
+
 
 
 
