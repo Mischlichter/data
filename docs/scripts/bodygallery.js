@@ -440,10 +440,8 @@ const galleryHTML = `
   
 
         async function fetchImageFilenames() {
-            // Open the database using the existing setup
             const db = await idb.openDB('MyDatabase', 1, {
                 upgrade(db, oldVersion, newVersion, transaction) {
-                    // Ensure the 'assets' store exists
                     if (!db.objectStoreNames.contains('assets')) {
                         db.createObjectStore('assets', { keyPath: 'url' });
                     }
@@ -453,7 +451,6 @@ const galleryHTML = `
             let imageMetadata = {};
             const galleryContainer = document.getElementById('gallery-container');
 
-            // Fetch metadata
             try {
                 const responseMetadata = await fetch('https://raw.githubusercontent.com/Mischlichter/data/main/lib/metadata.json');
                 imageMetadata = await responseMetadata.json();
@@ -506,7 +503,10 @@ const galleryHTML = `
                         loadedImages++;
                         updateLoadingStatus((loadedImages / totalImages) * 100);
 
-                        img.onclick = () => onImageClick(img.src);
+                        img.onclick = () => {
+                            console.log("Image clicked:", img.src); // Enhanced click handling with console log
+                            showSlideshow(); // Trigger slideshow
+                        };
                         galleryContainer.appendChild(imageContainer);
                         loadImage(index + 1);
                     };
@@ -522,6 +522,7 @@ const galleryHTML = `
                 console.error('Error fetching metadata or files:', error);
             }
         }
+
 
 
 
