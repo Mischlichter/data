@@ -966,6 +966,7 @@
 
                 for (let asset of assets) {
                     // Assuming blob is directly passed, no need to fetch the asset again
+                    console.log(`Storing ${asset.url} with last modified date: ${asset.lastModified}`);
                     store.put({ url: asset.url, blob: asset.blob, lastModified: asset.lastModified });
                 }
 
