@@ -988,7 +988,7 @@
                         }
                     }
                 });
-                const lastModifiedDates = {};
+            
                 const cache = await caches.open(cacheName);
                 console.log('Cache opened successfully');
                 const [assetsJson, extraText, secondExtraText] = await Promise.all([
