@@ -756,7 +756,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
-
+    <script src="./scripts/umd.js"></script>
 
     <script src="scripts/bodygallery.js"></script>
     
@@ -946,20 +946,31 @@
                 }
 
             }
+
+
                 
             async function storeAssetsInDB(assets) {
-                const db = await openDatabase(); // Assume this function opens your IndexedDB database
+                // Open the database using openDB provided by umd.js
+                const db = await idb.openDB('MyDatabase', 1, {
+                    upgrade(db, oldVersion, newVersion, transaction) {
+                        if (!db.objectStoreNames.contains('assets')) {
+                            db.createObjectStore('assets', { keyPath: 'url' });
+                        }
+                    }
+                });
+
                 const tx = db.transaction('assets', 'readwrite');
                 const store = tx.objectStore('assets');
 
                 for (let asset of assets) {
-                    // Assume asset is already a blob, no need to fetch again
+                    // No need to fetch the asset again, assuming blob is directly passed
                     store.put({url: asset.url, blob: asset.blob, lastModified: asset.lastModified});
                 }
-                
-                await tx.complete;
+
+                await tx.done;
                 console.log('All assets are stored in IndexedDB');
             }
+
 
   
 
