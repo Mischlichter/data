@@ -951,10 +951,8 @@
 
                 
             async function storeAssetsInDB(assets) {
-                // Open the database using openDB provided by umd.js
                 const db = await idb.openDB('MyDatabase', 1, {
                     upgrade(db, oldVersion, newVersion, transaction) {
-                        // Create the store if it doesn't already exist
                         if (!db.objectStoreNames.contains('assets')) {
                             db.createObjectStore('assets', { keyPath: 'url' });
                         }
@@ -965,7 +963,6 @@
                 const store = tx.objectStore('assets');
 
                 for (let asset of assets) {
-                    // Assuming blob is directly passed, no need to fetch the asset again
                     console.log(`Storing ${asset.url} with last modified date: ${asset.lastModified}`);
                     store.put({ url: asset.url, blob: asset.blob, lastModified: asset.lastModified });
                 }
@@ -973,11 +970,6 @@
                 await tx.done;
                 console.log('All assets are stored in IndexedDB');
             }
-
-
-
-
-  
 
             async function preloadAssets() {
                 console.log('Starting to preload assets');
@@ -988,25 +980,20 @@
                         }
                     }
                 });
-            
                 const cache = await caches.open(cacheName);
                 console.log('Cache opened successfully');
+
                 const [assetsJson, extraText, secondExtraText] = await Promise.all([
                     fetch(ASSETS_MANIFEST_URL).then(res => res.json()),
                     fetch(EXTRA_ASSETS_URL).then(res => res.text()),
                     fetch(SECOND_EXTRA_ASSETS_URL).then(res => res.text())
                 ]);
                 console.log('Assets and extra assets fetched successfully');
-                console.log('Assets JSON:', assetsJson); // Log the entire assetsJson object to inspect its structure
-
 
                 const urlsToCache = [];
                 parseAssets(assetsJson, urlsToCache);
-                const extraAssetUrls = parseExtraAssets(extraText, urlsToCache);
-                const secondExtraAssetUrls = parseExtraAssets(secondExtraText, urlsToCache);
-           
-
-
+                const extraAssetUrls = parseExtraAssets(extraText, assetsJson);
+                const secondExtraAssetUrls = parseExtraAssets(secondExtraText, assetsJson);
                 urlsToCache.push(...extraAssetUrls, ...secondExtraAssetUrls);
                 console.log(`Total URLs to cache: ${urlsToCache.length}`);
 
@@ -1014,7 +1001,6 @@
                 const delay = 30;
                 let assetsToStore = [];
 
-                // Process each URL for fetching and storage
                 for (let { url, lastModified } of urlsToCache) {
                     let shouldFetch = true;
                     const idbResponse = await db.transaction('assets').objectStore('assets').get(url);
@@ -1056,44 +1042,18 @@
                 fadeOutAsciiLinesXL();
             }
 
-
-
-
-            
-
-
-            async function verifyCache(cache, urls) {
-                console.log('Verifying cached assets');
-                const cacheKeys = await cache.keys();
-                let verifiedCount = 0;
-
-                for (let url of urls) {
-                    if (cacheKeys.some(request => request.url === url)) {
-                        verifiedCount++;
-                        console.log(`Verified: ${url}`);
-                    } else {
-                        console.error(`Verification failed for: ${url}`);
-                    }
-                }
-
-                console.log(`Total verified URLs: ${verifiedCount}`);
-            }
-
-            function parseAssets(node, manifest, urls) {
+            function parseAssets(node, urls, manifest) {
                 for (let key in node) {
                     if (node.hasOwnProperty(key)) {
                         const value = node[key];
                         if (typeof value === 'object') {
-                            parseAssets(value, manifest, urls);
+                            parseAssets(value, urls, manifest);
                         } else if (key.startsWith('Viewer') || key.startsWith('interface')) {
-                            // Extract the URL from the manifest using the key
-                            let manifestKey = `docs/${key}`;
-                            let lastModified = manifest[manifestKey] || null; // Get the last modified date from the manifest
                             let asset = {
                                 url: `https://raw.githubusercontent.com/Mischlichter/data/main/${key}`,
-                                lastModified: lastModified
+                                lastModified: manifest[key] || null // Using the date from the manifest or null if not available
                             };
-                            console.log('Parsed Asset:', asset);  // Log the extracted data
+                            console.log('Parsed Asset:', asset);
                             urls.push(asset);
                         }
                     }
@@ -1101,25 +1061,22 @@
             }
 
             function parseExtraAssets(text, manifest) {
-                // Split the text by new lines and process each line
                 return text.split('\n').map(line => {
-                    // Trim the line to remove any leading or trailing whitespace
                     let trimmedLine = line.trim();
-                    // Use a regular expression to extract the URL part before any colon or whitespace
                     const urlMatch = trimmedLine.match(/(https?:\/\/[^:\s]+)/);
 
                     if (urlMatch) {
-                        let url = urlMatch[1]; // Get the matched URL, which excludes anything after a colon or space
-                        let manifestKey = url.substring(url.lastIndexOf('/') + 1); // Extract the file name from the URL
-                        let lastModified = manifest[manifestKey] || null; // Use the date from the manifest or null if not available
+                        let url = urlMatch[1];
+                        let lastModified = manifest[url] || null;
                         let asset = { url, lastModified };
-                        console.log('Parsed Extra Asset:', asset);  // Log the extracted data
+                        console.log('Parsed Extra Asset:', asset);
                         return asset;
                     }
-                }).filter(item => item); // Remove any undefined items that might result from lines without valid URLs
+                }).filter(item => item);
             }
 
 
+        
 
 
 
