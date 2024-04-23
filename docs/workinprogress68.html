@@ -1005,20 +1005,24 @@
                 const extraAssetUrls = parseExtraAssets(extraText, urlsToCache);
                 const secondExtraAssetUrls = parseExtraAssets(secondExtraText, urlsToCache);
 
+                
+               
                 // After all URLs are parsed, assign dates
                 const lastModifiedDates = {};
-            
 
-                for (let key in assetsJson) {
-                    if (assetsJson.hasOwnProperty(key)) {
-                        // Assuming 'url' is constructed or modified to match exactly as keys in the manifest
-                        let formattedKey = `docs/${key}`; // Adjust based on actual required URL format
-                        if (urlsToCache.includes(formattedKey)) {
-                            lastModifiedDates[formattedKey] = new Date(assetsJson[key]);
-                            console.log(`Date added for ${formattedKey}: ${lastModifiedDates[formattedKey]}`);
+                for (let url in assetsJson) {
+                    if (assetsJson.hasOwnProperty(url)) {
+                        // Extract the filename from the URL
+                        const filename = url.split('/').pop();
+                        
+                        // Check if the filename is in the list of URLs to cache
+                        if (urlsToCache.includes(filename)) {
+                            lastModifiedDates[filename] = new Date(assetsJson[url]);
+                            console.log(`Date added for ${filename}: ${lastModifiedDates[filename]}`);
                         }
                     }
                 }
+
 
                
 
