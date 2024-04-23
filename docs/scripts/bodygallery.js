@@ -440,96 +440,81 @@ const galleryHTML = `
   
 
         async function fetchImageFilenames() {
-            const db = await idb.openDB('MyDatabase', 1, {
-                upgrade(db, oldVersion, newVersion, transaction) {
-                    if (!db.objectStoreNames.contains('assets')) {
-                        db.createObjectStore('assets', { keyPath: 'url' });
-                    }
-                }
-            });
-
             let imageMetadata = {};
             const galleryContainer = document.getElementById('gallery-container');
             let dynamicImages = [];
+            let currentImageIndex = -1;
 
             try {
-                const responseMetadata = await fetch('https://raw.githubusercontent.com/Mischlichter/data/main/lib/metadata.json');
-                imageMetadata = await responseMetadata.json();
+                // Asynchronously fetch the metadata and image files.
+                const metadataResponse = await fetch('https://raw.githubusercontent.com/Mischlichter/data/main/lib/metadata.json');
+                imageMetadata = await metadataResponse.json();
 
-                const responseFiles = await fetch('https://api.github.com/repos/Mischlichter/data/contents/gallerycom');
-                const files = await responseFiles.json();
+                const filesResponse = await fetch('https://api.github.com/repos/Mischlichter/data/contents/gallerycom');
+                const files = await filesResponse.json();
 
                 const totalImages = files.length;
                 let loadedImages = 0;
-                let currentImageIndex = -1; // Assuming there's some way to set this, e.g., via another function or operation
 
-                async function loadImage(index) {
-                    if (index >= totalImages) {
-                        return; // All images loaded
-                    }
-
-                    const file = files[index];
-                    const transaction = db.transaction('assets', 'readonly');
-                    const store = transaction.objectStore('assets');
-                    const idbResponse = await store.get(file.download_url);
-
-                    let imgBlobUrl;
-                    if (idbResponse) {
-                        console.log(`Loaded from IndexedDB: ${file.download_url}`);
-                        imgBlobUrl = URL.createObjectURL(idbResponse.blob);
-                    } else {
-                        const imageResponse = await fetch(file.download_url);
-                        const blob = await imageResponse.blob();
-                        const putTransaction = db.transaction('assets', 'readwrite');
-                        const putStore = putTransaction.objectStore('assets');
-                        await putStore.put({ url: file.download_url, blob });
-                        imgBlobUrl = URL.createObjectURL(blob);
-                    }
-
-                    const imageContainer = document.createElement('div');
-                    imageContainer.classList.add('image-container');
-
-                    const img = document.createElement('img');
-                    img.src = imgBlobUrl;
-                    img.classList.add('grid-image');
-                    dynamicImages.push(img.src);
-
-                    const metadata = imageMetadata[file.name] || {};
-                    const wordOverlay = document.createElement('div');
-                    wordOverlay.classList.add('word-overlay');
-                    imageContainer.appendChild(img);
-                    imageContainer.appendChild(wordOverlay);
-                    img.dataset.metadata = JSON.stringify(metadata);
-
-                    img.onload = () => {
-                        loadedImages++;
-                        updateLoadingStatus((loadedImages / totalImages) * 100);
-
-                        img.onclick = () => {
-                            currentImageIndex = dynamicImages.indexOf(img.src);
-                            if (currentImageIndex !== -1) {
-                                onImageClick(img.src);
-                                showSlideshow(); // Show slideshow if applicable
-                            } else {
-                                console.error("Clicked image index not found in dynamicImages array.");
-                            }
-                        };
-                        galleryContainer.appendChild(imageContainer);
-                        setTimeout(() => loadImage(index + 1), 7);
-                    };
-
-                    img.onerror = () => {
-                        console.error(`Error loading image ${index}`);
-                        loadImage(index + 1);
-                    };
+                // Synchronous loading of images with asynchronous fetch for each image.
+                for (let index = 0; index < totalImages; index++) {
+                    loadImage(index, files, imageMetadata, galleryContainer, dynamicImages, loadedImages, totalImages);
                 }
-
-                loadImage(0);
             } catch (error) {
-                console.error('Error fetching metadata or files:', error);
+                console.error('Error fetching data:', error);
             }
         }
 
+        function loadImage(index, files, imageMetadata, galleryContainer, dynamicImages, loadedImages, totalImages) {
+            if (index >= totalImages) {
+                return; // All images loaded
+            }
+
+            const file = files[index];
+            const imageContainer = document.createElement('div');
+            imageContainer.classList.add('image-container');
+
+            const img = document.createElement('img');
+            img.src = file.download_url;
+            img.classList.add('grid-image');
+            dynamicImages.push(img.src); // Store the image URL
+
+            const metadata = imageMetadata[file.name] || {};
+            const wordOverlay = document.createElement('div');
+            wordOverlay.classList.add('word-overlay');
+
+            imageContainer.appendChild(img);
+            imageContainer.appendChild(wordOverlay);
+            img.dataset.metadata = JSON.stringify(metadata);
+
+            img.onload = async () => {
+                loadedImages++;
+                updateLoadingStatus((loadedImages / totalImages) * 100);
+
+                img.onclick = () => {
+                    currentImageIndex = dynamicImages.indexOf(img.src);
+                    if (currentImageIndex !== -1) {
+                        onImageClick(img.src);
+                        showSlideshow();
+                    } else {
+                        console.error("Clicked image index not found in dynamicImages array.");
+                    }
+                };
+
+                galleryContainer.appendChild(imageContainer);
+                if (loadedImages < totalImages) {
+                    await new Promise(resolve => setTimeout(resolve, 7)); // Just to prevent freezing of UI, not actually synchronous.
+                    loadImage(index + 1, files, imageMetadata, galleryContainer, dynamicImages, loadedImages, totalImages);
+                }
+            };
+
+            img.onerror = () => {
+                console.error(`Error loading image ${index}`);
+                if (index + 1 < totalImages) {
+                    loadImage(index + 1, files, imageMetadata, galleryContainer, dynamicImages, loadedImages, totalImages);
+                }
+            };
+        }
 
 
 
