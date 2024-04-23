@@ -442,10 +442,33 @@ const galleryHTML = `
         function fetchImageFilenames() {
             let imageMetadata = {};
             const galleryContainer = document.getElementById('gallery-container');
-            let dynamicImages = [];
-            let currentImageIndex = -1; // Used to track the currently displayed image in the slideshow
+            let db; // Reference for OpenDB database
 
-            openDatabase().then(db => {
+            // Initialize OpenDB (Make sure to replace 'myDatabase' with your actual database name)
+            if (!window.indexedDB) {
+                console.log("Your browser doesn't support IndexedDB.");
+                return;
+            }
+            let request = window.indexedDB.open('myDatabase', 1);
+
+            request.onerror = function(event) {
+                console.error("Database error: ", event.target.errorCode);
+            };
+
+            request.onsuccess = function(event) {
+                db = event.target.result;
+                console.log('Database opened successfully');
+                fetchMetadataAndImages();
+            };
+
+            request.onupgradeneeded = function(event) {
+                let db = event.target.result;
+                if (!db.objectStoreNames.contains('imageData')) {
+                    db.createObjectStore('imageData', { keyPath: 'id' });
+                }
+            };
+
+            function fetchMetadataAndImages() {
                 fetch('https://raw.githubusercontent.com/Mischlichter/data/main/lib/metadata.json')
                     .then(response => response.json())
                     .then(data => {
@@ -463,35 +486,12 @@ const galleryHTML = `
                                     }
 
                                     const file = files[index];
-
-                                    const transaction = db.transaction('assets', 'readonly');
-                                    const store = transaction.objectStore('assets');
-                                    store.get(file.download_url).then(idbResponse => {
-                                        if (idbResponse) {
-                                            console.log(`Loaded from IndexedDB: ${file.download_url}`);
-                                            createImageElement(idbResponse.blob, file, index);
-                                        } else {
-                                            fetch(file.download_url)
-                                                .then(response => response.blob())
-                                                .then(blob => {
-                                                    const putTransaction = db.transaction('assets', 'readwrite');
-                                                    const putStore = putTransaction.objectStore('assets');
-                                                    putStore.put({ url: file.download_url, blob });
-                                                    createImageElement(blob, file, index);
-                                                });
-                                        }
-                                    });
-                                }
-
-                                function createImageElement(blob, file, index) {
-                                    const imgBlobUrl = URL.createObjectURL(blob);
                                     const imageContainer = document.createElement('div');
                                     imageContainer.classList.add('image-container');
 
                                     const img = document.createElement('img');
-                                    img.src = imgBlobUrl;
+                                    img.src = file.download_url;
                                     img.classList.add('grid-image');
-                                    img.dataset.index = index; // Set the index on the image element for easy access
                                     dynamicImages.push(img.src); // Store the image URL
 
                                     const metadata = imageMetadata[file.name] || {};
@@ -506,20 +506,18 @@ const galleryHTML = `
                                         loadedImages++;
                                         updateLoadingStatus((loadedImages / totalImages) * 100);
 
-                                        img.onclick = () => {
-                                            currentImageIndex = parseInt(img.dataset.index); // Retrieve the index from the image element
-                                            if (currentImageIndex !== -1) {
-                                                onImageClick(img.src);
-                                                showSlideshow(dynamicImages, currentImageIndex);
-                                            } else {
-                                                console.error("Clicked image index not found in dynamicImages array.");
-                                            }
-                                        };
+                                        img.onclick = () => onImageClick(img.src);
+                                        if (currentImageIndex !== -1) {
+                                            showSlideshow();
+                                        } else {
+                                            console.error("Clicked image index not found in dynamicImages array.");
+                                        }
+                                        if (loadedImages === totalImages) {
+                                            // Full load handling
+                                        }
 
                                         galleryContainer.appendChild(imageContainer);
-                                        if (loadedImages < totalImages) {
-                                            setTimeout(() => loadImage(index + 1), 7);
-                                        }
+                                        setTimeout(() => loadImage(index + 1), 7);
                                     };
 
                                     img.onerror = () => {
@@ -533,18 +531,9 @@ const galleryHTML = `
                             .catch(error => console.error('Error fetching file names:', error));
                     })
                     .catch(error => console.error('Error fetching metadata:', error));
-            });
+            }
         }
 
-        function openDatabase() {
-            return idb.openDB('MyDatabase', 1, {
-                upgrade(db, oldVersion, newVersion, transaction) {
-                    if (!db.objectStoreNames.contains('assets')) {
-                        db.createObjectStore('assets', { keyPath: 'url' });
-                    }
-                }
-            });
-        }
 
 
 
