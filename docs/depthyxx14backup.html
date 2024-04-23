@@ -144,61 +144,18 @@
 
         async function preloadAllAssets() {
             const preloadPromises = [];
-            const db = await idb.openDB('MyDatabase', 1); // Open the IndexedDB
-
             for (const sceneKey in assets) {
                 for (const number in assets[sceneKey]) {
                     if (assets[sceneKey][number].image) {
-                        const imageUrl = assets[sceneKey][number].image.url;
-                        // Check if the image is already cached in IndexedDB
-                        const cachedAsset = await getAssetFromDB(db, imageUrl);
-                        if (cachedAsset) {
-                            preloadPromises.push(cacheAsset(cachedAsset.url, cachedAsset.blob));
-                        } else {
-                            // If not cached, preload and cache the image
-                            preloadPromises.push(preloadAndCacheImage(imageUrl));
-                        }
+                        preloadPromises.push(preloadAndCacheImage(assets[sceneKey][number].image.url));
                     }
                     if (assets[sceneKey][number].depthmap) {
-                        const depthmapUrl = assets[sceneKey][number].depthmap.url;
-                        // Check if the depthmap is already cached in IndexedDB
-                        const cachedAsset = await getAssetFromDB(db, depthmapUrl);
-                        if (cachedAsset) {
-                            preloadPromises.push(cacheAsset(cachedAsset.url, cachedAsset.blob));
-                        } else {
-                            // If not cached, preload and cache the depthmap
-                            preloadPromises.push(preloadAndCacheImage(depthmapUrl));
-                        }
+                        preloadPromises.push(preloadAndCacheImage(assets[sceneKey][number].depthmap.url));
                     }
                 }
             }
             await Promise.all(preloadPromises);
         }
-
-        async function getAssetFromDB(db, url) {
-            try {
-                const transaction = db.transaction('assets', 'readonly');
-                const store = transaction.objectStore('assets');
-                const cachedAsset = await store.get(url);
-                return cachedAsset;
-            } catch (error) {
-                console.error('Error fetching asset from IndexedDB:', error);
-                return null;
-            }
-        }
-
-        async function cacheAsset(url, blob) {
-            try {
-                // Cache the asset in IndexedDB
-                const db = await idb.openDB('MyDatabase', 1);
-                const transaction = db.transaction('assets', 'readwrite');
-                const store = transaction.objectStore('assets');
-                await store.put({ url, blob });
-            } catch (error) {
-                console.error('Error caching asset in IndexedDB:', error);
-            }
-        }
-
 
         let assets;
         let currentSceneKey = 'scene01';
