@@ -409,21 +409,23 @@ const galleryHTML = `
             function removeCenterContainer() {
                 const centerContainer = document.querySelector('.center-container');
                 if (centerContainer) {
-                    // Wait for 1 second before starting the opacity transition
-                    scrollToTop();
+                    // Start by scrolling to the top smoothly
+                    window.scrollTo({top: 0, behavior: 'smooth'});
+
+                    // Assume the scroll will take a certain amount of time (e.g., 500 ms)
                     setTimeout(() => {
-                        centerContainer.style.transition = 'opacity 1s ease-out';
+                        // Actions to take after scrolling is assumed to have completed
                         centerContainer.style.opacity = '0';
 
-                        // Wait for another 1 second after the opacity transition to remove the container
+                        // Further delay to allow for any visual changes or preparations (e.g., another 500 ms)
                         setTimeout(() => {
                             centerContainer.remove();
-                            
-                            enableScroll();
-                        }, 1000); // Delay for the opacity transition
-                    }, 1000); // Initial delay before starting the transition
+                            enableScroll(); // Re-enable scrolling if it was disabled
+                        }, 500);
+                    }, 500); // Time to wait for the scroll to potentially complete
                 }
             }
+
 
         }
 
