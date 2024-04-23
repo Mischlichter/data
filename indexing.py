@@ -11,12 +11,12 @@ def get_file_info(existing_index):
             # Skip the script itself and index.json to avoid recursion issues
             if path.name not in ['indexing.py', 'index.json']:
                 rel_path = str(path.relative_to(base_path))
-                mod_time = datetime.fromtimestamp(path.stat().st_mtime, timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
-                # Update the modification time if it's a new file or the file has been modified
-                if rel_path not in existing_index or existing_index[rel_path] != mod_time:
+                if rel_path not in existing_index:
+                    # Only update the modification time if it's a new file
+                    mod_time = datetime.fromtimestamp(path.stat().st_mtime, timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
                     all_files[rel_path] = mod_time
                 else:
-                    # Keep existing modification time for unchanged files
+                    # Keep existing modification time for files that are already indexed
                     all_files[rel_path] = existing_index[rel_path]
     return all_files
 
