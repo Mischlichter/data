@@ -429,12 +429,7 @@ const galleryHTML = `
 
         }
 
-        function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                
-            });
-        }
+
 
         
         //GALLERY CODE
