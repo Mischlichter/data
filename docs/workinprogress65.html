@@ -1155,7 +1155,7 @@
                   // Your existing function to map motion to mouse (if applicable)
                 
                 fadeOutOverlay();
-                enterSite();
+                
                 // Check for DeviceOrientationEvent support
                 if ('DeviceOrientationEvent' in window) {
                     // Request permission for iOS 13+ devices
@@ -1297,13 +1297,17 @@
             function fadeOutOverlay() {
                 var overlay = document.getElementById('permissionOverlay');
                 if (overlay) {
-                    overlay.style.opacity = '0';
+                    // Perform the "enter site" action before starting the fade-out animation
+                    enterSite();
+
+                    // Wait for a short delay before starting the fade-out animation
                     setTimeout(() => {
-                        overlay.style.visibility = 'hidden';
-                         // Remove the overlay from the DOM.
-                        //enterSite(); // Transition to the main functionality of the site.
-                        console.log('Overlay should be faded out and removed.'); // Debug output
-                    }, 500);
+                        overlay.style.opacity = '0';
+                        setTimeout(() => {
+                            overlay.style.visibility = 'hidden';
+                            console.log('Overlay should be faded out and removed.'); // Debug output
+                        }, 500);
+                    }, 500); // Adjust timing as needed
                 } else {
                     console.log('Overlay not found.'); // Check if the overlay exists
                 }
@@ -1365,7 +1369,7 @@
                 } else {
                     // Directly add event listener if not on iOS
                     
-                    enterSite(); // Non-iOS or no permissions needed, proceed to enter the site
+                    // Non-iOS or no permissions needed, proceed to enter the site
                     fadeOutOverlay()
                 }
 
