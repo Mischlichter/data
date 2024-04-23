@@ -443,7 +443,7 @@ const galleryHTML = `
             let imageMetadata = {};
             const galleryContainer = document.getElementById('gallery-container');
             let dynamicImages = [];
-            let currentImageIndex = -1; // You might have a way to set this index elsewhere in your code
+            let currentImageIndex = -1; // Used to track the currently displayed image in the slideshow
 
             openDatabase().then(db => {
                 fetch('https://raw.githubusercontent.com/Mischlichter/data/main/lib/metadata.json')
@@ -491,6 +491,7 @@ const galleryHTML = `
                                     const img = document.createElement('img');
                                     img.src = imgBlobUrl;
                                     img.classList.add('grid-image');
+                                    img.dataset.index = index; // Set the index on the image element for easy access
                                     dynamicImages.push(img.src); // Store the image URL
 
                                     const metadata = imageMetadata[file.name] || {};
@@ -506,17 +507,19 @@ const galleryHTML = `
                                         updateLoadingStatus((loadedImages / totalImages) * 100);
 
                                         img.onclick = () => {
-                                            currentImageIndex = dynamicImages.indexOf(img.src);
+                                            currentImageIndex = parseInt(img.dataset.index); // Retrieve the index from the image element
                                             if (currentImageIndex !== -1) {
                                                 onImageClick(img.src);
-                                                showSlideshow();
+                                                showSlideshow(dynamicImages, currentImageIndex);
                                             } else {
                                                 console.error("Clicked image index not found in dynamicImages array.");
                                             }
                                         };
 
                                         galleryContainer.appendChild(imageContainer);
-                                        setTimeout(() => loadImage(index + 1), 7);
+                                        if (loadedImages < totalImages) {
+                                            setTimeout(() => loadImage(index + 1), 7);
+                                        }
                                     };
 
                                     img.onerror = () => {
