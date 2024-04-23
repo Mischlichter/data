@@ -997,6 +997,8 @@
                     fetch(SECOND_EXTRA_ASSETS_URL).then(res => res.text())
                 ]);
                 console.log('Assets and extra assets fetched successfully');
+                console.log('Assets JSON:', assetsJson); // Log the entire assetsJson object to inspect its structure
+
 
                 const urlsToCache = [];
                 parseAssets(assetsJson, urlsToCache);
@@ -1005,7 +1007,7 @@
 
                 // After all URLs are parsed, assign dates
                 const lastModifiedDates = {};
-                console.log("Starting to add dates from manifest to the cache URLs...");
+            
 
                 for (let key in assetsJson) {
                     if (assetsJson.hasOwnProperty(key)) {
@@ -1018,7 +1020,7 @@
                     }
                 }
 
-                console.log("Completed adding dates from manifest.");
+               
 
 
                 urlsToCache.push(...extraAssetUrls, ...secondExtraAssetUrls);
