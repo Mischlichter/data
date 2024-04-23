@@ -452,6 +452,7 @@ const galleryHTML = `
 
             let imageMetadata = {};
             const galleryContainer = document.getElementById('gallery-container');
+            let dynamicImages = []; // Array to store image URLs for additional logic like slideshow
 
             // Fetch metadata
             try {
@@ -466,6 +467,10 @@ const galleryHTML = `
 
                 async function loadImage(index) {
                     if (index >= totalImages) {
+                        if (loadedImages === totalImages) {
+                            // Full load handling
+                            updateIndexOnFullLoad();
+                        }
                         return; // All images loaded
                     }
 
@@ -493,6 +498,7 @@ const galleryHTML = `
                     const img = document.createElement('img');
                     img.src = imgBlobUrl;
                     img.classList.add('grid-image');
+                    dynamicImages.push(img.src); // Store the image URL
 
                     const metadata = imageMetadata[file.name] || {};
                     const wordOverlay = document.createElement('div');
@@ -506,9 +512,18 @@ const galleryHTML = `
                         loadedImages++;
                         updateLoadingStatus((loadedImages / totalImages) * 100);
 
-                        img.onclick = () => onImageClick(img.src);
+                        img.onclick = () => {
+                            onImageClick(img.src);
+                            const currentImageIndex = dynamicImages.indexOf(img.src);
+                            if (currentImageIndex !== -1) {
+                                showSlideshow(currentImageIndex);
+                            } else {
+                                console.error("Clicked image index not found in dynamicImages array.");
+                            }
+                        };
+
                         galleryContainer.appendChild(imageContainer);
-                        loadImage(index + 1);
+                        setTimeout(() => loadImage(index + 1), 7); // Load the next image
                     };
 
                     img.onerror = () => {
@@ -522,6 +537,7 @@ const galleryHTML = `
                 console.error('Error fetching metadata or files:', error);
             }
         }
+
 
 
 
