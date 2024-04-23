@@ -1009,6 +1009,7 @@
                 let assetsToStore = [];
 
                 for (let { url, lastModified } of urlsToCache) {
+                    console.log(`Processing URL: ${url}`);
                     let shouldFetch = true;
                     const idbResponse = await db.transaction('assets').objectStore('assets').get(url);
                     if (idbResponse && new Date(idbResponse.lastModified) >= new Date(lastModified)) {
@@ -1016,6 +1017,7 @@
                         shouldFetch = false;
                     }
                     if (shouldFetch) {
+                        console.log(`Needs fetch: ${url}`);
                         let response = await fetch(url);
                         if (response.ok) {
                             const cloneForCache = response.clone();
@@ -1026,7 +1028,7 @@
                             console.log(`Preparing to store in DB: ${url}, Last Modified: ${lastModifiedHeader}`);
                             assetsToStore.push({ url, blob, lastModified: lastModifiedHeader });
                         } else {
-                            console.error(`HTTP error! Status: ${response.status}`);
+                            console.error(`HTTP error! Status: ${response.status} for URL: ${url}`);
                         }
                     }
                     loaded++;
@@ -1036,6 +1038,7 @@
                     });
                     await new Promise(resolve => setTimeout(resolve, delay));
                 }
+            
                 await storeAssetsInDB(assetsToStore);
                 if (!localStorage.getItem(firstLoadCompleteFlag)) {
                     localStorage.setItem(firstLoadCompleteFlag, 'true');
