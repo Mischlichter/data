@@ -1000,7 +1000,6 @@
 
                 console.log(`Total URLs to cache: ${urlsToCache.length}`);
                 let loaded = 0;
-                let loadingPercentage = 0; // Declare this outside to ensure scope encompasses the UI update calls.
                 const delay = 11;
                 let assetsToStore = [];
 
@@ -1035,9 +1034,11 @@
                         console.error(`Could not process ${url}: ${error}`);
                     } finally {
                         loaded++;
-                        loadingPercentage = Math.floor((loaded / urlsToCache.length) * 100);
-                        console.log(`Loading: ${loadingPercentage}% complete`);
-                        
+                        // Use requestAnimationFrame to ensure UI updates are synchronous with browser repaints
+                        requestAnimationFrame(() => {
+                            loadingPercentage = Math.floor((loaded / urlsToCache.length) * 100);
+                            console.log(`Loading: ${loadingPercentage}% complete`);
+                        });
                         await new Promise(resolve => setTimeout(resolve, delay));
                     }
                 }
