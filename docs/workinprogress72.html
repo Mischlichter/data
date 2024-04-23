@@ -998,7 +998,8 @@
 
                 const urlsToCache = [];
                 parseAssets(assetsJson, urlsToCache);
-                parseExtraAssets(extraText, urlsToCache); // Ensure lastModifiedDates are passed if needed
+                const extraAssetsUrls = parseExtraAssets(extraText, assetsJson); // Pass manifest to parseExtraAssets
+                urlsToCache.push(...extraAssetsUrls); // Add extra assets to urlsToCache
 
                 console.log(`Total URLs to cache: ${urlsToCache.length}`);
                 let loaded = 0;
@@ -1042,6 +1043,7 @@
                 }
                 fadeOutAsciiLinesXL(); // Assuming this is a function for UI effects
             }
+
 
 
 
@@ -1106,7 +1108,7 @@
 
 
 
-            
+
             async function verifyCache(cache, urls) {
                 console.log('Verifying cached assets');
                 const cacheKeys = await cache.keys();
