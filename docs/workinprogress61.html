@@ -986,7 +986,6 @@
                 ]);
                 console.log('Assets and extra assets fetched successfully');
 
-                // Map to store lastModified dates keyed by URL
                 const lastModifiedDates = {};
                 for (let key in assetsJson) {
                     if (assetsJson.hasOwnProperty(key)) {
@@ -995,21 +994,21 @@
                 }
 
                 const urlsToCache = [];
-                parseAssets(assetsJson, urlsToCache); // Parse main assets
+                parseAssets(assetsJson, urlsToCache);
                 const extraAssetUrls = parseExtraAssets(extraText, lastModifiedDates);
                 urlsToCache.push(...extraAssetUrls);
 
                 console.log(`Total URLs to cache: ${urlsToCache.length}`);
                 let loaded = 0;
-                const delay = 11; // Delay in milliseconds after loading each asset
-                let assetsToStore = []; // Array to collect assets for IndexedDB storage
+                let loadingPercentage = 0; // Declare this outside to ensure scope encompasses the UI update calls.
+                const delay = 11;
+                let assetsToStore = [];
 
                 for (let { url, lastModified } of urlsToCache) {
                     try {
                         let response = await cache.match(url);
                         let shouldCache = !response;
 
-                        // If found in cache and has lastModified, verify freshness
                         if (response && lastModified) {
                             const cacheLastModified = response.headers.get('last-modified');
                             shouldCache = new Date(lastModified) > new Date(cacheLastModified);
@@ -1018,34 +1017,33 @@
                             }
                         }
 
-                        // If not cached or outdated, try fetching from network
                         if (shouldCache) {
                             response = await fetch(url);
                             if (response.ok) {
-                                const cloneForCache = response.clone(); // Clone before consumption
-                                await cache.put(url, cloneForCache); // Cache new version
+                                const cloneForCache = response.clone();
+                                await cache.put(url, cloneForCache);
                                 console.log(`Fetched and cached: ${url}`);
                             } else {
                                 throw new Error(`HTTP error! Status: ${response.status}`);
                             }
                         }
 
-                        // Assuming successful fetch or cache load
-                        const blob = await response.blob(); // Consume the response to get blob
+                        const blob = await response.blob();
                         assetsToStore.push({ url, blob, lastModified });
 
                     } catch (error) {
                         console.error(`Could not process ${url}: ${error}`);
                     } finally {
                         loaded++;
-                        const loadingPercentage = Math.floor((loaded / urlsToCache.length) * 100);
+                        loadingPercentage = Math.floor((loaded / urlsToCache.length) * 100);
                         console.log(`Loading: ${loadingPercentage}% complete`);
-                        await new Promise(resolve => setTimeout(resolve, delay)); // Optional delay
+                        
+                        await new Promise(resolve => setTimeout(resolve, delay));
                     }
                 }
 
-                await storeAssetsInDB(assetsToStore); // Store all assets in IndexedDB
-                await verifyCache(cache, urlsToCache.map(item => item.url)); // Optional: verify cache integrity
+                await storeAssetsInDB(assetsToStore);
+                await verifyCache(cache, urlsToCache.map(item => item.url));
 
                 if (!localStorage.getItem(firstLoadCompleteFlag)) {
                     localStorage.setItem(firstLoadCompleteFlag, 'true');
@@ -1054,7 +1052,7 @@
                     localStorage.setItem(secondLoadCompleteFlag, 'true');
                 }
 
-                fadeOutAsciiLinesXL(); // Optional UI effect for completion
+                fadeOutAsciiLinesXL();
             }
 
 
