@@ -1099,14 +1099,17 @@
                         if (typeof value === 'object') {
                             parseAssets(value, urls);
                         } else if (key.startsWith('Viewer') || key.startsWith('interface')) {
-                            urls.push({ 
+                            let asset = {
                                 url: `https://raw.githubusercontent.com/Mischlichter/data/main/${key}`,
                                 lastModified: value.date // Adjust this based on your JSON structure
-                            });
+                            };
+                            console.log('Parsed Asset:', asset);  // Log the extracted data
+                            urls.push(asset);
                         }
                     }
                 }
             }
+
 
 
             function parseExtraAssets(text, lastModifiedDates) {
@@ -1120,10 +1123,13 @@
                     if (urlMatch) {
                         let url = urlMatch[1]; // Get the matched URL, which excludes anything after a colon or space
                         let lastModified = lastModifiedDates[url] || null; // Use the date from the manifest or null if not available
-                        return { url, lastModified };
+                        let asset = { url, lastModified };
+                        console.log('Parsed Extra Asset:', asset);  // Log the extracted data
+                        return asset;
                     }
                 }).filter(item => item); // Remove any undefined items that might result from lines without valid URLs
             }
+
 
 
             function fadeOutAsciiLinesXL() {
