@@ -986,30 +986,32 @@
                 for (let { url, lastModified } of urlsToCache) {
                     try {
                         const response = await fetch(url);
-                        const blob = await response.blob();
-                        
-                        // Check and update cache if needed
-                        const cacheResponse = await cache.match(url);
-                        let shouldCache = true;
-                        if (cacheResponse && lastModified) {
-                            const cacheLastModified = cacheResponse.headers.get('last-modified');
-                            shouldCache = new Date(lastModified) > new Date(cacheLastModified);
-                        }
-                        if (shouldCache) {
-                            await cache.put(url, new Response(blob)); // Create a new response object for caching
-                            console.log(`Cached: ${url}`);
-                        }
+                        if (response.ok) {
+                            const cloneForCache = response.clone(); // Clone before consumption
+                            const blob = await response.blob(); // Consume the original response
 
-                        // Prepare asset for IndexedDB storage
-                        assetsToStore.push({ url, blob, lastModified });
-                        
-                        loaded++;
-                        loadingPercentage = Math.floor((loaded / urlsToCache.length) * 100);
-                        await new Promise(resolve => setTimeout(resolve, delay));
+                            // Check and update cache if needed
+                            const cacheResponse = await cache.match(url);
+                            let shouldCache = true;
+                            if (cacheResponse && lastModified) {
+                                const cacheLastModified = cacheResponse.headers.get('last-modified');
+                                shouldCache = new Date(lastModified) > new Date(cacheLastModified);
+                            }
+                            if (shouldCache) {
+                                await cache.put(url, cloneForCache);
+                                console.log(`Cached: ${url}`);
+                            }
+
+                            // Prepare asset for IndexedDB storage
+                            assetsToStore.push({ url, blob, lastModified });
+                        } else {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
                     } catch (error) {
-                        console.error(`Could not cache ${url}: ${error}`);
+                        console.error(`Could not process ${url}: ${error}`);
                     }
                 }
+
 
                 await verifyCache(cache, urlsToCache.map(item => item.url));
                 
