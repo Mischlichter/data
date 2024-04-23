@@ -440,10 +440,8 @@ const galleryHTML = `
   
 
         async function fetchImageFilenames() {
-            // Open the database using the existing setup
             const db = await idb.openDB('MyDatabase', 1, {
                 upgrade(db, oldVersion, newVersion, transaction) {
-                    // Ensure the 'assets' store exists
                     if (!db.objectStoreNames.contains('assets')) {
                         db.createObjectStore('assets', { keyPath: 'url' });
                     }
@@ -452,25 +450,21 @@ const galleryHTML = `
 
             let imageMetadata = {};
             const galleryContainer = document.getElementById('gallery-container');
-            let dynamicImages = []; // Array to store image URLs for additional logic like slideshow
+            let dynamicImages = [];
 
-            // Fetch metadata
             try {
                 const responseMetadata = await fetch('https://raw.githubusercontent.com/Mischlichter/data/main/lib/metadata.json');
                 imageMetadata = await responseMetadata.json();
-                
+
                 const responseFiles = await fetch('https://api.github.com/repos/Mischlichter/data/contents/gallerycom');
                 const files = await responseFiles.json();
 
                 const totalImages = files.length;
                 let loadedImages = 0;
+                let currentImageIndex = -1; // Assuming there's some way to set this, e.g., via another function or operation
 
                 async function loadImage(index) {
                     if (index >= totalImages) {
-                        if (loadedImages === totalImages) {
-                            // Full load handling
-                            updateIndexOnFullLoad();
-                        }
                         return; // All images loaded
                     }
 
@@ -488,7 +482,7 @@ const galleryHTML = `
                         const blob = await imageResponse.blob();
                         const putTransaction = db.transaction('assets', 'readwrite');
                         const putStore = putTransaction.objectStore('assets');
-                        await putStore.put({ url: file.download_url, blob, lastModified: new Date().toISOString() });
+                        await putStore.put({ url: file.download_url, blob });
                         imgBlobUrl = URL.createObjectURL(blob);
                     }
 
@@ -498,12 +492,11 @@ const galleryHTML = `
                     const img = document.createElement('img');
                     img.src = imgBlobUrl;
                     img.classList.add('grid-image');
-                    dynamicImages.push(img.src); // Store the image URL
+                    dynamicImages.push(img.src);
 
                     const metadata = imageMetadata[file.name] || {};
                     const wordOverlay = document.createElement('div');
                     wordOverlay.classList.add('word-overlay');
-
                     imageContainer.appendChild(img);
                     imageContainer.appendChild(wordOverlay);
                     img.dataset.metadata = JSON.stringify(metadata);
@@ -513,17 +506,16 @@ const galleryHTML = `
                         updateLoadingStatus((loadedImages / totalImages) * 100);
 
                         img.onclick = () => {
-                            onImageClick(img.src);
-                            const currentImageIndex = dynamicImages.indexOf(img.src);
+                            currentImageIndex = dynamicImages.indexOf(img.src);
                             if (currentImageIndex !== -1) {
-                                showSlideshow(currentImageIndex);
+                                onImageClick(img.src);
+                                showSlideshow(); // Show slideshow if applicable
                             } else {
                                 console.error("Clicked image index not found in dynamicImages array.");
                             }
                         };
-
                         galleryContainer.appendChild(imageContainer);
-                        setTimeout(() => loadImage(index + 1), 7); // Load the next image
+                        setTimeout(() => loadImage(index + 1), 7);
                     };
 
                     img.onerror = () => {
@@ -532,11 +524,12 @@ const galleryHTML = `
                     };
                 }
 
-                loadImage(0); // Start loading images
+                loadImage(0);
             } catch (error) {
                 console.error('Error fetching metadata or files:', error);
             }
         }
+
 
 
 
