@@ -1000,69 +1000,54 @@
 
                 const urlsToCache = [];
                 parseAssets(assetsJson, urlsToCache);
-                const extraAssetUrls = parseExtraAssets(extraText, {});
-                const secondExtraAssetUrls = parseExtraAssets(secondExtraText, {});
+                const extraAssetUrls = parseExtraAssets(extraText, urlsToCache);
+                const secondExtraAssetUrls = parseExtraAssets(secondExtraText, urlsToCache);
 
-                // Populate lastModifiedDates after parsing assets
+                // After all URLs are parsed, assign dates
                 const lastModifiedDates = {};
                 for (let key in assetsJson) {
                     if (assetsJson.hasOwnProperty(key)) {
-                        lastModifiedDates[assetsJson[key].url] = new Date(assetsJson[key].lastModified);
+                        if (urlsToCache.includes(assetsJson[key].url)) {  // Ensure the URL was parsed
+                            lastModifiedDates[assetsJson[key].url] = new Date(assetsJson[key].lastModified);
+                            console.log(`Date added for ${assetsJson[key].url}: ${lastModifiedDates[assetsJson[key].url]}`);
+                        }
                     }
                 }
 
-                // Merge and update last modified dates
-                extraAssetUrls.concat(secondExtraAssetUrls).forEach(asset => {
-                    if (lastModifiedDates[asset.url]) {
-                        asset.lastModified = lastModifiedDates[asset.url];
-                        console.log(`Date associated for ${asset.url}: ${asset.lastModified}`);
-                    }
-                });
-
                 urlsToCache.push(...extraAssetUrls, ...secondExtraAssetUrls);
                 console.log(`Total URLs to cache: ${urlsToCache.length}`);
+
                 let loaded = 0;
                 const delay = 30;
                 let assetsToStore = [];
 
-                for (let asset of urlsToCache) {
-                    try {
-                        const idbResponse = await db.transaction('assets').objectStore('assets').get(asset.url);
-                        let shouldFetch = true;
+                // Process each URL for fetching and storage
+                for (let { url, lastModified } of urlsToCache) {
+                    let shouldFetch = true;
+                    const idbResponse = await db.transaction('assets').objectStore('assets').get(url);
 
-                        if (idbResponse) {
-                            let idbLastModified = new Date(idbResponse.lastModified);
-                            let manifestLastModified = new Date(asset.lastModified);
-                            if (idbLastModified >= manifestLastModified) {
-                                console.log(`Loaded from IndexedDB: ${asset.url}`);
-                                shouldFetch = false;
-                            }
-                        }
-
-                        if (shouldFetch) {
-                            let response = await fetch(asset.url);
-                            if (response.ok) {
-                                const cloneForCache = response.clone();
-                                await cache.put(asset.url, cloneForCache);
-                                console.log(`Fetched and cached: ${asset.url}`);
-                                const blob = await response.blob();
-                                const lastModifiedHeader = response.headers.get('last-modified') || asset.lastModified.toISOString();
-                                console.log(`Preparing to store in DB: ${asset.url}, Last Modified: ${lastModifiedHeader}`);
-                                assetsToStore.push({ url: asset.url, blob, lastModified: lastModifiedHeader });
-                            } else {
-                                throw new Error(`HTTP error! Status: ${response.status}`);
-                            }
-                        }
-                    } catch (error) {
-                        console.error(`Could not process ${asset.url}: ${error}`);
-                    } finally {
-                        loaded++;
-                        requestAnimationFrame(() => {
-                            loadingPercentage = Math.floor((loaded / urlsToCache.length) * 100);
-                            console.log(`Loading: ${loadingPercentage}% complete`);
-                        });
-                        await new Promise(resolve => setTimeout(resolve, delay));
+                    if (idbResponse && new Date(idbResponse.lastModified) >= new Date(lastModified)) {
+                        console.log(`Loaded from IndexedDB: ${url}`);
+                        shouldFetch = false;
                     }
+
+                    if (shouldFetch) {
+                        let response = await fetch(url);
+                        if (response.ok) {
+                            const cloneForCache = response.clone();
+                            await cache.put(url, cloneForCache);
+                            console.log(`Fetched and cached: ${url}`);
+                            const blob = await response.blob();
+                            const lastModifiedHeader = response.headers.get('last-modified') || lastModified.toISOString();
+                            console.log(`Preparing to store in DB: ${url}, Last Modified: ${lastModifiedHeader}`);
+                            assetsToStore.push({ url, blob, lastModified: lastModifiedHeader });
+                        } else {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                    }
+                    loaded++;
+                    requestAnimationFrame(() => console.log(`Loading: ${Math.floor((loaded / urlsToCache.length) * 100)}% complete`));
+                    await new Promise(resolve => setTimeout(resolve, delay));
                 }
 
                 await storeAssetsInDB(assetsToStore);
