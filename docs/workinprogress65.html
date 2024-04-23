@@ -2237,7 +2237,7 @@
 
         async function initialize() {
             // Wait for a second before executing the rest of the code
-            await new Promise(resolve => setTimeout(resolve, 111));
+            await new Promise(resolve => setTimeout(resolve, 1000));
 
             scenesData = await fetchAndParseData();
             if (scenesData && scenesData.length > 0) {
