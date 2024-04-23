@@ -443,6 +443,7 @@ const galleryHTML = `
             // Open the database using the existing setup
             const db = await idb.openDB('MyDatabase', 1, {
                 upgrade(db, oldVersion, newVersion, transaction) {
+                    // Ensure the 'assets' store exists
                     if (!db.objectStoreNames.contains('assets')) {
                         db.createObjectStore('assets', { keyPath: 'url' });
                     }
@@ -451,7 +452,7 @@ const galleryHTML = `
 
             let imageMetadata = {};
             const galleryContainer = document.getElementById('gallery-container');
-            const dynamicImages = []; // Array to track loaded images for slideshow
+            let dynamicImages = [];  // Array to keep track of images for slideshow and interaction
 
             // Fetch metadata
             try {
@@ -493,11 +494,12 @@ const galleryHTML = `
                     const img = document.createElement('img');
                     img.src = imgBlobUrl;
                     img.classList.add('grid-image');
-                    dynamicImages.push(img.src); // Store the image URL for slideshow logic
+                    dynamicImages.push(img.src);  // Store the image URL for slideshow and interaction
 
                     const metadata = imageMetadata[file.name] || {};
                     const wordOverlay = document.createElement('div');
                     wordOverlay.classList.add('word-overlay');
+                    wordOverlay.textContent = metadata.description || "No description";  // Display metadata description or a default text
 
                     imageContainer.appendChild(img);
                     imageContainer.appendChild(wordOverlay);
@@ -531,7 +533,6 @@ const galleryHTML = `
                 console.error('Error fetching metadata or files:', error);
             }
         }
-
 
 
 
