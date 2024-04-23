@@ -1031,7 +1031,7 @@
                     }
                     loaded++;
                     requestAnimationFrame(() => {
-                        oadingPercentage = Math.floor((loaded / urlsToCache.length) * 100);
+                        loadingPercentage = Math.floor((loaded / urlsToCache.length) * 100);
                         console.log(`Loading: ${loadingPercentage}% complete`);
                     });
                     await new Promise(resolve => setTimeout(resolve, delay));
