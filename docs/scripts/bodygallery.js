@@ -409,24 +409,18 @@ const galleryHTML = `
             function removeCenterContainer() {
                 const centerContainer = document.querySelector('.center-container');
                 if (centerContainer) {
-                    // Start by scrolling to the top smoothly
-                    window.scrollTo({
-                        top: 0,                 
-                    });
+                    // Start fading out the center container smoothly
+                    centerContainer.style.transition = 'opacity 1s ease-out';
+                    centerContainer.style.opacity = '0';
 
-                    // Assume the scroll will take a certain amount of time (e.g., 500 ms)
+                    // Delay removing the center container until the fade-out animation completes
                     setTimeout(() => {
-                        // Actions to take after scrolling is assumed to have completed
-                        centerContainer.style.opacity = '0';
-
-                        // Further delay to allow for any visual changes or preparations (e.g., another 500 ms)
-                        setTimeout(() => {
-                            centerContainer.remove();
-                            enableScroll(); // Re-enable scrolling if it was disabled
-                        }, 500);
-                    }, 500); // Time to wait for the scroll to potentially complete
+                        centerContainer.remove();
+                        enableScroll(); // Re-enable scrolling if it was disabled
+                    }, 1000); // Adjust timing as needed based on the duration of the fade-out animation
                 }
             }
+
 
 
         }
