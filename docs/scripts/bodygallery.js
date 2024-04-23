@@ -410,6 +410,7 @@ const galleryHTML = `
                 const centerContainer = document.querySelector('.center-container');
                 if (centerContainer) {
                     // Wait for 1 second before starting the opacity transition
+                    scrollToTop();
                     setTimeout(() => {
                         centerContainer.style.transition = 'opacity 1s ease-out';
                         centerContainer.style.opacity = '0';
@@ -417,7 +418,7 @@ const galleryHTML = `
                         // Wait for another 1 second after the opacity transition to remove the container
                         setTimeout(() => {
                             centerContainer.remove();
-                            scrollToTop()
+                            
                             enableScroll();
                         }, 1000); // Delay for the opacity transition
                     }, 1000); // Initial delay before starting the transition
