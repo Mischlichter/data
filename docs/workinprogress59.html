@@ -1016,17 +1016,17 @@
 
                             // Prepare asset for IndexedDB storage
                             assetsToStore.push({ url, blob, lastModified });
-
-                            // Update loading progress
-                            loaded++;
-                            loadingPercentage = Math.floor((loaded / urlsToCache.length) * 100);
-                            console.log(`Loading: ${loadingPercentage}% complete`); // Log current loading percentage
                         } else {
                             throw new Error(`HTTP error! Status: ${response.status}`);
                         }
                     } catch (error) {
                         console.error(`Could not process ${url}: ${error}`);
                     }
+
+                    // Update loading progress after each asset is processed, even if there was an error
+                    loaded++;
+                    loadingPercentage = Math.floor((loaded / urlsToCache.length) * 100);
+                    console.log(`Loading: ${loadingPercentage}% complete`);
 
                     // Optional delay after processing each asset
                     await new Promise(resolve => setTimeout(resolve, delay));
@@ -1047,6 +1047,7 @@
 
                 fadeOutAsciiLinesXL();
             }
+
 
 
 
