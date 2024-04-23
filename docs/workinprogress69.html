@@ -1030,7 +1030,10 @@
                         }
                     }
                     loaded++;
-                    requestAnimationFrame(() => console.log(`Loading: ${Math.floor((loaded / urlsToCache.length) * 100)}% complete`));
+                    requestAnimationFrame(() => {
+                        oadingPercentage = Math.floor((loaded / urlsToCache.length) * 100);
+                        console.log(`Loading: ${loadingPercentage}% complete`);
+                    });
                     await new Promise(resolve => setTimeout(resolve, delay));
                 }
                 await storeAssetsInDB(assetsToStore);
