@@ -1110,18 +1110,21 @@
 
 
             function parseExtraAssets(text, lastModifiedDates) {
-                // Split the text by new lines and filter out any lines that are not URLs
-                return text.split('\n').filter(line => {
-                    // Use a regular expression to test if the line is a valid URL
-                    const urlPattern = /^http[s]?:\/\/.+/;
-                    return urlPattern.test(line.trim());
-                }).map(line => {
+                // Split the text by new lines and process each line
+                return text.split('\n').map(line => {
                     // Trim the line to remove any leading or trailing whitespace
-                    let url = line.trim();
-                    let lastModified = lastModifiedDates[url] || null; // Use the date from the manifest or null if not available
-                    return { url, lastModified };
-                });
+                    let trimmedLine = line.trim();
+                    // Use a regular expression to extract the URL part before any colon or whitespace
+                    const urlMatch = trimmedLine.match(/(https?:\/\/[^:\s]+)/);
+
+                    if (urlMatch) {
+                        let url = urlMatch[1]; // Get the matched URL, which excludes anything after a colon or space
+                        let lastModified = lastModifiedDates[url] || null; // Use the date from the manifest or null if not available
+                        return { url, lastModified };
+                    }
+                }).filter(item => item); // Remove any undefined items that might result from lines without valid URLs
             }
+
 
             function fadeOutAsciiLinesXL() {
                 const elements = document.querySelectorAll('.ascii-line-XL');
