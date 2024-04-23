@@ -1009,16 +1009,15 @@
 
                 for (let key in assetsJson) {
                     if (assetsJson.hasOwnProperty(key)) {
-                        console.log(`Checking asset with key: ${key}, URL: ${assetsJson[key].url}, LastModified from manifest: ${assetsJson[key].lastModified}`);
-                        
-                        if (urlsToCache.includes(assetsJson[key].url)) {  // Ensure the URL was parsed
-                            lastModifiedDates[assetsJson[key].url] = new Date(assetsJson[key].lastModified);
-                            console.log(`Date added for ${assetsJson[key].url}: ${lastModifiedDates[assetsJson[key].url]}`);
-                        } else {
-                            console.log(`URL not included in cache: ${assetsJson[key].url}`);
+                        // Assuming 'url' is constructed or modified to match exactly as keys in the manifest
+                        let formattedKey = `docs/${key}`; // Adjust based on actual required URL format
+                        if (urlsToCache.includes(formattedKey)) {
+                            lastModifiedDates[formattedKey] = new Date(assetsJson[key]);
+                            console.log(`Date added for ${formattedKey}: ${lastModifiedDates[formattedKey]}`);
                         }
                     }
                 }
+
                 console.log("Completed adding dates from manifest.");
 
 
