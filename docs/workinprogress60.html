@@ -978,22 +978,23 @@
                 console.log('Starting to preload assets');
                 const cache = await caches.open(cacheName);
                 console.log('Cache opened successfully');
-                const [assets, extra] = await Promise.all([
+                const [assetsJson, extraText] = await Promise.all([
                     fetch(ASSETS_MANIFEST_URL).then(res => res.json()),
                     fetch(EXTRA_ASSETS_URL).then(res => res.text())
                 ]);
                 console.log('Assets and extra assets fetched successfully');
 
-                // Create a map of URLs to their last modified dates from the assets JSON
-                const urlDates = {};
-                assets.forEach(asset => {
-                    if (asset.url && asset.lastModified) {
-                        urlDates[asset.url] = asset.lastModified;
+                // Map to store lastModified dates keyed by URL
+                const lastModifiedDates = {};
+                for (let key in assetsJson) {
+                    if (assetsJson.hasOwnProperty(key)) {
+                        lastModifiedDates[assetsJson[key].url] = assetsJson[key].lastModified;
                     }
-                });
+                }
 
-                const urlsToCache = parseAssets(assets); // Parse main assets
-                const extraAssetUrls = parseExtraAssets(extra, urlDates);
+                const urlsToCache = [];
+                parseAssets(assetsJson, urlsToCache); // Parse main assets
+                const extraAssetUrls = parseExtraAssets(extraText, lastModifiedDates);
                 urlsToCache.push(...extraAssetUrls);
 
                 console.log(`Total URLs to cache: ${urlsToCache.length}`);
@@ -1108,7 +1109,7 @@
             }
 
 
-            function parseExtraAssets(text, urlDates) {
+            function parseExtraAssets(text, lastModifiedDates) {
                 // Split the text by new lines and filter out any lines that are not URLs
                 return text.split('\n').filter(line => {
                     // Use a regular expression to test if the line is a valid URL
@@ -1116,11 +1117,9 @@
                     return urlPattern.test(line.trim());
                 }).map(line => {
                     // Trim the line to remove any leading or trailing whitespace
-                    const url = line.trim();
-                    return {
-                        url: url,
-                        lastModified: urlDates[url] || null  // Use the date from the urlDates object, if available
-                    };
+                    let url = line.trim();
+                    let lastModified = lastModifiedDates[url] || null; // Use the date from the manifest or null if not available
+                    return { url, lastModified };
                 });
             }
 
