@@ -993,7 +993,6 @@
                 let loaded = 0;
                 const delay = 11; // Delay in milliseconds after loading each asset
                 let assetsToStore = []; // Array to collect assets for IndexedDB storage
-                let loadingPercentage = 0;  // Initialize loading percentage variable
 
                 for (let { url, lastModified } of urlsToCache) {
                     try {
@@ -1021,12 +1020,13 @@
                         }
                     } catch (error) {
                         console.error(`Could not process ${url}: ${error}`);
+                    } finally {
+                        // Update loading progress after each asset is processed, even if there was an error
+                        loaded++;
+                        loadingPercentage = Math.floor((loaded / urlsToCache.length) * 100);
+                        console.log(`Loading: ${loadingPercentage}% complete`);
+                        
                     }
-
-                    // Update loading progress after each asset is processed, even if there was an error
-                    loaded++;
-                    loadingPercentage = Math.floor((loaded / urlsToCache.length) * 100);
-                    console.log(`Loading: ${loadingPercentage}% complete`);
 
                     // Optional delay after processing each asset
                     await new Promise(resolve => setTimeout(resolve, delay));
@@ -1047,8 +1047,6 @@
 
                 fadeOutAsciiLinesXL();
             }
-
-
 
 
 
