@@ -440,10 +440,12 @@ const galleryHTML = `
   
 
         async function fetchImageFilenames() {
+            // Open the database using the existing setup
             const db = await idb.openDB('MyDatabase', 1, {
                 upgrade(db, oldVersion, newVersion, transaction) {
-                    if (!db.objectStoreNames.contains('images')) {
-                        db.createObjectStore('images', { keyPath: 'url' });
+                    // Ensure the 'assets' store exists
+                    if (!db.objectStoreNames.contains('assets')) {
+                        db.createObjectStore('assets', { keyPath: 'url' });
                     }
                 }
             });
@@ -468,7 +470,9 @@ const galleryHTML = `
                     }
 
                     const file = files[index];
-                    const idbResponse = await db.transaction('images').objectStore('images').get(file.download_url);
+                    const transaction = db.transaction('assets', 'readonly');
+                    const store = transaction.objectStore('assets');
+                    const idbResponse = await store.get(file.download_url);
 
                     let imgBlobUrl;
                     if (idbResponse) {
@@ -477,7 +481,9 @@ const galleryHTML = `
                     } else {
                         const imageResponse = await fetch(file.download_url);
                         const blob = await imageResponse.blob();
-                        await db.transaction('images', 'readwrite').objectStore('images').put({ url: file.download_url, blob });
+                        const putTransaction = db.transaction('assets', 'readwrite');
+                        const putStore = putTransaction.objectStore('assets');
+                        await putStore.put({ url: file.download_url, blob, lastModified: new Date().toISOString() });
                         imgBlobUrl = URL.createObjectURL(blob);
                     }
 
@@ -516,6 +522,7 @@ const galleryHTML = `
                 console.error('Error fetching metadata or files:', error);
             }
         }
+
 
 
         function updateLoadingStatus(percentage) {
