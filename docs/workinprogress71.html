@@ -1050,22 +1050,6 @@
             
 
 
-            async function verifyCache(cache, urls) {
-                console.log('Verifying cached assets');
-                const cacheKeys = await cache.keys();
-                let verifiedCount = 0;
-
-                for (let url of urls) {
-                    if (cacheKeys.some(request => request.url === url)) {
-                        verifiedCount++;
-                        console.log(`Verified: ${url}`);
-                    } else {
-                        console.error(`Verification failed for: ${url}`);
-                    }
-                }
-
-                console.log(`Total verified URLs: ${verifiedCount}`);
-            }
 
             function parseAssets(manifest, urls) {
                 for (let key in manifest) {
@@ -1100,8 +1084,8 @@
                     let trimmedLine = line.trim();
                     if (trimmedLine.startsWith('https://')) {  // Checks if the line is a URL
                         const url = trimmedLine;
-                        // Extract the path from the URL and form the key as stored in the manifest
-                        const urlPath = new URL(url).pathname.split('/').slice(-2).join('/');  // Get the last two parts for folder/file structure
+                        // Extract the relative path from the URL as stored in the manifest
+                        const urlPath = new URL(url).pathname.substring(1);  // Remove the leading slash to match the manifest format
 
                         // Find the corresponding manifest entry by the adjusted URL path
                         let lastModified = manifest[urlPath];  // Directly use urlPath to match the manifest
@@ -1122,6 +1106,23 @@
 
 
 
+            
+            async function verifyCache(cache, urls) {
+                console.log('Verifying cached assets');
+                const cacheKeys = await cache.keys();
+                let verifiedCount = 0;
+
+                for (let url of urls) {
+                    if (cacheKeys.some(request => request.url === url)) {
+                        verifiedCount++;
+                        console.log(`Verified: ${url}`);
+                    } else {
+                        console.error(`Verification failed for: ${url}`);
+                    }
+                }
+
+                console.log(`Total verified URLs: ${verifiedCount}`);
+            }
 
 
 
