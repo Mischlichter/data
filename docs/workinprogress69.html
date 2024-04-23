@@ -1000,8 +1000,8 @@
 
                 const urlsToCache = [];
                 parseAssets(assetsJson, urlsToCache);
-                parseExtraAssets(extraText, urlsToCache, lastModifiedDates); // Ensure lastModifiedDates are passed if needed
-                parseExtraAssets(secondExtraText, urlsToCache, lastModifiedDates);
+                parseExtraAssets(extraText, urlsToCache); // Ensure lastModifiedDates are passed if needed
+                parseExtraAssets(secondExtraText, urlsToCache);
 
                 console.log(`Total URLs to cache: ${urlsToCache.length}`);
                 let loaded = 0;
