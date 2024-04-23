@@ -1005,14 +1005,22 @@
 
                 // After all URLs are parsed, assign dates
                 const lastModifiedDates = {};
+                console.log("Starting to add dates from manifest to the cache URLs...");
+
                 for (let key in assetsJson) {
                     if (assetsJson.hasOwnProperty(key)) {
+                        console.log(`Checking asset with key: ${key}, URL: ${assetsJson[key].url}, LastModified from manifest: ${assetsJson[key].lastModified}`);
+                        
                         if (urlsToCache.includes(assetsJson[key].url)) {  // Ensure the URL was parsed
                             lastModifiedDates[assetsJson[key].url] = new Date(assetsJson[key].lastModified);
                             console.log(`Date added for ${assetsJson[key].url}: ${lastModifiedDates[assetsJson[key].url]}`);
+                        } else {
+                            console.log(`URL not included in cache: ${assetsJson[key].url}`);
                         }
                     }
                 }
+                console.log("Completed adding dates from manifest.");
+
 
                 urlsToCache.push(...extraAssetUrls, ...secondExtraAssetUrls);
                 console.log(`Total URLs to cache: ${urlsToCache.length}`);
