@@ -1023,7 +1023,6 @@
                         if (idbResponse) {
                             let idbLastModified = new Date(idbResponse.lastModified);
                             let manifestLastModified = new Date(lastModified);
-                            // Check if the version in IndexedDB is the same or newer
                             if (idbLastModified >= manifestLastModified) {
                                 console.log(`Loaded from IndexedDB: ${url}`);
                                 shouldFetch = false;
@@ -1037,7 +1036,8 @@
                                 await cache.put(url, cloneForCache);
                                 console.log(`Fetched and cached: ${url}`);
                                 const blob = await response.blob();
-                                const lastModifiedHeader = response.headers.get('last-modified') || lastModified.toISOString(); // Use header or manifest date
+                                const lastModifiedHeader = response.headers.get('last-modified') || lastModified.toISOString();
+                                console.log(`Preparing to store in DB: ${url}, Last Modified: ${lastModifiedHeader}`); // Log statement before storing
                                 assetsToStore.push({ url, blob, lastModified: lastModifiedHeader });
                             } else {
                                 throw new Error(`HTTP error! Status: ${response.status}`);
