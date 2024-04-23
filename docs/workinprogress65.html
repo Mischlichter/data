@@ -1155,7 +1155,7 @@
                   // Your existing function to map motion to mouse (if applicable)
                 
                 fadeOutOverlay();
-                
+                enterSite();
                 // Check for DeviceOrientationEvent support
                 if ('DeviceOrientationEvent' in window) {
                     // Request permission for iOS 13+ devices
@@ -1297,20 +1297,17 @@
             function fadeOutOverlay() {
                 var overlay = document.getElementById('permissionOverlay');
                 if (overlay) {
-                    // Perform any necessary actions before fading out the overlay
-                    enterSite(); // Call the "enterSite" function here if needed
-
-                    // Fade out the overlay
                     overlay.style.opacity = '0';
                     setTimeout(() => {
                         overlay.style.visibility = 'hidden';
+                         // Remove the overlay from the DOM.
+                        //enterSite(); // Transition to the main functionality of the site.
                         console.log('Overlay should be faded out and removed.'); // Debug output
-                    }, 500); // Adjust timing as needed
+                    }, 500);
                 } else {
                     console.log('Overlay not found.'); // Check if the overlay exists
                 }
             }
-
 
             function showOverlay() {
                 var overlay = document.getElementById('permissionOverlay');
@@ -1368,7 +1365,7 @@
                 } else {
                     // Directly add event listener if not on iOS
                     
-                    // Non-iOS or no permissions needed, proceed to enter the site
+                    enterSite(); // Non-iOS or no permissions needed, proceed to enter the site
                     fadeOutOverlay()
                 }
 
@@ -2239,20 +2236,18 @@
         let scenesiData = [];
 
         async function initialize() {
-            // Wait for a second before executing the rest of the code
-            await new Promise(resolve => setTimeout(resolve, 1000));
-
             scenesData = await fetchAndParseData();
             if (scenesData && scenesData.length > 0) {
                 loadScene(currentSceneIndex);
+            
             }
-
             scenesiData = await fetchImage();
             if (scenesiData && scenesiData.length > 0) {
                 loadScene(currentSceneIndex);
+            
             }
-        }
 
+        }
 
 
 
