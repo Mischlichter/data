@@ -1905,15 +1905,17 @@
                     isTouch = event.type === 'touchend';
 
                     // Check if the clicked menu item is currently active
-                    if (currentlyActiveMenuItemId === menuContainer.id) {
+                    // Scroll to top on first click or if the clicked menu item is currently active
+                    if (currentlyActiveMenuItemId === null || currentlyActiveMenuItemId === menuContainer.id) {
                         window.scrollTo({
                             top: 0,
-                            left: 0,
-                            behavior: 'smooth'  // Use the 'smooth' scroll behavior
+                            behavior: 'smooth'
                         });
+                        currentlyActiveMenuItemId = menuContainer.id; // Update the currently active menu item
                         return;
                     }
 
+                  
                     currentlyActiveMenuItemId = menuContainer.id; // Update currently active menu item
 
                     await fadeOutElements(); // Wait for the elements to fade out
