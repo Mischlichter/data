@@ -2236,16 +2236,20 @@
         let scenesiData = [];
 
         async function initialize() {
+            // Wait for a second before executing the rest of the code
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
             scenesData = await fetchAndParseData();
-            if (scenesData && scenesData.length > 0) 
-            
-            }
-            scenesiData = await fetchImage();
-            if (scenesiData && scenesiData.length > 0) 
-            
+            if (scenesData && scenesData.length > 0) {
+                loadScene(currentSceneIndex);
             }
 
+            scenesiData = await fetchImage();
+            if (scenesiData && scenesiData.length > 0) {
+                loadScene(currentSceneIndex);
+            }
         }
+
 
 
 
