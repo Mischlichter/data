@@ -440,10 +440,8 @@ const galleryHTML = `
   
 
         async function fetchImageFilenames() {
-            // Open the database using the existing setup
             const db = await idb.openDB('MyDatabase', 1, {
                 upgrade(db, oldVersion, newVersion, transaction) {
-                    // Ensure the 'assets' store exists
                     if (!db.objectStoreNames.contains('assets')) {
                         db.createObjectStore('assets', { keyPath: 'url' });
                     }
@@ -452,9 +450,8 @@ const galleryHTML = `
 
             let imageMetadata = {};
             const galleryContainer = document.getElementById('gallery-container');
-            let dynamicImages = [];  // Array to keep track of images for slideshow and interaction
+            let dynamicImages = [];  // Array to track all images for onclick functionality
 
-            // Fetch metadata
             try {
                 const responseMetadata = await fetch('https://raw.githubusercontent.com/Mischlichter/data/main/lib/metadata.json');
                 imageMetadata = await responseMetadata.json();
@@ -466,9 +463,7 @@ const galleryHTML = `
                 let loadedImages = 0;
 
                 async function loadImage(index) {
-                    if (index >= totalImages) {
-                        return; // All images loaded
-                    }
+                    if (index >= totalImages) return;
 
                     const file = files[index];
                     const transaction = db.transaction('assets', 'readonly');
@@ -482,9 +477,11 @@ const galleryHTML = `
                     } else {
                         const imageResponse = await fetch(file.download_url);
                         const blob = await imageResponse.blob();
-                        const putTransaction = db.transaction('assets', 'readwrite');
-                        const putStore = putTransaction.objectStore('assets');
-                        await putStore.put({ url: file.download_url, blob, lastModified: new Date().toISOString() });
+                        await db.transaction('assets', 'readwrite').objectStore('assets').put({
+                            url: file.download_url,
+                            blob,
+                            lastModified: new Date().toISOString()
+                        });
                         imgBlobUrl = URL.createObjectURL(blob);
                     }
 
@@ -494,32 +491,32 @@ const galleryHTML = `
                     const img = document.createElement('img');
                     img.src = imgBlobUrl;
                     img.classList.add('grid-image');
-                    dynamicImages.push(img.src);  // Store the image URL for slideshow and interaction
+                    dynamicImages.push(img.src);  // Adding the image URL for possible slideshow
 
                     const metadata = imageMetadata[file.name] || {};
                     const wordOverlay = document.createElement('div');
                     wordOverlay.classList.add('word-overlay');
-                    wordOverlay.textContent = metadata.description || "No description";  // Display metadata description or a default text
+                    wordOverlay.textContent = metadata.description || 'No description';  // Example of using metadata
 
+                    img.dataset.metadata = JSON.stringify(metadata);
                     imageContainer.appendChild(img);
                     imageContainer.appendChild(wordOverlay);
-                    img.dataset.metadata = JSON.stringify(metadata);
 
                     img.onload = () => {
                         loadedImages++;
                         updateLoadingStatus((loadedImages / totalImages) * 100);
 
                         img.onclick = () => {
-                            const currentImageIndex = dynamicImages.indexOf(img.src);
-                            if (currentImageIndex !== -1) {
-                                showSlideshow(currentImageIndex);
+                            const currentIndex = dynamicImages.indexOf(img.src);
+                            if (currentIndex !== -1) {
+                                showSlideshow(currentIndex);
                             } else {
                                 console.error("Clicked image index not found in dynamicImages array.");
                             }
                         };
 
                         galleryContainer.appendChild(imageContainer);
-                        setTimeout(() => loadImage(index + 1), 7);
+                        setTimeout(() => loadImage(index + 1), 7);  // Sequential loading with delay
                     };
 
                     img.onerror = () => {
@@ -528,12 +525,11 @@ const galleryHTML = `
                     };
                 }
 
-                loadImage(0); // Start loading images
+                loadImage(0);  // Start loading the first image
             } catch (error) {
                 console.error('Error fetching metadata or files:', error);
             }
         }
-
 
 
         function updateLoadingStatus(percentage) {
