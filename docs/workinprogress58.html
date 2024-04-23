@@ -990,7 +990,7 @@
                 extraAssetUrls.forEach(url => urlsToCache.push({ url, lastModified: null }));
 
                 console.log(`Total URLs to cache: ${urlsToCache.length}`);
-                let loaded = 0;
+                let loaded = 0; // Initialize the loaded count
                 const delay = 11; // Delay in milliseconds after loading each asset
                 let assetsToStore = []; // Array to collect assets for IndexedDB storage
 
@@ -1018,11 +1018,16 @@
                         } else {
                             throw new Error(`HTTP error! Status: ${response.status}`);
                         }
+
+                        loaded++;
+                        let loadingPercentage = Math.floor((loaded / urlsToCache.length) * 100);
+                        console.log(`Loading: ${loadingPercentage}% complete`);
+                        await new Promise(resolve => setTimeout(resolve, delay)); // Wait for a tiny break after each asset is loaded
+
                     } catch (error) {
                         console.error(`Could not process ${url}: ${error}`);
                     }
                 }
-
 
                 await verifyCache(cache, urlsToCache.map(item => item.url));
                 
@@ -1039,6 +1044,7 @@
 
                 fadeOutAsciiLinesXL();
             }
+
 
 
 
