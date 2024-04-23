@@ -1009,7 +1009,6 @@
                 let assetsToStore = [];
 
                 for (let { url, lastModified } of urlsToCache) {
-                    console.log(`Processing URL: ${url}`);
                     let shouldFetch = true;
                     const idbResponse = await db.transaction('assets').objectStore('assets').get(url);
                     if (idbResponse && new Date(idbResponse.lastModified) >= new Date(lastModified)) {
@@ -1017,25 +1016,17 @@
                         shouldFetch = false;
                     }
                     if (shouldFetch) {
-                        console.log(`Needs fetch: ${url}`);
                         let response = await fetch(url);
                         if (response.ok) {
                             const cloneForCache = response.clone();
                             await cache.put(url, cloneForCache);
                             console.log(`Fetched and cached: ${url}`);
                             const blob = await response.blob();
-                            if (!blob.size) {
-                                console.error('Failed to create blob for URL:', url);
-                                continue;  // Skip this asset if blob creation failed
-                            }
-
                             const lastModifiedHeader = response.headers.get('last-modified') || new Date(lastModified).toISOString();
                             console.log(`Preparing to store in DB: ${url}, Last Modified: ${lastModifiedHeader}`);
-                            console.log(`Adding to store: URL: ${url}, Last Modified: ${lastModifiedHeader}, Blob size: ${blob.size}`);
                             assetsToStore.push({ url, blob, lastModified: lastModifiedHeader });
-
                         } else {
-                            console.error(`HTTP error! Status: ${response.status} for URL: ${url}`);
+                            console.error(`HTTP error! Status: ${response.status}`);
                         }
                     }
                     loaded++;
@@ -1045,7 +1036,6 @@
                     });
                     await new Promise(resolve => setTimeout(resolve, delay));
                 }
-            
                 await storeAssetsInDB(assetsToStore);
                 if (!localStorage.getItem(firstLoadCompleteFlag)) {
                     localStorage.setItem(firstLoadCompleteFlag, 'true');
