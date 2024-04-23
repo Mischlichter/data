@@ -1087,21 +1087,29 @@
                 console.log(`Total verified URLs: ${verifiedCount}`);
             }
 
-            function parseAssets(node, urls) {
-                for (let key in node) {
-                    if (node.hasOwnProperty(key)) {
-                        const value = node[key];
-                        if (typeof value === 'object') {
-                            parseAssets(value, urls);
-                        } else if (key.startsWith('Viewer') || key.startsWith('interface')) {
-                            urls.push({ 
-                                url: `https://raw.githubusercontent.com/Mischlichter/data/main/${key}`,
-                                lastModified: value.date // Adjust this based on your JSON structure
-                            });
+            function parseAssets(manifest, urls) {
+                for (let key in manifest) {
+                    if (manifest.hasOwnProperty(key)) {
+                        // Check if the file path starts with "Viewer" or "interface"
+                        if (key.startsWith('Viewer') || key.startsWith('interface')) {
+                            const value = manifest[key];
+                            // Handle the case where the value is a simple date string
+                            if (typeof value !== 'object') {
+                                let asset = {
+                                    url: `https://raw.githubusercontent.com/Mischlichter/data/main/${key}`,
+                                    lastModified: new Date(value).toISOString() // Convert the date to ISO format
+                                };
+                                console.log('Parsed Asset:', asset);  // Log the extracted data
+                                urls.push(asset);
+                            } else {
+                                // If the value is an object, possibly containing nested assets, recurse into it
+                                parseAssets(value, urls);
+                            }
                         }
                     }
                 }
             }
+
 
 
             function parseExtraAssets(text, lastModifiedDates) {

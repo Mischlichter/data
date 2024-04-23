@@ -1070,18 +1070,21 @@
             function parseAssets(manifest, urls) {
                 for (let key in manifest) {
                     if (manifest.hasOwnProperty(key)) {
-                        const value = manifest[key];
-                        if (typeof value === 'object') {
-                            // Assuming value has url and lastModified properties if it's an object
-                            parseAssets(value, urls); // Recurse into nested objects
-                        } else {
+                        // Check if the file path starts with "Viewer" or "interface"
+                        if (key.startsWith('Viewer') || key.startsWith('interface')) {
+                            const value = manifest[key];
                             // Handle the case where the value is a simple date string
-                            let asset = {
-                                url: `https://raw.githubusercontent.com/Mischlichter/data/main/${key}`,
-                                lastModified: new Date(value).toISOString() // Convert the date to ISO format
-                            };
-                            console.log('Parsed Asset:', asset);  // Log the extracted data
-                            urls.push(asset);
+                            if (typeof value !== 'object') {
+                                let asset = {
+                                    url: `https://raw.githubusercontent.com/Mischlichter/data/main/${key}`,
+                                    lastModified: new Date(value).toISOString() // Convert the date to ISO format
+                                };
+                                console.log('Parsed Asset:', asset);  // Log the extracted data
+                                urls.push(asset);
+                            } else {
+                                // If the value is an object, possibly containing nested assets, recurse into it
+                                parseAssets(value, urls);
+                            }
                         }
                     }
                 }
@@ -1090,20 +1093,21 @@
 
 
 
-            function parseExtraAssets(text, lastModifiedDates) {
+            function parseExtraAssets(text) {
                 // Split the text by new lines and process each line
                 return text.split('\n').map(line => {
                     let trimmedLine = line.trim();
                     const urlMatch = trimmedLine.match(/(https?:\/\/[^:\s]+)/);
                     if (urlMatch) {
                         let url = urlMatch[1]; // Get the matched URL
-                        let lastModified = lastModifiedDates[url] ? new Date(lastModifiedDates[url]).toISOString() : new Date().toISOString();
+                        let lastModified = new Date().toISOString(); // Use the current time as last modified
                         let asset = { url, lastModified };
                         console.log('Parsed Extra Asset:', asset);  // Log the extracted data
                         return asset;
                     }
                 }).filter(item => item); // Remove any undefined items that might result from lines without valid URLs
             }
+
 
 
 
