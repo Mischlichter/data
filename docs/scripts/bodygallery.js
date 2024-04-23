@@ -533,6 +533,16 @@ const galleryHTML = `
             });
         }
 
+        function openDatabase() {
+            return idb.openDB('MyDatabase', 1, {
+                upgrade(db, oldVersion, newVersion, transaction) {
+                    if (!db.objectStoreNames.contains('assets')) {
+                        db.createObjectStore('assets', { keyPath: 'url' });
+                    }
+                }
+            });
+        }
+
 
 
 
