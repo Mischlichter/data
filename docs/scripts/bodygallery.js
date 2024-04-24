@@ -439,7 +439,6 @@ const galleryHTML = `
                 console.log("Your browser doesn't support IndexedDB.");
                 return;
             }
-
             let request = window.indexedDB.open('myDatabase', 1);
 
             request.onerror = function(event) {
@@ -516,12 +515,37 @@ const galleryHTML = `
                                                                     lastModified: lastModifiedCurrent.toISOString()
                                                                 });
 
-                                                            setupImageDisplay(imageSrc, imageContainer, img, loadedImages, totalImages, index);
+                                                            img.src = imageSrc; // Load new image source
+                                                            dynamicImages.push(img.src); // Store the image URL
                                                         })
                                                         .catch(error => console.error(`Error loading image ${index}:`, error));
                                                 } else {
-                                                    setupImageDisplay(dbResult.imageSrc, imageContainer, img, loadedImages, totalImages, index);
+                                                    img.src = dbResult.imageSrc; // Load image from DB
+                                                    dynamicImages.push(img.src); // Store the image URL
                                                 }
+
+                                                img.onload = () => {
+                                                    loadedImages++;
+                                                    updateLoadingStatus((loadedImages / totalImages) * 100);
+
+                                                    img.onclick = () => onImageClick(img.src);
+                                                    if (currentImageIndex !== -1) {
+                                                        showSlideshow();
+                                                    } else {
+                                                        console.error("Clicked image index not found in dynamicImages array.");
+                                                    }
+                                                    if (loadedImages === totalImages) {
+                                                        // Full load handling
+                                                    }
+
+                                                    galleryContainer.appendChild(imageContainer);
+                                                    setTimeout(() => loadImage(index + 1), 7);
+                                                };
+
+                                                img.onerror = () => {
+                                                    console.error(`Error loading image ${index}`);
+                                                    loadImage(index + 1);
+                                                };
                                             };
 
                                             dbRequest.onerror = function() {
@@ -537,33 +561,8 @@ const galleryHTML = `
                     })
                     .catch(error => console.error('Error fetching index data:', error));
             }
-
-            function setupImageDisplay(imageSrc, imageContainer, img, loadedImages, totalImages, index) {
-                img.src = imageSrc;
-                img.onload = () => {
-                    loadedImages++;
-                    updateLoadingStatus((loadedImages / totalImages) * 100);
-
-                    img.onclick = () => onImageClick(img.src);
-                    if (currentImageIndex !== -1) {
-                        showSlideshow();
-                    } else {
-                        console.error("Clicked image index not found in dynamicImages array.");
-                    }
-                    if (loadedImages === totalImages) {
-                        console.log("All images loaded.");
-                    }
-
-                    galleryContainer.appendChild(imageContainer);
-                    
-                };
-
-                img.onerror = () => {
-                    console.error(`Error loading image ${index}`);
-                    
-                };
-            }
         }
+
 
 
 
