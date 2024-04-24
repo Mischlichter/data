@@ -926,12 +926,6 @@ const galleryHTML = `
                 }, 555); // Duration should match the CSS transition
             }
         }
-        
-
-        function isMobileDevice() {
-            return ('ontouchstart' in window || navigator.maxTouchPoints);
-        }
-
 
         function recreateHoverEffectini() {
             removeOldHoverEffectContainer(); // Fade out and remove old containers
