@@ -463,7 +463,6 @@ const galleryHTML = `
            };
 
            function fetchMetadataAndImages() {
-               // Fetch the index.json file to get last modified dates
                fetch('https://raw.githubusercontent.com/Mischlichter/data/main/index.json')
                    .then(response => response.json())
                    .then(indexData => {
@@ -479,23 +478,28 @@ const galleryHTML = `
                                        let loadedImages = 0;
 
                                        files.forEach((file, index) => {
+                                           const imageContainer = document.createElement('div');
+                                           imageContainer.classList.add('image-container');
+
+                                           const img = document.createElement('img');
+                                           img.classList.add('grid-image');
+
+                                           const wordOverlay = document.createElement('div');
+                                           wordOverlay.classList.add('word-overlay');
+
+                                           imageContainer.appendChild(img);
+                                           imageContainer.appendChild(wordOverlay);
+
                                            const transaction = db.transaction('imageData', 'readonly');
                                            const store = transaction.objectStore('imageData');
                                            const dbRequest = store.get(file.name);
 
                                            dbRequest.onsuccess = function(event) {
                                                let dbResult = event.target.result;
-                                               if (dbResult) {
-                                                   img.src = dbResult.imageSrc; // Image src from DB
-                                               } else {
-                                                   img.src = file.download_url; // Download URL as fallback
-                                                   dynamicImages.push(img.src); // Store the image URL
-                                               }
                                                let lastModifiedInDB = dbResult ? new Date(dbResult.lastModified) : new Date(0);
                                                let lastModifiedCurrent = new Date(indexData[file.name]?.lastModified);
 
                                                if (!dbResult || lastModifiedInDB < lastModifiedCurrent) {
-                                                   // File needs to be fetched and updated
                                                    fetch(file.download_url)
                                                        .then(response => response.blob())
                                                        .then(blob => {
@@ -508,14 +512,15 @@ const galleryHTML = `
                                                                    lastModified: lastModifiedCurrent.toISOString()
                                                                });
 
-                                                           loadImageElement(file, imageSrc, imageMetadata, galleryContainer, index);
+                                                           img.src = imageSrc;
+                                                           loadImageElement(img, imageMetadata[file.name], galleryContainer);
                                                            loadedImages++;
                                                            updateLoadingStatus((loadedImages / totalImages) * 100);
                                                        })
                                                        .catch(error => console.error(`Error loading image ${index}:`, error));
                                                } else {
-                                                   // Load image from IndexedDB
-                                                   loadImageElement(file, dbResult.imageSrc, imageMetadata, galleryContainer, index);
+                                                   img.src = dbResult.imageSrc;
+                                                   loadImageElement(img, imageMetadata[file.name], galleryContainer);
                                                    loadedImages++;
                                                    updateLoadingStatus((loadedImages / totalImages) * 100);
                                                }
@@ -534,20 +539,8 @@ const galleryHTML = `
            }
        }
 
-       function loadImageElement(file, imageSrc, imageMetadata, galleryContainer, index) {
-           const imageContainer = document.createElement('div');
-           imageContainer.classList.add('image-container');
-
-           const img = document.createElement('img');
-           img.classList.add('grid-image');
-           img.src = imageSrc;
-           img.dataset.metadata = JSON.stringify(imageMetadata[file.name] || {});
-
-           const wordOverlay = document.createElement('div');
-           wordOverlay.classList.add('word-overlay');
-
-           imageContainer.appendChild(img);
-           imageContainer.appendChild(wordOverlay);
+       function loadImageElement(img, metadata, galleryContainer) {
+           img.dataset.metadata = JSON.stringify(metadata || {});
 
            img.onload = () => {
                img.onclick = () => onImageClick(img.src);
@@ -557,16 +550,13 @@ const galleryHTML = `
                    console.error("Clicked image index not found in dynamicImages array.");
                }
 
-               galleryContainer.appendChild(imageContainer);
+               galleryContainer.appendChild(img.parentNode); // Assuming parentNode is the image container
            };
 
            img.onerror = () => {
-               console.error(`Error loading image ${index}`);
+               console.error(`Error loading image ${img.src}`);
            };
        }
-
-
-
 
 
 
