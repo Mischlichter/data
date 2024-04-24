@@ -433,8 +433,6 @@ const galleryHTML = `
 
   
 
-        let dynamicImages = []; // Ensure this array is accessible where needed
-
         async function fetchImageFilenames() {
             console.log("Starting image fetching process.");
             const galleryContainer = document.getElementById('gallery-container');
@@ -504,21 +502,12 @@ const galleryHTML = `
                                 img.src = file.download_url; // Download URL as fallback
                                 console.log(`Loaded from network and caching: ${file.name}`);
                             }
-                            dynamicImages.push(img.src); // Add this image source to the dynamicImages array
 
                             img.onload = () => {
                                 loadedImages++;
                                 console.log(`Image loaded: ${file.name}`);
                                 updateLoadingStatus((loadedImages / totalImages) * 100);
                                 img.onclick = () => onImageClick(img.src);
-                                if (currentImageIndex !== -1) {
-                                    showSlideshow();
-                                } else {
-                                    console.error("Clicked image index not found in dynamicImages array.");
-                                }
-                                if (loadedImages === totalImages) {
-                                    // Full load handling
-                                }
                                 galleryContainer.appendChild(imageContainer);
                                 setTimeout(() => loadImage(index + 1), 7); // Load next image
                             };
@@ -541,10 +530,8 @@ const galleryHTML = `
                 }
             }
 
-            
+
         }
-
-
 
         function onImageClick(imgSrc) {
             currentImageIndex = dynamicImages.indexOf(imgSrc);
