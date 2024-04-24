@@ -986,32 +986,44 @@ const galleryHTML = `
         }
 
         function showNextSlide() {
-            // Create a new hover effect instance with the current image
-            recreateHoverEffectnext();
-            
-
-            // Delay hover effect by 2 seconds
-            setTimeout(function() {
-                // Update the index after the new viewer has been created
+            if (isMobileDevice()) {
+                // On mobile devices, simply change the image source without hover effects
                 currentImageIndex = (currentImageIndex + 1) % dynamicImages.length;
-                hoverEffectInstance.next();
+                updateImageForMobile();
                 updateTextInfo();
-            }, 333); // 2000 milliseconds = 2 seconds
+            } else {
+                // For desktop, maintain existing hover effects and transitions
+                recreateHoverEffectnext();
+                setTimeout(function() {
+                    currentImageIndex = (currentImageIndex + 1) % dynamicImages.length;
+                    hoverEffectInstance.next();
+                    updateTextInfo();
+                }, 333); // Matching the hover effect delay
+            }
         }
 
         function showPrevSlide() {
-            // Create a new hover effect instance with the current image
-            recreateHoverEffectprev();
-            
-
-            // Delay hover effect by 2 seconds
-            setTimeout(function() {
-                // Update the index after the new viewer has been created
+            if (isMobileDevice()) {
+                // On mobile devices, simply change the image source without hover effects
                 currentImageIndex = (currentImageIndex - 1 + dynamicImages.length) % dynamicImages.length;
-                hoverEffectInstance.next();
+                updateImageForMobile();
                 updateTextInfo();
-            }, 333);
+            } else {
+                // For desktop, maintain existing hover effects and transitions
+                recreateHoverEffectprev();
+                setTimeout(function() {
+                    currentImageIndex = (currentImageIndex - 1 + dynamicImages.length) % dynamicImages.length;
+                    hoverEffectInstance.next();
+                    updateTextInfo();
+                }, 333); // Matching the hover effect delay
+            }
         }
+
+        function updateImageForMobile() {
+            const imgContainer = document.querySelector('.centered-container img'); // Ensure your HTML structure supports this
+            imgContainer.src = dynamicImages[currentImageIndex];
+        }
+
 
       
 
