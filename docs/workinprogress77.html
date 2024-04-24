@@ -759,6 +759,14 @@
     <script src="./scripts/umd.js"></script>
 
     <script src="scripts/bodygallery.js"></script>
+
+    <script>
+    // Declare this in the global scope, outside any other function
+    window.resetCalibrationFlag = function() {
+        window.isCalibrated = false;  // Use window scope to make this variable globally accessible
+        console.log("Calibration flag reset. Device needs recalibration.");
+    };
+    </script>
     
     <script>
         document.addEventListener('DOMContentLoaded', async function() {
@@ -1417,13 +1425,7 @@
     </script>
 
 
-    <script>
-    // Declare this in the global scope, outside any other function
-    window.resetCalibrationFlag = function() {
-        window.isCalibrated = false;  // Use window scope to make this variable globally accessible
-        console.log("Calibration flag reset. Device needs recalibration.");
-    };
-    </script>
+
 
 
 
