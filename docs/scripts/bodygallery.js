@@ -673,7 +673,7 @@ const galleryHTML = `
                     // Delay the execution of updateTextInfo
                     setTimeout(() => {
                         updateTextInfo(); // Update the text info based on the current image
-                    }, 1000); // Adjust the delay value as needed
+                    }, 5); // Adjust the delay value as needed
                 }, 5); // Adjust the delay value as needed
             } else {
                 console.error("Clicked image index not found in dynamicImages array.");
@@ -941,6 +941,7 @@ const galleryHTML = `
                 imgElement.style.width = '100%'; // Ensure the image fills the container
                 imgElement.style.height = 'auto';
                 newContainer.appendChild(imgElement); // Append the image to the new container
+                updateTextInfo();
             } else {
                 // For non-mobile devices, create the hover effect
                 hoverEffectInstance = new hoverEffect({
