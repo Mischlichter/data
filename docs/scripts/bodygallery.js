@@ -500,7 +500,16 @@ const galleryHTML = `
                                             dbRequest.onsuccess = function(event) {
                                                 let dbResult = event.target.result;
                                                 let lastModifiedInDB = dbResult ? new Date(dbResult.lastModified) : new Date(0);
-                                                let lastModifiedCurrent = new Date(indexData[file.name]?.lastModified);
+                                                let dateStr = indexData[file.name]?.lastModified;
+                                                let lastModifiedCurrent;
+
+                                                // Ensure the date string is correctly parsed
+                                                if (dateStr) {
+                                                    let parts = dateStr.split(/[- :]/);
+                                                    lastModifiedCurrent = new Date(parts[0], parts[1] - 1, parts[2], parts[3], parts[4], parts[5]);
+                                                } else {
+                                                    lastModifiedCurrent = new Date(0);  // Default to epoch start if no date is provided
+                                                }
 
                                                 console.log(`Date check for ${file.name}: In DB - ${lastModifiedInDB}, Current - ${lastModifiedCurrent}`);
 
