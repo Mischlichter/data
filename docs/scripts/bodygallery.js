@@ -556,7 +556,7 @@ const galleryHTML = `
 
             img.onerror = () => {
                 console.error(`Error loading image ${index}`);
-                loadImage(index + 1);
+                
             };
         }
 
