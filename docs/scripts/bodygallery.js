@@ -430,13 +430,9 @@ const galleryHTML = `
         
         //GALLERY CODE
         
-
-  
-
         function fetchImageFilenames() {
             let imageMetadata = {};
             const galleryContainer = document.getElementById('gallery-container');
-            let dynamicImages = []; // Initialize the dynamicImages array to track images
             let db; // Reference for IndexedDB database
 
             if (!window.indexedDB) {
@@ -478,48 +474,65 @@ const galleryHTML = `
                                         const totalImages = files.length;
                                         let loadedImages = 0;
 
-                                        files.forEach((file, index) => {
-                                            const transaction = db.transaction('imageData', 'readonly');
-                                            const store = transaction.objectStore('imageData');
-                                            const dbRequest = store.get(file.name);
+                                        function loadImage(index) {
+                                            if (index >= totalImages) {
+                                                return; // All images loaded
+                                            }
+
+                                            const file = files[index];
+                                            const imageContainer = document.createElement('div');
+                                            imageContainer.classList.add('image-container');
+
+                                            const img = document.createElement('img');
+                                            img.classList.add('grid-image');
+
+                                            const metadata = imageMetadata[file.name] || {};
+                                            const wordOverlay = document.createElement('div');
+                                            wordOverlay.classList.add('word-overlay');
+
+                                            imageContainer.appendChild(img);
+                                            imageContainer.appendChild(wordOverlay);
+                                            img.dataset.metadata = JSON.stringify(metadata);
+
+                                            let transaction = db.transaction('imageData', 'readonly');
+                                            let store = transaction.objectStore('imageData');
+                                            let dbRequest = store.get(file.name);
 
                                             dbRequest.onsuccess = function(event) {
                                                 let dbResult = event.target.result;
-                                                let lastModifiedInDB = dbResult ? new Date(dbResult.lastModified) : new Date(0);
-                                                let lastModifiedCurrent = new Date(indexData[file.name]?.lastModified);
+                                                img.src = dbResult ? dbResult.imageSrc : file.download_url; // Use DB or fallback
+                                                dynamicImages.push(img.src); // Add to dynamicImages
 
-                                                if (!dbResult || lastModifiedInDB < lastModifiedCurrent) {
-                                                    // File needs to be fetched and updated
-                                                    fetch(file.download_url)
-                                                        .then(response => response.blob())
-                                                        .then(blob => {
-                                                            const imageSrc = URL.createObjectURL(blob);
-                                                            db.transaction('imageData', 'readwrite')
-                                                                .objectStore('imageData')
-                                                                .put({
-                                                                    filename: file.name,
-                                                                    imageSrc: imageSrc,
-                                                                    lastModified: lastModifiedCurrent.toISOString()
-                                                                });
-
-                                                            dynamicImages.push(imageSrc); // Update dynamic images array
-                                                            loadImageElement(file, imageSrc, imageMetadata, galleryContainer, index);
-                                                            loadedImages++;
-                                                            updateLoadingStatus((loadedImages / totalImages) * 100);
-                                                        })
-                                                        .catch(error => console.error(`Error loading image ${index}:`, error));
-                                                } else {
-                                                    dynamicImages.push(dbResult.imageSrc); // Update dynamic images array
-                                                    loadImageElement(file, dbResult.imageSrc, imageMetadata, galleryContainer, index);
+                                                img.onload = () => {
                                                     loadedImages++;
                                                     updateLoadingStatus((loadedImages / totalImages) * 100);
-                                                }
+
+                                                    img.onclick = () => onImageClick(img.src);
+                                                    if (currentImageIndex !== -1) {
+                                                        showSlideshow();
+                                                    } else {
+                                                        console.error("Clicked image index not found in dynamicImages array.");
+                                                    }
+                                                    if (loadedImages === totalImages) {
+                                                        // Full load handling
+                                                    }
+
+                                                    galleryContainer.appendChild(imageContainer);
+                                                    setTimeout(() => loadImage(index + 1), 7);
+                                                };
+
+                                                img.onerror = () => {
+                                                    console.error(`Error loading image ${index}`);
+                                                    loadImage(index + 1); // Attempt next image on error
+                                                };
                                             };
 
                                             dbRequest.onerror = function() {
                                                 console.error("Error fetching image from database");
                                             };
-                                        });
+                                        }
+
+                                        loadImage(0); // Start loading images
                                     })
                                     .catch(error => console.error('Error fetching file names:', error));
                             })
@@ -529,38 +542,46 @@ const galleryHTML = `
             }
         }
 
-        function loadImageElement(file, imageSrc, imageMetadata, galleryContainer, index) {
-            const imageContainer = document.createElement('div');
-            imageContainer.classList.add('image-container');
 
-            const img = document.createElement('img');
-            img.classList.add('grid-image');
-            img.src = imageSrc;
-            img.dataset.metadata = JSON.stringify(imageMetadata[file.name] || {});
+        function onImageClick(imgSrc) {
+            currentImageIndex = dynamicImages.indexOf(imgSrc);
+            //console.log("Current Image Index:", currentImageIndex);
+          
 
-            const wordOverlay = document.createElement('div');
-            wordOverlay.classList.add('word-overlay');
+            if (currentImageIndex !== -1) {
+                const centeredContainer = document.querySelector('.centered-container');
+                centeredContainer.style.display = 'flex'; // Show the centered-container
 
-            imageContainer.appendChild(img);
-            imageContainer.appendChild(wordOverlay);
+                // Set the CSS properties to position the centered container on top
+                centeredContainer.style.position = 'fixed';
+                centeredContainer.style.top = '0';
+                centeredContainer.style.left = '0';
+                centeredContainer.style.width = '100%';
+                centeredContainer.style.height = '100%';
+                centeredContainer.style.zIndex = '9999';
+                centeredContainer.style.backgroundColor = 'rgba(0, 0, 0, 0)'; // Start with transparent background
+                centeredContainer.style.opacity = '0'; // Start with 0 opacity
 
-            img.onload = () => {
-                img.onclick = () => onImageClick(img.src);
-                if (currentImageIndex !== -1) {
-                    showSlideshow();
-                } else {
-                    console.error("Clicked image index not found in dynamicImages array.");
-                }
+                // Enable opacity transition
+                centeredContainer.style.transition = 'opacity 0.5s ease-in-out';
 
-                galleryContainer.appendChild(imageContainer);
-            };
+                // Delay the opacity change to trigger the transition effect
+                setTimeout(() => {
+                    centeredContainer.style.backgroundColor = 'rgba(0, 0, 0, 1)'; // Set the background color to opaque
+                    centeredContainer.style.opacity = '1'; // Fade in the container
 
-            img.onerror = () => {
-                console.error(`Error loading image ${index}`);
-            };
+                    disableScroll(); // Disable scrolling
+                    recreateHoverEffectini(); // Recreate the hover effect with the selected image
+
+                    // Delay the execution of updateTextInfo
+                    setTimeout(() => {
+                        updateTextInfo(); // Update the text info based on the current image
+                    }, 5); // Adjust the delay value as needed
+                }, 5); // Adjust the delay value as needed
+            } else {
+                console.error("Clicked image index not found in dynamicImages array.");
+            }
         }
-
-
 
 
 
@@ -647,45 +668,7 @@ const galleryHTML = `
             return Math.ceil(window.innerHeight / minGridItemWidth);
         }
 
-        function onImageClick(imgSrc) {
-            currentImageIndex = dynamicImages.indexOf(imgSrc);
-            //console.log("Current Image Index:", currentImageIndex);
-          
-
-            if (currentImageIndex !== -1) {
-                const centeredContainer = document.querySelector('.centered-container');
-                centeredContainer.style.display = 'flex'; // Show the centered-container
-
-                // Set the CSS properties to position the centered container on top
-                centeredContainer.style.position = 'fixed';
-                centeredContainer.style.top = '0';
-                centeredContainer.style.left = '0';
-                centeredContainer.style.width = '100%';
-                centeredContainer.style.height = '100%';
-                centeredContainer.style.zIndex = '9999';
-                centeredContainer.style.backgroundColor = 'rgba(0, 0, 0, 0)'; // Start with transparent background
-                centeredContainer.style.opacity = '0'; // Start with 0 opacity
-
-                // Enable opacity transition
-                centeredContainer.style.transition = 'opacity 0.5s ease-in-out';
-
-                // Delay the opacity change to trigger the transition effect
-                setTimeout(() => {
-                    centeredContainer.style.backgroundColor = 'rgba(0, 0, 0, 1)'; // Set the background color to opaque
-                    centeredContainer.style.opacity = '1'; // Fade in the container
-
-                    disableScroll(); // Disable scrolling
-                    recreateHoverEffectini(); // Recreate the hover effect with the selected image
-
-                    // Delay the execution of updateTextInfo
-                    setTimeout(() => {
-                        updateTextInfo(); // Update the text info based on the current image
-                    }, 5); // Adjust the delay value as needed
-                }, 5); // Adjust the delay value as needed
-            } else {
-                console.error("Clicked image index not found in dynamicImages array.");
-            }
-        }
+        
 
 
         function updateTextInfo() {
