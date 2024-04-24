@@ -555,12 +555,12 @@ const galleryHTML = `
                     }
 
                     galleryContainer.appendChild(imageContainer);
-                    setTimeout(() => loadImage(index + 1), 7);
+                    setTimeout(() => setupImageDisplay(index + 1), 7);
                 };
 
                 img.onerror = () => {
                     console.error(`Error loading image ${index}`);
-                    setTimeout(() => loadImage(index + 1), 7);
+                    setTimeout(() => setupImageDisplay(index + 1), 7);
                 };
             }
         }
