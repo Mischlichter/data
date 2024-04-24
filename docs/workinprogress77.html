@@ -1948,7 +1948,7 @@
                 await fadeOutElements(); // Wait for the elements to fade out
                 currentSceneIndex = 0; // Set scene index to 0 for the logo
                 loadScene(currentSceneIndex); // Load the selected scene
-                highlightActiveMenuItem('menuLogo');
+                highlightActiveMenuItem(menuContainer.id);
             };
 
             // Add click and touch event listeners to the logo
