@@ -1331,14 +1331,16 @@
             window.addEventListener('orientationchange', checkOrientationChange);
 
 
+            // Inside orientationHandler.js or wherever the function is defined
             function triggerOrientationWithoutCalibration(gamma = 0, beta = 0) {
-                isCalibrated = true;  // Force isCalibrated to true to skip calibration
-                var fakeEvent = {
-                    gamma: gamma,
-                    beta: beta
-                };
+                isCalibrated = true;
+                var fakeEvent = { gamma: gamma, beta: beta };
                 handleOrientation(fakeEvent);
             }
+
+            // Make it globally accessible
+            window.triggerOrientationWithoutCalibration = triggerOrientationWithoutCalibration;
+
 
 
 
