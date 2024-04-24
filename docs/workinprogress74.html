@@ -1056,27 +1056,19 @@
             function parseAssets(manifest, urls) {
                 for (let key in manifest) {
                     if (manifest.hasOwnProperty(key)) {
-                        // Check if the file path starts with "Viewer" or "interface"
                         if (key.startsWith('Viewer') || key.startsWith('interface')) {
                             const value = manifest[key];
-                            // Handle the case where the value is a simple date string
                             if (typeof value !== 'object') {
-                                // Check if the value is a valid date
-                                if (!isNaN(Date.parse(value))) {
+                                let standardizedDate = standardizeDate(value);
+                                if (standardizedDate) {
                                     let asset = {
                                         url: `https://raw.githubusercontent.com/Mischlichter/data/main/${key}`,
-                                        lastModified: new Date(value).toISOString() // Convert the date to ISO format
+                                        lastModified: standardizedDate.toISOString() // Convert the date to ISO format
                                     };
                                     console.log('Parsed Asset:', asset);  // Log the extracted data
                                     urls.push(asset);
                                 } else {
-                                    console.error('Invalid date for key:', key, 'value:', value);
-                                    // Optionally push the asset with a default date
-                                    let asset = {
-                                        url: `https://raw.githubusercontent.com/Mischlichter/data/main/${key}`,
-                                        lastModified: new Date().toISOString() // Use current date as fallback
-                                    };
-                                    urls.push(asset);
+                                    console.error('Failed to standardize date for key:', key, 'value:', value);
                                 }
                             } else {
                                 // If the value is an object, possibly containing nested assets, recurse into it
@@ -1086,10 +1078,6 @@
                     }
                 }
             }
-
-
-
-
 
             function parseExtraAssets(text, manifest) {
                 const urls = [];
@@ -1105,18 +1093,41 @@
                         const manifestEntry = Object.keys(manifest).find(key => key.endsWith(filename));
                         if (manifestEntry) {
                             let lastModified = manifest[manifestEntry];
-                            let asset = {
-                                url: url,
-                                lastModified: new Date(lastModified).toISOString()  // Convert the date to ISO format
-                            };
-                            console.log('Parsed Extra Asset:', asset);  // Log the extracted data
-                            urls.push(asset);
+                            let standardizedDate = standardizeDate(lastModified);
+                            if (standardizedDate) {
+                                let asset = {
+                                    url: url,
+                                    lastModified: standardizedDate.toISOString()  // Convert the date to ISO format
+                                };
+                                console.log('Parsed Extra Asset:', asset);  // Log the extracted data
+                                urls.push(asset);
+                            } else {
+                                console.error('Invalid date for filename:', filename, 'value:', lastModified);
+                            }
                         } else {
                             console.log(`No manifest entry found for filename: ${filename}`);  // Handle or log filenames not found in the manifest
                         }
                     }
                 }
                 return urls;  // Return the list of parsed URLs with their last modified dates from the manifest
+            }
+
+            function standardizeDate(dateStr) {
+                let date = new Date(dateStr);
+                if (!isNaN(date.getTime())) {
+                    return date;
+                } else {
+                    // Attempt to manually parse common problematic date formats (e.g., 'MM/DD/YYYY', 'DD-MM-YYYY')
+                    let parts = dateStr.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
+                    if (parts) {
+                        // Assuming format is MM/DD/YYYY which is common in the US
+                        date = new Date(+parts[3], parts[1] - 1, +parts[2]);
+                        if (!isNaN(date.getTime())) {
+                            return date;
+                        }
+                    }
+                    return null;
+                }
             }
 
 
