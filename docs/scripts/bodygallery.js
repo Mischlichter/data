@@ -433,44 +433,45 @@ const galleryHTML = `
 
   
 
-        async function fetchImageFilenames() {
+        async function fetchMetadataAndImages() {
             console.log("Starting image fetching process.");
             const galleryContainer = document.getElementById('gallery-container');
-            
+
             if (!window.indexedDB) {
-                console.log("Your browser doesn't support IndexedDB.");
+                console.error("Your browser doesn't support IndexedDB.");
                 return;
             }
 
             let db;
-            let request = window.indexedDB.open('myDatabase', 1);
+            let openRequest = indexedDB.open('myDatabase', 1);
 
-            request.onerror = event => console.error("Database error: ", event.target.errorCode);
-
-            request.onsuccess = event => {
-                db = event.target.result;
-                console.log('Database opened successfully');
-                fetchMetadataAndImages();
+            openRequest.onerror = event => {
+                console.error("Database error: ", event.target.errorCode);
             };
 
-            request.onupgradeneeded = event => {
+            openRequest.onsuccess = event => {
+                db = event.target.result;
+                console.log('Database opened successfully');
+                proceedWithImageFetching();
+            };
+
+            openRequest.onupgradeneeded = event => {
                 let db = event.target.result;
                 if (!db.objectStoreNames.contains('imageData')) {
                     db.createObjectStore('imageData', { keyPath: 'filename' });
                 }
             };
 
-            async function fetchMetadataAndImages() {
+            async function proceedWithImageFetching() {
                 try {
                     const indexResponse = await fetch('https://raw.githubusercontent.com/Mischlichter/data/main/index.json');
                     const indexData = await indexResponse.json();
 
                     const metadataResponse = await fetch('https://raw.githubusercontent.com/Mischlichter/data/main/lib/metadata.json');
-                    const metadataData = await metadataResponse.json();
+                    const imageMetadata = await metadataResponse.json();
 
                     const filesResponse = await fetch('https://api.github.com/repos/Mischlichter/data/contents/gallerycom');
                     const files = await filesResponse.json();
-
                     const totalImages = files.length;
                     let loadedImages = 0;
 
@@ -481,35 +482,41 @@ const galleryHTML = `
                         const img = document.createElement('img');
                         img.classList.add('grid-image');
 
+                        const metadata = imageMetadata[file.name] || {};
                         const wordOverlay = document.createElement('div');
                         wordOverlay.classList.add('word-overlay');
+                        img.dataset.metadata = JSON.stringify(metadata);
 
                         imageContainer.appendChild(img);
                         imageContainer.appendChild(wordOverlay);
 
-                        // Check for file in IndexedDB
                         const transaction = db.transaction('imageData', 'readonly');
                         const store = transaction.objectStore('imageData');
                         const dbRequest = store.get(file.name);
 
-                        dbRequest.onsuccess = function() {
-                            const dbResult = dbRequest.result;
+                        dbRequest.onsuccess = function(event) {
+                            let dbResult = event.target.result;
                             if (dbResult) {
-                                img.src = dbResult.imageSrc; // Image source from IndexedDB
-                                console.log(`Loaded from DB: ${file.name}`);
+                                img.src = dbResult.imageSrc; // Image src from DB
                             } else {
-                                // If not in DB, fetch and cache
-                                img.src = file.download_url;
-                                console.log(`Loaded from network and caching: ${file.name}`);
-                                const transaction = db.transaction('imageData', 'readwrite');
-                                const store = transaction.objectStore('imageData');
-                                store.add({ filename: file.name, imageSrc: file.download_url, lastModified: new Date(indexData[file.path]).toISOString() });
+                                img.src = file.download_url; // Download URL as fallback
+                                dynamicImages.push(img.src); // Store the image URL for slideshow and overlay functionalities
                             }
 
                             img.onload = () => {
                                 loadedImages++;
                                 updateLoadingStatus((loadedImages / totalImages) * 100);
                                 console.log(`Image loaded: ${file.name}`);
+
+                                img.onclick = () => {
+                                    const currentImageIndex = dynamicImages.indexOf(img.src);
+                                    if (currentImageIndex !== -1) {
+                                        showSlideshow(currentImageIndex);
+                                    } else {
+                                        console.error("Clicked image index not found in dynamicImages array.");
+                                    }
+                                };
+
                                 galleryContainer.appendChild(imageContainer);
                                 if (loadedImages === totalImages) {
                                     console.log("All images have been loaded.");
