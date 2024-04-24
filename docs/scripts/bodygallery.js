@@ -523,7 +523,7 @@ const galleryHTML = `
             }
         }
 
-        function loadImageElement(file, imageSrc, imageMetadata, galleryContainer, index) {
+        function loadImageElement(file, imageSrc, loadedImages, imageMetadata, galleryContainer, index) {
             const imageContainer = document.createElement('div');
             imageContainer.classList.add('image-container');
 
