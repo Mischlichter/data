@@ -433,117 +433,132 @@ const galleryHTML = `
 
   
 
-       async function fetchImageFilenames() {
-           console.log("Starting image fetching process.");
+       function fetchImageFilenames() {
+           let imageMetadata = {};
            const galleryContainer = document.getElementById('gallery-container');
+           let db; // Reference for IndexedDB database
 
            if (!window.indexedDB) {
                console.log("Your browser doesn't support IndexedDB.");
                return;
            }
 
-           let db;
            let request = window.indexedDB.open('myDatabase', 1);
 
-           request.onerror = event => console.error("Database error: ", event.target.errorCode);
+           request.onerror = function(event) {
+               console.error("Database error: ", event.target.errorCode);
+           };
 
-           request.onsuccess = event => {
+           request.onsuccess = function(event) {
                db = event.target.result;
                console.log('Database opened successfully');
                fetchMetadataAndImages();
            };
 
-           request.onupgradeneeded = event => {
+           request.onupgradeneeded = function(event) {
                let db = event.target.result;
                if (!db.objectStoreNames.contains('imageData')) {
                    db.createObjectStore('imageData', { keyPath: 'filename' });
                }
            };
 
-           async function fetchMetadataAndImages() {
-               try {
-                   const indexResponse = await fetch('https://raw.githubusercontent.com/Mischlichter/data/main/index.json');
-                   const indexData = await indexResponse.json();
-                   
-                   const filesResponse = await fetch('https://api.github.com/repos/Mischlichter/data/contents/gallerycom');
-                   const files = await filesResponse.json();
+           function fetchMetadataAndImages() {
+               // Fetch the index.json file to get last modified dates
+               fetch('https://raw.githubusercontent.com/Mischlichter/data/main/index.json')
+                   .then(response => response.json())
+                   .then(indexData => {
+                       fetch('https://raw.githubusercontent.com/Mischlichter/data/main/lib/metadata.json')
+                           .then(response => response.json())
+                           .then(data => {
+                               imageMetadata = data;
 
-                   const totalImages = files.length;
-                   let loadedImages = 0;
+                               fetch('https://api.github.com/repos/Mischlichter/data/contents/gallerycom')
+                                   .then(response => response.json())
+                                   .then(files => {
+                                       const totalImages = files.length;
+                                       let loadedImages = 0;
 
-                   files.forEach(async (file, index) => {
-                       const imageContainer = document.createElement('div');
-                       imageContainer.classList.add('image-container');
+                                       files.forEach((file, index) => {
+                                           const transaction = db.transaction('imageData', 'readonly');
+                                           const store = transaction.objectStore('imageData');
+                                           const dbRequest = store.get(file.name);
 
-                       const img = document.createElement('img');
-                       img.classList.add('grid-image');
+                                           dbRequest.onsuccess = function(event) {
+                                               let dbResult = event.target.result;
+                                               let lastModifiedInDB = dbResult ? new Date(dbResult.lastModified) : new Date(0);
+                                               let lastModifiedCurrent = new Date(indexData[file.name]?.lastModified);
 
-                       const wordOverlay = document.createElement('div');
-                       wordOverlay.classList.add('word-overlay');
+                                               if (!dbResult || lastModifiedInDB < lastModifiedCurrent) {
+                                                   // File needs to be fetched and updated
+                                                   fetch(file.download_url)
+                                                       .then(response => response.blob())
+                                                       .then(blob => {
+                                                           const imageSrc = URL.createObjectURL(blob);
+                                                           db.transaction('imageData', 'readwrite')
+                                                               .objectStore('imageData')
+                                                               .put({
+                                                                   filename: file.name,
+                                                                   imageSrc: imageSrc,
+                                                                   lastModified: lastModifiedCurrent.toISOString()
+                                                               });
 
-                       imageContainer.appendChild(img);
-                       imageContainer.appendChild(wordOverlay);
+                                                           loadImageElement(file, imageSrc, imageMetadata, galleryContainer, index);
+                                                           loadedImages++;
+                                                           updateLoadingStatus((loadedImages / totalImages) * 100);
+                                                       })
+                                                       .catch(error => console.error(`Error loading image ${index}:`, error));
+                                               } else {
+                                                   // Load image from IndexedDB
+                                                   loadImageElement(file, dbResult.imageSrc, imageMetadata, galleryContainer, index);
+                                                   loadedImages++;
+                                                   updateLoadingStatus((loadedImages / totalImages) * 100);
+                                               }
+                                           };
 
-                       const transaction = db.transaction('imageData', 'readwrite');
-                       const store = transaction.objectStore('imageData');
-                       const dbRequest = store.get(file.name);
-
-                       dbRequest.onsuccess = async function() {
-                           const dbResult = dbRequest.result;
-                           const lastModifiedDate = new Date(indexData[file.name]?.lastModified);
-
-                           if (dbResult && new Date(dbResult.lastModified) >= lastModifiedDate) {
-                               img.src = dbResult.imageSrc;
-                               console.log(`Loaded from DB: ${file.name}`);
-                           } else {
-                               img.src = file.download_url;
-                               console.log(`Updated from network and caching: ${file.name}`);
-                               
-                               const updateTransaction = db.transaction('imageData', 'readwrite');
-                               const updateStore = updateTransaction.objectStore('imageData');
-                               updateStore.put({
-                                   filename: file.name,
-                                   imageSrc: file.download_url,
-                                   lastModified: lastModifiedDate.toISOString()
-                               });
-                           }
-
-                           img.onload = () => {
-                               loadedImages++;
-                               updateLoadingStatus((loadedImages / totalImages) * 100);
-
-                               img.onclick = () => {
-                                   onImageClick(img.src);
-                                   if (currentImageIndex !== -1) {
-                                       showSlideshow();
-                                   } else {
-                                       console.error("Clicked image index not found in dynamicImages array.");
-                                   }
-                               };
-
-                               galleryContainer.appendChild(imageContainer);
-                               if (index + 1 < totalImages) {
-                                   setTimeout(() => loadImage(index + 1), 7);
-                               }
-                           };
-
-                           img.onerror = () => {
-                               console.error(`Error loading image ${index}`);
-                               if (index + 1 < totalImages) {
-                                   setTimeout(() => loadImage(index + 1), 7);
-                               }
-                           };
-                       };
-
-                       dbRequest.onerror = function() {
-                           console.error("Error fetching image from database", file.name);
-                       };
-                   });
-               } catch (error) {
-                   console.error("Error in fetching or processing data:", error);
-               }
+                                           dbRequest.onerror = function() {
+                                               console.error("Error fetching image from database");
+                                           };
+                                       });
+                                   })
+                                   .catch(error => console.error('Error fetching file names:', error));
+                           })
+                           .catch(error => console.error('Error fetching metadata:', error));
+                   })
+                   .catch(error => console.error('Error fetching index data:', error));
            }
        }
+
+       function loadImageElement(file, imageSrc, imageMetadata, galleryContainer, index) {
+           const imageContainer = document.createElement('div');
+           imageContainer.classList.add('image-container');
+
+           const img = document.createElement('img');
+           img.classList.add('grid-image');
+           img.src = imageSrc;
+           img.dataset.metadata = JSON.stringify(imageMetadata[file.name] || {});
+
+           const wordOverlay = document.createElement('div');
+           wordOverlay.classList.add('word-overlay');
+
+           imageContainer.appendChild(img);
+           imageContainer.appendChild(wordOverlay);
+
+           img.onload = () => {
+               img.onclick = () => onImageClick(img.src);
+               if (currentImageIndex !== -1) {
+                   showSlideshow();
+               } else {
+                   console.error("Clicked image index not found in dynamicImages array.");
+               }
+
+               galleryContainer.appendChild(imageContainer);
+           };
+
+           img.onerror = () => {
+               console.error(`Error loading image ${index}`);
+           };
+       }
+
 
 
 
