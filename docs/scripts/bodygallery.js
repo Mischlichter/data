@@ -436,7 +436,7 @@ const galleryHTML = `
         async function fetchImageFilenames() {
             console.log("Starting image fetching process.");
             const galleryContainer = document.getElementById('gallery-container');
-            const dynamicImages = []; // Array to keep track of image sources and indices
+            let dynamicImages = []; // Array to store image URLs for onclick event indexing
 
             if (!window.indexedDB) {
                 console.log("Your browser doesn't support IndexedDB.");
@@ -484,6 +484,7 @@ const galleryHTML = `
 
                         const wordOverlay = document.createElement('div');
                         wordOverlay.classList.add('word-overlay');
+                        wordOverlay.textContent = metadataData[file.name]?.description || "No description"; // Added handling for metadata
 
                         imageContainer.appendChild(img);
                         imageContainer.appendChild(wordOverlay);
@@ -499,15 +500,13 @@ const galleryHTML = `
                                 img.src = dbResult.imageSrc; // Image source from IndexedDB
                                 console.log(`Loaded from DB: ${file.name}`);
                             } else {
-                                // If not in DB, fetch and cache
                                 img.src = file.download_url;
                                 console.log(`Loaded from network and caching: ${file.name}`);
+                                dynamicImages[index] = img.src; // Store image src for indexing
                                 const transaction = db.transaction('imageData', 'readwrite');
                                 const store = transaction.objectStore('imageData');
                                 store.add({ filename: file.name, imageSrc: file.download_url, lastModified: new Date(indexData[file.path]).toISOString() });
                             }
-
-                            dynamicImages[index] = img.src; // Track image index
 
                             img.onload = () => {
                                 loadedImages++;
@@ -515,15 +514,15 @@ const galleryHTML = `
                                 console.log(`Image loaded: ${file.name}`);
 
                                 img.onclick = () => {
-                                    const currentImageIndex = dynamicImages.indexOf(img.src); // Find index on click
-                                    onImageClick(currentImageIndex, img.src); // Pass index to click handler
+                                    onImageClick(dynamicImages[index]); // Use dynamicImages for correct indexing
+                                    showSlideshow(index); // Show slideshow starting at the clicked index
                                 };
-
-                                galleryContainer.appendChild(imageContainer);
 
                                 if (loadedImages === totalImages) {
                                     console.log("All images have been loaded.");
                                 }
+
+                                galleryContainer.appendChild(imageContainer);
                             };
 
                             img.onerror = () => {
@@ -540,6 +539,7 @@ const galleryHTML = `
                 }
             }
         }
+
 
 
         function updateLoadingStatus(percentage) {
