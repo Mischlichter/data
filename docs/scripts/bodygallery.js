@@ -505,7 +505,7 @@ const galleryHTML = `
                                                         .catch(error => console.error(`Error loading image ${index}:`, error));
                                                 } else {
                                                     dynamicImages.push(dbResult.imageSrc); // Update dynamic images array
-                                                    loadImageElement(file, dbResult.imageSrc, loadedImages, imageMetadata, galleryContainer, index);
+                                                    loadImageElement(file, dbResult.imageSrc, loadedImages, imageMetadata, galleryContainer, index, loadImage);
                                                     
                                                 }
                                             };
@@ -523,7 +523,7 @@ const galleryHTML = `
             }
         }
 
-        function loadImageElement(file, imageSrc, loadedImages, imageMetadata, galleryContainer, index, totalImages) {
+        function loadImageElement(file, imageSrc, loadedImages, imageMetadata, galleryContainer, index, totalImages, loadImage) {
             const imageContainer = document.createElement('div');
             imageContainer.classList.add('image-container');
 
