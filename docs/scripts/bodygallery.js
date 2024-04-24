@@ -458,7 +458,6 @@ const galleryHTML = `
                 }
             };
 
-            
             function fetchMetadataAndImages() {
                 fetch('https://raw.githubusercontent.com/Mischlichter/data/main/index.json')
                     .then(response => response.json())
@@ -503,7 +502,10 @@ const galleryHTML = `
                                                 let lastModifiedInDB = dbResult ? new Date(dbResult.lastModified) : new Date(0);
                                                 let lastModifiedCurrent = new Date(indexData[file.name]?.lastModified);
 
+                                                console.log(`Date check for ${file.name}: In DB - ${lastModifiedInDB}, Current - ${lastModifiedCurrent}`);
+
                                                 if (!dbResult || lastModifiedInDB < lastModifiedCurrent) {
+                                                    console.log(`Image from remote needed for ${file.name}`);
                                                     fetch(file.download_url)
                                                         .then(response => response.blob())
                                                         .then(blob => {
@@ -521,6 +523,7 @@ const galleryHTML = `
                                                         })
                                                         .catch(error => console.error(`Error loading image ${index}:`, error));
                                                 } else {
+                                                    console.log(`Loading image from DB for ${file.name}`);
                                                     img.src = dbResult.imageSrc; // Load image from DB
                                                     dynamicImages.push(img.src); // Store the image URL
                                                 }
@@ -563,7 +566,6 @@ const galleryHTML = `
                     .catch(error => console.error('Error fetching index data:', error));
             }
         }
-
 
 
 
