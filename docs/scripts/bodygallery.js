@@ -498,7 +498,7 @@ const galleryHTML = `
                                                                 });
 
                                                             dynamicImages.push(imageSrc); // Update dynamic images array
-                                                            loadImageElement(file, imageSrc, imageMetadata, galleryContainer, index);
+                                                            loadImageElement(file, imageSrc, imageMetadata, galleryContainer, index, totalImages);
                                                             loadedImages++;
                                                             updateLoadingStatus((loadedImages / totalImages) * 100);
                                                         })
@@ -523,7 +523,7 @@ const galleryHTML = `
             }
         }
 
-        function loadImageElement(file, imageSrc, loadedImages, imageMetadata, galleryContainer, index) {
+        function loadImageElement(file, imageSrc, loadedImages, imageMetadata, galleryContainer, index, totalImages) {
             const imageContainer = document.createElement('div');
             imageContainer.classList.add('image-container');
 
