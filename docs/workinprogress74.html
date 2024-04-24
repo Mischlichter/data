@@ -1113,22 +1113,26 @@
             }
 
             function standardizeDate(dateStr) {
-                let date = new Date(dateStr);
+                // Adjust date string to an ISO 8601 format expected by iOS Safari
+                let adjustedDateStr = dateStr.replace(' ', 'T') + 'Z';
+                let date = new Date(adjustedDateStr);
+
                 if (!isNaN(date.getTime())) {
                     return date;
                 } else {
-                    // Attempt to manually parse common problematic date formats (e.g., 'MM/DD/YYYY', 'DD-MM-YYYY')
-                    let parts = dateStr.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
+                    // If the date is still invalid, attempt to parse it manually
+                    let parts = dateStr.match(/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/);
                     if (parts) {
-                        // Assuming format is MM/DD/YYYY which is common in the US
-                        date = new Date(+parts[3], parts[1] - 1, +parts[2]);
+                        date = new Date(`${parts[1]}-${parts[2]}-${parts[3]}T${parts[4]}:${parts[5]}:${parts[6]}Z`);
                         if (!isNaN(date.getTime())) {
                             return date;
                         }
                     }
-                    return null;
+                    console.error('Unable to parse date:', dateStr);
+                    return null; // Return null if date cannot be parsed
                 }
             }
+
 
 
 
