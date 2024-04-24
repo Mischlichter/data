@@ -971,22 +971,24 @@ const galleryHTML = `
 
             if (isMobileDevice()) {
                 // If it's a mobile device, just display the image directly
-                newContainer.style.backgroundImage = 'url(' + dynamicImages[currentImageIndex] + ')';
+                newContainer.style.backgroundImage = 'url(' + dynamicImages[nextImageIndex] + ')';
                 newContainer.style.backgroundSize = 'cover';  // Cover the entire area of the container
                 newContainer.style.backgroundPosition = 'center';  // Center the image
                 newContainer.style.backgroundRepeat = 'no-repeat';  // Do not repeat the image
+                // Update the currentImageIndex to the next index for consistency
+                currentImageIndex = nextImageIndex;
             } else {
-
+                // If it's not a mobile device, create hover effect with the current and the next image
                 hoverEffectInstance = new hoverEffect({
                     parent: newContainer,
                     intensity: 0.3,
                     image1: dynamicImages[currentImageIndex],
                     image2: dynamicImages[nextImageIndex],
                     displacementImage: dynamicImages[nextImageIndex],
-                  
                     angle2: Math.PI / 4
-                
                 });
+                // Update the currentImageIndex to the next index after creating the hover effect
+                currentImageIndex = nextImageIndex;
             }    
         }
 
@@ -998,12 +1000,14 @@ const galleryHTML = `
 
             if (isMobileDevice()) {
                 // If it's a mobile device, just display the image directly
-                newContainer.style.backgroundImage = 'url(' + dynamicImages[currentImageIndex] + ')';
+                newContainer.style.backgroundImage = 'url(' + dynamicImages[prevImageIndex] + ')';
                 newContainer.style.backgroundSize = 'cover';  // Cover the entire area of the container
                 newContainer.style.backgroundPosition = 'center';  // Center the image
                 newContainer.style.backgroundRepeat = 'no-repeat';  // Do not repeat the image
+                // Update the currentImageIndex to the previous index for consistency
+                currentImageIndex = prevImageIndex;
             } else {
-      
+                // If it's not a mobile device, create hover effect with the current and the previous image
                 hoverEffectInstance = new hoverEffect({
                     parent: newContainer,
                     intensity: 0.3,
@@ -1011,7 +1015,9 @@ const galleryHTML = `
                     image2: dynamicImages[prevImageIndex],
                     displacementImage: dynamicImages[prevImageIndex]
                 });
-            }
+                // Update the currentImageIndex to the previous index after creating the hover effect
+                currentImageIndex = prevImageIndex;
+            }    
         }
 
         function showNextSlide() {
