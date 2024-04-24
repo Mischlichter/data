@@ -964,24 +964,29 @@ const galleryHTML = `
 
 
         function recreateHoverEffectnext() {
-            removeOldHoverEffectContainer(); // Remove old containers
+            removeOldHoverEffectContainer(); // Fade out and remove old containers
 
             var newContainer = createNewHoverEffectContainer(); // Create a new container
-            newContainer.className = 'new-container'; // Apply CSS class for transitions
             var nextImageIndex = (currentImageIndex + 1) % dynamicImages.length;
 
             if (isMobileDevice()) {
-                // Set initial background image without transition
-                newContainer.style.backgroundImage = 'url(' + dynamicImages[nextImageIndex] + ')';
-                newContainer.style.backgroundSize = 'cover';
-                newContainer.style.backgroundPosition = 'center';
-                newContainer.style.backgroundRepeat = 'no-repeat';
+                // Set initial style for fading in
+                newContainer.style.opacity = '0';
+                newContainer.style.transition = 'opacity 0.5s ease';
 
-                // Change the image with a delay to allow for CSS transition
-                setTimeout(() => {
-                    newContainer.style.backgroundImage = 'url(' + dynamicImages[nextImageIndex] + ')';
-                }, 20);
+                // Set the background with new image
+                newContainer.style.backgroundImage = 'url(' + dynamicImages[nextImageIndex] + ')';
+                newContainer.style.backgroundSize = 'cover';  // Cover the entire area of the container
+                newContainer.style.backgroundPosition = 'center';  // Center the image
+                newContainer.style.backgroundRepeat = 'no-repeat';  // Do not repeat the image
+
+                // Trigger fade in
+                setTimeout(function() {
+                    newContainer.style.opacity = '1';
+                }, 10); // Small delay to ensure the style is applied
+
             } else {
+                // Non-mobile effect with hoverEffect plugin
                 hoverEffectInstance = new hoverEffect({
                     parent: newContainer,
                     intensity: 0.3,
@@ -990,28 +995,32 @@ const galleryHTML = `
                     displacementImage: dynamicImages[nextImageIndex],
                     angle2: Math.PI / 4
                 });
-            }    
+            }
         }
 
         function recreateHoverEffectprev() {
-            removeOldHoverEffectContainer(); // Remove old containers
+            removeOldHoverEffectContainer(); // Fade out and remove old containers
 
             var newContainer = createNewHoverEffectContainer(); // Create a new container
-            newContainer.className = 'new-container'; // Apply CSS class for transitions
             var prevImageIndex = (currentImageIndex - 1 + dynamicImages.length) % dynamicImages.length;
 
             if (isMobileDevice()) {
-                // Set initial background image without transition
-                newContainer.style.backgroundImage = 'url(' + dynamicImages[prevImageIndex] + ')';
-                newContainer.style.backgroundSize = 'cover';
-                newContainer.style.backgroundPosition = 'center';
-                newContainer.style.backgroundRepeat = 'no-repeat';
+                // Set initial style for fading in
+                newContainer.style.opacity = '0';
+                newContainer.style.transition = 'opacity 0.5s ease';
 
-                // Change the image with a delay to allow for CSS transition
-                setTimeout(() => {
-                    newContainer.style.backgroundImage = 'url(' + dynamicImages[prevImageIndex] + ')';
-                }, 20);
+                // Set the background with new image
+                newContainer.style.backgroundImage = 'url(' + dynamicImages[prevImageIndex] + ')';
+                newContainer.style.backgroundSize = 'cover';  // Cover the entire area of the container
+                newContainer.style.backgroundPosition = 'center';  // Center the image
+                newContainer.style.backgroundRepeat = 'no-repeat';  // Do not repeat the image
+
+                // Trigger fade in
+                setTimeout(function() {
+                    newContainer.style.opacity = '1';
+                }, 10); // Small delay to ensure the style is applied
             } else {
+                // Non-mobile effect with hoverEffect plugin
                 hoverEffectInstance = new hoverEffect({
                     parent: newContainer,
                     intensity: 0.3,
