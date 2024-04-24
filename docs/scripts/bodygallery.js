@@ -505,9 +505,8 @@ const galleryHTML = `
                                                         .catch(error => console.error(`Error loading image ${index}:`, error));
                                                 } else {
                                                     dynamicImages.push(dbResult.imageSrc); // Update dynamic images array
-                                                    loadImageElement(file, dbResult.imageSrc, imageMetadata, galleryContainer, index);
-                                                    loadedImages++;
-                                                    updateLoadingStatus((loadedImages / totalImages) * 100);
+                                                    loadImageElement(file, dbResult.imageSrc, loadedImages, imageMetadata, galleryContainer, index);
+                                                    
                                                 }
                                             };
 
@@ -540,7 +539,10 @@ const galleryHTML = `
             imageContainer.appendChild(wordOverlay);
 
             img.onload = () => {
-                img.onclick = () => onImageClick(img.src);
+
+                loadedImages++;
+                updateLoadingStatus((loadedImages / totalImages) * 100);
+               
                 img.onclick = () => onImageClick(img.src);
                 if (currentImageIndex !== -1) {
                     showSlideshow();
@@ -556,7 +558,7 @@ const galleryHTML = `
 
             img.onerror = () => {
                 console.error(`Error loading image ${index}`);
-                
+
             };
         }
 
