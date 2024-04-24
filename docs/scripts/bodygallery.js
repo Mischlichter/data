@@ -1023,7 +1023,10 @@ const galleryHTML = `
             setTimeout(function() {
                 // Update the index after the new viewer has been created
                 currentImageIndex = (currentImageIndex + 1) % dynamicImages.length;
-                hoverEffectInstance.next();
+                if (!isMobileDevice()) {
+                        // Only call next() if the device is not mobile
+                    hoverEffectInstance.next();
+                }
                 updateTextInfo();
             }, 333); // 2000 milliseconds = 2 seconds
         }
@@ -1037,7 +1040,10 @@ const galleryHTML = `
             setTimeout(function() {
                 // Update the index after the new viewer has been created
                 currentImageIndex = (currentImageIndex - 1 + dynamicImages.length) % dynamicImages.length;
-                hoverEffectInstance.next();
+                if (!isMobileDevice()) {
+                        // Only call next() if the device is not mobile
+                    hoverEffectInstance.next();
+                }
                 updateTextInfo();
             }, 333);
         }
