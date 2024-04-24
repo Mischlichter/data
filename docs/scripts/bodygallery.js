@@ -431,129 +431,129 @@ const galleryHTML = `
         //GALLERY CODE
         
         function fetchImageFilenames() {
-                    let imageMetadata = {};
-                    const galleryContainer = document.getElementById('gallery-container');
-                    let db; // Reference for OpenDB database
+            let imageMetadata = {};
+            const galleryContainer = document.getElementById('gallery-container');
+            let db; // Reference for OpenDB database
 
-                    if (!window.indexedDB) {
-                        console.log("Your browser doesn't support IndexedDB.");
-                        return;
-                    }
-                    let request = window.indexedDB.open('myDatabase', 1);
+            if (!window.indexedDB) {
+                console.log("Your browser doesn't support IndexedDB.");
+                return;
+            }
+            let request = window.indexedDB.open('myDatabase', 1);
 
-                    request.onerror = function(event) {
-                        console.error("Database error: ", event.target.errorCode);
-                    };
+            request.onerror = function(event) {
+                console.error("Database error: ", event.target.errorCode);
+            };
 
-                    request.onsuccess = function(event) {
-                        db = event.target.result;
-                        console.log('Database opened successfully');
-                        fetchMetadataAndImages();
-                    };
+            request.onsuccess = function(event) {
+                db = event.target.result;
+                console.log('Database opened successfully');
+                fetchMetadataAndImages();
+            };
 
-                    request.onupgradeneeded = function(event) {
-                        let db = event.target.result;
-                        if (!db.objectStoreNames.contains('imageData')) {
-                            db.createObjectStore('imageData', { keyPath: 'filename' });
+            request.onupgradeneeded = function(event) {
+                let db = event.target.result;
+                if (!db.objectStoreNames.contains('imageData')) {
+                    db.createObjectStore('imageData', { keyPath: 'filename' });
+                }
+            };
+
+            function fetchMetadataAndImages() {
+                // Fetch the index.json file to get last modified dates
+                fetch('https://raw.githubusercontent.com/Mischlichter/data/main/index.json')
+                    .then(response => response.json())
+                    .then(indexData => {
+                        // Extract last modified dates from indexData
+                        const lastModifiedDates = {};
+                        for (let key in indexData) {
+                            if (indexData.hasOwnProperty(key)) {
+                                lastModifiedDates[key] = new Date(indexData[key].lastModified);
+                            }
                         }
-                    };
 
-                    function fetchMetadataAndImages() {
-                        // Fetch the index.json file to get last modified dates
-                        fetch('https://raw.githubusercontent.com/Mischlichter/data/main/index.json')
+                        // Proceed to fetch metadata and images
+                        fetch('https://raw.githubusercontent.com/Mischlichter/data/main/lib/metadata.json')
                             .then(response => response.json())
-                            .then(indexData => {
-                                // Extract last modified dates from indexData
-                                const lastModifiedDates = {};
-                                for (let key in indexData) {
-                                    if (indexData.hasOwnProperty(key)) {
-                                        lastModifiedDates[key] = new Date(indexData[key].lastModified);
-                                    }
-                                }
+                            .then(data => {
+                                imageMetadata = data;
 
-                                // Proceed to fetch metadata and images
-                                fetch('https://raw.githubusercontent.com/Mischlichter/data/main/lib/metadata.json')
+                                fetch('https://api.github.com/repos/Mischlichter/data/contents/gallerycom')
                                     .then(response => response.json())
-                                    .then(data => {
-                                        imageMetadata = data;
+                                    .then(files => {
+                                        const totalImages = files.length;
+                                        let loadedImages = 0;
 
-                                        fetch('https://api.github.com/repos/Mischlichter/data/contents/gallerycom')
-                                            .then(response => response.json())
-                                            .then(files => {
-                                                const totalImages = files.length;
-                                                let loadedImages = 0;
+                                        function loadImage(index) {
+                                            if (index >= totalImages) {
+                                                return; // All images loaded
+                                            }
 
-                                                function loadImage(index) {
-                                                    if (index >= totalImages) {
-                                                        return; // All images loaded
-                                                    }
+                                            const file = files[index];
+                                            const imageContainer = document.createElement('div');
+                                            imageContainer.classList.add('image-container');
 
-                                                    const file = files[index];
-                                                    const imageContainer = document.createElement('div');
-                                                    imageContainer.classList.add('image-container');
+                                            const img = document.createElement('img');
+                                            img.classList.add('grid-image');
 
-                                                    const img = document.createElement('img');
-                                                    img.classList.add('grid-image');
+                                            const metadata = imageMetadata[file.name] || {};
+                                            const wordOverlay = document.createElement('div');
+                                            wordOverlay.classList.add('word-overlay');
 
-                                                    const metadata = imageMetadata[file.name] || {};
-                                                    const wordOverlay = document.createElement('div');
-                                                    wordOverlay.classList.add('word-overlay');
+                                            imageContainer.appendChild(img);
+                                            imageContainer.appendChild(wordOverlay);
+                                            img.dataset.metadata = JSON.stringify(metadata);
 
-                                                    imageContainer.appendChild(img);
-                                                    imageContainer.appendChild(wordOverlay);
-                                                    img.dataset.metadata = JSON.stringify(metadata);
+                                            let transaction = db.transaction('imageData', 'readonly');
+                                            let store = transaction.objectStore('imageData');
+                                            let dbRequest = store.get(file.name);
 
-                                                    let transaction = db.transaction('imageData', 'readonly');
-                                                    let store = transaction.objectStore('imageData');
-                                                    let dbRequest = store.get(file.name);
-
-                                                    dbRequest.onsuccess = function(event) {
-                                                        let dbResult = event.target.result;
-                                                        if (dbResult) {
-                                                            img.src = dbResult.imageSrc; // Image src from DB
-                                                        } else {
-                                                            img.src = file.download_url; // Download URL as fallback
-                                                            dynamicImages.push(img.src); // Store the image URL
-                                                        }
-
-                                                        img.onload = () => {
-                                                            loadedImages++;
-                                                            updateLoadingStatus((loadedImages / totalImages) * 100);
-
-                                                            img.onclick = () => onImageClick(img.src);
-                                                            if (currentImageIndex !== -1) {
-                                                                showSlideshow();
-                                                            } else {
-                                                                console.error("Clicked image index not found in dynamicImages array.");
-                                                            }
-                                                            if (loadedImages === totalImages) {
-                                                                // Full load handling
-                                                            }
-
-                                                            galleryContainer.appendChild(imageContainer);
-                                                            setTimeout(() => loadImage(index + 1), 7);
-                                                        };
-
-                                                        img.onerror = () => {
-                                                            console.error(`Error loading image ${index}`);
-                                                            loadImage(index + 1);
-                                                        };
-                                                    };
-
-                                                    dbRequest.onerror = function() {
-                                                        console.error("Error fetching image from database");
-                                                    };
+                                            dbRequest.onsuccess = function(event) {
+                                                let dbResult = event.target.result;
+                                                if (dbResult) {
+                                                    img.src = dbResult.imageSrc; // Image src from DB
+                                                } else {
+                                                    img.src = file.download_url; // Download URL as fallback
+                                                    dynamicImages.push(img.src); // Store the image URL
                                                 }
 
-                                                loadImage(0); // Start loading images
-                                            })
-                                            .catch(error => console.error('Error fetching file names:', error));
+                                                img.onload = () => {
+                                                    loadedImages++;
+                                                    updateLoadingStatus((loadedImages / totalImages) * 100);
+
+                                                    img.onclick = () => onImageClick(img.src);
+                                                    if (currentImageIndex !== -1) {
+                                                        showSlideshow();
+                                                    } else {
+                                                        console.error("Clicked image index not found in dynamicImages array.");
+                                                    }
+                                                    if (loadedImages === totalImages) {
+                                                        // Full load handling
+                                                    }
+
+                                                    galleryContainer.appendChild(imageContainer);
+                                                    setTimeout(() => loadImage(index + 1), 7);
+                                                };
+
+                                                img.onerror = () => {
+                                                    console.error(`Error loading image ${index}`);
+                                                    loadImage(index + 1);
+                                                };
+                                            };
+
+                                            dbRequest.onerror = function() {
+                                                console.error("Error fetching image from database");
+                                            };
+                                        }
+
+                                        loadImage(0); // Start loading images
                                     })
-                                    .catch(error => console.error('Error fetching metadata:', error));
+                                    .catch(error => console.error('Error fetching file names:', error));
                             })
-                            .catch(error => console.error('Error fetching index data:', error));
-                    }
-                }
+                            .catch(error => console.error('Error fetching metadata:', error));
+                    })
+                    .catch(error => console.error('Error fetching index data:', error));
+            }
+        }
 
 
 
