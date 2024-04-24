@@ -971,7 +971,7 @@ const galleryHTML = `
 
             if (isMobileDevice()) {
                 // If it's a mobile device, just display the image directly
-                newContainer.style.backgroundImage = 'url(' + dynamicImages[nextImageIndex] + ')';
+                newContainer.style.backgroundImage = 'url(' + dynamicImages[currentImageIndex] + ')';
                 newContainer.style.backgroundSize = 'cover';  // Cover the entire area of the container
                 newContainer.style.backgroundPosition = 'center';  // Center the image
                 newContainer.style.backgroundRepeat = 'no-repeat';  // Do not repeat the image
@@ -1000,7 +1000,7 @@ const galleryHTML = `
 
             if (isMobileDevice()) {
                 // If it's a mobile device, just display the image directly
-                newContainer.style.backgroundImage = 'url(' + dynamicImages[prevImageIndex] + ')';
+                newContainer.style.backgroundImage = 'url(' + dynamicImages[currentImageIndex] + ')';
                 newContainer.style.backgroundSize = 'cover';  // Cover the entire area of the container
                 newContainer.style.backgroundPosition = 'center';  // Center the image
                 newContainer.style.backgroundRepeat = 'no-repeat';  // Do not repeat the image
