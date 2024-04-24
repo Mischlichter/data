@@ -762,11 +762,7 @@
 
     <script>
     // Declare this in the global scope, outside any other function
-    window.resetCalibrationFlag = function() {
-        window.isCalibrated = false;  // Use window scope to make this variable globally accessible
-        console.log("Calibration flag reset. Device needs recalibration.");
-    };
-    </script>
+
     
     <script>
         document.addEventListener('DOMContentLoaded', async function() {
@@ -1242,6 +1238,8 @@
             var gyroSensitivityMultiplier = 36.0; // Default multiplier
             var lastAngle = window.orientation || 0; // Initial device angle
 
+
+
             function handleOrientation(event) {
                 var now = Date.now();
                 if (now - lastExecution > throttleInterval) {
@@ -1289,6 +1287,24 @@
                     // Send the updated gyro mouse coordinates directly to the iframe
                     sendMouseEventToIframe('mousemove', {clientX: gyroMouseX, clientY: gyroMouseY});
                 }
+            }
+
+            function resetcalibration(gamma = 0, beta = 0) {
+                isCalibrated = true;  // Force isCalibrated to true to skip calibration
+                var fakeEvent = {
+                    gamma: gamma,
+                    beta: beta
+                };
+                handleOrientation(fakeEvent);
+            }
+
+            function resetAndTriggerOrientation() {
+                // Reset the calibration flag
+                isCalibrated = false;
+                console.log("Calibration reset manually. Device needs recalibration.");
+
+                // Manually trigger a deviceorientation event with default values
+                triggerDeviceOrientationEvent(0, 0, 0);  // You may adjust these values based on your needs
             }
 
 
@@ -1486,7 +1502,7 @@
             const bodyGalleryContainer = document.getElementById('bodyGalleryContainer');
 
 
-            resetCalibrationFlag();
+            
 
             unhideElementsByClass("foreground-image-container");
 
