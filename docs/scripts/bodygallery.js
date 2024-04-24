@@ -673,7 +673,7 @@ const galleryHTML = `
                     // Delay the execution of updateTextInfo
                     setTimeout(() => {
                         updateTextInfo(); // Update the text info based on the current image
-                    }, 5); // Adjust the delay value as needed
+                    }, 1000); // Adjust the delay value as needed
                 }, 5); // Adjust the delay value as needed
             } else {
                 console.error("Clicked image index not found in dynamicImages array.");
