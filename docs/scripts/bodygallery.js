@@ -508,8 +508,9 @@ const galleryHTML = `
 
                             img.onload = () => {
                                 loadedImages++;
-                                console.log(`Image loaded: ${file.name}`);
                                 updateLoadingStatus((loadedImages / totalImages) * 100);
+                                console.log(`Image loaded: ${file.name}`);
+
                                 img.onclick = () => onImageClick(img.src);
                                 if (currentImageIndex !== -1) {
                                     showSlideshow();
@@ -518,9 +519,14 @@ const galleryHTML = `
                                 }
                                 if (loadedImages === totalImages) {
                                     // Full load handling
-                                console.log("All images have been loaded.");
+                                }
+
+
+
                                 galleryContainer.appendChild(imageContainer);
-                                setTimeout(() => loadImage(index + 1), 7);
+                                if (loadedImages === totalImages) {
+                                    console.log("All images have been loaded.");
+                                }
                             };
 
                             img.onerror = () => {
