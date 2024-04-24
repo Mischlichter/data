@@ -532,14 +532,13 @@ const galleryHTML = `
                                                     updateLoadingStatus((loadedImages / totalImages) * 100);
 
                                                     img.onclick = () => onImageClick(img.src);
-                                                    if (currentImageIndex !== -1) {
-                                                        showSlideshow();
-                                                    } else {
-                                                        console.error("Clicked image index not found in dynamicImages array.");
-                                                    }
-                                                    if (loadedImages === totalImages) {
-                                                        // Full load handling
-                                                    }
+                                                        
+                                                        if (currentImageIndex !== -1) {
+                                                            showSlideshow(currentImageIndex);
+                                                        } else {
+                                                            console.error("Clicked image index not found in dynamicImages array.");
+                                                        }
+                                                    };
 
                                                     galleryContainer.appendChild(imageContainer);
                                                     setTimeout(() => loadImage(index + 1), 7);
