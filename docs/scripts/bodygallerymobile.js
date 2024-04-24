@@ -737,10 +737,7 @@ const galleryHTML = `
 
         ////animate text
 
-        function animateTextInfo() {
-            // Define your animation logic here
-            // For example, using CSS animations or a JavaScript animation library
-        }
+
 
         // New functions for text animation
         function generateRandomString2(length) {
@@ -930,20 +927,35 @@ const galleryHTML = `
         function recreateHoverEffectini() {
             removeOldHoverEffectContainer(); // Fade out and remove old containers
             createButtonOverlay();
-            calculateAspectRatio()
+            calculateAspectRatio();
 
             var newContainer = createNewHoverEffectContainer(); // Create a new container
 
-            //console.log("Creating hover effect with images:", dynamicImages[currentImageIndex]); // Log the images being used
-
-            hoverEffectInstance = new hoverEffect({
-                parent: newContainer,
-                intensity: 0.3,
-                image1: dynamicImages[currentImageIndex],
-                image2: dynamicImages[currentImageIndex],
-                displacementImage: dynamicImages[currentImageIndex]
-            });
+            if (isMobileDevice()) {
+                // On mobile devices, display only the image without hover effects
+                var imgElement = document.createElement('img');
+                imgElement.src = dynamicImages[currentImageIndex];
+                imgElement.style.width = '100%'; // Ensure the image fills the container
+                imgElement.style.height = 'auto';
+                newContainer.appendChild(imgElement); // Append the image to the new container
+                updateTextInfo();
+            } else {
+                // For non-mobile devices, create the hover effect
+                hoverEffectInstance = new hoverEffect({
+                    parent: newContainer,
+                    intensity: 0.3,
+                    image1: dynamicImages[currentImageIndex],
+                    image2: dynamicImages[currentImageIndex],
+                    displacementImage: dynamicImages[currentImageIndex]
+                });
+            }
         }
+
+        function isMobileDevice() {
+            return ('ontouchstart' in window || navigator.maxTouchPoints);
+        }
+
+
 
 
         function recreateHoverEffectnext() {
@@ -980,32 +992,44 @@ const galleryHTML = `
         }
 
         function showNextSlide() {
-            // Create a new hover effect instance with the current image
-            recreateHoverEffectnext();
-            
-
-            // Delay hover effect by 2 seconds
-            setTimeout(function() {
-                // Update the index after the new viewer has been created
+            if (isMobileDevice()) {
+                // On mobile devices, simply change the image source without hover effects
                 currentImageIndex = (currentImageIndex + 1) % dynamicImages.length;
-                hoverEffectInstance.next();
+                updateImageForMobile();
                 updateTextInfo();
-            }, 333); // 2000 milliseconds = 2 seconds
+            } else {
+                // For desktop, maintain existing hover effects and transitions
+                recreateHoverEffectnext();
+                setTimeout(function() {
+                    currentImageIndex = (currentImageIndex + 1) % dynamicImages.length;
+                    hoverEffectInstance.next();
+                    updateTextInfo();
+                }, 333); // Matching the hover effect delay
+            }
         }
 
         function showPrevSlide() {
-            // Create a new hover effect instance with the current image
-            recreateHoverEffectprev();
-            
-
-            // Delay hover effect by 2 seconds
-            setTimeout(function() {
-                // Update the index after the new viewer has been created
+            if (isMobileDevice()) {
+                // On mobile devices, simply change the image source without hover effects
                 currentImageIndex = (currentImageIndex - 1 + dynamicImages.length) % dynamicImages.length;
-                hoverEffectInstance.next();
+                updateImageForMobile();
                 updateTextInfo();
-            }, 333);
+            } else {
+                // For desktop, maintain existing hover effects and transitions
+                recreateHoverEffectprev();
+                setTimeout(function() {
+                    currentImageIndex = (currentImageIndex - 1 + dynamicImages.length) % dynamicImages.length;
+                    hoverEffectInstance.next();
+                    updateTextInfo();
+                }, 333); // Matching the hover effect delay
+            }
         }
+
+        function updateImageForMobile() {
+            const imgContainer = document.querySelector('.centered-container img'); // Ensure your HTML structure supports this
+            imgContainer.src = dynamicImages[currentImageIndex];
+        }
+
 
       
 
