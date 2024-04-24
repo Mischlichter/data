@@ -530,26 +530,28 @@ const galleryHTML = `
 
                 imageContainer.appendChild(img);
                 imageContainer.appendChild(wordOverlay);
-
+                
                 img.onload = () => {
                     loadedImages++;
-                    updateLoadingStatus((loadedImages / totalImages) * 100);
+                    updateLoadingStatus(loadedImages, totalImages);
 
                     img.onclick = () => onImageClick(img.src);
-                    if (currentImageIndex !== -1) {
-                        showSlideshow();
-                    } else {
-                        console.error("Clicked image index not found in dynamicImages array.");
-                    }
                     if (loadedImages === totalImages) {
-                        // Full load handling
+                        console.log("All images loaded.");
                     }
 
                     galleryContainer.appendChild(imageContainer);
-                    setTimeout(() => loadImage(index + 1), 7);
+                    if (index + 1 < totalImages) {
+                        setTimeout(() => fetchMetadataAndImages(index + 1), 7);
+                    }
                 };
 
-                
+                img.onerror = () => {
+                    console.error(`Error loading image ${index}`);
+                    if (index + 1 < totalImages) {
+                        setTimeout(() => fetchMetadataAndImages(index + 1), 7);
+                    }
+                };
             }
 
 
