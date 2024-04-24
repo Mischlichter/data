@@ -433,6 +433,8 @@ const galleryHTML = `
 
   
 
+        let dynamicImages = []; // Ensure this array is accessible where needed
+
         async function fetchImageFilenames() {
             console.log("Starting image fetching process.");
             const galleryContainer = document.getElementById('gallery-container');
@@ -502,12 +504,21 @@ const galleryHTML = `
                                 img.src = file.download_url; // Download URL as fallback
                                 console.log(`Loaded from network and caching: ${file.name}`);
                             }
+                            dynamicImages.push(img.src); // Add this image source to the dynamicImages array
 
                             img.onload = () => {
                                 loadedImages++;
                                 console.log(`Image loaded: ${file.name}`);
                                 updateLoadingStatus((loadedImages / totalImages) * 100);
                                 img.onclick = () => onImageClick(img.src);
+                                if (currentImageIndex !== -1) {
+                                    showSlideshow();
+                                } else {
+                                    console.error("Clicked image index not found in dynamicImages array.");
+                                }
+                                if (loadedImages === totalImages) {
+                                    // Full load handling
+                                }
                                 galleryContainer.appendChild(imageContainer);
                                 setTimeout(() => loadImage(index + 1), 7); // Load next image
                             };
@@ -530,10 +541,50 @@ const galleryHTML = `
                 }
             }
 
-
+            
         }
 
 
+
+        function onImageClick(imgSrc) {
+            currentImageIndex = dynamicImages.indexOf(imgSrc);
+            //console.log("Current Image Index:", currentImageIndex);
+          
+
+            if (currentImageIndex !== -1) {
+                const centeredContainer = document.querySelector('.centered-container');
+                centeredContainer.style.display = 'flex'; // Show the centered-container
+
+                // Set the CSS properties to position the centered container on top
+                centeredContainer.style.position = 'fixed';
+                centeredContainer.style.top = '0';
+                centeredContainer.style.left = '0';
+                centeredContainer.style.width = '100%';
+                centeredContainer.style.height = '100%';
+                centeredContainer.style.zIndex = '9999';
+                centeredContainer.style.backgroundColor = 'rgba(0, 0, 0, 0)'; // Start with transparent background
+                centeredContainer.style.opacity = '0'; // Start with 0 opacity
+
+                // Enable opacity transition
+                centeredContainer.style.transition = 'opacity 0.5s ease-in-out';
+
+                // Delay the opacity change to trigger the transition effect
+                setTimeout(() => {
+                    centeredContainer.style.backgroundColor = 'rgba(0, 0, 0, 1)'; // Set the background color to opaque
+                    centeredContainer.style.opacity = '1'; // Fade in the container
+
+                    disableScroll(); // Disable scrolling
+                    recreateHoverEffectini(); // Recreate the hover effect with the selected image
+
+                    // Delay the execution of updateTextInfo
+                    setTimeout(() => {
+                        updateTextInfo(); // Update the text info based on the current image
+                    }, 5); // Adjust the delay value as needed
+                }, 5); // Adjust the delay value as needed
+            } else {
+                console.error("Clicked image index not found in dynamicImages array.");
+            }
+        }
 
 
         function updateLoadingStatus(percentage) {
@@ -616,45 +667,7 @@ const galleryHTML = `
             return Math.ceil(window.innerHeight / minGridItemWidth);
         }
 
-        function onImageClick(imgSrc) {
-            currentImageIndex = dynamicImages.indexOf(imgSrc);
-            //console.log("Current Image Index:", currentImageIndex);
-          
-
-            if (currentImageIndex !== -1) {
-                const centeredContainer = document.querySelector('.centered-container');
-                centeredContainer.style.display = 'flex'; // Show the centered-container
-
-                // Set the CSS properties to position the centered container on top
-                centeredContainer.style.position = 'fixed';
-                centeredContainer.style.top = '0';
-                centeredContainer.style.left = '0';
-                centeredContainer.style.width = '100%';
-                centeredContainer.style.height = '100%';
-                centeredContainer.style.zIndex = '9999';
-                centeredContainer.style.backgroundColor = 'rgba(0, 0, 0, 0)'; // Start with transparent background
-                centeredContainer.style.opacity = '0'; // Start with 0 opacity
-
-                // Enable opacity transition
-                centeredContainer.style.transition = 'opacity 0.5s ease-in-out';
-
-                // Delay the opacity change to trigger the transition effect
-                setTimeout(() => {
-                    centeredContainer.style.backgroundColor = 'rgba(0, 0, 0, 1)'; // Set the background color to opaque
-                    centeredContainer.style.opacity = '1'; // Fade in the container
-
-                    disableScroll(); // Disable scrolling
-                    recreateHoverEffectini(); // Recreate the hover effect with the selected image
-
-                    // Delay the execution of updateTextInfo
-                    setTimeout(() => {
-                        updateTextInfo(); // Update the text info based on the current image
-                    }, 5); // Adjust the delay value as needed
-                }, 5); // Adjust the delay value as needed
-            } else {
-                console.error("Clicked image index not found in dynamicImages array.");
-            }
-        }
+        
 
 
         function updateTextInfo() {
