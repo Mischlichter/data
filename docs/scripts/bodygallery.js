@@ -518,17 +518,21 @@ const galleryHTML = `
                                                     fetch(file.download_url)
                                                         .then(response => response.blob())
                                                         .then(blob => {
-                                                            const imageSrc = URL.createObjectURL(blob);
-                                                            db.transaction('imageData', 'readwrite')
-                                                                .objectStore('imageData')
-                                                                .put({
-                                                                    filename: file.name,
-                                                                    imageSrc: imageSrc,
-                                                                    lastModified: lastModifiedCurrent.toISOString()
-                                                                });
+                                                            let reader = new FileReader();
+                                                            reader.onloadend = function() {
+                                                                const dataUrl = reader.result;
+                                                                db.transaction('imageData', 'readwrite')
+                                                                    .objectStore('imageData')
+                                                                    .put({
+                                                                        filename: file.name,
+                                                                        imageSrc: dataUrl,
+                                                                        lastModified: lastModifiedCurrent.toISOString()
+                                                                    });
 
-                                                            img.src = imageSrc; // Load new image source
-                                                            dynamicImages.push(img.src); // Store the image URL
+                                                                img.src = dataUrl; // Load new image source
+                                                                dynamicImages.push(img.src); // Store the image URL
+                                                            };
+                                                            reader.readAsDataURL(blob);
                                                         })
                                                         .catch(error => console.error(`Error loading image ${index}:`, error));
                                                 } else {
