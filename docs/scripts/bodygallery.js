@@ -433,7 +433,7 @@ const galleryHTML = `
 
   
 
-        async function fetchMetadataAndImages() {
+        async function fetchImageFilenames() {
             console.log("Starting image fetching process.");
             const galleryContainer = document.getElementById('gallery-container');
 
@@ -443,50 +443,43 @@ const galleryHTML = `
             }
 
             let db;
-            let openRequest = indexedDB.open('myDatabase', 1);
+            let request = window.indexedDB.open('myDatabase', 1);
 
-            openRequest.onerror = event => {
-                console.error("Database error: ", event.target.errorCode);
-            };
-
-            openRequest.onsuccess = event => {
-                db = event.target.result;
-                console.log('Database opened successfully');
-                proceedWithImageFetching();
-            };
-
-            openRequest.onupgradeneeded = event => {
+            request.onerror = event => console.error("Database error: ", event.target.errorCode);
+            request.onupgradeneeded = event => {
                 let db = event.target.result;
                 if (!db.objectStoreNames.contains('imageData')) {
                     db.createObjectStore('imageData', { keyPath: 'filename' });
                 }
             };
 
-            async function proceedWithImageFetching() {
+            request.onsuccess = async event => {
+                db = event.target.result;
+                console.log('Database opened successfully');
+                await fetchMetadataAndImages();
+            };
+
+            async function fetchMetadataAndImages() {
                 try {
                     const indexResponse = await fetch('https://raw.githubusercontent.com/Mischlichter/data/main/index.json');
                     const indexData = await indexResponse.json();
-
                     const metadataResponse = await fetch('https://raw.githubusercontent.com/Mischlichter/data/main/lib/metadata.json');
                     const imageMetadata = await metadataResponse.json();
-
                     const filesResponse = await fetch('https://api.github.com/repos/Mischlichter/data/contents/gallerycom');
                     const files = await filesResponse.json();
                     const totalImages = files.length;
                     let loadedImages = 0;
 
-                    files.forEach((file, index) => {
+                    for (const file of files) {
                         const imageContainer = document.createElement('div');
                         imageContainer.classList.add('image-container');
 
                         const img = document.createElement('img');
                         img.classList.add('grid-image');
 
-                        const metadata = imageMetadata[file.name] || {};
                         const wordOverlay = document.createElement('div');
                         wordOverlay.classList.add('word-overlay');
-                        img.dataset.metadata = JSON.stringify(metadata);
-
+                        wordOverlay.textContent = imageMetadata[file.name]?.description || 'No description';
                         imageContainer.appendChild(img);
                         imageContainer.appendChild(wordOverlay);
 
@@ -495,14 +488,13 @@ const galleryHTML = `
                         const dbRequest = store.get(file.name);
 
                         dbRequest.onsuccess = function(event) {
-                            let dbResult = event.target.result;
+                            const dbResult = event.target.result;
                             if (dbResult) {
-                                img.src = dbResult.imageSrc; // Image src from DB
+                                img.src = dbResult.imageSrc;
                             } else {
-                                img.src = file.download_url; // Download URL as fallback
-                                dynamicImages.push(img.src); // Store the image URL for slideshow and overlay functionalities
+                                img.src = file.download_url;
+                                // Optionally cache it in IndexedDB
                             }
-
                             img.onload = () => {
                                 loadedImages++;
                                 updateLoadingStatus((loadedImages / totalImages) * 100);
@@ -531,12 +523,13 @@ const galleryHTML = `
                         dbRequest.onerror = function() {
                             console.error("Error fetching image from database", file.name);
                         };
-                    });
+                    }
                 } catch (error) {
                     console.error("Error in fetching or processing data:", error);
                 }
             }
         }
+
 
 
 
