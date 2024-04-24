@@ -1333,7 +1333,7 @@
 
             // Inside orientationHandler.js or wherever the function is defined
             function triggerOrientationWithoutCalibration(gamma = 0, beta = 0) {
-                isCalibrated = true;
+                isCalibrated = false;
                 var fakeEvent = { gamma: gamma, beta: beta };
                 handleOrientation(fakeEvent);
             }
