@@ -510,19 +510,6 @@ const galleryHTML = `
                                 loadedImages++;
                                 updateLoadingStatus((loadedImages / totalImages) * 100);
                                 console.log(`Image loaded: ${file.name}`);
-
-                                img.onclick = () => onImageClick(img.src);
-                                if (currentImageIndex !== -1) {
-                                    showSlideshow();
-                                } else {
-                                    console.error("Clicked image index not found in dynamicImages array.");
-                                }
-                                if (loadedImages === totalImages) {
-                                    // Full load handling
-                                }
-
-
-
                                 galleryContainer.appendChild(imageContainer);
                                 if (loadedImages === totalImages) {
                                     console.log("All images have been loaded.");
@@ -543,6 +530,7 @@ const galleryHTML = `
                 }
             }
         }
+
 
 
 
