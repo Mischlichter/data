@@ -1331,12 +1331,7 @@
             window.addEventListener('orientationchange', checkOrientationChange);
 
 
-            function resetCalibrationFlag() {
-                isCalibrated = false;
-                console.log("Calibration flag reset. Device needs recalibration.");
-            }
-
-
+            
 
             function fadeOutOverlay() {
                 var overlay = document.getElementById('permissionOverlay');
@@ -1422,6 +1417,13 @@
     </script>
 
 
+    <script>
+    // Declare this in the global scope, outside any other function
+    window.resetCalibrationFlag = function() {
+        window.isCalibrated = false;  // Use window scope to make this variable globally accessible
+        console.log("Calibration flag reset. Device needs recalibration.");
+    };
+    </script>
 
 
 
@@ -1482,7 +1484,7 @@
             const bodyGalleryContainer = document.getElementById('bodyGalleryContainer');
 
 
-
+            resetCalibrationFlag();
 
             unhideElementsByClass("foreground-image-container");
 
