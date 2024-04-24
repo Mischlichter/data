@@ -930,30 +930,20 @@ const galleryHTML = `
         function recreateHoverEffectini() {
             removeOldHoverEffectContainer(); // Fade out and remove old containers
             createButtonOverlay();
-            calculateAspectRatio();
+            calculateAspectRatio()
 
             var newContainer = createNewHoverEffectContainer(); // Create a new container
 
-            if (isMobileDevice()) {
-                // If it's a mobile device, just display the image directly
-                newContainer.style.backgroundImage = 'url(' + dynamicImages[currentImageIndex] + ')';
-            } else {
-                // If it's not a mobile device, create hover effect
-                hoverEffectInstance = new hoverEffect({
-                    parent: newContainer,
-                    intensity: 0.3,
-                    image1: dynamicImages[currentImageIndex],
-                    image2: dynamicImages[currentImageIndex],
-                    displacementImage: dynamicImages[currentImageIndex]
-                });
-            }
-        }
+            //console.log("Creating hover effect with images:", dynamicImages[currentImageIndex]); // Log the images being used
 
-        // Utility function to detect mobile devices based on user agent
-        function isMobileDevice() {
-            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            hoverEffectInstance = new hoverEffect({
+                parent: newContainer,
+                intensity: 0.3,
+                image1: dynamicImages[currentImageIndex],
+                image2: dynamicImages[currentImageIndex],
+                displacementImage: dynamicImages[currentImageIndex]
+            });
         }
-
 
 
         function recreateHoverEffectnext() {
