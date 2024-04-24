@@ -964,46 +964,54 @@ const galleryHTML = `
 
 
         function recreateHoverEffectnext() {
-            removeOldHoverEffectContainer(); // Fade out and remove old containers
+            removeOldHoverEffectContainer(); // Remove old containers
 
             var newContainer = createNewHoverEffectContainer(); // Create a new container
+            newContainer.className = 'new-container'; // Apply CSS class for transitions
             var nextImageIndex = (currentImageIndex + 1) % dynamicImages.length;
 
             if (isMobileDevice()) {
-                // If it's a mobile device, just display the image directly
+                // Set initial background image without transition
                 newContainer.style.backgroundImage = 'url(' + dynamicImages[nextImageIndex] + ')';
-                newContainer.style.backgroundSize = 'cover';  // Cover the entire area of the container
-                newContainer.style.backgroundPosition = 'center';  // Center the image
-                newContainer.style.backgroundRepeat = 'no-repeat';  // Do not repeat the image
-            } else {
+                newContainer.style.backgroundSize = 'cover';
+                newContainer.style.backgroundPosition = 'center';
+                newContainer.style.backgroundRepeat = 'no-repeat';
 
+                // Change the image with a delay to allow for CSS transition
+                setTimeout(() => {
+                    newContainer.style.backgroundImage = 'url(' + dynamicImages[nextImageIndex] + ')';
+                }, 20);
+            } else {
                 hoverEffectInstance = new hoverEffect({
                     parent: newContainer,
                     intensity: 0.3,
                     image1: dynamicImages[currentImageIndex],
                     image2: dynamicImages[nextImageIndex],
                     displacementImage: dynamicImages[nextImageIndex],
-                  
                     angle2: Math.PI / 4
-                
                 });
             }    
         }
 
         function recreateHoverEffectprev() {
-            removeOldHoverEffectContainer(); // Fade out and remove old containers
+            removeOldHoverEffectContainer(); // Remove old containers
 
             var newContainer = createNewHoverEffectContainer(); // Create a new container
+            newContainer.className = 'new-container'; // Apply CSS class for transitions
             var prevImageIndex = (currentImageIndex - 1 + dynamicImages.length) % dynamicImages.length;
 
             if (isMobileDevice()) {
-                // If it's a mobile device, just display the image directly
+                // Set initial background image without transition
                 newContainer.style.backgroundImage = 'url(' + dynamicImages[prevImageIndex] + ')';
-                newContainer.style.backgroundSize = 'cover';  // Cover the entire area of the container
-                newContainer.style.backgroundPosition = 'center';  // Center the image
-                newContainer.style.backgroundRepeat = 'no-repeat';  // Do not repeat the image
+                newContainer.style.backgroundSize = 'cover';
+                newContainer.style.backgroundPosition = 'center';
+                newContainer.style.backgroundRepeat = 'no-repeat';
+
+                // Change the image with a delay to allow for CSS transition
+                setTimeout(() => {
+                    newContainer.style.backgroundImage = 'url(' + dynamicImages[prevImageIndex] + ')';
+                }, 20);
             } else {
-      
                 hoverEffectInstance = new hoverEffect({
                     parent: newContainer,
                     intensity: 0.3,
@@ -1013,6 +1021,7 @@ const galleryHTML = `
                 });
             }
         }
+
 
         function showNextSlide() {
             // Create a new hover effect instance with the current image

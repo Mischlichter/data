@@ -270,6 +270,9 @@ html {
     animation: blink 1s step-end infinite;
 }
 
+.new-container {
+    transition: background-image 0.5s ease-in-out;
+}
 
 
 #gallery-container {
