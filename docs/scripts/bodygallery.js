@@ -455,31 +455,38 @@ const galleryHTML = `
                 let db = event.target.result;
                 if (!db.objectStoreNames.contains('imageData')) {
                     db.createObjectStore('imageData', { keyPath: 'filename' });
+                    console.log('Object store created.');
                 }
             };
 
-            
             function fetchMetadataAndImages() {
+                console.log('Starting to fetch metadata and index data.');
                 fetch('https://raw.githubusercontent.com/Mischlichter/data/main/index.json')
                     .then(response => response.json())
                     .then(indexData => {
+                        console.log('Index data fetched.');
                         fetch('https://raw.githubusercontent.com/Mischlichter/data/main/lib/metadata.json')
                             .then(response => response.json())
                             .then(data => {
                                 imageMetadata = data;
+                                console.log('Metadata fetched.');
 
                                 fetch('https://api.github.com/repos/Mischlichter/data/contents/gallerycom')
                                     .then(response => response.json())
                                     .then(files => {
+                                        console.log('File names fetched.');
                                         const totalImages = files.length;
                                         let loadedImages = 0;
 
                                         function loadImage(index) {
                                             if (index >= totalImages) {
+                                                console.log('All images have been attempted to load.');
                                                 return; // All images loaded
                                             }
 
                                             const file = files[index];
+                                            console.log(`Processing file: ${file.name}`);
+
                                             const imageContainer = document.createElement('div');
                                             imageContainer.classList.add('image-container');
 
@@ -503,7 +510,10 @@ const galleryHTML = `
                                                 let lastModifiedInDB = dbResult ? new Date(dbResult.lastModified) : new Date(0);
                                                 let lastModifiedCurrent = new Date(indexData[file.name]?.lastModified);
 
+                                                console.log(`Date check for ${file.name}: In DB - ${lastModifiedInDB}, Current - ${lastModifiedCurrent}`);
+
                                                 if (!dbResult || lastModifiedInDB < lastModifiedCurrent) {
+                                                    console.log(`Image from remote needed for ${file.name}`);
                                                     fetch(file.download_url)
                                                         .then(response => response.blob())
                                                         .then(blob => {
@@ -521,12 +531,14 @@ const galleryHTML = `
                                                         })
                                                         .catch(error => console.error(`Error loading image ${index}:`, error));
                                                 } else {
+                                                    console.log(`Loading image from DB for ${file.name}`);
                                                     img.src = dbResult.imageSrc; // Load image from DB
                                                     dynamicImages.push(img.src); // Store the image URL
                                                 }
 
                                                 img.onload = () => {
                                                     loadedImages++;
+                                                    console.log(`Image ${index} loaded successfully. Total loaded: ${loadedImages}`);
                                                     updateLoadingStatus((loadedImages / totalImages) * 100);
 
                                                     img.onclick = () => onImageClick(img.src);
@@ -536,7 +548,7 @@ const galleryHTML = `
                                                         console.error("Clicked image index not found in dynamicImages array.");
                                                     }
                                                     if (loadedImages === totalImages) {
-                                                        // Full load handling
+                                                        console.log('All images loaded.');
                                                     }
 
                                                     galleryContainer.appendChild(imageContainer);
@@ -550,7 +562,7 @@ const galleryHTML = `
                                             };
 
                                             dbRequest.onerror = function() {
-                                                console.error("Error fetching image from database");
+                                                console.error("Error fetching image from database", file.name);
                                             };
                                         }
 
