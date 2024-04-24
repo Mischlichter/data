@@ -994,7 +994,7 @@ const galleryHTML = `
             } else {
                 // For desktop, maintain existing hover effects and transitions
                 recreateHoverEffectnext();
-                setTimeout(function() {
+                setTimeout(function () {
                     currentImageIndex = (currentImageIndex + 1) % dynamicImages.length;
                     hoverEffectInstance.next();
                     updateTextInfo();
@@ -1011,7 +1011,7 @@ const galleryHTML = `
             } else {
                 // For desktop, maintain existing hover effects and transitions
                 recreateHoverEffectprev();
-                setTimeout(function() {
+                setTimeout(function () {
                     currentImageIndex = (currentImageIndex - 1 + dynamicImages.length) % dynamicImages.length;
                     hoverEffectInstance.next();
                     updateTextInfo();
@@ -1020,8 +1020,12 @@ const galleryHTML = `
         }
 
         function updateImageForMobile() {
-            const imgContainer = document.querySelector('.centered-container img'); // Ensure your HTML structure supports this
-            imgContainer.src = dynamicImages[currentImageIndex];
+            const imgContainer = document.querySelector('.centered-container img');
+            if (imgContainer) {
+                imgContainer.src = dynamicImages[currentImageIndex];
+            } else {
+                console.error("Image container not found.");
+            }
         }
 
 
