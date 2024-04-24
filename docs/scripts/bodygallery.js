@@ -508,6 +508,7 @@ const galleryHTML = `
 
                             img.onload = () => {
                                 loadedImages++;
+                                updateLoadingStatus((loadedImages / totalImages) * 100);
                                 console.log(`Image loaded: ${file.name}`);
                                 galleryContainer.appendChild(imageContainer);
                                 if (loadedImages === totalImages) {
