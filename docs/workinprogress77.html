@@ -1947,7 +1947,7 @@
                 currentlyActiveMenuItemId = 'menuLogo'; // Update currently active menu item
                 await fadeOutElements(); // Wait for the elements to fade out
                 currentSceneIndex = 0; // Set scene index to 0 for the logo
-                //loadScene(currentSceneIndex); // Load the selected scene
+                loadScene(currentSceneIndex); // Load the selected scene
                 highlightActiveMenuItem('menuLogo');
             };
 
@@ -1986,7 +1986,7 @@
                     currentlyActiveMenuItemId = menuContainer.id; // Update currently active menu item
                     await fadeOutElements(); // Wait for the elements to fade out
                     currentSceneIndex = index; // Update the current scene index
-                    //loadScene(currentSceneIndex); // Load the selected scene
+                    loadScene(currentSceneIndex); // Load the selected scene
                     highlightActiveMenuItem(menuContainer.id);
                 };
 
