@@ -77,7 +77,7 @@ const galleryHTML = `
         var dynamicImages = [];
         var currentImageIndex = 0;
         var hoverEffectInstance;
-        var dynamicImages = [];
+
 
 
   
@@ -485,6 +485,12 @@ const galleryHTML = `
 
                                            dbRequest.onsuccess = function(event) {
                                                let dbResult = event.target.result;
+                                               if (dbResult) {
+                                                   img.src = dbResult.imageSrc; // Image src from DB
+                                               } else {
+                                                   img.src = file.download_url; // Download URL as fallback
+                                                   dynamicImages.push(img.src); // Store the image URL
+                                               }
                                                let lastModifiedInDB = dbResult ? new Date(dbResult.lastModified) : new Date(0);
                                                let lastModifiedCurrent = new Date(indexData[file.name]?.lastModified);
 
