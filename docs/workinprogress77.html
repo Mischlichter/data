@@ -1283,6 +1283,17 @@
                 }
             }
 
+            function triggerOrientationWithoutCalibration() {
+                isCalibrated = false; // Reset calibration flag
+                console.log('Calibration triggered.'); // Optional: Log calibration trigger for debugging
+            }
+
+
+            // Make it globally accessible
+            window.triggerOrientationWithoutCalibration = triggerOrientationWithoutCalibration;
+
+  
+
 
             function simulateTap() {
                 // Create the touch point at the center of the screen
@@ -1332,15 +1343,7 @@
 
 
             // Inside orientationHandler.js or wherever the function is defined
-            function triggerOrientationWithoutCalibration(gamma = 0, beta = 0) {
-                isCalibrated = false;
-                var fakeEvent = { gamma: gamma, beta: beta };
-                handleOrientation(fakeEvent);
-            }
-
-            // Make it globally accessible
-            window.triggerOrientationWithoutCalibration = triggerOrientationWithoutCalibration;
-
+            
 
 
 
