@@ -498,14 +498,13 @@ const galleryHTML = `
                                                                 });
 
                                                             dynamicImages.push(imageSrc); // Update dynamic images array
-                                                            loadImageElement(file, imageSrc, imageMetadata, galleryContainer, index, totalImages);
-                                                            loadedImages++;
-                                                            updateLoadingStatus((loadedImages / totalImages) * 100);
+                                                            loadImageElement(file, imageSrc, loadedImages, imageMetadata, galleryContainer, index, totalImages);
+                                                            
                                                         })
                                                         .catch(error => console.error(`Error loading image ${index}:`, error));
                                                 } else {
                                                     dynamicImages.push(dbResult.imageSrc); // Update dynamic images array
-                                                    loadImageElement(file, dbResult.imageSrc, loadedImages, imageMetadata, galleryContainer, index, loadImage);
+                                                    loadImageElement(file, dbResult.imageSrc, loadedImages, imageMetadata, galleryContainer, index, totalImages);
                                                     
                                                 }
                                             };
@@ -523,7 +522,7 @@ const galleryHTML = `
             }
         }
 
-        function loadImageElement(file, imageSrc, loadedImages, imageMetadata, galleryContainer, index, totalImages, loadImage) {
+        function loadImageElement(file, imageSrc, loadedImages, imageMetadata, galleryContainer, index, totalImages) {
             const imageContainer = document.createElement('div');
             imageContainer.classList.add('image-container');
 
