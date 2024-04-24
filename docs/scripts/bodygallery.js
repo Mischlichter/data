@@ -434,12 +434,13 @@ const galleryHTML = `
             let imageMetadata = {};
             const galleryContainer = document.getElementById('gallery-container');
             let db; // Reference for IndexedDB database
+            let loadedImages = 0; // Initialize this variable outside of the nested functions to ensure it's accessible everywhere needed.
 
             if (!window.indexedDB) {
                 console.log("Your browser doesn't support IndexedDB.");
                 return;
             }
-            
+
             let request = window.indexedDB.open('myDatabase', 1);
 
             request.onerror = function(event) {
@@ -471,7 +472,6 @@ const galleryHTML = `
                                     .then(response => response.json())
                                     .then(files => {
                                         const totalImages = files.length;
-                                        let loadedImages = 0;
 
                                         files.forEach((file, index) => {
                                             const transaction = db.transaction('imageData', 'readonly');
@@ -496,11 +496,11 @@ const galleryHTML = `
                                                                     lastModified: lastModifiedCurrent.toISOString()
                                                                 });
 
-                                                            appendImage(imageSrc, file, imageMetadata, galleryContainer, index);
+                                                            appendImage(imageSrc, file, imageMetadata, galleryContainer, index, totalImages);
                                                         })
                                                         .catch(error => console.error(`Error loading image ${index}:`, error));
                                                 } else {
-                                                    appendImage(dbResult.imageSrc, file, imageMetadata, galleryContainer, index);
+                                                    appendImage(dbResult.imageSrc, file, imageMetadata, galleryContainer, index, totalImages);
                                                 }
                                             };
 
@@ -516,7 +516,7 @@ const galleryHTML = `
                     .catch(error => console.error('Error fetching index data:', error));
             }
 
-            function appendImage(imageSrc, file, imageMetadata, galleryContainer, index) {
+            function appendImage(imageSrc, file, imageMetadata, galleryContainer, index, totalImages) {
                 const imageContainer = document.createElement('div');
                 imageContainer.classList.add('image-container');
 
@@ -546,19 +546,15 @@ const galleryHTML = `
                     }
 
                     galleryContainer.appendChild(imageContainer);
-                    if (index + 1 < totalImages) {
-                        setTimeout(() => loadImage(index + 1), 7); // Sequential loading with delay
-                    }
+                    setTimeout(() => loadImage(index + 1), 7);
                 };
 
-                img.onerror = () => {
-                    console.error(`Error loading image ${index}`);
-                    if (index + 1 < totalImages) {
-                        setTimeout(() => loadImage(index + 1), 7); // Attempt next image on error
-                    }
-                };
+                
             }
+
+
         }
+
 
 
 
