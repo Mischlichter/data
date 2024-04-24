@@ -966,16 +966,25 @@ const galleryHTML = `
             var newContainer = createNewHoverEffectContainer(); // Create a new container
             var nextImageIndex = (currentImageIndex + 1) % dynamicImages.length;
 
-            hoverEffectInstance = new hoverEffect({
-                parent: newContainer,
-                intensity: 0.3,
-                image1: dynamicImages[currentImageIndex],
-                image2: dynamicImages[nextImageIndex],
-                displacementImage: dynamicImages[nextImageIndex],
-              
-                angle2: Math.PI / 4
-            
-            });
+            if (isMobileDevice()) {
+                // If it's a mobile device, just display the image directly
+                newContainer.style.backgroundImage = 'url(' + dynamicImages[currentImageIndex] + ')';
+                newContainer.style.backgroundSize = 'cover';  // Cover the entire area of the container
+                newContainer.style.backgroundPosition = 'center';  // Center the image
+                newContainer.style.backgroundRepeat = 'no-repeat';  // Do not repeat the image
+            } else {
+
+                hoverEffectInstance = new hoverEffect({
+                    parent: newContainer,
+                    intensity: 0.3,
+                    image1: dynamicImages[currentImageIndex],
+                    image2: dynamicImages[nextImageIndex],
+                    displacementImage: dynamicImages[nextImageIndex],
+                  
+                    angle2: Math.PI / 4
+                
+                });
+            }    
         }
 
         function recreateHoverEffectprev() {
@@ -983,14 +992,23 @@ const galleryHTML = `
 
             var newContainer = createNewHoverEffectContainer(); // Create a new container
             var prevImageIndex = (currentImageIndex - 1 + dynamicImages.length) % dynamicImages.length;
+
+            if (isMobileDevice()) {
+                // If it's a mobile device, just display the image directly
+                newContainer.style.backgroundImage = 'url(' + dynamicImages[currentImageIndex] + ')';
+                newContainer.style.backgroundSize = 'cover';  // Cover the entire area of the container
+                newContainer.style.backgroundPosition = 'center';  // Center the image
+                newContainer.style.backgroundRepeat = 'no-repeat';  // Do not repeat the image
+            } else {
       
-            hoverEffectInstance = new hoverEffect({
-                parent: newContainer,
-                intensity: 0.3,
-                image1: dynamicImages[currentImageIndex],
-                image2: dynamicImages[prevImageIndex],
-                displacementImage: dynamicImages[prevImageIndex]
-            });
+                hoverEffectInstance = new hoverEffect({
+                    parent: newContainer,
+                    intensity: 0.3,
+                    image1: dynamicImages[currentImageIndex],
+                    image2: dynamicImages[prevImageIndex],
+                    displacementImage: dynamicImages[prevImageIndex]
+                });
+            }
         }
 
         function showNextSlide() {
