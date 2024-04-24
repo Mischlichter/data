@@ -433,130 +433,135 @@ const galleryHTML = `
 
   
 
-       function fetchImageFilenames() {
-           let imageMetadata = {};
-           const galleryContainer = document.getElementById('gallery-container');
-           let db; // Reference for IndexedDB database
+        function fetchImageFilenames() {
+            let imageMetadata = {};
+            const galleryContainer = document.getElementById('gallery-container');
+            let dynamicImages = []; // Initialize the dynamicImages array to track images
+            let db; // Reference for IndexedDB database
 
-           if (!window.indexedDB) {
-               console.log("Your browser doesn't support IndexedDB.");
-               return;
-           }
+            if (!window.indexedDB) {
+                console.log("Your browser doesn't support IndexedDB.");
+                return;
+            }
 
-           let request = window.indexedDB.open('myDatabase', 1);
+            let request = window.indexedDB.open('myDatabase', 1);
 
-           request.onerror = function(event) {
-               console.error("Database error: ", event.target.errorCode);
-           };
+            request.onerror = function(event) {
+                console.error("Database error: ", event.target.errorCode);
+            };
 
-           request.onsuccess = function(event) {
-               db = event.target.result;
-               console.log('Database opened successfully');
-               fetchMetadataAndImages();
-           };
+            request.onsuccess = function(event) {
+                db = event.target.result;
+                console.log('Database opened successfully');
+                fetchMetadataAndImages();
+            };
 
-           request.onupgradeneeded = function(event) {
-               let db = event.target.result;
-               if (!db.objectStoreNames.contains('imageData')) {
-                   db.createObjectStore('imageData', { keyPath: 'filename' });
-               }
-           };
+            request.onupgradeneeded = function(event) {
+                let db = event.target.result;
+                if (!db.objectStoreNames.contains('imageData')) {
+                    db.createObjectStore('imageData', { keyPath: 'filename' });
+                }
+            };
 
-           function fetchMetadataAndImages() {
-               fetch('https://raw.githubusercontent.com/Mischlichter/data/main/index.json')
-                   .then(response => response.json())
-                   .then(indexData => {
-                       fetch('https://raw.githubusercontent.com/Mischlichter/data/main/lib/metadata.json')
-                           .then(response => response.json())
-                           .then(data => {
-                               imageMetadata = data;
+            function fetchMetadataAndImages() {
+                fetch('https://raw.githubusercontent.com/Mischlichter/data/main/index.json')
+                    .then(response => response.json())
+                    .then(indexData => {
+                        fetch('https://raw.githubusercontent.com/Mischlichter/data/main/lib/metadata.json')
+                            .then(response => response.json())
+                            .then(data => {
+                                imageMetadata = data;
 
-                               fetch('https://api.github.com/repos/Mischlichter/data/contents/gallerycom')
-                                   .then(response => response.json())
-                                   .then(files => {
-                                       const totalImages = files.length;
-                                       let loadedImages = 0;
+                                fetch('https://api.github.com/repos/Mischlichter/data/contents/gallerycom')
+                                    .then(response => response.json())
+                                    .then(files => {
+                                        const totalImages = files.length;
+                                        let loadedImages = 0;
 
-                                       files.forEach((file, index) => {
-                                           const imageContainer = document.createElement('div');
-                                           imageContainer.classList.add('image-container');
+                                        files.forEach((file, index) => {
+                                            const transaction = db.transaction('imageData', 'readonly');
+                                            const store = transaction.objectStore('imageData');
+                                            const dbRequest = store.get(file.name);
 
-                                           const img = document.createElement('img');
-                                           img.classList.add('grid-image');
+                                            dbRequest.onsuccess = function(event) {
+                                                let dbResult = event.target.result;
+                                                let lastModifiedInDB = dbResult ? new Date(dbResult.lastModified) : new Date(0);
+                                                let lastModifiedCurrent = new Date(indexData[file.name]?.lastModified);
 
-                                           const wordOverlay = document.createElement('div');
-                                           wordOverlay.classList.add('word-overlay');
+                                                if (!dbResult || lastModifiedInDB < lastModifiedCurrent) {
+                                                    // File needs to be fetched and updated
+                                                    fetch(file.download_url)
+                                                        .then(response => response.blob())
+                                                        .then(blob => {
+                                                            const imageSrc = URL.createObjectURL(blob);
+                                                            db.transaction('imageData', 'readwrite')
+                                                                .objectStore('imageData')
+                                                                .put({
+                                                                    filename: file.name,
+                                                                    imageSrc: imageSrc,
+                                                                    lastModified: lastModifiedCurrent.toISOString()
+                                                                });
 
-                                           imageContainer.appendChild(img);
-                                           imageContainer.appendChild(wordOverlay);
+                                                            dynamicImages.push(imageSrc); // Update dynamic images array
+                                                            loadImageElement(file, imageSrc, imageMetadata, galleryContainer, index);
+                                                            loadedImages++;
+                                                            updateLoadingStatus((loadedImages / totalImages) * 100);
+                                                        })
+                                                        .catch(error => console.error(`Error loading image ${index}:`, error));
+                                                } else {
+                                                    dynamicImages.push(dbResult.imageSrc); // Update dynamic images array
+                                                    loadImageElement(file, dbResult.imageSrc, imageMetadata, galleryContainer, index);
+                                                    loadedImages++;
+                                                    updateLoadingStatus((loadedImages / totalImages) * 100);
+                                                }
+                                            };
 
-                                           const transaction = db.transaction('imageData', 'readonly');
-                                           const store = transaction.objectStore('imageData');
-                                           const dbRequest = store.get(file.name);
+                                            dbRequest.onerror = function() {
+                                                console.error("Error fetching image from database");
+                                            };
+                                        });
+                                    })
+                                    .catch(error => console.error('Error fetching file names:', error));
+                            })
+                            .catch(error => console.error('Error fetching metadata:', error));
+                    })
+                    .catch(error => console.error('Error fetching index data:', error));
+            }
+        }
 
-                                           dbRequest.onsuccess = function(event) {
-                                               let dbResult = event.target.result;
-                                               let lastModifiedInDB = dbResult ? new Date(dbResult.lastModified) : new Date(0);
-                                               let lastModifiedCurrent = new Date(indexData[file.name]?.lastModified);
+        function loadImageElement(file, imageSrc, imageMetadata, galleryContainer, index) {
+            const imageContainer = document.createElement('div');
+            imageContainer.classList.add('image-container');
 
-                                               if (!dbResult || lastModifiedInDB < lastModifiedCurrent) {
-                                                   fetch(file.download_url)
-                                                       .then(response => response.blob())
-                                                       .then(blob => {
-                                                           const imageSrc = URL.createObjectURL(blob);
-                                                           db.transaction('imageData', 'readwrite')
-                                                               .objectStore('imageData')
-                                                               .put({
-                                                                   filename: file.name,
-                                                                   imageSrc: imageSrc,
-                                                                   lastModified: lastModifiedCurrent.toISOString()
-                                                               });
+            const img = document.createElement('img');
+            img.classList.add('grid-image');
+            img.src = imageSrc;
+            img.dataset.metadata = JSON.stringify(imageMetadata[file.name] || {});
 
-                                                           img.src = imageSrc;
-                                                           loadImageElement(img, imageMetadata[file.name], galleryContainer);
-                                                           loadedImages++;
-                                                           updateLoadingStatus((loadedImages / totalImages) * 100);
-                                                       })
-                                                       .catch(error => console.error(`Error loading image ${index}:`, error));
-                                               } else {
-                                                   img.src = dbResult.imageSrc;
-                                                   loadImageElement(img, imageMetadata[file.name], galleryContainer);
-                                                   loadedImages++;
-                                                   updateLoadingStatus((loadedImages / totalImages) * 100);
-                                               }
-                                           };
+            const wordOverlay = document.createElement('div');
+            wordOverlay.classList.add('word-overlay');
 
-                                           dbRequest.onerror = function() {
-                                               console.error("Error fetching image from database");
-                                           };
-                                       });
-                                   })
-                                   .catch(error => console.error('Error fetching file names:', error));
-                           })
-                           .catch(error => console.error('Error fetching metadata:', error));
-                   })
-                   .catch(error => console.error('Error fetching index data:', error));
-           }
-       }
+            imageContainer.appendChild(img);
+            imageContainer.appendChild(wordOverlay);
 
-       function loadImageElement(img, metadata, galleryContainer) {
-           img.dataset.metadata = JSON.stringify(metadata || {});
+            img.onload = () => {
+                img.onclick = () => onImageClick(img.src);
+                if (currentImageIndex !== -1) {
+                    showSlideshow();
+                } else {
+                    console.error("Clicked image index not found in dynamicImages array.");
+                }
 
-           img.onload = () => {
-               img.onclick = () => onImageClick(img.src);
-               if (currentImageIndex !== -1) {
-                   showSlideshow();
-               } else {
-                   console.error("Clicked image index not found in dynamicImages array.");
-               }
+                galleryContainer.appendChild(imageContainer);
+            };
 
-               galleryContainer.appendChild(img.parentNode); // Assuming parentNode is the image container
-           };
+            img.onerror = () => {
+                console.error(`Error loading image ${index}`);
+            };
+        }
 
-           img.onerror = () => {
-               console.error(`Error loading image ${img.src}`);
-           };
-       }
+
+
 
 
 
