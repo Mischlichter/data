@@ -436,8 +436,7 @@ const galleryHTML = `
         async function fetchImageFilenames() {
             console.log("Starting image fetching process.");
             const galleryContainer = document.getElementById('gallery-container');
-            let dynamicImages = []; // Array to store image URLs for onclick event indexing
-
+            
             if (!window.indexedDB) {
                 console.log("Your browser doesn't support IndexedDB.");
                 return;
@@ -484,7 +483,6 @@ const galleryHTML = `
 
                         const wordOverlay = document.createElement('div');
                         wordOverlay.classList.add('word-overlay');
-                        wordOverlay.textContent = metadataData[file.name]?.description || "No description"; // Added handling for metadata
 
                         imageContainer.appendChild(img);
                         imageContainer.appendChild(wordOverlay);
@@ -500,9 +498,9 @@ const galleryHTML = `
                                 img.src = dbResult.imageSrc; // Image source from IndexedDB
                                 console.log(`Loaded from DB: ${file.name}`);
                             } else {
+                                // If not in DB, fetch and cache
                                 img.src = file.download_url;
                                 console.log(`Loaded from network and caching: ${file.name}`);
-                                dynamicImages[index] = img.src; // Store image src for indexing
                                 const transaction = db.transaction('imageData', 'readwrite');
                                 const store = transaction.objectStore('imageData');
                                 store.add({ filename: file.name, imageSrc: file.download_url, lastModified: new Date(indexData[file.path]).toISOString() });
@@ -513,16 +511,22 @@ const galleryHTML = `
                                 updateLoadingStatus((loadedImages / totalImages) * 100);
                                 console.log(`Image loaded: ${file.name}`);
 
-                                img.onclick = () => {
-                                    onImageClick(dynamicImages[index]); // Use dynamicImages for correct indexing
-                                    showSlideshow(index); // Show slideshow starting at the clicked index
-                                };
+                                img.onclick = () => onImageClick(img.src);
+                                if (currentImageIndex !== -1) {
+                                    showSlideshow();
+                                } else {
+                                    console.error("Clicked image index not found in dynamicImages array.");
+                                }
+                                if (loadedImages === totalImages) {
+                                    // Full load handling
+                                }
 
+
+
+                                galleryContainer.appendChild(imageContainer);
                                 if (loadedImages === totalImages) {
                                     console.log("All images have been loaded.");
                                 }
-
-                                galleryContainer.appendChild(imageContainer);
                             };
 
                             img.onerror = () => {
