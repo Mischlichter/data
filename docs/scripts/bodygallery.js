@@ -436,7 +436,8 @@ const galleryHTML = `
         async function fetchImageFilenames() {
             console.log("Starting image fetching process.");
             const galleryContainer = document.getElementById('gallery-container');
-            
+            const dynamicImages = []; // Array to keep track of image sources and indices
+
             if (!window.indexedDB) {
                 console.log("Your browser doesn't support IndexedDB.");
                 return;
@@ -506,24 +507,20 @@ const galleryHTML = `
                                 store.add({ filename: file.name, imageSrc: file.download_url, lastModified: new Date(indexData[file.path]).toISOString() });
                             }
 
+                            dynamicImages[index] = img.src; // Track image index
+
                             img.onload = () => {
                                 loadedImages++;
                                 updateLoadingStatus((loadedImages / totalImages) * 100);
                                 console.log(`Image loaded: ${file.name}`);
 
-                                img.onclick = () => onImageClick(img.src);
-                                if (currentImageIndex !== -1) {
-                                    showSlideshow();
-                                } else {
-                                    console.error("Clicked image index not found in dynamicImages array.");
-                                }
-                                if (loadedImages === totalImages) {
-                                    // Full load handling
-                                }
-
-
+                                img.onclick = () => {
+                                    const currentImageIndex = dynamicImages.indexOf(img.src); // Find index on click
+                                    onImageClick(currentImageIndex, img.src); // Pass index to click handler
+                                };
 
                                 galleryContainer.appendChild(imageContainer);
+
                                 if (loadedImages === totalImages) {
                                     console.log("All images have been loaded.");
                                 }
@@ -543,7 +540,6 @@ const galleryHTML = `
                 }
             }
         }
-
 
 
         function updateLoadingStatus(percentage) {
