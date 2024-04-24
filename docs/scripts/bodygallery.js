@@ -954,8 +954,11 @@ const galleryHTML = `
 
         // Utility function to detect mobile devices based on user agent
         function isMobileDevice() {
-            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            console.log("Mobile device detected: " + isMobile);
+            return isMobile;
         }
+
 
 
 
