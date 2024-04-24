@@ -433,145 +433,124 @@ const galleryHTML = `
 
   
 
-        async function fetchImageFilenames() {
-            console.log("Starting image fetching process.");
+        function fetchImageFilenames() {
             const galleryContainer = document.getElementById('gallery-container');
-            
             if (!window.indexedDB) {
                 console.log("Your browser doesn't support IndexedDB.");
                 return;
             }
 
-            let db;
             let request = window.indexedDB.open('myDatabase', 1);
+            let db; // Reference for OpenDB database
 
-            request.onerror = event => console.error("Database error: ", event.target.errorCode);
+            request.onerror = function(event) {
+                console.error("Database error: ", event.target.errorCode);
+            };
 
-            request.onsuccess = event => {
+            request.onsuccess = function(event) {
                 db = event.target.result;
-                console.log('Database opened successfully');
                 fetchMetadataAndImages();
             };
 
-            request.onupgradeneeded = event => {
+            request.onupgradeneeded = function(event) {
                 let db = event.target.result;
                 if (!db.objectStoreNames.contains('imageData')) {
                     db.createObjectStore('imageData', { keyPath: 'filename' });
                 }
             };
 
-            async function fetchMetadataAndImages() {
-                try {
-                    const indexData = await fetch('https://raw.githubusercontent.com/Mischlichter/data/main/index.json').then(response => response.json());
-                    const metadataData = await fetch('https://raw.githubusercontent.com/Mischlichter/data/main/lib/metadata.json').then(response => response.json());
-                    const files = await fetch('https://api.github.com/repos/Mischlichter/data/contents/gallerycom').then(response => response.json());
+            function fetchMetadataAndImages() {
+                Promise.all([
+                    fetch('https://raw.githubusercontent.com/Mischlichter/data/main/index.json').then(response => response.json()),
+                    fetch('https://raw.githubusercontent.com/Mischlichter/data/main/lib/metadata.json').then(response => response.json()),
+                    fetch('https://api.github.com/repos/Mischlichter/data/contents/gallerycom').then(response => response.json())
+                ]).then(([indexData, imageMetadata, files]) => {
+                    loadImage(0, files, imageMetadata, indexData);
+                }).catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+            }
 
-                    const totalImages = files.length;
-                    let loadedImages = 0;
+            function loadImage(index, files, imageMetadata, indexData) {
+                if (index >= files.length) {
+                    return; // All images loaded
+                }
 
-                    function loadImage(index) {
-                        if (index >= totalImages) {
-                            console.log("All images have been loaded.");
-                            return; // All images loaded
-                        }
+                const file = files[index];
+                const imageContainer = document.createElement('div');
+                imageContainer.classList.add('image-container');
 
-                        const file = files[index];
-                        const imageContainer = document.createElement('div');
-                        imageContainer.classList.add('image-container');
+                const img = document.createElement('img');
+                img.classList.add('grid-image');
 
-                        const img = document.createElement('img');
-                        img.classList.add('grid-image');
-                        img.dataset.metadata = JSON.stringify(metadataData[file.name] || {});
+                const metadata = imageMetadata[file.name] || {};
+                const wordOverlay = document.createElement('div');
+                wordOverlay.classList.add('word-overlay');
+                wordOverlay.textContent = metadata.title || "No title"; // Example: Add title from metadata
 
-                        const wordOverlay = document.createElement('div');
-                        wordOverlay.classList.add('word-overlay');
-                        wordOverlay.textContent = metadataData[file.name] ? metadataData[file.name].description : "No description";
-                        imageContainer.appendChild(img);
-                        imageContainer.appendChild(wordOverlay);
+                imageContainer.appendChild(img);
+                imageContainer.appendChild(wordOverlay);
 
-                        let transaction = db.transaction('imageData', 'readonly');
-                        let store = transaction.objectStore('imageData');
-                        let dbRequest = store.get(file.name);
+                img.dataset.metadata = JSON.stringify(metadata);
 
-                        dbRequest.onsuccess = function() {
-                            const dbResult = dbRequest.result;
-                            if (dbResult) {
-                                img.src = dbResult.imageSrc; // Image source from IndexedDB
-                                console.log(`Loaded from DB: ${file.name}`);
-                            } else {
-                                img.src = file.download_url; // Download URL as fallback
-                                console.log(`Loaded from network and caching: ${file.name}`);
-                            }
+                let transaction = db.transaction('imageData', 'readonly');
+                let store = transaction.objectStore('imageData');
+                let dbRequest = store.get(file.name);
 
-                            img.onload = () => {
-                                loadedImages++;
-                                console.log(`Image loaded: ${file.name}`);
-                                updateLoadingStatus((loadedImages / totalImages) * 100);
-                                img.onclick = () => onImageClick(img.src);
-                                galleryContainer.appendChild(imageContainer);
-                                setTimeout(() => loadImage(index + 1), 7); // Load next image
-                            };
-
-                            img.onerror = () => {
-                                console.error(`Error loading image ${index}`);
-                                loadImage(index + 1); // Try next image on error
-                            };
-                        };
-
-                        dbRequest.onerror = () => {
-                            console.error("Error fetching image from database", file.name);
-                            loadImage(index + 1);
-                        };
+                dbRequest.onsuccess = function(event) {
+                    let dbResult = event.target.result;
+                    if (dbResult) {
+                        img.src = dbResult.imageSrc; // Image src from DB
+                    } else {
+                        img.src = file.download_url; // Download URL as fallback
+                        // Assuming dynamicImages is a global array for tracking loaded images
+                        dynamicImages.push(img.src);
+                        cacheImage(file.name, file.download_url, new Date(indexData[file.path]).toISOString());
                     }
 
-                    loadImage(0); // Start loading images
-                } catch (error) {
-                    console.error("Error in fetching or processing data:", error);
-                }
+                    img.onload = () => {
+                        updateLoadingStatus(++loadedImage / files.length * 100);
+                        
+                        img.onclick = () => onImageClick(img.src);
+                        if (currentImageIndex !== -1) {
+                            showSlideshow();
+                        } else {
+                            console.error("Clicked image index not found in dynamicImages array.");
+                        }
+                        if (loadedImages === totalImages) {
+                            // Full load handling
+                        }
+
+                        galleryContainer.appendChild(imageContainer);
+                        setTimeout(() => loadImage(index + 1, files, imageMetadata, indexData), 7);
+                    };
+
+                    img.onerror = () => {
+                        console.error(`Error loading image ${file.name}`);
+                        setTimeout(() => loadImage(index + 1, files, imageMetadata, indexData), 7);
+                    };
+                };
+
+                dbRequest.onerror = function() {
+                    console.error("Error fetching image from database");
+                    setTimeout(() => loadImage(index + 1, files, imageMetadata, indexData), 7);
+                };
             }
 
-
-        }
-
-        function onImageClick(imgSrc) {
-            currentImageIndex = dynamicImages.indexOf(imgSrc);
-            //console.log("Current Image Index:", currentImageIndex);
-          
-
-            if (currentImageIndex !== -1) {
-                const centeredContainer = document.querySelector('.centered-container');
-                centeredContainer.style.display = 'flex'; // Show the centered-container
-
-                // Set the CSS properties to position the centered container on top
-                centeredContainer.style.position = 'fixed';
-                centeredContainer.style.top = '0';
-                centeredContainer.style.left = '0';
-                centeredContainer.style.width = '100%';
-                centeredContainer.style.height = '100%';
-                centeredContainer.style.zIndex = '9999';
-                centeredContainer.style.backgroundColor = 'rgba(0, 0, 0, 0)'; // Start with transparent background
-                centeredContainer.style.opacity = '0'; // Start with 0 opacity
-
-                // Enable opacity transition
-                centeredContainer.style.transition = 'opacity 0.5s ease-in-out';
-
-                // Delay the opacity change to trigger the transition effect
-                setTimeout(() => {
-                    centeredContainer.style.backgroundColor = 'rgba(0, 0, 0, 1)'; // Set the background color to opaque
-                    centeredContainer.style.opacity = '1'; // Fade in the container
-
-                    disableScroll(); // Disable scrolling
-                    recreateHoverEffectini(); // Recreate the hover effect with the selected image
-
-                    // Delay the execution of updateTextInfo
-                    setTimeout(() => {
-                        updateTextInfo(); // Update the text info based on the current image
-                    }, 5); // Adjust the delay value as needed
-                }, 5); // Adjust the delay value as needed
-            } else {
-                console.error("Clicked image index not found in dynamicImages array.");
+            function cacheImage(filename, src, lastModified) {
+                const transaction = db.transaction('imageData', 'readwrite');
+                const store = transaction.objectStore('imageData');
+                store.add({ filename, imageSrc: src, lastModified });
             }
+
+            function updateLoadingStatus(percent) {
+                console.log(`Loading: ${percent}% complete`);
+            }
+
+            
         }
+
+
 
 
         function updateLoadingStatus(percentage) {
@@ -654,7 +633,45 @@ const galleryHTML = `
             return Math.ceil(window.innerHeight / minGridItemWidth);
         }
 
-        
+        function onImageClick(imgSrc) {
+            currentImageIndex = dynamicImages.indexOf(imgSrc);
+            //console.log("Current Image Index:", currentImageIndex);
+          
+
+            if (currentImageIndex !== -1) {
+                const centeredContainer = document.querySelector('.centered-container');
+                centeredContainer.style.display = 'flex'; // Show the centered-container
+
+                // Set the CSS properties to position the centered container on top
+                centeredContainer.style.position = 'fixed';
+                centeredContainer.style.top = '0';
+                centeredContainer.style.left = '0';
+                centeredContainer.style.width = '100%';
+                centeredContainer.style.height = '100%';
+                centeredContainer.style.zIndex = '9999';
+                centeredContainer.style.backgroundColor = 'rgba(0, 0, 0, 0)'; // Start with transparent background
+                centeredContainer.style.opacity = '0'; // Start with 0 opacity
+
+                // Enable opacity transition
+                centeredContainer.style.transition = 'opacity 0.5s ease-in-out';
+
+                // Delay the opacity change to trigger the transition effect
+                setTimeout(() => {
+                    centeredContainer.style.backgroundColor = 'rgba(0, 0, 0, 1)'; // Set the background color to opaque
+                    centeredContainer.style.opacity = '1'; // Fade in the container
+
+                    disableScroll(); // Disable scrolling
+                    recreateHoverEffectini(); // Recreate the hover effect with the selected image
+
+                    // Delay the execution of updateTextInfo
+                    setTimeout(() => {
+                        updateTextInfo(); // Update the text info based on the current image
+                    }, 5); // Adjust the delay value as needed
+                }, 5); // Adjust the delay value as needed
+            } else {
+                console.error("Clicked image index not found in dynamicImages array.");
+            }
+        }
 
 
         function updateTextInfo() {
