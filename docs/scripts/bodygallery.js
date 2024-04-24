@@ -552,7 +552,7 @@ const galleryHTML = `
                     // Full load handling
                 }
                 galleryContainer.appendChild(imageContainer);
-                setTimeout(() => loadImage(index + 1), 7);
+                
             };
 
             img.onerror = () => {
