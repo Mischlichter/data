@@ -694,6 +694,17 @@
 
 
     </style>
+
+    <script>
+    (function() {
+        // Suppress console.warn
+        console.warn = function() {};
+
+        // Suppress console.error
+        console.error = function() {};
+    })();
+    </script>
+    
 </head>
 <body>
     
