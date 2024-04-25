@@ -447,7 +447,7 @@ const galleryHTML = `
 
             request.onsuccess = function(event) {
                 db = event.target.result;
-                //console.log('Database opened successfully');
+                console.log('Database opened successfully');
                 fetchMetadataAndImages();
             };
 
@@ -511,10 +511,10 @@ const galleryHTML = `
                                                     lastModifiedCurrent = new Date(0);  // Default to epoch start if no date is provided
                                                 }
 
-                                                //console.log(`Date check for ${file.name}: In DB - ${lastModifiedInDB}, Current - ${lastModifiedCurrent}`);
+                                                console.log(`Date check for ${file.name}: In DB - ${lastModifiedInDB}, Current - ${lastModifiedCurrent}`);
 
                                                 if (!dbResult || lastModifiedInDB < lastModifiedCurrent) {
-                                                    //console.log(`Image from remote needed for ${file.name}`);
+                                                    console.log(`Image from remote needed for ${file.name}`);
                                                     fetch(file.download_url)
                                                         .then(response => response.blob())
                                                         .then(blob => {
@@ -536,7 +536,7 @@ const galleryHTML = `
                                                         })
                                                         .catch(error => console.error(`Error loading image ${index}:`, error));
                                                 } else {
-                                                    //console.log(`Loading image from DB for ${file.name}`);
+                                                    console.log(`Loading image from DB for ${file.name}`);
                                                     img.src = dbResult.imageSrc; // Load image from DB
                                                     dynamicImages.push(img.src); // Store the image URL
                                                 }
@@ -986,7 +986,7 @@ const galleryHTML = `
         // Utility function to detect mobile devices based on user agent
         function isMobileDevice() {
             var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-            //console.log("Mobile device detected: " + isMobile);
+            console.log("Mobile device detected: " + isMobile);
             return isMobile;
         }
 
