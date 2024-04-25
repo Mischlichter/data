@@ -1949,6 +1949,7 @@
                 if ((currentlyActiveMenuItemId === 'menuLogo' && itemId === 'menuContainer0') ||
                     (currentlyActiveMenuItemId === 'menuContainer0' && itemId === 'menuLogo')) {
                     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+                    highlightActiveMenuItem(menuContainerIds[0]);
                     return;
                 }
 
