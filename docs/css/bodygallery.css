@@ -226,11 +226,18 @@ html {
     margin-bottom: 30px; /* Bottom margin */
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 768px) and (orientation: portrait) {
     #search-container {
-        margin-top: 220px; /* Increased top margin for portrait mode */
+        margin-top: 120px; /* Increased top margin for portrait mode */
     }
 }
+
+@media screen and (max-width: 768px) and (orientation: landscape) {
+    #search-container {
+        margin-top: 85px; /* Reduced top margin for landscape mode */
+    }
+}
+
 
 #search-bar {
     font-family: 'JetBrainsMono-Bold', sans-serif; /* Use the custom font */
@@ -444,11 +451,19 @@ html {
     z-index: 50;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 768px) and (orientation: portrait) {
     #loading-progress-container {
         top: 118.5px; /* Increased top for portrait mode */
     }
 }
+
+@media screen and (max-width: 768px) and (orientation: landscape) {
+    #loading-progress-container {
+        top: 84px; /* Adjust top for landscape mode */
+    }
+}
+
+
 
 .circular-chart {
     display: block;
