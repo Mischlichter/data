@@ -1949,7 +1949,6 @@
                 if ((currentlyActiveMenuItemId === 'menuLogo' && itemId === 'menuContainer0') ||
                     (currentlyActiveMenuItemId === 'menuContainer0' && itemId === 'menuLogo')) {
                     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-                    highlightActiveMenuItem(menuContainerIds[0]);
                     return;
                 }
 
@@ -1961,10 +1960,20 @@
                 currentlyActiveMenuItemId = itemId;
                 await fadeOutElements();
                 currentSceneIndex = (itemId === 'menuLogo') ? 0 : index;
+
+                // Load the selected scene
                 loadScene(currentSceneIndex);
-                highlightActiveMenuItem(itemId);
+
+                // Always highlight the first menu item when the logo is clicked
+                if (itemId === 'menuLogo') {
+                    highlightActiveMenuItem('menuContainer0'); // Highlight the first menu item when the logo is clicked
+                } else {
+                    highlightActiveMenuItem(itemId); // Otherwise, highlight the current menu item
+                }
+
                 triggerOrientationWithoutCalibration();
             };
+
 
             logoImg.addEventListener('click', () => handleInteraction('menuLogo', 0));
             logoImg.addEventListener('touchend', () => handleInteraction('menuLogo', 0));
