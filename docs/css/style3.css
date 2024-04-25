@@ -55,8 +55,12 @@ html, body {
 }
 
 #depth-viewer0 {
+    position: absolute;
     top: 0;
     left: 0;
+    background-color: black;
+    padding: 20px; /* Creates a frame of 20px around the viewer */
+    box-sizing: border-box; /* Includes padding in the width and height */
 }
 
 #depth-viewer1 {
