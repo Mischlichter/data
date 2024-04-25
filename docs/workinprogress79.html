@@ -1946,6 +1946,12 @@
             let currentlyActiveMenuItemId = null;
 
             const handleInteraction = async (itemId, index) => {
+                if ((currentlyActiveMenuItemId === 'menuLogo' && itemId === 'menuContainer0') ||
+                    (currentlyActiveMenuItemId === 'menuContainer0' && itemId === 'menuLogo')) {
+                    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+                    return;
+                }
+
                 if (currentlyActiveMenuItemId === itemId) {
                     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
                     return;
@@ -2001,6 +2007,7 @@
             updateLogoVisibility();
             updateMenu(menuData);
         }
+
 
 
         function updateLogoVisibility() {
