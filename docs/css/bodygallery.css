@@ -222,7 +222,7 @@ html {
 #search-container {
     display: flex;
     justify-content: center;
-    margin-top: 95px; /* Default top margin */
+    margin-top: 97px; /* Default top margin */
     margin-bottom: 30px; /* Bottom margin */
 }
 
@@ -234,7 +234,7 @@ html {
 
 @media screen and (orientation: landscape) {
     #search-container {
-        margin-top: 95px; /* Reduced top margin for landscape mode */
+        margin-top: 97px; /* Reduced top margin for landscape mode */
     }
 }
 
@@ -442,7 +442,7 @@ html {
 }
 #loading-progress-container {
     position: absolute;
-    top: 94px;
+    top: 96px;
     right: 30px;
     width: 45px;
     height: 50px;
@@ -459,7 +459,7 @@ html {
 
 @media screen and (orientation: landscape) {
     #loading-progress-container {
-        top: 94px; /* Adjusted top for landscape mode */
+        top: 96px; /* Adjusted top for landscape mode */
     }
 }
 
