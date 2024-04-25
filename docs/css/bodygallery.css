@@ -226,13 +226,13 @@ html {
     margin-bottom: 30px; /* Bottom margin */
 }
 
-@media screen and (max-width: 768px) and (orientation: portrait) {
+@media screen and (orientation: portrait) {
     #search-container {
         margin-top: 120px; /* Increased top margin for portrait mode */
     }
 }
 
-@media screen and (max-width: 768px) and (orientation: landscape) {
+@media screen and (orientation: landscape) {
     #search-container {
         margin-top: 85px; /* Reduced top margin for landscape mode */
     }
@@ -451,15 +451,15 @@ html {
     z-index: 50;
 }
 
-@media screen and (max-width: 768px) and (orientation: portrait) {
+@media screen and (orientation: portrait) {
     #loading-progress-container {
         top: 118.5px; /* Increased top for portrait mode */
     }
 }
 
-@media screen and (max-width: 768px) and (orientation: landscape) {
+@media screen and (orientation: landscape) {
     #loading-progress-container {
-        top: 84px; /* Adjust top for landscape mode */
+        top: 84px; /* Adjusted top for landscape mode */
     }
 }
 
