@@ -695,26 +695,7 @@
 
     </style>
 
-    <script>
-    (function() {
-        console.warn = function() {};  // Suppress console warnings
-        console.error = function() {};  // Suppress console errors
-    })();
-    </script>
-    <script>
-    window.addEventListener('load', function() {
-        var iframes = document.getElementsByTagName('iframe');
-        for (var i = 0; i < iframes.length; i++) {
-            var doc = iframes[i].contentWindow.document;
-            var script = doc.createElement('script');
-            script.textContent = `
-                console.warn = function() {};
-                console.error = function() {};
-            `;
-            doc.head.appendChild(script);
-        }
-    });
-    </script>
+    
 
 </head>
 <body>
