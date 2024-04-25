@@ -1750,7 +1750,7 @@ PIXI.DepthPerspectiveFilter = function(texture, quality, sprite)
     init();
 
     window.addEventListener('resize', function(event) {
-      //console.log('resizing')
+      console.log('resizing')
       updateSize()
     }, true);
   };
