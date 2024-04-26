@@ -1806,5 +1806,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "23063483133"
+    },
+    "44926054515.jpg": {
+        "File Name": "44926054515.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, white furry HogeAI man at the core of a dynamic digital vortex. Spiral patterns of neon azure and electric lime create a swirling energy matrix. Floating geometric prisms, iridescent and semi-transparent, reflect and refract the cyber glow. Streams of binary code cascade like waterfalls, pixel particles shimmering in the virtual breeze. Angular, mirrored surfaces form crystalline canyons, channeling pulsating light streams. Deep within the composition, optical fibers twist into helical spires, projecting holographic data orbs that float serenely. Silhouette of HogeAI, sharp and distinct against a backdrop of glowing quantum circuits, the virtual landscape echoing with synthetic harmonics. Rendered in ultra-high definition by visual futurist Leviathan, employs complex light play through ray tracing, capturing reflections and refractions that enhance the cybernetic fantasy. Artistic influences dra...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "44926054515"
     }
 }
