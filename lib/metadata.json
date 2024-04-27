@@ -1814,5 +1814,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "44926054515"
+    },
+    "84641635925.jpg": {
+        "File Name": "84641635925.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man teamwork with hogeai community, In a sprawling psychedelic city where architecture pulsates with the raw energy of acid rock, HogeAI man navigates streets that breathe with rebellion and freedom. Towering structures are canvases of vibrant graffiti, echoing the city's pulsating rhythms and underground roots. The air resonates with the reverberating sound of distorted guitars and improvised musical jams, creating an atmosphere charged with creativity and defiance.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "84641635925"
     }
 }
