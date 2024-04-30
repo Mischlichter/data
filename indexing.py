@@ -8,6 +8,9 @@ def get_file_info(existing_index):
     all_files = {}
     for path in base_path.rglob('*'):  # Recursively find all files
         if path.is_file():
+            # Check if the file is in the .git directory
+            if '.git' in path.parts:
+                continue
             # Skip the script itself and index.json to avoid recursion issues
             if path.name not in ['indexing.py', 'index.json']:
                 rel_path = str(path.relative_to(base_path))
