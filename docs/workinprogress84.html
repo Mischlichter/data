@@ -1035,7 +1035,7 @@
                     let shouldFetch = true;
                     const idbResponse = await db.transaction('assets').objectStore('assets').get(url);
                     if (idbResponse && new Date(idbResponse.lastModified) >= new Date(lastModified)) {
-                        console.log(`Loaded from IndexedDB: ${url}`);
+                        //console.log(`Loaded from IndexedDB: ${url}`);
                         shouldFetch = false;
                     }
                     if (shouldFetch) {
