@@ -759,7 +759,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
-    <script src="./scripts/index-min.js"></script>
+    <script src="./scripts/umd.js"></script>
 
 
     <script src="./scripts/fastclick.js"></script>
@@ -958,8 +958,6 @@
 
             }
 
-            ///INDEX AND PRELOAD openDB
-
 
                 
             async function storeAssetsInDB(assets) {
@@ -980,31 +978,19 @@
                     }
 
                     await tx.done;
-                    console.log('All assets are stored in IndexedDB');
+                    //console.log('All assets are stored in IndexedDB');
                 } catch (error) {
                     console.error('Error storing assets in IndexedDB:', error);
                 }
             }
 
-            function checkIndexedDBSupport() {
-                if ('indexedDB' in window) {
-                    console.log('This browser supports IndexedDB');
-                } else {
-                    console.log('This browser does not support IndexedDB');
-                }
-            }
-
-           
-            
 
 
 
   
 
             async function preloadAssets() {
-                checkIndexedDBSupport();
-                console.log('Starting to preload assets');
-                
+                //console.log('Starting to preload assets');
                 const db = await idb.openDB('MyDatabase', 1, {
                     upgrade(db, oldVersion, newVersion, transaction) {
                         if (!db.objectStoreNames.contains('assets')) {
@@ -1043,7 +1029,7 @@
                         if (response.ok) {
                             const cloneForCache = response.clone();
                             await cache.put(url, cloneForCache);
-                            console.log(`Fetched and cached: ${url}`);
+                            //console.log(`Fetched and cached: ${url}`);
                             const blob = await response.blob();
                             const lastModifiedHeader = response.headers.get('last-modified') || new Date(lastModified).toISOString();
                             //console.log(`Preparing to store in DB: ${url}, Last Modified: ${lastModifiedHeader}`);
