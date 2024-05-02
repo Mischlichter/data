@@ -1043,7 +1043,7 @@
                         if (response.ok) {
                             const cloneForCache = response.clone();
                             await cache.put(url, cloneForCache);
-                            //console.log(`Fetched and cached: ${url}`);
+                            console.log(`Fetched and cached: ${url}`);
                             const blob = await response.blob();
                             const lastModifiedHeader = response.headers.get('last-modified') || new Date(lastModified).toISOString();
                             //console.log(`Preparing to store in DB: ${url}, Last Modified: ${lastModifiedHeader}`);
