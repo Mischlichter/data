@@ -958,6 +958,8 @@
 
             }
 
+            ///INDEX AND PRELOAD openDB
+
 
                 
             async function storeAssetsInDB(assets) {
@@ -978,19 +980,31 @@
                     }
 
                     await tx.done;
-                    //console.log('All assets are stored in IndexedDB');
+                    console.log('All assets are stored in IndexedDB');
                 } catch (error) {
                     console.error('Error storing assets in IndexedDB:', error);
                 }
             }
 
+            function checkIndexedDBSupport() {
+                if ('indexedDB' in window) {
+                    console.log('This browser supports IndexedDB');
+                } else {
+                    console.log('This browser does not support IndexedDB');
+                }
+            }
+
+           
+            
 
 
 
   
 
             async function preloadAssets() {
-                //console.log('Starting to preload assets');
+                checkIndexedDBSupport();
+                console.log('Starting to preload assets');
+                
                 const db = await idb.openDB('MyDatabase', 1, {
                     upgrade(db, oldVersion, newVersion, transaction) {
                         if (!db.objectStoreNames.contains('assets')) {
@@ -1021,7 +1035,7 @@
                     let shouldFetch = true;
                     const idbResponse = await db.transaction('assets').objectStore('assets').get(url);
                     if (idbResponse && new Date(idbResponse.lastModified) >= new Date(lastModified)) {
-                        //console.log(`Loaded from IndexedDB: ${url}`);
+                        console.log(`Loaded from IndexedDB: ${url}`);
                         shouldFetch = false;
                     }
                     if (shouldFetch) {
@@ -1029,10 +1043,10 @@
                         if (response.ok) {
                             const cloneForCache = response.clone();
                             await cache.put(url, cloneForCache);
-                            //console.log(`Fetched and cached: ${url}`);
+                            console.log(`Fetched and cached: ${url}`);
                             const blob = await response.blob();
                             const lastModifiedHeader = response.headers.get('last-modified') || new Date(lastModified).toISOString();
-                            //console.log(`Preparing to store in DB: ${url}, Last Modified: ${lastModifiedHeader}`);
+                            console.log(`Preparing to store in DB: ${url}, Last Modified: ${lastModifiedHeader}`);
                             assetsToStore.push({ url, blob, lastModified: lastModifiedHeader });
                         } else {
                             console.error(`HTTP error! Status: ${response.status}`);
