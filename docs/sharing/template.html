@@ -197,7 +197,7 @@
 
                 let currentHeight = textFrame.clientHeight;
                 let maxWidth = textFrame.clientWidth;
-                let maxHeight = maxWidth * 0.50; // Calculate 85% of width
+                let maxHeight = maxWidth * 0.85; // Calculate 85% of width
                 let fontSize = parseFloat(window.getComputedStyle(textFrame, null).getPropertyValue('font-size'));
 
                 // Reduce font size if necessary
@@ -243,6 +243,9 @@
         }
 
         document.addEventListener('DOMContentLoaded', setupTextFrameSizeControl);
+        document.addEventListener('DOMContentLoaded', adjustFontSize);
+        window.onload = adjustFontSize; // Ensures it runs after all content has fully loaded
+
     </script>
 
 
