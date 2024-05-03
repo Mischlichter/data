@@ -205,13 +205,13 @@ def generate_html_page(metadata, output_dir, image_path):
 
             function setRandomBackground() {{
                 const imageNumber = Math.floor(Math.random() * 50) + 1;
-                const imageUrl = `https://github.com/Mischlichter/data/raw/main/sharingbgs/$\{{String(imageNumber).padStart(2, '0')}}.png`;
+                const imageUrl = `https://github.com/Mischlichter/data/raw/main/sharingbgs/${{String(imageNumber).padStart(2, '0')}}.png`;
 
                 // Create a new Image object
                 const bgImage = new Image();
                 bgImage.onload = function() {{
                     // Set the background image when it is fully loaded
-                    document.body.style.backgroundImage = `url('$\{{imageUrl}}')`;
+                    document.body.style.backgroundImage = `url('${{imageUrl}}')`;
                     // Fade in the background after it is loaded
                     document.body.style.opacity = 1;
                 }};
