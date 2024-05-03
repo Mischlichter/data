@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Created with HogeAI</title>
     <link rel="icon" href="10905005421_favicon.ico" type="image/x-icon">
@@ -190,7 +191,7 @@
             let originalFontSize = parseFloat(window.getComputedStyle(textFrame, null).getPropertyValue('font-size')); // Capture original font size
 
             function adjustFontSize() {
-                if (textFrame.style.visibility === 'hidden') {
+                if (textFrame.style.display === 'none' || textFrame.style.display === '') {
                     return; // Skip adjustments if textFrame is not visible
                 }
 
@@ -198,6 +199,9 @@
                 let maxWidth = textFrame.clientWidth;
                 let maxHeight = maxWidth * 0.85; // Calculate 85% of width
                 let fontSize = parseFloat(window.getComputedStyle(textFrame, null).getPropertyValue('font-size'));
+
+                console.log('Checking font size:', fontSize);
+                console.log('Current height:', currentHeight, 'Max height:', maxHeight);
 
                 // Reduce font size if necessary
                 while (currentHeight > maxHeight && fontSize > 1) {
@@ -231,6 +235,12 @@
             imageFrame.addEventListener('mouseleave', function() {
 
 
+            });
+
+            imageFrame.addEventListener('touchstart', function() {
+                    // Toggle visibility based on the current opacity state
+                const isVisible = textFrame.style.opacity === '1';
+                manageVisibility(!isVisible);
             });
 
             // Listen for window resize events to adjust font size
