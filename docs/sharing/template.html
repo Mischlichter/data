@@ -121,7 +121,7 @@
         <div class="frame image-frame">
             <img src="https://github.com/Mischlichter/data/raw/main/gallerycom/10905005421.jpg" alt="Created by @Mischlichter using HogeAI BOT">
             <div class="frame text-frame">
-                <p><strong>Prompt:</strong> Hasselblad photo, chibi hogeai, (white furry HogeAI man navigating the river of souls) in a boat made of moonbeams, bob ross painting of spiritual journeys, raytracing, hdr, 8k uhd. Ghostly apparitions offer guidance, memories manifest as stars, and the waters reflect the universe's history, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Boris Vallejo, bayard wu, greg rutkowski, colors glowing with silvery whites and ethereal blues, a voyage through the cosmos' memory.</p>
+                <p><strong>Prompt:</strong> Hasselblad photo, chibi hogeai, (white furry HogeAI man navigating the river of souls) in a boat made of moonbeams, bob ross painting of spiritual journeys, raytracing, hdr, 8k uhd. Ghostly apparitions offer guidance, memories manifest as stars, and the waters reflect the universe's history, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Boris Vallejo, bayard wu, greg rutkowski, colors glowing with silvery whites and ethereal blues, a voyage through the cosmos' memory.red.</p>
                 <div class="seed-creator">
                     <p><strong>Seed:</strong> 10905005421 | <strong>Creator:</strong> @Mischlichter</p>
                 </div>
@@ -138,13 +138,16 @@
                 if (visible) {
                     textFrame.style.visibility = 'visible';
                     textFrame.style.opacity = 1;
-                    adjustFontSize();
+                    textFrame.style.display = 'block'; // Ensure text frame is visible before adjusting font size
+                    adjustFontSize(); // Adjust font size when showing the text frame
                 } else {
                     textFrame.style.opacity = 0;
                     textFrame.addEventListener('transitionend', function() {
-                        // Only hide if opacity has reached 0
-                        
-                    }, { once: true }); // Ensure listener is removed after firing
+                        if (textFrame.style.opacity === '0') {
+                            textFrame.style.visibility = 'hidden';
+                            textFrame.style.display = 'none'; // Hide the text frame to avoid interaction when invisible
+                        }
+                    }, { once: true });
                 }
             }
 
