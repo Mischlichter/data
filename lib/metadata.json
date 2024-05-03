@@ -1870,5 +1870,21 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "14064445807"
+    },
+    "83573289290.jpg": {
+        "File Name": "83573289290.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "\"a cartoon hogeai man wearing sunglasses and a t - shirt, behance, trending on fiverr, insanely nice hair style, profile picture 1024px, timelapse, ghailan! , twitter pfp, the artist has used bright, reduce duplicate image, wearing jetpack, deviantar, neymar, caricature\" On a moon orbiting a giant gas planet, HogeAI man explores a network of natural caverns that have become a sanctuary for space travelers seeking enlightenment. The caverns, illuminated by phosphorescent algae and mineral deposits, create a surreal, underwater-like environment. Stalactites and stalagmites form organic sculptures, and pools of water reflect the eerie light in dancing patterns. The sound of dripping water echoes through the caverns, adding to the otherworldly atmosphere. HogeAI, wearing a suit designed to interact with the bioluminescent environment, becomes a part of the landscape, his presence causing ripples of light to spread across the caver...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "83573289290"
+    },
+    "57724354433.jpg": {
+        "File Name": "57724354433.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "In a hidden valley that comes alive only on New Year's Eve, HogeAI man discovers a glowing garden where plants sing and crystals hum with energy. The garden, a fluorescent paradise, glows under a sky filled with auroras. HogeAI, in a garment woven from the threads of lunar light, partakes in a dance with ethereal beings, each step causing the ground to bloom with radiant flowers. The air is thick with sweet, intoxicating aromas, and the scene unfolds like a living, breathing painting, alive with pulsating colors and hypnotic rhythms.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "57724354433"
     }
 }
