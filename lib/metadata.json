@@ -1830,5 +1830,37 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "97252007906"
+    },
+    "61113063613.jpg": {
+        "File Name": "61113063613.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "In a hidden valley that comes alive only on New Year's Eve, HogeAI man discovers a glowing garden where plants sing and crystals hum with energy. The garden, a fluorescent paradise, glows under a sky filled with auroras. HogeAI, in a garment woven from the threads of lunar light, partakes in a dance with ethereal beings, each step causing the ground to bloom with radiant flowers. The air is thick with sweet, intoxicating aromas, and the scene unfolds like a living, breathing painting, alive with pulsating colors and hypnotic rhythms.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "61113063613"
+    },
+    "14543782750.jpg": {
+        "File Name": "14543782750.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man DJing a massive urban festival) laser lights creating patterns and symbols, crowd of avatars waving meme flags, bob ross painting in color connection, raytracing, hdr, 8k uhd, 4K, next gen, 3d octane rendering, unreal engine 5, festival art, by James Jean, D*Face, giger, Virgil Abloh, vibrant colors mixing urban grays with neon greens and purples, floating digital art galleries in the backdrop. High in a realm where the skies tell stories of aeons past, HogeAI man soars among clouds that are canvases for celestial narratives. This sky kingdom, where each cloud formation is a chapter in a cosmic saga, is a place of tranquility and awe. The air is crisp with the essence of creation, carrying the scent of stardust and the echoes of cosmic events. As HogeAI glides through this aerial domain, he encounters cloud beings, each a custodian of galactic tales, their voices a chorus...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "14543782750"
+    },
+    "17279524551.jpg": {
+        "File Name": "17279524551.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man DJing a massive urban festival) laser lights creating patterns and symbols, crowd of avatars waving meme flags, bob ross painting in color connection, raytracing, hdr, 8k uhd, 4K, next gen, 3d octane rendering, unreal engine 5, festival art, by James Jean, D*Face, giger, Virgil Abloh, vibrant colors mixing urban grays with neon greens and purples, floating digital art galleries in the backdrop. High in a realm where the skies tell stories of aeons past, HogeAI man soars among clouds that are canvases for celestial narratives. This sky kingdom, where each cloud formation is a chapter in a cosmic saga, is a place of tranquility and awe. The air is crisp with the essence of creation, carrying the scent of stardust and the echoes of cosmic events. As HogeAI glides through this aerial domain, he encounters cloud beings, each a custodian of galactic tales, their voices a chorus...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "17279524551"
+    },
+    "52976747021.jpg": {
+        "File Name": "52976747021.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man dancing with shadowy spirits) atop a floating island, bob ross painting of a cosmic ballroom. Comets serve as chandeliers, interstellar winds carry the music, and galaxies swirl in waltz rhythms. Drenched in hues of velvet purple and stardust gold, 4K, next gen, 3d octane rendering, unreal engine 5, otherworldly elegance, echoing the flair of Kay Nielsen and bayard wu, an astral masquerade of epic proportions.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "52976747021"
     }
 }
