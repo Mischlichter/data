@@ -1894,5 +1894,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "90940228330"
+    },
+    "32827307354.jpg": {
+        "File Name": "32827307354.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "\"a cartoon hogeai man wearing sunglasses and a t - shirt, behance, trending on fiverr, insanely nice hair style, profile picture 1024px, timelapse, ghailan! , twitter pfp, the artist has used bright, reduce duplicate image, wearing jetpack, deviantar, neymar, caricature\" Amidst a cybernetic cityscape where glamour meets the surreal, HogeAI man strolls through streets adorned with dazzling lights and reflective surfaces. Skyscrapers beam with ever-changing dazecore visuals, transforming the skyline into a dynamic canvas. HogeAI, in attire that reflects the city's glitz and echoes its psychedelic patterns, becomes part of this living, breathing art installation. Neon signs display looping memes, blending humor with high fashion, creating a uniquely eccentric urban experience.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "32827307354"
     }
 }
