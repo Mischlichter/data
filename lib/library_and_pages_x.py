@@ -282,7 +282,7 @@ def generate_html_page(metadata, output_dir, image_path):
 
                 // Initial font size adjustment on load
                 adjustFontSize(); // Directly call to set the initial size based on the current window size
-            }});
+            }};
 
             document.addEventListener('DOMContentLoaded', setupTextFrameSizeControl);
             //]]>
