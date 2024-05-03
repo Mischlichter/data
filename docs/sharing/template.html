@@ -11,15 +11,15 @@
     <meta name="twitter:image" content="https://github.com/Mischlichter/data/raw/main/gallerycom/10905005421.jpg">
     <style>
         @font-face {
-            font-family: 'JetBrainsMono-Regular';
-            src: url('fonts/JetBrainsMono-Regular.woff2') format('woff2'), /* Modern Browsers */
-                 url('fonts/JetBrainsMono-Regular.ttf') format('truetype'); /* Safari, Android, iOS */
-            font-weight: 400; /* Regular font weight */
+            font-family: 'JetBrainsMono-Bold';
+            src: url('fonts/JetBrainsMono-Bold.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-Bold.ttf') format('truetype'); /* Safari, Android, iOS */
+            
             font-style: normal;
         }
 
         body {
-            font-family: 'JetBrainsMono-Regular', sans-serif;
+            font-family: 'JetBrainsMono-Bold', sans-serif;
             background-color: black;
             color: #00ffcc;
             margin: 0;
@@ -138,6 +138,7 @@
                 if (visible) {
                     textFrame.style.visibility = 'visible';
                     textFrame.style.opacity = 1;
+                    adjustFontSize();
                 } else {
                     textFrame.style.opacity = 0;
                     textFrame.addEventListener('transitionend', function() {
