@@ -74,7 +74,7 @@ def generate_html_page(metadata, output_dir, image_path):
             }}
 
             body {{
-                font-family: 'JetBrainsMono-Regular', sans-serif;
+                font-family: 'JetBrainsMono-Bold', sans-serif;
                 background-color: black;
                 color: #00ffcc;
                 margin: 0;
