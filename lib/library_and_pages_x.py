@@ -174,116 +174,118 @@ def generate_html_page(metadata, output_dir, image_path):
             <a href="https://hogeai.com" class="link">Visit HOGEAI</a>
         </div>
         <script>
-            document.addEventListener('DOMContentLoaded', function() {{
-                const imageFrame = document.querySelector('.image-frame');
-                const textFrame = document.querySelector('.text-frame');
+        //<![CDATA[
+                document.addEventListener('DOMContentLoaded', function() {
+                    const imageFrame = document.querySelector('.image-frame');
+                    const textFrame = document.querySelector('.text-frame');
 
-                function manageVisibility(visible) {{
-                    if (visible) {{
-                        textFrame.style.visibility = 'visible';
-                        textFrame.style.opacity = 1;
-                    }} else {{
-                        textFrame.style.opacity = 0;
-                        textFrame.addEventListener('transitionend', function() {{
-                            // Only hide if opacity has reached 0
-                            
-                        }}, {{ once: true }}); // Ensure listener is removed after firing
-                    }}
-                }}
+                    function manageVisibility(visible) {
+                        if (visible) {
+                            textFrame.style.visibility = 'visible';
+                            textFrame.style.opacity = 1;
+                        } else {
+                            textFrame.style.opacity = 0;
+                            textFrame.addEventListener('transitionend', function() {
+                                // Only hide if opacity has reached 0
+                                
+                            }, { once: true }); // Ensure listener is removed after firing
+                        }
+                    }
 
-                // Event listeners for mouse enter and leave
-                imageFrame.addEventListener('mouseenter', () => manageVisibility(true));
-                imageFrame.addEventListener('mouseleave', () => manageVisibility(false));
+                    // Event listeners for mouse enter and leave
+                    imageFrame.addEventListener('mouseenter', () => manageVisibility(true));
+                    imageFrame.addEventListener('mouseleave', () => manageVisibility(false));
 
-                // Handle touch events separately
-                imageFrame.addEventListener('touchstart', function() {{
-                    // Toggle visibility based on the current opacity state
-                    const isVisible = textFrame.style.opacity === '1';
-                    manageVisibility(!isVisible);
-                }});
-            }});
+                    // Handle touch events separately
+                    imageFrame.addEventListener('touchstart', function() {
+                        // Toggle visibility based on the current opacity state
+                        const isVisible = textFrame.style.opacity === '1';
+                        manageVisibility(!isVisible);
+                    });
+                });
 
-            function setRandomBackground() {{
-                const imageNumber = Math.floor(Math.random() * 50) + 1;
-                const imageUrl = `https://github.com/Mischlichter/data/raw/main/sharingbgs/${{String(imageNumber).padStart(2, '0')}}.png`;
+                function setRandomBackground() {
+                    const imageNumber = Math.floor(Math.random() * 50) + 1;
+                    const imageUrl = `https://github.com/Mischlichter/data/raw/main/sharingbgs/${String(imageNumber).padStart(2, '0')}.png`;
 
-                // Create a new Image object
-                const bgImage = new Image();
-                bgImage.onload = function() {{
-                    // Set the background image when it is fully loaded
-                    document.body.style.backgroundImage = `url('${{imageUrl}}')`;
-                    // Fade in the background after it is loaded
-                    document.body.style.opacity = 1;
-                }};
-                
-                bgImage.src = imageUrl; // Start loading the image
-            }}
+                        // Create a new Image object
+                    const bgImage = new Image();
+                    bgImage.onload = function() {
+                            // Set the background image when it is fully loaded
+                        document.body.style.backgroundImage = `url('${imageUrl}')`;
+                            // Fade in the background after it is loaded
+                        document.body.style.opacity = 1;
+                    };
+                    
+                    bgImage.src = imageUrl; // Start loading the image
+                }
 
-            setRandomBackground();
+                setRandomBackground();
 
-            window.addEventListener('load', function() {{
-                document.body.style.opacity = 1; // Fade-in effect when page is fully loaded
-            }});
+                window.addEventListener('load', function() {
+                    document.body.style.opacity = 1; // Fade-in effect when page is fully loaded
+                });
 
-            function setupTextFrameSizeControl() {{
-                const textFrame = document.querySelector('.text-frame');
-                let originalFontSize = parseFloat(window.getComputedStyle(textFrame, null).getPropertyValue('font-size')); // Capture original font size
+                function setupTextFrameSizeControl() {
+                    const textFrame = document.querySelector('.text-frame');
+                    let originalFontSize = parseFloat(window.getComputedStyle(textFrame, null).getPropertyValue('font-size')); // Capture original font size
 
-                function adjustFontSize() {{
-                    if (textFrame.style.display === 'none' || textFrame.style.display === '') {{
-                        return; // Skip adjustments if textFrame is not visible
-                    }}
+                    function adjustFontSize() {
+                        if (textFrame.style.display === 'none' || textFrame.style.display === '') {
+                            return; // Skip adjustments if textFrame is not visible
+                        }
 
-                    let currentHeight = textFrame.clientHeight;
-                    let maxWidth = textFrame.clientWidth;
-                    let maxHeight = maxWidth * 0.85; // Calculate 85% of width
-                    let fontSize = parseFloat(window.getComputedStyle(textFrame, null).getPropertyValue('font-size'));
+                        let currentHeight = textFrame.clientHeight;
+                        let maxWidth = textFrame.clientWidth;
+                        let maxHeight = maxWidth * 0.85; // Calculate 85% of width
+                        let fontSize = parseFloat(window.getComputedStyle(textFrame, null).getPropertyValue('font-size'));
 
-                    console.log('Checking font size:', fontSize);
-                    console.log('Current height:', currentHeight, 'Max height:', maxHeight);
+                        console.log('Checking font size:', fontSize);
+                        console.log('Current height:', currentHeight, 'Max height:', maxHeight);
 
-                    // Reduce font size if necessary
-                    while (currentHeight > maxHeight && fontSize > 1) {{
-                        fontSize -= 0.5;
-                        textFrame.style.fontSize = fontSize + 'px';
-                        currentHeight = textFrame.clientHeight;
-                    }}
+                        // Reduce font size if necessary
+                        while (currentHeight > maxHeight && fontSize > 1) {
+                            fontSize -= 0.5;
+                            textFrame.style.fontSize = fontSize + 'px';
+                            currentHeight = textFrame.clientHeight;
+                        }
 
-                    // Attempt to increase font size back to original or max allowed
-                    if (currentHeight < maxHeight && fontSize < originalFontSize) {{
-                        fontSize = originalFontSize; // Try setting back to original
-                        textFrame.style.fontSize = fontSize + 'px';
-                        if (textFrame.clientHeight > maxHeight) {{ // Check if original is too large
-                            // Decrease gradually if original font size exceeds the max height
-                            while (textFrame.clientHeight > maxHeight && fontSize > 1) {{
-                                fontSize -= 0.5;
-                                textFrame.style.fontSize = fontSize + 'px';
-                            }}
-                        }}
-                    }}
-                }}
+                        // Attempt to increase font size back to original or max allowed
+                        if (currentHeight < maxHeight && fontSize < originalFontSize) {
+                            fontSize = originalFontSize; // Try setting back to original
+                            textFrame.style.fontSize = fontSize + 'px';
+                            if (textFrame.clientHeight > maxHeight) { // Check if original is too large
+                                // Decrease gradually if original font size exceeds the max height
+                                while (textFrame.clientHeight > maxHeight && fontSize > 1) {
+                                    fontSize -= 0.5;
+                                    textFrame.style.fontSize = fontSize + 'px';
+                                }
+                            }
+                        }
+                    }
 
-                // Set event listeners for showing the text frame
-                const imageFrame = document.querySelector('.image-frame');
-                imageFrame.addEventListener('mouseenter', function() {{
-                    textFrame.style.display = 'block'; // Ensure text frame is visible
+                    // Set event listeners for showing the text frame
+                    const imageFrame = document.querySelector('.image-frame');
+                    imageFrame.addEventListener('mouseenter', function() {
+                        textFrame.style.display = 'block'; // Ensure text frame is visible
 
-                    adjustFontSize(); // Adjust font size immediately after showing the text frame
-                }});
+                        adjustFontSize(); // Adjust font size immediately after showing the text frame
+                    });
 
-                imageFrame.addEventListener('mouseleave', function() {{
+                    imageFrame.addEventListener('mouseleave', function() {
 
 
-                }});
+                    });
 
-                // Listen for window resize events to adjust font size
-                window.addEventListener('resize', adjustFontSize);
+                    // Listen for window resize events to adjust font size
+                    window.addEventListener('resize', adjustFontSize);
 
-                // Initial font size adjustment on load
-                adjustFontSize(); // Directly call to set the initial size based on the current window size
-            }});
+                    // Initial font size adjustment on load
+                    adjustFontSize(); // Directly call to set the initial size based on the current window size
+                }
 
-            document.addEventListener('DOMContentLoaded', setupTextFrameSizeControl);
+                document.addEventListener('DOMContentLoaded', setupTextFrameSizeControl);
+        //]]>
         </script>
 
 
