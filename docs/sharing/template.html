@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Created with HogeAI</title>
     <link rel="icon" href="10905005421_favicon.ico" type="image/x-icon">
     <meta name="twitter:card" content="summary_large_image">
@@ -138,13 +138,16 @@
                 if (visible) {
                     textFrame.style.visibility = 'visible';
                     textFrame.style.opacity = 1;
-                    adjustFontSize();
+                    textFrame.style.display = 'block'; // Ensure text frame is visible before adjusting font size
+                    adjustFontSize(); // Adjust font size when showing the text frame
                 } else {
                     textFrame.style.opacity = 0;
                     textFrame.addEventListener('transitionend', function() {
-                        // Only hide if opacity has reached 0
-                        
-                    }, { once: true }); // Ensure listener is removed after firing
+                        if (textFrame.style.opacity === '0') {
+                            textFrame.style.visibility = 'hidden';
+                            textFrame.style.display = 'none'; // Hide the text frame to avoid interaction when invisible
+                        }
+                    }, { once: true });
                 }
             }
 
@@ -187,7 +190,7 @@
             let originalFontSize = parseFloat(window.getComputedStyle(textFrame, null).getPropertyValue('font-size')); // Capture original font size
 
             function adjustFontSize() {
-                if (textFrame.style.display === 'none' || textFrame.style.display === '') {
+                if (textFrame.style.visibility === 'hidden') {
                     return; // Skip adjustments if textFrame is not visible
                 }
 
@@ -195,9 +198,6 @@
                 let maxWidth = textFrame.clientWidth;
                 let maxHeight = maxWidth * 0.85; // Calculate 85% of width
                 let fontSize = parseFloat(window.getComputedStyle(textFrame, null).getPropertyValue('font-size'));
-
-                console.log('Checking font size:', fontSize);
-                console.log('Current height:', currentHeight, 'Max height:', maxHeight);
 
                 // Reduce font size if necessary
                 while (currentHeight > maxHeight && fontSize > 1) {
