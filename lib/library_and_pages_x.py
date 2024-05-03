@@ -56,6 +56,7 @@ def generate_html_page(metadata, output_dir, image_path):
     <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <meta name="format-detection" content="telephone=no">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{title}</title>
         <link rel="icon" href="{favicon_url}" type="image/x-icon">
@@ -65,9 +66,10 @@ def generate_html_page(metadata, output_dir, image_path):
         <meta name="twitter:image" content="{image_url}">
         <style>
             @font-face {{
-                font-family: 'JetBrainsMono-Regular';
-                src: url('https://raw.githubusercontent.com/Mischlichter/data/main/docs/fonts/JetBrainsMono-Regular.woff2') format('woff2');
-                font-weight: 400;
+                font-family: 'JetBrainsMono-Bold';
+                src: url('fonts/JetBrainsMono-Bold.woff2') format('woff2'), /* Modern Browsers */
+                     url('fonts/JetBrainsMono-Bold.ttf') format('truetype'); /* Safari, Android, iOS */
+            
                 font-style: normal;
             }}
 
@@ -84,6 +86,12 @@ def generate_html_page(metadata, output_dir, image_path):
                 background-position: center top; /* Center the background image horizontally and align top */
                 opacity: 0; /* Start fully transparent */
                 transition: opacity 1.11s ease-in-out;
+            }}
+
+            html {{
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                         
             }}
 
             .container {{
@@ -175,6 +183,7 @@ def generate_html_page(metadata, output_dir, image_path):
         </div>
         <script>
             //<![CDATA[
+
             document.addEventListener('DOMContentLoaded', function() {{
                 const imageFrame = document.querySelector('.image-frame');
                 const textFrame = document.querySelector('.text-frame');
@@ -183,12 +192,16 @@ def generate_html_page(metadata, output_dir, image_path):
                     if (visible) {{
                         textFrame.style.visibility = 'visible';
                         textFrame.style.opacity = 1;
+                        textFrame.style.display = 'block'; // Ensure text frame is visible before adjusting font size
+                        adjustFontSize(); // Adjust font size when showing the text frame
                     }} else {{
                         textFrame.style.opacity = 0;
                         textFrame.addEventListener('transitionend', function() {{
-                            // Only hide if opacity has reached 0
-                            
-                        }}, {{ once: true }}); // Ensure listener is removed after firing
+                            if (textFrame.style.opacity === '0') {{
+                                textFrame.style.visibility = 'hidden';
+                                textFrame.style.display = 'none'; // Hide the text frame to avoid interaction when invisible
+                            }}
+                        }}, {{ once: true }});
                     }}
                 }}
 
@@ -208,12 +221,12 @@ def generate_html_page(metadata, output_dir, image_path):
                 const imageNumber = Math.floor(Math.random() * 50) + 1;
                 const imageUrl = `https://github.com/Mischlichter/data/raw/main/sharingbgs/${{String(imageNumber).padStart(2, '0')}}.png`;
 
-                // Create a new Image object
+                    // Create a new Image object
                 const bgImage = new Image();
                 bgImage.onload = function() {{
-                    // Set the background image when it is fully loaded
+                        // Set the background image when it is fully loaded
                     document.body.style.backgroundImage = `url('${{imageUrl}}')`;
-                    // Fade in the background after it is loaded
+                        // Fade in the background after it is loaded
                     document.body.style.opacity = 1;
                 }};
                 
@@ -231,7 +244,7 @@ def generate_html_page(metadata, output_dir, image_path):
                 let originalFontSize = parseFloat(window.getComputedStyle(textFrame, null).getPropertyValue('font-size')); // Capture original font size
 
                 function adjustFontSize() {{
-                    if (textFrame.style.display === 'none' || textFrame.style.display === '') {{
+                    if (textFrame.style.visibility === 'hidden') {{
                         return; // Skip adjustments if textFrame is not visible
                     }}
 
@@ -239,9 +252,6 @@ def generate_html_page(metadata, output_dir, image_path):
                     let maxWidth = textFrame.clientWidth;
                     let maxHeight = maxWidth * 0.85; // Calculate 85% of width
                     let fontSize = parseFloat(window.getComputedStyle(textFrame, null).getPropertyValue('font-size'));
-
-                    console.log('Checking font size:', fontSize);
-                    console.log('Current height:', currentHeight, 'Max height:', maxHeight);
 
                     // Reduce font size if necessary
                     while (currentHeight > maxHeight && fontSize > 1) {{
@@ -264,6 +274,7 @@ def generate_html_page(metadata, output_dir, image_path):
                     }}
                 }}
 
+
                 // Set event listeners for showing the text frame
                 const imageFrame = document.querySelector('.image-frame');
                 imageFrame.addEventListener('mouseenter', function() {{
@@ -285,7 +296,10 @@ def generate_html_page(metadata, output_dir, image_path):
             }};
 
             document.addEventListener('DOMContentLoaded', setupTextFrameSizeControl);
+
+
             //]]>
+        
         </script>
 
 
