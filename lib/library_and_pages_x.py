@@ -64,14 +64,14 @@ def generate_html_page(metadata, output_dir, image_path):
         <meta name="twitter:description" content="{description}">
         <meta name="twitter:image" content="{image_url}">
         <style>
-            @font-face {
+            @font-face {{
                 font-family: 'JetBrainsMono-Regular';
                 src: url('https://raw.githubusercontent.com/Mischlichter/data/main/docs/fonts/JetBrainsMono-Regular.woff2') format('woff2');
                 font-weight: 400;
                 font-style: normal;
-            }
+            }}
 
-            body {
+            body {{
                 font-family: 'JetBrainsMono-Regular', sans-serif;
                 background-color: black;
                 color: #00ffcc;
@@ -84,9 +84,9 @@ def generate_html_page(metadata, output_dir, image_path):
                 background-position: center top; /* Center the background image horizontally and align top */
                 opacity: 0; /* Start fully transparent */
                 transition: opacity 1.11s ease-in-out;
-            }
+            }}
 
-            .container {
+            .container {{
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -96,9 +96,9 @@ def generate_html_page(metadata, output_dir, image_path):
                 height: 100vh; /* Set container height to 90% of viewport height */
                 width: 100vh; /* Set container width to 90% of viewport height */
                 max-width: 80vw; /* Limit the maximum width of the container */
-            }
+            }}
 
-            .frame {
+            .frame {{
                 border: 2px solid #00ffcc;
                 border-radius: 20px;
                 overflow: hidden;
@@ -108,24 +108,24 @@ def generate_html_page(metadata, output_dir, image_path):
                 position: relative; /* Allows absolute positioning inside */
                 box-sizing: border-box;
                 height: auto; /* Allow the height to adjust based on content */
-            }
+            }}
 
-            @media screen and (orientation: portrait) {
-                .frame {
+            @media screen and (orientation: portrait) {{
+                .frame {{
                     width: 111%;
-                }
-            }
+                }}
+            }}
 
-            .image-frame img {
+            .image-frame img {{
                 display: block;
                 width: calc(100% + 4px);
                 height: auto;
                 position: relative;
                 left: -2px;
                 top: -2px;
-            }
+            }}
 
-            .text-frame {
+            .text-frame {{
                 position: absolute;
                 bottom: -2px; /* Move the frame 2 pixels down */
                 left: 50%; /* Aligns the left edge of the frame to the center */
@@ -139,15 +139,13 @@ def generate_html_page(metadata, output_dir, image_path):
                 overflow-y: auto; /* Enable vertical scrollbar if needed */
                 opacity: 0;
                 transition: visibility 0s linear 500ms, opacity 250ms ease; /* Ensure visibility transitions out after opacity */
-            }
+            }}
 
-
-
-            .seed-creator {
+            .seed-creator {{
                 text-align: center; /* Center align Seed and Creator */
-            }
+            }}
 
-            .link {
+            .link {{
                 display: block;
                 width: fit-content;
                 margin: 5vh auto; /* Changed margin top and bottom to 5% of viewport height */
@@ -158,10 +156,9 @@ def generate_html_page(metadata, output_dir, image_path):
                 border-radius: 20px;
                 padding: 5px 10px;
                 background-color: black;
-            }
-
-            
+            }}
         </style>
+
     </head>
     <body>
         <div class="container">
