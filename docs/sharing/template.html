@@ -12,17 +12,13 @@
     <style>
         @font-face {
             font-family: 'JetBrainsMono-Regular';
-            src: url('https://raw.githubusercontent.com/Mischlichter/data/main/docs/fonts/JetBrainsMono-Regular.woff2') format('woff2'),
-                 url('https://raw.githubusercontent.com/Mischlichter/data/main/docs/fonts/JetBrainsMono-Regular.ttf') format('truetype');
-
-            font-weight: 400;
+            src: url('fonts/JetBrainsMono-Regular.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-Regular.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 400; /* Regular font weight */
             font-style: normal;
         }
 
         body {
-            -webkit-font-smoothing: antialiased;
-            
-            -moz-osx-font-smoothing: grayscale;
             font-family: 'JetBrainsMono-Regular', sans-serif;
             background-color: black;
             color: #00ffcc;
@@ -236,8 +232,6 @@
             // Initial font size adjustment on load
             adjustFontSize(); // Directly call to set the initial size based on the current window size
         }
-
-        adjustFontSize();
 
         document.addEventListener('DOMContentLoaded', setupTextFrameSizeControl);
     </script>
