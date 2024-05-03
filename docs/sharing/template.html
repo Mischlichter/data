@@ -121,7 +121,7 @@
         <div class="frame image-frame">
             <img src="https://github.com/Mischlichter/data/raw/main/gallerycom/10905005421.jpg" alt="Created by @Mischlichter using HogeAI BOT">
             <div class="frame text-frame">
-                <p><strong>Prompt:</strong> Hasselblad photo, chibi hogeai, (white furry HogeAI man navigating the river of souls) in a boat made of moonbeams, bob ross painting of spiritual journeys, raytracing, hdr, 8k uhd. Ghostly apparitions offer guidance, memories manifest as stars, and the waters reflect the universe's history, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Boris Vallejo, bayard wu, greg rutkowski, colors glowing with silvery whites and ethereal blues, a voyage through the cosmos' memory.red.</p>
+                <p><strong>Prompt:</strong> Hasselblad photo, chibi hogeai, (white furry HogeAI man navigating the river of souls) in a boat made of moonbeams, bob ross painting of spiritual journeys, raytracing, hdr, 8k uhd. Ghostly apparitions offer guidance, memories manifest as stars, and the waters reflect the universe's history, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Boris Vallejo, bayard wu, greg rutkowski, colors glowing with silvery whites and ethereal blues, a voyage through the cosmos' memory.blue.</p>
                 <div class="seed-creator">
                     <p><strong>Seed:</strong> 10905005421 | <strong>Creator:</strong> @Mischlichter</p>
                 </div>
@@ -190,7 +190,7 @@
             let originalFontSize = parseFloat(window.getComputedStyle(textFrame, null).getPropertyValue('font-size')); // Capture original font size
 
             function adjustFontSize() {
-                if (textFrame.style.display === 'none' || textFrame.style.display === '') {
+                if (textFrame.style.visibility === 'hidden') {
                     return; // Skip adjustments if textFrame is not visible
                 }
 
@@ -198,9 +198,6 @@
                 let maxWidth = textFrame.clientWidth;
                 let maxHeight = maxWidth * 0.85; // Calculate 85% of width
                 let fontSize = parseFloat(window.getComputedStyle(textFrame, null).getPropertyValue('font-size'));
-
-                console.log('Checking font size:', fontSize);
-                console.log('Current height:', currentHeight, 'Max height:', maxHeight);
 
                 // Reduce font size if necessary
                 while (currentHeight > maxHeight && fontSize > 1) {
@@ -222,6 +219,7 @@
                     }
                 }
             }
+
 
             // Set event listeners for showing the text frame
             const imageFrame = document.querySelector('.image-frame');
