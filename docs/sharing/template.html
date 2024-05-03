@@ -138,16 +138,13 @@
                 if (visible) {
                     textFrame.style.visibility = 'visible';
                     textFrame.style.opacity = 1;
-                    textFrame.style.display = 'block'; // Ensure text frame is visible before adjusting font size
-                    adjustFontSize(); // Adjust font size when showing the text frame
+                    adjustFontSize();
                 } else {
                     textFrame.style.opacity = 0;
                     textFrame.addEventListener('transitionend', function() {
-                        if (textFrame.style.opacity === '0') {
-                            textFrame.style.visibility = 'hidden';
-                            textFrame.style.display = 'none'; // Hide the text frame to avoid interaction when invisible
-                        }
-                    }, { once: true });
+                        // Only hide if opacity has reached 0
+                        
+                    }, { once: true }); // Ensure listener is removed after firing
                 }
             }
 
@@ -234,12 +231,6 @@
             imageFrame.addEventListener('mouseleave', function() {
 
 
-            });
-
-            imageFrame.addEventListener('touchstart', function() {
-                    // Toggle visibility based on the current opacity state
-                const isVisible = textFrame.style.opacity === '1';
-                manageVisibility(!isVisible);
             });
 
             // Listen for window resize events to adjust font size
