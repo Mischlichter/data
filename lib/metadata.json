@@ -1958,5 +1958,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "91190494594"
+    },
+    "91250159616.jpg": {
+        "File Name": "91250159616.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "ultra detailed photo shot of a woman (Jia Lissa) dressed as Poison Ivy, with wings made of ((grassy-leaves) ) biophilic design, floral, biopunk, highly detailed, photorealistic, 32k, sunlit, sunlighting, Batman Arkham Asylum, the last of us, Neil Gaiman, DC Comics, completely covered in a safe for work ((traditionally fashion) )",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "91250159616"
     }
 }
