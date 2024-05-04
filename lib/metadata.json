@@ -1926,5 +1926,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "31011373436"
+    },
+    "75475295033.jpg": {
+        "File Name": "75475295033.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "\"a cartoon hogeai man wearing sunglasses and a t - shirt, behance, trending on fiverr, insanely nice hair style, profile picture 1024px, timelapse, ghailan! , twitter pfp, the artist has used bright, reduce duplicate image, wearing jetpack, deviantar, neymar, caricature\" On a floating city above an alien world, HogeAI man explores streets where reality bends. Buildings crafted from light and shadow morph to the city's rhythm, creating an ever-changing urban landscape. The air buzzes with the energy of interdimensional portals, each opening revealing a slice of alternate realities. HogeAI, in a suit interlaced with reality-warping fibers, becomes part of this fluid cityscape, his presence igniting displays of impossible geometries. The city celebrates the new year with a fusion of time and space, a testament to the limitless potential of the universe.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "75475295033"
     }
 }
