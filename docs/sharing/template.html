@@ -140,7 +140,7 @@
                     textFrame.style.visibility = 'visible';
                     textFrame.style.opacity = 1;
                     textFrame.style.display = 'block'; // Ensure text frame is visible before adjusting font size
-                    adjustFontSize(); // Adjust font size when showing the text frame
+                    
                 } else {
                     textFrame.style.opacity = 0;
                     textFrame.addEventListener('transitionend', function() {
@@ -243,9 +243,6 @@
         }
 
         document.addEventListener('DOMContentLoaded', setupTextFrameSizeControl);
-        document.addEventListener('DOMContentLoaded', adjustFontSize);
-        window.onload = adjustFontSize; // Ensures it runs after all content has fully loaded
-
     </script>
 
 
