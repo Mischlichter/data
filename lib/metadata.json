@@ -1934,5 +1934,45 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "75475295033"
+    },
+    "33992682115.jpg": {
+        "File Name": "33992682115.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "\"a cartoon hogeai man wearing sunglasses and a t - shirt, behance, trending on fiverr, insanely nice hair style, profile picture 1024px, timelapse, ghailan! , twitter pfp, the artist has used bright, reduce duplicate image, wearing jetpack, deviantar, neymar, caricature\" At an interstellar art gala, HogeAI man experiences a fusion of cosmic psychedelia and avant-garde fashion. The gallery, afloat in the vacuum of space, showcases art pieces that are living, breathing entities, blending meme culture with high-concept design. HogeAI, in a suit of iridescent fabrics and interactive LED displays, becomes a walking piece of art, contributing to the ever-evolving exhibition.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "33992682115"
+    },
+    "96354251664.jpg": {
+        "File Name": "96354251664.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man lounging within a chalice of a blooming cannabis flower) with twinkling stars and soft, radiant light illuminating the intricate textures of the petals. The composition, with its sensual, organic forms and mesmerizing colors, is inspired by the ethereal, romantic paintings of John William Waterhouse and the symbolic, detailed works of Alphonse Mucha. Amidst a neon-infused rainforest, HogeAI man wanders through a world where cannabis plants have evolved into towering, sentient beings. The forest floor, a network of glowing roots, responds to his footsteps, creating a path that glows with an organic luminescence. The air is thick with the scent of fresh buds and the electrifying charge of the forest's energy. HogeAI's attire, an ensemble of naturally luminescent fibers, harmonizes with the environment, making him a part of this pulsating, living ecosystem.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "96354251664"
+    },
+    "91190494594.jpg": {
+        "File Name": "91190494594.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "HogeAI man chilling on couch with BoB Ross, This sanctuary, a fusion of natural lazer beauty and digital artistry, radiates with the warmth of glowing color rays, each imbued with a soft, neon aura.  a hypnotic ambiance. Bioluminescent particles, swaying to the rhythm of ambient melodies, open in mesmerizing patterns that reflect the sacred geometry of nature and the intricate design of technology. Hasselblad photo, chibi hogeai, (extremely enlightened white furry HogeAI man dancing within a psychedelic vortex) spirals of colors expanding and contracting, melodies of the universe playing, bob ross painting in color connection, raytracing, hdr, 8k uhd extremely detailed fur puppy, high details.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "91190494594"
+    },
+    "91250159616.jpg": {
+        "File Name": "91250159616.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "ultra detailed photo shot of a woman (Jia Lissa) dressed as Poison Ivy, with wings made of ((grassy-leaves) ) biophilic design, floral, biopunk, highly detailed, photorealistic, 32k, sunlit, sunlighting, Batman Arkham Asylum, the last of us, Neil Gaiman, DC Comics, completely covered in a safe for work ((traditionally fashion) )",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "91250159616"
+    },
+    "83719839677.jpg": {
+        "File Name": "83719839677.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Awesome painting of Awe-striking A horrorCore alien by ridley scott, double exposure character, perfect anatomy, centered, epic scene, centered, perfection, dynamic, highly detailed, artstation, concept art, soft sharp focus, illustration, art by Carne Griffiths and Wadim Kashin, graffiti airbrush techniques, high definition, accent lighting, contrasted with bright paint colors",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "83719839677"
     }
 }
