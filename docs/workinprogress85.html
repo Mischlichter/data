@@ -2886,13 +2886,14 @@
                         shuffleCount++;
                         element.style.opacity = Math.min(1, parseFloat(element.style.opacity) + 0.05);
 
-                        let colorTransitionFactor = index / finalText.length;
+                        // Modify color transition to delay blending of end color
+                        let colorTransitionFactor = Math.pow(index / finalText.length, 1.23); // Using square to slow down end color blending
                         let startColor = {
                                             r: Math.floor(Math.random() * 256),
                                             g: Math.floor(Math.random() * 256),
                                             b: Math.floor(Math.random() * 256)
                                         };
-                        let endColor = { r: 0, g: 255, b: 204 };   // #7cfc05
+                        let endColor = { r: 0, g: 255, b: 204 }; // Example end color #00ffcc
                         let r = Math.floor(startColor.r + (endColor.r - startColor.r) * colorTransitionFactor);
                         let g = Math.floor(startColor.g + (endColor.g - startColor.g) * colorTransitionFactor);
                         let b = Math.floor(startColor.b + (endColor.b - startColor.b) * colorTransitionFactor);
@@ -2912,6 +2913,7 @@
                 requestAnimationFrame(step);
             }, delay);
         }
+
 
         function createSpansForContainer(containerId, text) {
             const container = document.getElementById(containerId);
