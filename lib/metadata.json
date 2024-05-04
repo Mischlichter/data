@@ -1942,5 +1942,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "33992682115"
+    },
+    "96354251664.jpg": {
+        "File Name": "96354251664.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man lounging within a chalice of a blooming cannabis flower) with twinkling stars and soft, radiant light illuminating the intricate textures of the petals. The composition, with its sensual, organic forms and mesmerizing colors, is inspired by the ethereal, romantic paintings of John William Waterhouse and the symbolic, detailed works of Alphonse Mucha. Amidst a neon-infused rainforest, HogeAI man wanders through a world where cannabis plants have evolved into towering, sentient beings. The forest floor, a network of glowing roots, responds to his footsteps, creating a path that glows with an organic luminescence. The air is thick with the scent of fresh buds and the electrifying charge of the forest's energy. HogeAI's attire, an ensemble of naturally luminescent fibers, harmonizes with the environment, making him a part of this pulsating, living ecosystem.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "96354251664"
     }
 }
