@@ -2859,7 +2859,13 @@
             return randomString;
         }
 
-        function animateText(element, finalText, duration, delay) {
+        function animateText(element, finalText, duration, delay, finalColor = { r: 0, g: 255, b: 204 }) {
+            var frameCount = 0; // Tracks frames
+            var totalFrames = 25; // Adjust for speed of color transitions
+
+            // Assign a random phase for each element to start its color cycle
+            var randomPhase = Math.random() * 2 * Math.PI;
+
             setTimeout(function() {
                 var currentText = generateRandomString(finalText.length);
                 element.textContent = currentText;
@@ -2869,13 +2875,20 @@
                 var intervalTime = duration / (finalText.length * shuffleFrequency);
                 var index = 0;
                 var shuffleCount = 0;
-                var startTime = null;
+                var lastRender = performance.now();
+
+                function getColorComponent(phaseShift) {
+                    // Incorporate the random phase into the cycling
+                    return Math.floor(127.5 * (1 + Math.sin(2 * Math.PI * frameCount / totalFrames + phaseShift + randomPhase)));
+                }
 
                 function step(timestamp) {
-                    if (!startTime) startTime = timestamp;
-                    var progress = timestamp - startTime;
-
+                    var progress = timestamp - lastRender;
                     if (progress > intervalTime) {
+                        // Update the lastRender time
+                        lastRender = timestamp - (progress % intervalTime);
+
+                        // Update logic remains the same
                         if (shuffleCount % shuffleFrequency === 0 && index < finalText.length) {
                             currentText = currentText.substring(0, index) + finalText.charAt(index) + generateRandomString(finalText.length - index - 1);
                             index++;
@@ -2887,20 +2900,23 @@
                         element.style.opacity = Math.min(1, parseFloat(element.style.opacity) + 0.05);
 
                         let colorTransitionFactor = index / finalText.length;
-                        let startColor = { r: 7, g: 247, b: 139 }; // #07f78b
-                        let endColor = { r: 0, g: 255, b: 204 };   // #7cfc05
-                        let r = Math.floor(startColor.r + (endColor.r - startColor.r) * colorTransitionFactor);
-                        let g = Math.floor(startColor.g + (endColor.g - startColor.g) * colorTransitionFactor);
-                        let b = Math.floor(startColor.b + (endColor.b - startColor.b) * colorTransitionFactor);
-                        element.style.color = `rgb(${r}, ${g}, ${b})`;
+                        let r = getColorComponent(0);
+                        let g = getColorComponent(2 * Math.PI / 3);
+                        let b = getColorComponent(4 * Math.PI / 3);
 
+                        r = Math.floor(r + (finalColor.r - r) * colorTransitionFactor);
+                        g = Math.floor(g + (finalColor.g - g) * colorTransitionFactor);
+                        b = Math.floor(b + (finalColor.b - b) * colorTransitionFactor);
+
+                        element.style.color = `rgb(${r}, ${g}, ${b})`;
+                        frameCount++;
+                        
                         if (index === finalText.length && shuffleCount % shuffleFrequency === 0) {
                             element.textContent = finalText;
                             element.style.opacity = '1';
-                            element.style.color = `rgb(${endColor.r}, ${endColor.g}, ${endColor.b})`; // Final color
-                            return; // Stop the animation
+                            element.style.color = `rgb(${finalColor.r}, ${finalColor.g}, ${finalColor.b})`; // Set final color
+                            return;
                         }
-                        startTime = timestamp;
                     }
                     requestAnimationFrame(step);
                 }
@@ -2908,6 +2924,13 @@
                 requestAnimationFrame(step);
             }, delay);
         }
+
+
+
+
+
+
+
 
         function createSpansForContainer(containerId, text) {
             const container = document.getElementById(containerId);
@@ -2972,7 +2995,7 @@
             return lineContainer;
         }
 
-        function startLineAnimation(lineContainers) {
+        function startLineAnimation(lineContainers, defaultFinalColor = { r: 0, g: 255, b: 204 }) {
             let wordDelayIncrement = 100;
             let lineStartDelay = 150;
 
@@ -2987,12 +3010,16 @@
             lineContainers.forEach((lineContainer, lineIndex) => {
                 Array.from(lineContainer.children).forEach((wordSpan, wordIndex) => {
                     let totalDelay = (lineIndex * lineStartDelay) + (wordIndex * wordDelayIncrement);
+                    let colorData = wordSpan.getAttribute('data-color');
+                    let finalColor = colorData ? JSON.parse(colorData) : defaultFinalColor; // Use default if no specific color is provided
+
                     setTimeout(() => {
-                        animateText(wordSpan, wordSpan.getAttribute('data-final-text'), 1000);
+                        animateText(wordSpan, wordSpan.getAttribute('data-final-text'), 1000, totalDelay, finalColor);
                     }, totalDelay);
                 });
             });
         }
+
 
 
 ////////ANIMATION SCALING
@@ -3019,7 +3046,7 @@
         function startAnimationForContainer(containerId) {
             //console.log("Starting animation for container:", containerId);
             if (preparedContainers[containerId]) {
-                startLineAnimation(preparedContainers[containerId]);
+                startLineAnimation(preparedContainers[containerId], { r: 255, g: 255, b: 255 });
             } else {
                 //console.log("No prepared data for container:", containerId);
             }
