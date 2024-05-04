@@ -2862,7 +2862,9 @@
         function animateText(element, finalText, duration, delay) {
             var frameCount = 0; // Tracks frames
             var totalFrames = 25; // Adjust for speed of color transitions
-            var randomPhase = Math.random() * 2 * Math.PI; // Assign a random phase for each element to start its color cycle
+
+            // Assign a random phase for each element to start its color cycle
+            var randomPhase = Math.random() * 2 * Math.PI;
 
             setTimeout(function() {
                 var currentText = generateRandomString(finalText.length);
@@ -2873,55 +2875,51 @@
                 var intervalTime = duration / (finalText.length * shuffleFrequency);
                 var index = 0;
                 var shuffleCount = 0;
-                var lastTime = Date.now(); // Use current time to manage frame skipping
+                var lastRender = performance.now();
 
                 function getColorComponent(phaseShift) {
                     // Incorporate the random phase into the cycling
                     return Math.floor(127.5 * (1 + Math.sin(2 * Math.PI * frameCount / totalFrames + phaseShift + randomPhase)));
                 }
 
-                function step() {
-                    var now = Date.now();
-                    var elapsedTime = now - lastTime;
+                function step(timestamp) {
+                    var progress = timestamp - lastRender;
+                    if (progress > intervalTime) {
+                        // Update the lastRender time
+                        lastRender = timestamp - (progress % intervalTime);
 
-                    if (elapsedTime > intervalTime) {
-                        while (elapsedTime > intervalTime) {
-                            elapsedTime -= intervalTime;
-                            lastTime += intervalTime;
-                            frameCount++;
-                            if (shuffleCount % shuffleFrequency === 0 && index < finalText.length) {
-                                currentText = currentText.substring(0, index) + finalText.charAt(index) + generateRandomString(finalText.length - index - 1);
-                                index++;
-                            } else {
-                                currentText = currentText.substring(0, index) + generateRandomString(finalText.length - index);
-                            }
-                            element.textContent = currentText;
-                            shuffleCount++;
-                            element.style.opacity = Math.min(1, parseFloat(element.style.opacity) + 0.05);
-
-                            let colorTransitionFactor = index / finalText.length;
-                            let r = getColorComponent(0);
-                            let g = getColorComponent(2 * Math.PI / 3);
-                            let b = getColorComponent(4 * Math.PI / 3);
-                            let endColor = { r: 0, g: 255, b: 204 };
-
-                            r = Math.floor(r + (endColor.r - r) * colorTransitionFactor);
-                            g = Math.floor(g + (endColor.g - g) * colorTransitionFactor);
-                            b = Math.floor(b + (endColor.b - b) * colorTransitionFactor);
-
-                            element.style.color = `rgb(${r}, ${g}, ${b})`;
-
-                            if (index === finalText.length && shuffleCount % shuffleFrequency === 0) {
-                                element.textContent = finalText;
-                                element.style.opacity = '1';
-                                element.style.color = `rgb(${endColor.r}, ${endColor.g}, ${endColor.b})`; // Set final color
-                                return;
-                            }
+                        // Update logic remains the same
+                        if (shuffleCount % shuffleFrequency === 0 && index < finalText.length) {
+                            currentText = currentText.substring(0, index) + finalText.charAt(index) + generateRandomString(finalText.length - index - 1);
+                            index++;
+                        } else {
+                            currentText = currentText.substring(0, index) + generateRandomString(finalText.length - index);
                         }
-                        requestAnimationFrame(step);
-                    } else {
-                        requestAnimationFrame(step);
+                        element.textContent = currentText;
+                        shuffleCount++;
+                        element.style.opacity = Math.min(1, parseFloat(element.style.opacity) + 0.05);
+
+                        let colorTransitionFactor = index / finalText.length;
+                        let r = getColorComponent(0);
+                        let g = getColorComponent(2 * Math.PI / 3);
+                        let b = getColorComponent(4 * Math.PI / 3);
+                        let endColor = { r: 0, g: 255, b: 204 };
+
+                        r = Math.floor(r + (endColor.r - r) * colorTransitionFactor);
+                        g = Math.floor(g + (endColor.g - g) * colorTransitionFactor);
+                        b = Math.floor(b + (endColor.b - b) * colorTransitionFactor);
+
+                        element.style.color = `rgb(${r}, ${g}, ${b})`;
+                        frameCount++;
+                        
+                        if (index === finalText.length && shuffleCount % shuffleFrequency === 0) {
+                            element.textContent = finalText;
+                            element.style.opacity = '1';
+                            element.style.color = `rgb(${endColor.r}, ${endColor.g}, ${endColor.b})`; // Set final color
+                            return;
+                        }
                     }
+                    requestAnimationFrame(step);
                 }
 
                 requestAnimationFrame(step);
