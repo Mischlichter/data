@@ -2859,7 +2859,7 @@
             return randomString;
         }
 
-        function animateText(element, finalText, duration, delay) {
+        function animateText(element, finalText, duration, delay, finalColor = { r: 0, g: 255, b: 204 }) {
             var frameCount = 0; // Tracks frames
             var totalFrames = 25; // Adjust for speed of color transitions
 
@@ -2903,11 +2903,10 @@
                         let r = getColorComponent(0);
                         let g = getColorComponent(2 * Math.PI / 3);
                         let b = getColorComponent(4 * Math.PI / 3);
-                        let endColor = { r: 0, g: 255, b: 204 };
 
-                        r = Math.floor(r + (endColor.r - r) * colorTransitionFactor);
-                        g = Math.floor(g + (endColor.g - g) * colorTransitionFactor);
-                        b = Math.floor(b + (endColor.b - b) * colorTransitionFactor);
+                        r = Math.floor(r + (finalColor.r - r) * colorTransitionFactor);
+                        g = Math.floor(g + (finalColor.g - g) * colorTransitionFactor);
+                        b = Math.floor(b + (finalColor.b - b) * colorTransitionFactor);
 
                         element.style.color = `rgb(${r}, ${g}, ${b})`;
                         frameCount++;
@@ -2915,7 +2914,7 @@
                         if (index === finalText.length && shuffleCount % shuffleFrequency === 0) {
                             element.textContent = finalText;
                             element.style.opacity = '1';
-                            element.style.color = `rgb(${endColor.r}, ${endColor.g}, ${endColor.b})`; // Set final color
+                            element.style.color = `rgb(${finalColor.r}, ${finalColor.g}, ${finalColor.b})`; // Set final color
                             return;
                         }
                     }
@@ -2925,6 +2924,7 @@
                 requestAnimationFrame(step);
             }, delay);
         }
+
 
 
 
@@ -2995,7 +2995,7 @@
             return lineContainer;
         }
 
-        function startLineAnimation(lineContainers) {
+        function startLineAnimation(lineContainers, defaultFinalColor = { r: 0, g: 255, b: 204 }) {
             let wordDelayIncrement = 100;
             let lineStartDelay = 150;
 
@@ -3010,12 +3010,16 @@
             lineContainers.forEach((lineContainer, lineIndex) => {
                 Array.from(lineContainer.children).forEach((wordSpan, wordIndex) => {
                     let totalDelay = (lineIndex * lineStartDelay) + (wordIndex * wordDelayIncrement);
+                    let colorData = wordSpan.getAttribute('data-color');
+                    let finalColor = colorData ? JSON.parse(colorData) : defaultFinalColor; // Use default if no specific color is provided
+
                     setTimeout(() => {
-                        animateText(wordSpan, wordSpan.getAttribute('data-final-text'), 1000);
+                        animateText(wordSpan, wordSpan.getAttribute('data-final-text'), 1000, totalDelay, finalColor);
                     }, totalDelay);
                 });
             });
         }
+
 
 
 ////////ANIMATION SCALING
@@ -3042,7 +3046,7 @@
         function startAnimationForContainer(containerId) {
             //console.log("Starting animation for container:", containerId);
             if (preparedContainers[containerId]) {
-                startLineAnimation(preparedContainers[containerId]);
+                startLineAnimation(preparedContainers[containerId], { r: 255, g: 255, b: 255 });
             } else {
                 //console.log("No prepared data for container:", containerId);
             }

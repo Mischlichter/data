@@ -110,17 +110,17 @@ def generate_html_page(metadata, output_dir, image_path):
                 border: 2px solid #00ffcc;
                 border-radius: 20px;
                 overflow: hidden;
-                width: 80%;
-                height: 80%;
+                width: 80vh;
+                height: 80vh;
                 margin-top: 5vh; /* Changed margin top to 5% of viewport height */
                 position: relative; /* Allows absolute positioning inside */
                 box-sizing: border-box;
                 height: auto; /* Allow the height to adjust based on content */
             }}
 
-            @media screen and (orientation: portrait) {{
+            @media (max-aspect-ratio: 18/20) {{ /* Adjusts to portrait mode when height is greater than or equal to width */
                 .frame {{
-                    width: 111%;
+                    width: 111%; /* Full width in portrait mode */
                 }}
             }}
 
