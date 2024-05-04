@@ -193,7 +193,7 @@ def generate_html_page(metadata, output_dir, image_path):
                         textFrame.style.visibility = 'visible';
                         textFrame.style.opacity = 1;
                         textFrame.style.display = 'block'; // Ensure text frame is visible before adjusting font size
-                        adjustFontSize(); // Adjust font size when showing the text frame
+                        
                     }} else {{
                         textFrame.style.opacity = 0;
                         textFrame.addEventListener('transitionend', function() {{
@@ -219,14 +219,14 @@ def generate_html_page(metadata, output_dir, image_path):
 
             function setRandomBackground() {{
                 const imageNumber = Math.floor(Math.random() * 50) + 1;
-                const imageUrl = `https://github.com/Mischlichter/data/raw/main/sharingbgs/${{String(imageNumber).padStart(2, '0')}}.png`;
+                const imageUrl = `https://github.com/Mischlichter/data/raw/main/sharingbgs/${String(imageNumber).padStart(2, '0')}.png`;
 
-                    // Create a new Image object
+                // Create a new Image object
                 const bgImage = new Image();
                 bgImage.onload = function() {{
-                        // Set the background image when it is fully loaded
-                    document.body.style.backgroundImage = `url('${{imageUrl}}')`;
-                        // Fade in the background after it is loaded
+                    // Set the background image when it is fully loaded
+                    document.body.style.backgroundImage = `url('${imageUrl}')`;
+                    // Fade in the background after it is loaded
                     document.body.style.opacity = 1;
                 }};
                 
@@ -274,7 +274,6 @@ def generate_html_page(metadata, output_dir, image_path):
                     }}
                 }}
 
-
                 // Set event listeners for showing the text frame
                 const imageFrame = document.querySelector('.image-frame');
                 imageFrame.addEventListener('mouseenter', function() {{
@@ -293,10 +292,13 @@ def generate_html_page(metadata, output_dir, image_path):
 
                 // Initial font size adjustment on load
                 adjustFontSize(); // Directly call to set the initial size based on the current window size
-            }};
+            }}
 
-            document.addEventListener('DOMContentLoaded', setupTextFrameSizeControl);
+            window.addEventListener('load', function() {{
+                setupTextFrameSizeControl(); // Assuming this function encapsulates your font size adjustments
+            }});
 
+   
 
             //]]>
         
