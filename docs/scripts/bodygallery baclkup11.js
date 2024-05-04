@@ -768,6 +768,10 @@ const galleryHTML = `
 
         ////animate text
 
+        function animateTextInfo() {
+            // Define your animation logic here
+            // For example, using CSS animations or a JavaScript animation library
+        }
 
         // New functions for text animation
         function generateRandomString2(length) {
@@ -783,66 +787,29 @@ const galleryHTML = `
             const container = document.getElementById(textInfoId);
             container.innerHTML = '';
 
+
             text.split('\n').forEach(line => {
+                // Create a span for the whole line
                 const lineSpan = document.createElement('span');
                 lineSpan.className = 'line-span';
 
+                // Create a container for the line
                 const lineContainer = document.createElement('div');
                 lineContainer.className = 'line-container';
                 lineSpan.appendChild(lineContainer);
 
-                const words = line.split(' ');
-                words.forEach((word, index) => {
+                line.split(' ').forEach(word => {
                     const wordSpan = document.createElement('span');
                     wordSpan.className = 'dynamic-text';
                     wordSpan.setAttribute('data-final-text', word);
-
-                    // Set with scrambled text for animation
                     wordSpan.textContent = generateRandomString2(word.length);
                     lineContainer.appendChild(wordSpan);
-
-                    if (index < words.length - 1) {  // Add a space if it's not the last word
-                        lineContainer.appendChild(document.createTextNode(' '));
-                    }
+                    lineContainer.appendChild(document.createTextNode(' ')); // Add space between words
                 });
 
-                container.appendChild(lineSpan);
-            });
-
-            // Call fixLayout after the browser has had a chance to lay out the text
-            setTimeout(() => fixLayout(container), 0);
-        }
-
-        function fixLayout(container) {
-            Array.from(container.getElementsByClassName('dynamic-text')).forEach(span => {
-                const originalText = span.getAttribute('data-final-text');
-                const measureSpan = document.createElement('span');
-                measureSpan.textContent = originalText;
-                measureSpan.className = 'measure-span'; // Apply same styling as dynamic-text for accurate measurement
-                measureSpan.style.visibility = 'hidden';
-
-                // Append to the same parent to maintain similar text environment
-                span.parentNode.appendChild(measureSpan);
-
-                // Apply strict width controls to ensure no layout change
-                const exactWidth = `${measureSpan.offsetWidth}px`;
-                span.style.width = exactWidth;
-                span.style.minWidth = exactWidth;
-                span.style.maxWidth = exactWidth;
-                span.style.display = 'inline-block';
-
-                // Optionally, ensure no text wrapping occurs within spans
-                span.style.whiteSpace = 'nowrap';
-
-                // Cleanup by removing the measurement span
-                span.parentNode.removeChild(measureSpan);
+                container.appendChild(lineSpan); // Append the whole line span to the container
             });
         }
-
-
-
-
-
 
 
         function animateTextInfoSpans(textInfoId, duration = 500, baseDelay = 10) {
@@ -866,42 +833,30 @@ const galleryHTML = `
 
 
         function animateText3(span, finalText, duration) {
-            let startTime = null;
+            let currentDuration = 0;
             span.style.visibility = 'visible';
+            const interval = 50; // Interval for updating text
+            const shuffleFrequency = duration / interval; // Determine how often to shuffle
 
-            // Set a fixed speed factor
-            const speedFactor = 1;  // Increase or decrease this value to control the speed
-            const baseInterval = 50;  // Base interval for milliseconds per frame
-            const minInterval = baseInterval / speedFactor;  // Minimum interval for updates
-
-            let lastUpdate = 0; // Time since last update
-
-            function animate(currentTime) {
-                if (!startTime) {
-                    startTime = currentTime;
-                    lastUpdate = currentTime;
-                }
-                const elapsedTime = currentTime - startTime;
-
-                if (elapsedTime >= duration) {
-                    span.innerText = finalText; // Set to final text when duration is met or exceeded
+            const animation = setInterval(() => {
+                if (currentDuration >= duration) {
+                    clearInterval(animation);
+                    span.innerText = finalText; // Set to final text
                     return;
                 }
 
-                // Check if the time since the last update exceeds minInterval
-                if (currentTime - lastUpdate >= minInterval) {
-                    lastUpdate = currentTime; // Update the last update time
-
-                    const progress = elapsedTime / duration;
-                    const mixIndex = Math.floor(progress * finalText.length);
+                // Generate a random string of the same length as the final text
+                // If currentDuration is close to the total duration, start setting the actual text
+                if (currentDuration > duration - shuffleFrequency * interval) {
+                    let mixIndex = Math.floor((currentDuration / duration) * finalText.length);
                     let randomizedPart = generateRandomString2(finalText.length - mixIndex);
                     span.innerText = finalText.substring(0, mixIndex) + randomizedPart;
+                } else {
+                    span.innerText = generateRandomString2(finalText.length);
                 }
 
-                requestAnimationFrame(animate); // Recursively call animate
-            }
-
-            requestAnimationFrame(animate);
+                currentDuration += interval;
+            }, interval);
         }
 
 

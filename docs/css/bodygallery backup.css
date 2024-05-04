@@ -1,0 +1,491 @@
+html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#bodygallery {
+    
+    font-family: 'JetBrainsMono-Bold', sans-serif;
+   
+    background-color: black;
+    color: #00ffcc; /* Green color */
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+
+}
+
+.centered-container {
+    display: none; /* Hide the centered-container initially */
+
+/* other styles... */
+}
+
+
+.hover-effect-wrapper {
+    max-width: 100%;
+    max-height: 100vh;
+    position: relative;
+    /* Preserving aspect ratio (1:1 in this case) */
+    width: 100vmin;
+    height: 100vmin;
+    margin: auto; /* Centering the wrapper */
+    z-index: 1
+
+}  
+.square-aspect-ratio .hover-effect-wrapper {
+    top: -100vh;
+    position: absolute;
+
+}
+
+
+
+.hover-effect-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    z-index: 1;
+}
+
+
+
+.square-aspect-ratio .hover-effect-container {
+    top: 107vh;        /* Adjust this value for space from the top */
+    left: 0;
+    right: 0;
+    width: 100%;
+
+}
+
+.fade-out {
+    animation: fadeOut 0.555s forwards;
+}
+
+@keyframes fadeOut {
+    to { opacity: 0; }
+}
+
+
+
+
+
+.btn-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    font-size: 24px;
+    border-radius: 50%;
+    opacity: 0.7;
+    z-index: 5010;
+    color: white
+
+
+}
+
+#btn-prev { 
+    left: 30px;
+    font-size: 42px;
+    user-select: none;
+    z-index: 11010;
+}
+#btn-next { 
+    right: 30px;
+    font-size: 42px;
+    user-select: none;
+    z-index: 11010;
+}
+
+
+
+#button-overlay {
+    position: fixed; /* Fixed positioning */
+    top: 65px; /* Fixed space from the top */
+    left: 50%; /* Centered horizontally */
+    transform: translateX(-50%); /* Adjust horizontal centering */
+    max-width: 1024px; /* Maximum width */
+    max-height: 1024px; /* Maximum height, same as width for square shape */
+    width: 100vmin; /* Responsive width, 80% of the viewport's smaller dimension */
+    height: 100vmin; /* Responsive height, same as width */
+    z-index: 1111010; /* Above other elements */
+    display: flex; /* Flexbox for inner alignment */
+    justify-content: center; /* Centering horizontally */
+    align-items: center; /* Centering vertically */
+    pointer-events: none; /* Allows click-through */
+    
+}
+
+#button-overlay > .btn-nav {
+    pointer-events: auto; /* Button interactions enabled */
+}
+
+
+
+
+
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+    z-index: 1010;
+    user-select: none;
+}
+
+.button-container {
+    position: absolute;
+    top: 20px; /* Adjust the top position as needed */
+    left: 20px; /* Adjust the left position as needed */
+    z-index: 1010;
+}
+
+/* Toggle Button Styles */
+.toggle-button {
+    cursor: pointer;
+    font-size: 14px; /* Adjust font size as needed */
+    color: white; /* White font color */
+    user-select: none;
+}
+
+.image-wrap {
+    position: relative;
+    width: 100%; /* This will be relative to the grid column width */
+    padding-top: 100%; /* This creates a square aspect ratio */
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.image-wrap canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    object-fit: cover; /* Adjust this as needed */
+}
+
+.center-container {
+    top: -10%;
+
+    position: absolute; /* Use absolute positioning */
+    width: 100%; /* Full width of the viewport */
+    height: 10000%; /* Full viewport height */
+    display: flex; /* Use flexbox for centering */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    z-index: 70; /* Place the center-container above the gallery container */
+    background-color: rgba(0, 0, 0, 1); /* Semi-transparent black background */
+}
+
+#ascii-art-container {
+    width: 370px;
+    height: 170px;
+    overflow: hidden;
+    position: fixed; /* Use fixed positioning */
+    top: 50%; /* Position from the center vertically */
+    left: 50%; /* Position from the center horizontally */
+    transform: translate(-50%, -50%); /* Center the element */
+    z-index: 3; /* Place the ascii-art-container above the center-container */
+    /* Rest of your styles for #ascii-art-container */
+}
+
+#ascii-art-container {
+
+        font-size: 16px;
+
+}
+
+.ascii-line {
+    white-space: pre;
+    font-family: monospace;
+    color: #00ffcc;
+}
+
+.hidden-char {
+    visibility: hidden;
+}
+
+
+.no-scroll-keys {
+    overflow: hidden;
+}
+
+#search-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 97px; /* Default top margin */
+    margin-bottom: 30px; /* Bottom margin */
+}
+
+@media screen and (orientation: portrait) {
+    #search-container {
+        margin-top: 120px; /* Increased top margin for portrait mode */
+    }
+}
+
+@media screen and (orientation: landscape) {
+    #search-container {
+        margin-top: 97px; /* Reduced top margin for landscape mode */
+    }
+}
+
+
+#search-bar {
+    font-family: 'JetBrainsMono-Bold', sans-serif; /* Use the custom font */
+    font-size: 16px; /* Adjust as needed */
+    border: 2px solid #00ffcc; /* Green border */
+    border-radius: 20px; /* Rounded corners */
+    padding: 8px 15px; /* Adjust padding as needed */
+    outline: none; /* Removes the default focus outline */
+    transition: border-color 0.3s;
+    background-color: black; /* Matches the body background */
+    color: #00ffcc; /* Green text color */
+    width: 50%; /* Adjust width as needed */
+}
+/* Add this CSS to your stylesheet */
+#search-bar {
+  transition: opacity 0.5s ease-in-out;
+  opacity: 0.5; /* Adjust based on your initial visibility requirement */
+}
+
+
+#search-bar::placeholder {
+    color: rgba(0, 255, 204, 0.5); /* Light green placeholder */
+}
+
+#search-bar:focus {
+    border-color: #fff; /* White color on focus */
+}
+
+/* Blinking cursor effect */
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+#search-bar:not(:focus)::placeholder {
+    content: ''; /* Remove placeholder text when not focused */
+    animation: blink 1s step-end infinite;
+}
+
+
+
+#gallery-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(187px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    transition: transform 0.3s ease;
+}
+
+
+#gallery-container img {
+    width: 100%;
+    height: auto;
+    cursor: pointer;
+    border-radius: 8px;
+    border: 2px solid #00ffcc;
+    transition: opacity 0.1s ease, transform 0.1s ease-out;
+    position: relative;
+    overflow: hidden;
+}
+
+#gallery-container .image-container {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: transform 0.3s ease; /* Added hover transition to the container */
+}
+
+#gallery-container .image-container:hover {
+    transform: scale(1.1);
+}
+
+.hidden-image {
+    opacity: 0;
+
+    pointer-events: none; /* Prevent interaction with hidden images */
+    display: none
+}
+
+.image-container {
+    position: relative;
+    overflow: hidden;
+    /* Other styles remain unchanged */
+}
+
+.word-overlay {
+    font-family: 'JetBrainsMono-ExtraBold', sans-serif;
+    position: absolute;
+    bottom: 10%; /* Adjust this value as needed for vertical positioning */
+    left: 50%;
+    transform: translateX(-50%); /* Center both horizontally and vertically */
+    overflow: visible; /* Allows text to overflow outside of the container */
+    white-space: nowrap; /* Prevents automatic line breaks */
+    text-align: center;
+    font-size: 12px;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    color: #7cfc05; /* Text color */
+    padding: 0px;
+    /* No width set so it takes the width of its content */
+
+}
+
+
+
+.hidden-overlay {
+    display: none;
+}
+
+#text-info {
+    font-family: 'JetBrainsMono-Bold', sans-serif;
+    position: absolute;
+    width: 800px; /* Fixed width */
+    height: auto; /* Fixed height */
+    bottom: 3%;
+    left: 50%;
+    transform: translateX(-50%);
+ 
+    color: white;
+    text-align: center;
+    z-index: 1010;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    padding: 15px;
+    border-radius: 8px;
+    transition: opacity 0.3s ease-in-out;
+    overflow: hidden; /* To handle content overflow */
+    display: block;
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 1);
+    pointer-events: none; /* Ignore mouse events */
+    user-select: none;
+
+}
+.square-aspect-ratio #text-info {
+    width: 100%; /* Full width for square screens */
+    max-width: 400px; /* You can adjust the maximum width as needed */
+}
+
+#text-info p {
+    margin: 5px 0;
+    font-size: 14px;
+    /* Additional styling */
+}
+
+#text-prompt,
+#text-seed,
+#text-creator {
+    display: inline-block;
+    pointer-events: none;
+    
+}
+
+#text-seed::before,
+#text-creator::before {
+    content: "\A"; /* Add a line break before Seed and Creator */
+    pointer-events: none;
+    
+}
+
+ #text-info2 {
+    font-family: 'JetBrainsMono-Bold', sans-serif;
+    position: absolute;
+    width: 800px; /* Fixed width */
+    height: auto; /* Fixed height */
+    bottom: 3%;
+    left: 50%;
+    transform: translateX(-50%);
+ 
+    color: rgba(0, 0, 0, 0.0000000001);
+    text-align: center;
+    z-index: 1010;
+    background: rgba(0, 0, 0, 0.0000000001); /* Semi-transparent background */
+    padding: 15px;
+    border-radius: 8px;
+    transition: opacity 0.3s ease-in-out;
+    overflow: hidden; /* To handle content overflow */
+    display: block;
+    z-index: 2020
+    margin: 5px 0;
+    font-size: 14px;
+}
+#text-prompt2,
+#text-seed2,
+#text-creator2 {
+    display: inline-block;
+    
+}
+
+#text-seed2::before,
+#text-creator2::before {
+    content: "\A"; /* Add a line break before Seed and Creator */
+    
+}
+.square-aspect-ratio #text-info2 {
+    width: 100%; /* Full width for square screens */
+    max-width: 400px; /* You can adjust the maximum width as needed */
+}
+
+#text-info2 p {
+    margin: 5px 0;
+    font-size: 14px;
+    /* Additional styling */
+}
+#loading-progress-container {
+    position: absolute;
+    top: 96px;
+    right: 30px;
+    width: 45px;
+    height: 50px;
+    transition: opacity 1s ease-out;
+    opacity: 1;
+    z-index: 50;
+}
+
+@media screen and (orientation: portrait) {
+    #loading-progress-container {
+        top: 118.5px; /* Increased top for portrait mode */
+    }
+}
+
+@media screen and (orientation: landscape) {
+    #loading-progress-container {
+        top: 96px; /* Adjusted top for landscape mode */
+    }
+}
+
+
+
+.circular-chart {
+    display: block;
+    max-width: 100%; /* Adjust if needed */
+    max-height: 100%; /* Adjust if needed */
+}
+
+.circle-bg {
+    fill: none;
+    stroke: #000000;
+    stroke-width: 1;
+}
+
+.circle {
+    fill: none;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    animation: progress 1s ease-out forwards;
+}
+
+@keyframes progress {
+    0% {
+        stroke-dasharray: 0 100;
+    }
+}
