@@ -362,7 +362,8 @@ html {
     background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
     padding: 15px;
     border-radius: 8px;
-    transition: opacity 0.3s ease-in-out;
+
+    transition: opacity 0.2s ease-in-out;
     overflow: hidden; /* To handle content overflow */
     display: block;
     text-shadow: 2px 2px 3px rgba(0, 0, 0, 1);

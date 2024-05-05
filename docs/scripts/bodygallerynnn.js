@@ -205,24 +205,21 @@ const galleryHTML = `
         
 
         // Add this script below your existing JavaScript code
-        let textInfoVisible = true; // Tracks whether text info is allowed to be shown
+        let textInfoVisible = true; // Add a variable to track the state
 
         function toggleTextInfo() {
             const textInfo = document.getElementById('text-info');
             
+            
             if (textInfoVisible) {
-                hideTextInfo().then(() => {
-                    console.log('Text info hidden by toggle');
-                });
-                textInfoVisible = false;  // After toggling off, prevent showing until toggled on
+                textInfo.style.opacity = '0'; // Hide the text info
             } else {
-                textInfoVisible = true;   // Allow hide and show functions to operate normally
-                showTextInfo().then(() => {
-                    console.log('Text info shown by toggle');
-                });
-                
+                textInfo.style.opacity = '1'; // Show the text info
             }
-        }
+
+            textInfoVisible = !textInfoVisible; // Toggle the state
+        }      
+
 
 
 
@@ -621,8 +618,7 @@ const galleryHTML = `
                     setTimeout(() => {
                         updateTextInfo(); // Update the text info based on the current image
                     }, 5); // Adjust the delay value as needed
-                }, 50); // Adjust the delay value as needed
-
+                }, 5); // Adjust the delay value as needed
             } else {
                 console.error("Clicked image index not found in dynamicImages array.");
             }
@@ -738,8 +734,7 @@ const galleryHTML = `
                     //seedElement.style.pointerEvents = 'none';
                     creatorElement.style.visibility = 'hidden';
                     //creatorElement.style.pointerEvents = 'none';
-                    updateTextInfo2();
-                    
+                    updateTextInfo2()
                     startTextInfoAnimation();
 
                 } catch (error) {
@@ -753,8 +748,6 @@ const galleryHTML = `
         function updateTextInfo2() {
             const imgSrc = dynamicImages[currentImageIndex];
             const imageElement = document.querySelector(`img[src="${imgSrc}"]`); // Find the img element by its src
-            
-            showTextInfo();
 
             if (imageElement) {
                 try {
@@ -957,37 +950,8 @@ const galleryHTML = `
 
 
 
-        function hideTextInfo() {
-            return new Promise((resolve, reject) => {
-                const textInfo = document.getElementById('text-info');
-                if (!textInfoVisible) return resolve(); // Do nothing if already toggled off
-
-                // Introduce an asynchronous delay of 1 second before starting the transition
-                setTimeout(() => {
-                    textInfo.style.opacity = "0"; // Start the opacity transition after the delay
-                    // You may want to wait for the CSS transition to complete before resolving
-                    setTimeout(() => {
-                        resolve(); // Resolve the promise after the opacity transition duration
-                    }, 300); // Assuming your CSS transition duration for opacity is 300ms
-                }, 50); // Delay of 1 second
-            });
-        }
-
-
-
-        function showTextInfo() {
-            return new Promise((resolve, reject) => {
-                const textInfo = document.getElementById('text-info');
-                if (!textInfoVisible) return resolve(); // Do nothing if toggled off
-
-                textInfo.style.display = 'block'; // Ensure it's part of the layout
-                setTimeout(() => {
-                    textInfo.style.opacity = "1";
-                    resolve(); // Resolve once fully visible
-                }, 10); // Delay to ensure display property applies first
-            });
-        }
-
+        
+        
 
         
 
@@ -1043,7 +1007,6 @@ const galleryHTML = `
             removeOldHoverEffectContainer(); // Fade out and remove old containers
             createButtonOverlay();
             calculateAspectRatio();
-            
 
             var newContainer = createNewHoverEffectContainer(); // Create a new container
 
@@ -1147,7 +1110,6 @@ const galleryHTML = `
 
         function showNextSlide() {
             // Create a new hover effect instance with the current image
-            hideTextInfo();
             recreateHoverEffectnext();
             
 
@@ -1165,7 +1127,6 @@ const galleryHTML = `
 
         function showPrevSlide() {
             // Create a new hover effect instance with the current image
-            hideTextInfo();
             recreateHoverEffectprev();
             
 
