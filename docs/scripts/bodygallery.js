@@ -1166,39 +1166,42 @@ const galleryHTML = `
             // Create a new hover effect instance with the current image
             hideTextInfo();
             recreateHoverEffectnext();
-            
 
             // Delay hover effect by 2 seconds
             setTimeout(function() {
                 // Update the index after the new viewer has been created
                 currentImageIndex = (currentImageIndex + 1) % dynamicImages.length;
-                if (!isMobileDevice()) {
-                        // Only call next() if the device is not mobile
+                if (isMobileDevice()) {
+                    // For mobile devices, update text information immediately
+                    updateTextInfo();
+                } else {
+                    // For non-mobile devices, apply hover effect and delay text update
                     hoverEffectInstance.next();
+                    setTimeout(updateTextInfo, 850);
                 }
-                
-            }, 30); // 2000 milliseconds = 2 seconds
-            setTimeout(updateTextInfo, 889);
+            }, 30); // Adjust the delay here as needed
         }
 
         function showPrevSlide() {
             // Create a new hover effect instance with the current image
             hideTextInfo();
             recreateHoverEffectprev();
-            
 
             // Delay hover effect by 2 seconds
             setTimeout(function() {
                 // Update the index after the new viewer has been created
                 currentImageIndex = (currentImageIndex - 1 + dynamicImages.length) % dynamicImages.length;
-                if (!isMobileDevice()) {
-                        // Only call next() if the device is not mobile
+                if (isMobileDevice()) {
+                    // For mobile devices, update text information immediately
+                    updateTextInfo();
+                } else {
+                    // For non-mobile devices, apply hover effect and delay text update
                     hoverEffectInstance.next();
+                    setTimeout(updateTextInfo, 850);
                 }
-                
             }, 30);
-            setTimeout(updateTextInfo, 889);
         }
+
 
       
 
