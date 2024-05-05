@@ -966,7 +966,7 @@ const galleryHTML = `
                     // Skip transitions for mobile devices
                     textInfo.style.opacity = "0";
                     textInfo.style.transition = "none"; // Disable CSS transitions
-                    textInfo.style.display = 'none'; // Immediately hide the element
+                    
                     resolve();
                 } else {
                     // Introduce an asynchronous delay before starting the transition
