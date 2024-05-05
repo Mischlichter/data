@@ -1511,7 +1511,6 @@
 
 
         function updateIframe(sceneKey) {
-            enableScroll();
             const iframeContainer = document.getElementById('iframeContainer');
             const mouseOverlay = document.getElementById('mouseOverlay');
             const bodyGalleryContainer = document.getElementById('bodyGalleryContainer');
@@ -3377,11 +3376,7 @@
           }
         }, { passive: false });
 
-        function enableScroll() {
-            // Remove event listeners to re-enable scrolling
-            window.removeEventListener('wheel', preventDefault);
-            window.removeEventListener('touchmove', preventDefault);
-        }
+        
     
         // Add event listener to resize in case the viewport size changes
         window.addEventListener('resize', updateVirtualCanvasSize);
