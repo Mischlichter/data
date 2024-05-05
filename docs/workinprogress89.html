@@ -1511,12 +1511,13 @@
 
 
         function updateIframe(sceneKey) {
+            enableScroll();
             const iframeContainer = document.getElementById('iframeContainer');
             const mouseOverlay = document.getElementById('mouseOverlay');
             const bodyGalleryContainer = document.getElementById('bodyGalleryContainer');
 
 
-            enableScroll();
+
 
             unhideElementsByClass("foreground-image-container");
 
