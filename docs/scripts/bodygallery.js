@@ -1176,8 +1176,9 @@ const galleryHTML = `
                         // Only call next() if the device is not mobile
                     hoverEffectInstance.next();
                 }
-                updateTextInfo();
-            }, 360); // 2000 milliseconds = 2 seconds
+                
+            }, 30); // 2000 milliseconds = 2 seconds
+            setTimeout(updateTextInfo, 889);
         }
 
         function showPrevSlide() {
@@ -1194,8 +1195,9 @@ const galleryHTML = `
                         // Only call next() if the device is not mobile
                     hoverEffectInstance.next();
                 }
-                updateTextInfo();
-            }, 360);
+                
+            }, 30);
+            setTimeout(updateTextInfo, 889);
         }
 
       

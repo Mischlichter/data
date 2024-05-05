@@ -150,6 +150,7 @@ html {
 /* Toggle Button Styles */
 .toggle-button {
     cursor: pointer;
+    font-family: 'JetBrainsMono-Bold', sans-serif;
     font-size: 14px; /* Adjust font size as needed */
     color: white; /* White font color */
     user-select: none;
@@ -363,7 +364,7 @@ html {
     padding: 15px;
     border-radius: 8px;
 
-    transition: opacity 0.3s ease-in-out;
+    transition: opacity 0.5s ease-in-out;
     overflow: hidden; /* To handle content overflow */
     display: block;
     text-shadow: 2px 2px 3px rgba(0, 0, 0, 1);
