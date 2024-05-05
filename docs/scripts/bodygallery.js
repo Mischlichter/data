@@ -517,7 +517,7 @@ const galleryHTML = `
                                                 //console.log(`Date check for ${file.name}: In DB - ${lastModifiedInDB}, Current - ${lastModifiedCurrent}`);
 
                                                 if (!dbResult || lastModifiedInDB < lastModifiedCurrent) {
-                                                    //console.log(`Image from remote needed for ${file.name}`);
+                                                    console.log(`Image from remote needed for ${file.name}`);
                                                     fetch(file.download_url)
                                                         .then(response => response.blob())
                                                         .then(blob => {
