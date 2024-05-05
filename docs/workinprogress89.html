@@ -1901,7 +1901,7 @@
 
 //////// MENU LOADING //////////
 
-        let menufade = false;
+
         let isAnimating = false;
 
         function initializeMenu() {
@@ -1936,103 +1936,112 @@
         }
 
         let menuContainerIds = []; // Global or accessible scope
+        let isMenuLoaded = false;  // This flag will be set to true when the menu is fully loaded
 
         function loadMenu(menuData) {
-            isAnimating = true;
+            return new Promise((resolve, reject) => {
+                isAnimating = true;
 
-            setTimeout(() => {
-                isAnimating = false;
-            }, 4000);
+                setTimeout(() => {
+                    isAnimating = false;
+                }, 4000);
 
-            let menuBar = document.querySelector('.menu-bar');
-            if (!menuBar) {
-                menuBar = document.createElement('div');
-                menuBar.className = 'menu-bar';
-                document.body.appendChild(menuBar);
-            } else {
-                menuBar.innerHTML = '';
-            }
-
-            const logoImg = document.createElement('img');
-            logoImg.src = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logo5.png';
-            logoImg.style.marginRight = '20px';
-            logoImg.id = 'menuLogo';
-            menuBar.appendChild(logoImg);
-
-            menuContainerIds = [];
-            let currentlyActiveMenuItemId = 'menuContainer0';
-
-            const handleInteraction = async (itemId, index) => {
-                if ((currentlyActiveMenuItemId === 'menuLogo' && itemId === 'menuContainer0') ||
-                    (currentlyActiveMenuItemId === 'menuContainer0' && itemId === 'menuLogo')) {
-                    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-                    return;
-                }
-
-                if (currentlyActiveMenuItemId === itemId) {
-                    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-                    return;
-                }
-
-                currentlyActiveMenuItemId = itemId;
-                await fadeOutElements();
-                currentSceneIndex = (itemId === 'menuLogo') ? 0 : index;
-
-                // Load the selected scene
-                loadScene(currentSceneIndex);
-
-                // Always highlight the first menu item when the logo is clicked
-                if (itemId === 'menuLogo') {
-                    highlightActiveMenuItem('menuContainer0'); // Highlight the first menu item when the logo is clicked
+                let menuBar = document.querySelector('.menu-bar');
+                if (!menuBar) {
+                    menuBar = document.createElement('div');
+                    menuBar.className = 'menu-bar';
+                    document.body.appendChild(menuBar);
                 } else {
-                    highlightActiveMenuItem(itemId); // Otherwise, highlight the current menu item
+                    menuBar.innerHTML = '';
                 }
 
-                triggerOrientationWithoutCalibration();
-            };
+                const logoImg = document.createElement('img');
+                logoImg.src = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logo5.png';
+                logoImg.style.marginRight = '20px';
+                logoImg.id = 'menuLogo';
+                menuBar.appendChild(logoImg);
 
+                menuContainerIds = [];
+                let currentlyActiveMenuItemId = 'menuContainer0';
 
-            logoImg.addEventListener('click', () => handleInteraction('menuLogo', 0));
-            logoImg.addEventListener('touchend', () => handleInteraction('menuLogo', 0));
+                const handleInteraction = async (itemId, index) => {
+                    if ((currentlyActiveMenuItemId === 'menuLogo' && itemId === 'menuContainer0') ||
+                        (currentlyActiveMenuItemId === 'menuContainer0' && itemId === 'menuLogo')) {
+                        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+                        return;
+                    }
 
-            menuData.forEach((menuItem, index) => {
-                const menuContainer = document.createElement('div');
-                menuContainer.id = `menuContainer${index}`;
-                menuContainer.className = 'menu-container';
-                menuContainer.innerText = menuItem.label;
-                menuBar.appendChild(menuContainer);
+                    if (currentlyActiveMenuItemId === itemId) {
+                        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+                        return;
+                    }
 
-                let isTouch = false;
+                    currentlyActiveMenuItemId = itemId;
+                    await fadeOutElements();
+                    currentSceneIndex = (itemId === 'menuLogo') ? 0 : index;
 
-                const handleMenuInteraction = async (event) => {
-                    if (isTouch && event.type === 'click') return;
-                    isTouch = event.type === 'touchend';
-                    handleInteraction(menuContainer.id, index);
+                    // Load the selected scene
+                    loadScene(currentSceneIndex);
+
+                    // Always highlight the first menu item when the logo is clicked
+                    if (itemId === 'menuLogo') {
+                        highlightActiveMenuItem('menuContainer0'); // Highlight the first menu item when the logo is clicked
+                    } else {
+                        highlightActiveMenuItem(itemId); // Otherwise, highlight the current menu item
+                    }
+
+                    
                 };
 
-                menuContainer.addEventListener('click', handleMenuInteraction);
-                menuContainer.addEventListener('touchend', handleMenuInteraction);
-                menuContainer.addEventListener('mouseover', () => animateTextDuringHover(menuContainer));
 
-                if (index === 0) {
-                    setTimeout(() => animateTextDuringHover(menuContainer), 5000);
-                }
+                logoImg.addEventListener('click', () => handleInteraction('menuLogo', 0));
+                logoImg.addEventListener('touchend', () => handleInteraction('menuLogo', 0));
 
-                menuContainerIds.push(menuContainer.id);
-            });
+                menuData.forEach((menuItem, index) => {
+                    const menuContainer = document.createElement('div');
+                    menuContainer.id = `menuContainer${index}`;
+                    menuContainer.className = 'menu-container';
+                    menuContainer.innerText = menuItem.label;
+                    menuBar.appendChild(menuContainer);
 
-            const fakeMenuItem1 = document.createElement('div');
-            fakeMenuItem1.className = 'menu-container';
-            fakeMenuItem1.setAttribute('data-fake', 'true');
-            menuBar.insertBefore(fakeMenuItem1, menuBar.children[1]);
+                    let isTouch = false;
 
-            const fakeMenuItem2 = document.createElement('div');
-            fakeMenuItem2.className = 'menu-container';
-            fakeMenuItem2.setAttribute('data-fake', 'true');
-            menuBar.insertBefore(fakeMenuItem2, menuBar.children[5]);
+                    const handleMenuInteraction = async (event) => {
+                        if (isTouch && event.type === 'click') return;
+                        isTouch = event.type === 'touchend';
+                        handleInteraction(menuContainer.id, index);
+                    };
 
-            updateLogoVisibility();
-            updateMenu(menuData);
+                    menuContainer.addEventListener('click', handleMenuInteraction);
+                    menuContainer.addEventListener('touchend', handleMenuInteraction);
+                    menuContainer.addEventListener('mouseover', () => animateTextDuringHover(menuContainer));
+
+                    if (index === 0) {
+                        setTimeout(() => animateTextDuringHover(menuContainer), 5000);
+                    }
+
+                    menuContainerIds.push(menuContainer.id);
+                });
+
+                const fakeMenuItem1 = document.createElement('div');
+                fakeMenuItem1.className = 'menu-container';
+                fakeMenuItem1.setAttribute('data-fake', 'true');
+                menuBar.insertBefore(fakeMenuItem1, menuBar.children[1]);
+
+                const fakeMenuItem2 = document.createElement('div');
+                fakeMenuItem2.className = 'menu-container';
+                fakeMenuItem2.setAttribute('data-fake', 'true');
+                menuBar.insertBefore(fakeMenuItem2, menuBar.children[5]);
+
+               
+                resolve();
+
+            }).then(() => {
+                updateLogoVisibility();
+                updateMenu(menuData);
+                triggerOrientationWithoutCalibration();
+                isMenuLoaded = true;
+            });    
         }
 
 
@@ -2591,19 +2600,48 @@
             return /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
         }
 
+        let tiles = { a: false, b: false };
+
         function fadeInElements() {
-            const selectors = ['#interfaceContainer', '#backgroundContainer', '#iframeContainer', '#bodyGalleryContainer', '.flex-container'];
-            selectors.forEach(selector => {
-                const elements = document.querySelectorAll(selector);
-                elements.forEach(element => {
-                    if (element) {
-                        element.style.opacity = 1; // Set opacity to 1
-                        if (isIOS()) {
-                            element.style.transition = 'none'; // Remove transitions for iOS
+            const waitForTiles = () => {
+                return new Promise((resolve) => {
+                    const checkTiles = () => {
+                        if (tiles.a && tiles.b) {
+                            resolve(); // Resolve the promise when both tiles.a and tiles.b are true
                         } else {
-                            element.style.transition = 'opacity 1s ease-in-out'; // Apply transitions for non-iOS
+                            setTimeout(checkTiles, 100); // Check every 100 milliseconds
                         }
+                    };
+                    checkTiles(); // Start checking tiles
+                });
+            };
+
+            // Wait for both tiles.a and tiles.b to become true
+            waitForTiles().then(() => {
+                const selectors = ['#interfaceContainer', '#backgroundContainer', '#iframeContainer', '#bodyGalleryContainer', '.flex-container'];
+                let animationCount = 0;
+
+                const animationEndHandler = () => {
+                    animationCount--;
+                    if (animationCount === 0) {
+                        shouldFadeIn = true; // Set the flag after all animations have ended
                     }
+                };
+
+                selectors.forEach(selector => {
+                    const elements = document.querySelectorAll(selector);
+                    elements.forEach(element => {
+                        if (element) {
+                            animationCount++;
+                            element.style.opacity = 1; // Set opacity to 1
+                            if (isIOS()) {
+                                element.style.transition = 'none'; // Remove transitions for iOS
+                            } else {
+                                element.style.transition = 'opacity 1s ease-in-out'; // Apply transitions for non-iOS
+                            }
+                            element.addEventListener('transitionend', animationEndHandler);
+                        }
+                    });
                 });
             });
         }
@@ -2683,52 +2721,69 @@
 
 
         function createVerticalTiles_a(containerId, imageUrl, imageHeight) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = ''; // Clear existing content
+            return new Promise((resolve, reject) => {
+                const container = document.getElementById(containerId);
+                container.innerHTML = ''; // Clear existing content
 
-            // Assuming the container's height is directly based on its content (the images)
-            // We calculate the number of tiles needed to fill the container plus one for overflow
-            const numTiles = 11; // Since you mentioned wanting about 10 tiles
+                // Assuming the container's height is directly based on its content (the images)
+                // We calculate the number of tiles needed to fill the container plus one for overflow
+                const numTiles = 11; // Since you mentioned wanting about 10 tiles
 
-            for (let i = 0; i < numTiles; i++) {
-                const img = document.createElement('img');
-                img.src = imageUrl;
-                img.style.position = 'absolute';
-                img.style.top = `${i * imageHeight}px`;
-                img.style.left = 0;
-                img.style.width = '100%'; // Stretch the image to fill the container's width
-                img.style.height = `${imageHeight}px`; // Set a fixed height for direct tiling
-                container.appendChild(img);
-                requestAnimationFrame(updateParallax);
+                for (let i = 0; i < numTiles; i++) {
+                    const img = document.createElement('img');
+                    img.src = imageUrl;
+                    img.style.position = 'absolute';
+                    img.style.top = `${i * imageHeight}px`;
+                    img.style.left = 0;
+                    img.style.width = '100%'; // Stretch the image to fill the container's width
+                    img.style.height = `${imageHeight}px`; // Set a fixed height for direct tiling
+                    container.appendChild(img);
+                    requestAnimationFrame(updateParallax);
+                    
+                    // This function needs to be called to update the virtual canvas size accordingly
+                    delayedVirtualCanvasUpdate();
+                }
+
+                // Resolve the promise to indicate that tiles are constructed
+                resolve();
+            }).then(() => {
+                tiles.a = true;
+                // Set the flag for tiles a to true after the promise is resolved
                 
-                // This function needs to be called to update the virtual canvas size accordingly
-                delayedVirtualCanvasUpdate();
-            }
+                
+            });
         }
 
-
-
         function createVerticalTiles_b(containerId, imageUrl, imageHeight) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = ''; // Clear existing content
+            return new Promise((resolve, reject) => {
+                const container = document.getElementById(containerId);
+                container.innerHTML = ''; // Clear existing content
 
-            // Assuming the container's height is directly based on its content (the images)
-            // We calculate the number of tiles needed to fill the container plus one for overflow
-            const numTiles = 11; // Since you mentioned wanting about 10 tiles
+                
+                // Assuming the container's height is directly based on its content (the images)
+                // We calculate the number of tiles needed to fill the container plus one for overflow
+                const numTiles = 11; // Since you mentioned wanting about 10 tiles
 
-            for (let i = 0; i < numTiles; i++) {
-                const img = document.createElement('img');
-                img.src = imageUrl;
-                img.style.position = 'absolute';
-                img.style.top = `${i * imageHeight}px`;
-                img.style.left = 0;
-                img.style.width = '100%'; // Stretch the image to fill the container's width
-                img.style.height = `${imageHeight}px`; // Set a fixed height for direct tiling
-                container.appendChild(img);
-                
-                
-                updateVirtualCanvasSize();
-            }
+                for (let i = 0; i < numTiles; i++) {
+                    const img = document.createElement('img');
+                    img.src = imageUrl;
+                    img.style.position = 'absolute';
+                    img.style.top = `${i * imageHeight}px`;
+                    img.style.left = 0;
+                    img.style.width = '100%'; // Stretch the image to fill the container's width
+                    img.style.height = `${imageHeight}px`; // Set a fixed height for direct tiling
+                    container.appendChild(img);
+                    
+                    
+                    updateVirtualCanvasSize();
+                }
+
+                // Resolve the promise to indicate that tiles are constructed
+                resolve();
+            }).then(() => {
+                // Set the flag for tiles b to true after the promise is resolved
+                tiles.b = true;
+            });
         }
 
         function delayedVirtualCanvasUpdate() {
@@ -2737,23 +2792,7 @@
             setTimeout(updateVirtualCanvasSize, 100); // Delay of 100 milliseconds
         }
 
-        async function loadInterface(currentSceneIndex) {
-
-            const waitForMenuFade = () => {
-                return new Promise((resolve) => {
-                    const checkMenuFade = () => {
-                        if (menufade) {
-                            resolve(); // Resolve the promise when menufade becomes true
-                        } else {
-                            setTimeout(checkMenuFade, 100); // Check every 100 milliseconds
-                        }
-                    };
-                    checkMenuFade(); // Start checking menufade
-                });
-            };
-
-                // Wait for menufade to become true
-            await waitForMenuFade();
+        function loadInterface(currentSceneIndex) {
             // Extend: Function to ensure wrapper existence
             function ensureWrapperExistence(wrapperClass, contentStructure) {
                 let wrapper = document.querySelector(`.${wrapperClass}`);
@@ -2836,9 +2875,7 @@
 
         }
 
-        function elementExistsInDOM(element) {
-            return document.body.contains(element);
-        }
+        
 
         let lastScrollY = 0;
 

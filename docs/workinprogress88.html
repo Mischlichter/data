@@ -2613,7 +2613,7 @@
         }
 
         let tiles = { a: false, b: false };
-        
+
         function fadeInElements() {
             const waitForTiles = () => {
                 return new Promise((resolve) => {
@@ -2761,7 +2761,7 @@
                     requestAnimationFrame(updateParallax);
                     
                     // This function needs to be called to update the virtual canvas size accordingly
-                    
+                    delayedVirtualCanvasUpdate();
                 }
 
                 // Resolve the promise to indicate that tiles are constructed
@@ -2769,7 +2769,7 @@
             }).then(() => {
                 tiles.a = true;
                 // Set the flag for tiles a to true after the promise is resolved
-                delayedVirtualCanvasUpdate();
+                
                 
             });
         }
@@ -2809,7 +2809,7 @@
         function delayedVirtualCanvasUpdate() {
             // Delay the call to updateVirtualCanvasSize
             tiles.a = true;
-            setTimeout(updateVirtualCanvasSize, 100); // Delay of 100 milliseconds
+            setTimeout(updateVirtualCanvasSize, 1000); // Delay of 100 milliseconds
         }
 
       
@@ -2918,6 +2918,7 @@
                         viewerImage.src = viewerImageUrl;
                     })
                 ]);
+            
 
                 if (tiles.a && tiles.b) {
                     fadeInElements();
