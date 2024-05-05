@@ -44,9 +44,8 @@ const galleryHTML = `
                     <div class="toggle-button" onclick="toggleTextInfo()">Toggle Prompt</div>
                 </div>
 
-                <div class="btn-nav" id="btn-prev"><span>‹</span></div>
-                <div class="btn-nav" id="btn-next"><span>›</span></div>
-
+                <div class="btn-nav" id="btn-prev">‹</div>
+                <div class="btn-nav" id="btn-next">›</div>
                 <div class="close" onclick="toggleSlideshow()">×</div>
                
                 <div id="text-info2" class="adjust-width">
