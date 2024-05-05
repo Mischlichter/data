@@ -2613,7 +2613,7 @@
         }
 
         let tiles = { a: false, b: false };
-
+        
         function fadeInElements() {
             const waitForTiles = () => {
                 return new Promise((resolve) => {
@@ -2630,46 +2630,33 @@
 
             // Wait for both tiles.a and tiles.b to become true
             waitForTiles().then(() => {
-                // Selectors for initial elements, excluding the iframe
-                const selectors = ['#interfaceContainer', '#backgroundContainer', '#bodyGalleryContainer', '.flex-container'];
-                let animationCount = selectors.length;
+                const selectors = ['#interfaceContainer', '#backgroundContainer', '#iframeContainer', '#bodyGalleryContainer', '.flex-container'];
+                let animationCount = 0;
 
                 const animationEndHandler = () => {
                     animationCount--;
                     if (animationCount === 0) {
-                        // Handle the iframe separately after all other animations are complete
-                        handleIframe();
+                        shouldFadeIn = true; // Set the flag after all animations have ended
                     }
                 };
 
-                // Animate initial elements
                 selectors.forEach(selector => {
                     const elements = document.querySelectorAll(selector);
                     elements.forEach(element => {
                         if (element) {
+                            animationCount++;
                             element.style.opacity = 1; // Set opacity to 1
-                            element.style.transition = isIOS() ? 'none' : 'opacity 1s ease-in-out'; // Apply transitions for non-iOS
+                            if (isIOS()) {
+                                element.style.transition = 'none'; // Remove transitions for iOS
+                            } else {
+                                element.style.transition = 'opacity 1s ease-in-out'; // Apply transitions for non-iOS
+                            }
                             element.addEventListener('transitionend', animationEndHandler);
                         }
                     });
                 });
             });
-
-            // Function to handle the iframe with a delay and different transition
-            function handleIframe() {
-                setTimeout(() => {
-                    const iframe = document.querySelector('#iframeContainer');
-                    if (iframe) {
-                        iframe.style.opacity = 1;
-                        iframe.style.transition = isIOS() ? 'none' : 'opacity 1s ease-in-out'; // Slower transition for non-iOS
-                        iframe.addEventListener('transitionend', () => {
-                            shouldFadeIn = true; // Set the flag after iframe animation ends
-                        });
-                    }
-                }, 300); // Delay iframe appearance by 500 milliseconds to ensure it starts after others
-            }
         }
-
 
 
         
