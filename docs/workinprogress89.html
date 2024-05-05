@@ -1516,7 +1516,7 @@
             const bodyGalleryContainer = document.getElementById('bodyGalleryContainer');
 
 
-
+            enableScroll();
 
             unhideElementsByClass("foreground-image-container");
 
@@ -3375,6 +3375,12 @@
             event.preventDefault();
           }
         }, { passive: false });
+
+        function enableScroll() {
+            // Remove event listeners to re-enable scrolling
+            window.removeEventListener('wheel', preventDefault);
+            window.removeEventListener('touchmove', preventDefault);
+        }
     
         // Add event listener to resize in case the viewport size changes
         window.addEventListener('resize', updateVirtualCanvasSize);
