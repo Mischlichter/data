@@ -2661,7 +2661,7 @@
                     const iframe = document.querySelector('#iframeContainer');
                     if (iframe) {
                         iframe.style.opacity = 1;
-                        iframe.style.transition = isIOS() ? 'none' : 'opacity 2s ease-in-out'; // Slower transition for non-iOS
+                        iframe.style.transition = isIOS() ? 'none' : 'opacity 1s ease-in-out'; // Slower transition for non-iOS
                         iframe.addEventListener('transitionend', () => {
                             shouldFadeIn = true; // Set the flag after iframe animation ends
                         });
