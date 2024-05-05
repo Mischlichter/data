@@ -44,8 +44,9 @@ const galleryHTML = `
                     <div class="toggle-button" onclick="toggleTextInfo()">Toggle Prompt</div>
                 </div>
 
-                <div class="btn-nav" id="btn-prev">‹</div>
-                <div class="btn-nav" id="btn-next">›</div>
+                <div class="btn-nav" id="btn-prev"><span>‹</span></div>
+                <div class="btn-nav" id="btn-next"><span>›</span></div>
+
                 <div class="close" onclick="toggleSlideshow()">×</div>
                
                 <div id="text-info2" class="adjust-width">
@@ -960,33 +961,50 @@ const galleryHTML = `
         function hideTextInfo() {
             return new Promise((resolve, reject) => {
                 const textInfo = document.getElementById('text-info');
-                if (!textInfoVisible) return resolve(); // Do nothing if already toggled off
+                if (!textInfoVisible || !textInfo) return resolve(); // Do nothing if toggled off or not found
 
-                // Introduce an asynchronous delay of 1 second before starting the transition
-                setTimeout(() => {
-                    textInfo.style.opacity = "0"; // Start the opacity transition after the delay
-                    // You may want to wait for the CSS transition to complete before resolving
+                if (isMobileDevice()) {
+                    // Skip transitions for mobile devices
+                    textInfo.style.opacity = "0";
+                    textInfo.style.transition = "none"; // Disable CSS transitions
+                    textInfo.style.display = 'none'; // Immediately hide the element
+                    resolve();
+                } else {
+                    // Introduce an asynchronous delay before starting the transition
                     setTimeout(() => {
-                        resolve(); // Resolve the promise after the opacity transition duration
-                    }, 300); // Assuming your CSS transition duration for opacity is 300ms
-                }, 50); // Delay of 1 second
+                        textInfo.style.opacity = "0"; // Start the opacity transition after the delay
+                        // Wait for the CSS transition to complete before resolving
+                        setTimeout(() => {
+                            resolve(); // Resolve the promise after the opacity transition duration
+                        }, 200); // Assuming your CSS transition duration for opacity is 300ms
+                    }, 30); // Delay of 1 second
+                }
             });
         }
+
 
 
 
         function showTextInfo() {
             return new Promise((resolve, reject) => {
                 const textInfo = document.getElementById('text-info');
-                if (!textInfoVisible) return resolve(); // Do nothing if toggled off
+                if (!textInfoVisible || !textInfo) return resolve(); // Do nothing if toggled off or not found
 
                 textInfo.style.display = 'block'; // Ensure it's part of the layout
-                setTimeout(() => {
+                if (isMobileDevice()) {
+                    // Skip transitions for mobile devices
                     textInfo.style.opacity = "1";
-                    resolve(); // Resolve once fully visible
-                }, 10); // Delay to ensure display property applies first
+                    textInfo.style.transition = "none"; // Disable CSS transitions
+                    resolve(); // Resolve immediately after setting opacity
+                } else {
+                    setTimeout(() => {
+                        textInfo.style.opacity = "1";
+                        resolve(); // Resolve once fully visible
+                    }, 100); // Delay to ensure display property applies first
+                }
             });
         }
+
 
 
         
@@ -1035,7 +1053,7 @@ const galleryHTML = `
                         oldContainer.parentNode.removeChild(oldContainer);
 
                     }
-                }, 555); // Duration should match the CSS transition
+                }, 2000); // Duration should match the CSS transition
             }
         }
 
@@ -1096,7 +1114,7 @@ const galleryHTML = `
                 // Trigger fade in
                 setTimeout(function() {
                     newContainer.style.opacity = '1';
-                }, 10); // Small delay to ensure the style is applied
+                }, 11); // Small delay to ensure the style is applied
 
             } else {
                 // Non-mobile effect with hoverEffect plugin
@@ -1131,7 +1149,7 @@ const galleryHTML = `
                 // Trigger fade in
                 setTimeout(function() {
                     newContainer.style.opacity = '1';
-                }, 10); // Small delay to ensure the style is applied
+                }, 11); // Small delay to ensure the style is applied
             } else {
                 // Non-mobile effect with hoverEffect plugin
                 hoverEffectInstance = new hoverEffect({
@@ -1160,7 +1178,7 @@ const galleryHTML = `
                     hoverEffectInstance.next();
                 }
                 updateTextInfo();
-            }, 333); // 2000 milliseconds = 2 seconds
+            }, 360); // 2000 milliseconds = 2 seconds
         }
 
         function showPrevSlide() {
@@ -1178,7 +1196,7 @@ const galleryHTML = `
                     hoverEffectInstance.next();
                 }
                 updateTextInfo();
-            }, 333);
+            }, 360);
         }
 
       

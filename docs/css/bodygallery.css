@@ -75,30 +75,44 @@ html {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    
-    border: none;
+    width: 48px;  /* Match the width for consistency */
+    height: 48px; /* Same as width to maintain circular shape */
+    line-height: 38px; /* Vertically center the content */
+    text-align: center; /* Horizontally center the content */
+    border: 2px solid #00ffcc; /* Same border styling */
+    background-color: transparent; /* Consistent transparent background */
+    color: #00ffcc; /* Same text color */
+    font-size: 24px; /* Consistent font size */
+    border-radius: 50%; /* Circular shape */
     cursor: pointer;
-    padding: 10px;
-    font-size: 24px;
-    border-radius: 50%;
-    opacity: 0.7;
-    z-index: 5010;
-    color: white
-
-
+    
+    z-index: 5010; /* High z-index as needed */
 }
 
-#btn-prev { 
+#btn-prev {
     left: 30px;
-    font-size: 42px;
+    font-size: 42px; /* Larger font size for visibility */
     user-select: none;
-    z-index: 11010;
+    z-index: 11010; /* Higher z-index to maintain hierarchy */
+    
 }
-#btn-next { 
+
+#btn-next {
     right: 30px;
-    font-size: 42px;
+    font-size: 42px; /* Consistent with btn-prev */
     user-select: none;
-    z-index: 11010;
+    z-index: 11010; /* Matching z-index for symmetry */
+    
+}
+
+#btn-prev span {
+    position: relative;
+    left: -1px; /* Move character 3px to the left */
+}
+
+#btn-next span {
+    position: relative;
+    left: 1px; /* Move character 3px to the right */
 }
 
 
@@ -363,7 +377,7 @@ html {
     padding: 15px;
     border-radius: 8px;
 
-    transition: opacity 0.2s ease-in-out;
+    transition: opacity 0.3s ease-in-out;
     overflow: hidden; /* To handle content overflow */
     display: block;
     text-shadow: 2px 2px 3px rgba(0, 0, 0, 1);
