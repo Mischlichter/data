@@ -252,8 +252,11 @@ const galleryHTML = `
 
 
         //LOADING SCREEN
-        
+
+
         function initializeLoadingScreen() {
+
+            blockInteractions();
                 
             const asciiArt = [
                 "                 /^ ^\\                ", 
@@ -420,6 +423,7 @@ const galleryHTML = `
                     setTimeout(() => {
                         centerContainer.remove();
                         enableScroll(); // Re-enable scrolling if it was disabled
+                        unblockInteractions();
                     }, 1000); // Adjust timing as needed based on the duration of the fade-out animation
                 }
             }

@@ -1950,8 +1950,21 @@
             });
         }
 
-        let menuContainerIds = []; // Global or accessible scope
-        let isMenuLoaded = false;  // This flag will be set to true when the menu is fully loaded
+        let menuContainerIds = [];
+        let isMenuLoaded = false;
+        let blockMenuInteractions = false;  // This will control whether interactions are allowed
+
+        function blockInteractions() {
+                blockMenuInteractions = true;
+        }
+
+        function unblockInteractions() {
+            blockMenuInteractions = false;
+        }
+
+        function isInteractionBlocked() {
+            return blockMenuInteractions;
+        }
 
         function loadMenu(menuData) {
             return new Promise((resolve, reject) => {
@@ -1980,6 +1993,7 @@
                 let currentlyActiveMenuItemId = 'menuContainer0';
 
                 const handleInteraction = async (itemId, index) => {
+                    if (blockMenuInteractions) return;
                     if ((currentlyActiveMenuItemId === 'menuLogo' && itemId === 'menuContainer0') ||
                         (currentlyActiveMenuItemId === 'menuContainer0' && itemId === 'menuLogo')) {
                         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
