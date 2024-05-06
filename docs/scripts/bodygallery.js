@@ -211,20 +211,23 @@ const galleryHTML = `
 
         function toggleTextInfo() {
             const textInfo = document.getElementById('text-info');
-            
+            const textInfo2 = document.getElementById('text-info2'); // Get the text-info2 element
+
             if (textInfoVisible) {
                 hideTextInfo().then(() => {
-                    console.log('Text info hidden by toggle');
+                    //console.log('Text info hidden by toggle');
+                    textInfo2.style.pointerEvents = 'none'; // Make text-info2 ignore mouse events
                 });
                 textInfoVisible = false;  // After toggling off, prevent showing until toggled on
             } else {
                 textInfoVisible = true;   // Allow hide and show functions to operate normally
                 showTextInfo().then(() => {
-                    console.log('Text info shown by toggle');
+                    //console.log('Text info shown by toggle');
+                    textInfo2.style.pointerEvents = 'auto'; // Make text-info2 respond to mouse events
                 });
-                
             }
         }
+
 
 
 
@@ -1486,26 +1489,25 @@ const galleryHTML = `
         // Attach the click event listener to the #text-info2 element
         document.addEventListener('DOMContentLoaded', function() {
             document.body.addEventListener('click', function(event) {
-                if (event.target.closest('#text-info2')) {
-                    const promptElement = document.getElementById('text-prompt2');
-                    if (promptElement) {
-                        // Retrieve the text content and remove the 'Prompt:' part before trimming whitespace
-                        const promptText = promptElement.textContent.replace('Prompt:', '').trim();
-                        //console.log('Prompt text:', promptText);  // This log shows the modified prompt text
-
-                        if (promptText) {
-                            navigator.clipboard.writeText(promptText)
-                                .then(() => {
-                                    showNotification('Prompt Text copied!');  // Notification text adjusted for clarity
-                                })
-                                .catch(err => {
-                                    showNotification('Failed to copy prompt text. Please try again.');
-                                });
+                if (textInfoVisible) { // Check if actions should be taken
+                    if (event.target.closest('#text-info2')) {
+                        const promptElement = document.getElementById('text-prompt2');
+                        if (promptElement) {
+                            const promptText = promptElement.textContent.replace('Prompt:', '').trim();
+                            if (promptText) {
+                                navigator.clipboard.writeText(promptText)
+                                    .then(() => {
+                                        showNotification('Prompt Text copied!');  // Notification text adjusted for clarity
+                                    })
+                                    .catch(err => {
+                                        showNotification('Failed to copy prompt text. Please try again.');
+                                    });
+                            } else {
+                                console.log('No prompt text found to copy');
+                            }
                         } else {
-                            console.log('No prompt text found to copy');
+                            console.log('Prompt element not found');
                         }
-                    } else {
-                        console.log('Prompt element not found');
                     }
                 }
             });
