@@ -299,7 +299,21 @@ const galleryHTML = `
                 container.appendChild(lineDiv);
             });
 
-            
+            function resetPageStyles() {
+                // Re-enable scrolling on the body and html
+                document.body.style.overflow = '';
+                document.documentElement.style.overflow = '';
+
+                // Reset any fixed or absolute positioning that might be applied to body elements
+                document.body.style.position = '';
+
+                // Remove event listeners that may have been added during the gallery view
+                // Example: assuming a function disableScroll() added event listeners
+                enableScroll();
+
+                // Reset any additional styles or modifications
+                // This depends on what else might be manipulated during your gallery's runtime
+            }
 
             function preventDefault(e) {
                 e.preventDefault();
