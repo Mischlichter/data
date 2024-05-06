@@ -559,6 +559,7 @@ const galleryHTML = `
 
                                                     img.onclick = () => onImageClick(img.src);
                                                     if (currentImageIndex !== -1) {
+
                                                         showSlideshow();
                                                     } else {
                                                         console.error("Clicked image index not found in dynamicImages array.");
@@ -592,11 +593,41 @@ const galleryHTML = `
             }
         }
 
+        function updateVisibleImages() {
+            // Fetch all image elements that might be in dynamicImages
+            const allImages = document.querySelectorAll('img');
+            const newVisibleImages = [];
+
+            allImages.forEach(img => {
+                // Check if the image's container is not hidden
+                const container = img.closest('.image-container');
+                const isVisible = container && !container.classList.contains('hidden-image');
+
+                if (isVisible) {
+                    newVisibleImages.push(img.src); // Add visible images to the new list
+                }
+            });
+
+            // Compare new list with the current dynamicImages to log changes
+            const newImagesHidden = dynamicImages.filter(src => !newVisibleImages.includes(src));
+            const newImagesShown = newVisibleImages.filter(src => !dynamicImages.includes(src));
+
+            if (newImagesHidden.length > 0) {
+                //console.log('Images hidden:', newImagesHidden);
+            }
+            if (newImagesShown.length > 0) {
+                //console.log('New images shown:', newImagesShown);
+            }
+
+            // Update the dynamicImages array
+            dynamicImages = newVisibleImages;
+        }
 
 
 
 
         function onImageClick(imgSrc) {
+            updateVisibleImages();
             currentImageIndex = dynamicImages.indexOf(imgSrc);
             //console.log("Current Image Index:", currentImageIndex);
           
@@ -1392,6 +1423,7 @@ const galleryHTML = `
                     overlay.innerHTML = displayedWords.join('<br>');
 
                     container.classList.remove('hidden-image');
+                    
                   
 
           
@@ -1399,10 +1431,12 @@ const galleryHTML = `
                 } else {
                     container.classList.add('hidden-image');
                     overlay.textContent = '';
+                    
 
                     
                     
                 }
+
             });
         }
 
@@ -1445,6 +1479,7 @@ const galleryHTML = `
         }
 
         function showSlideshow() {
+
             const slideshow = document.getElementById('slideshow');
             if (!slideshow) {
                 return; // Exit the function early if the slideshow does not exist
