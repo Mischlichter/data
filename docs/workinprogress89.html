@@ -1953,6 +1953,7 @@
         let menuContainerIds = [];
         let isMenuLoaded = false;
         let blockMenuInteractions = false;  // This will control whether interactions are allowed
+        var menufade = false;
 
         function blockInteractions() {
                 blockMenuInteractions = true;
@@ -2365,25 +2366,32 @@
 
         function loadScene(index) {
             const scene = scenesData[index];
-            const sceneImages = scenesiData[index]; // Assuming scenesiData is structured similarly
+            const sceneImages = scenesiData[index];
 
             if (!scene) return;
 
             // Remove all existing containers and dynamic styles
-            const existingContainers = document.querySelectorAll('.flex-container, .flex-icontainer');
-            existingContainers.forEach(container => container.remove());
-
-            // Clear dynamic styles
+            document.querySelectorAll('.flex-container, .flex-icontainer').forEach(container => container.remove());
             clearDynamicStyles();
 
-            loadInterface(index);
+            function waitForMenuFade() {
+                if (menufade) {
+                    loadInterface(index);
+                    let formattedSceneKey = scene.sceneKey.length === 6 ? `scene0${scene.sceneKey.charAt(5)}` : scene.sceneKey;
+                    updateIframe(formattedSceneKey);
 
-            let formattedSceneKey = scene.sceneKey.length === 6 ? `scene0${scene.sceneKey.charAt(5)}` : scene.sceneKey;
+                    // Now that we have the menufade, we can proceed with the rest of the setup.
+                    setupScene(index, scene, sceneImages);
+                } else {
+                    setTimeout(waitForMenuFade, 100); // Check again after 100 milliseconds
+                }
+            }
 
-            // Update the iframe with the new scene
-            updateIframe(formattedSceneKey);
-            //console.log('Formatted Scene Key:', formattedSceneKey);
-            // Merge and sort text and image containers
+            waitForMenuFade(); // Initiate the check
+        }
+
+        function setupScene(index, scene, sceneImages) {
+            // Place the rest of your loadScene logic here that depends on menufade being true
             let combinedData = [];
             Object.keys(scene.containers).forEach(key => {
                 combinedData.push({ type: 'text', key: key, content: scene.containers[key] });
@@ -2401,21 +2409,17 @@
                 return numA - numB || (a.type === 'text' ? -1 : 1);
             });
 
-            // Create containers in sorted order
             combinedData.forEach(item => {
                 const container = document.createElement('div');
                 container.id = item.key;
                 container.className = item.type === 'text' ? 'flex-container' : 'flex-icontainer';
                 document.body.appendChild(container);
-
                 if (item.type === 'text') {
                     attachLinkToContainer(container, item.content.style);
                 }
-
                 const style = document.createElement('style');
                 style.innerHTML = item.content.style;
                 document.head.appendChild(style);
-                dynamicStyles.push(style);
 
                 if (item.type === 'image') {
                     const image = document.createElement('img');
@@ -2424,18 +2428,14 @@
                 }
             });
 
-            // Create and style the footer
-            createStyledFooter()
-
+            createStyledFooter();
             currentSceneData = scene;
-
-            // Update containers when loading a new scene
             updateAllContainers(scene);
-
             highlightActiveMenuItem(`menuContainer${index}`);
             observeImagesForAnimation();
             createScrollToTopButton();
         }
+
 
         function createScrollToTopButton() {
             const button = document.createElement('button');
@@ -2684,7 +2684,7 @@
             });
         }
         
-        var menufade = false;
+
 
         function fadeInmenu() {
             return new Promise((resolve, reject) => {
