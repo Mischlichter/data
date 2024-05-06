@@ -781,7 +781,6 @@
             const secondLoadCompleteFlag = 'secondLoadComplete';
             let loadingPercentage = 0; // Variable to store loading percentage
 
-
             // Check the flags immediately and adjust the loadingPercentage if it's the second load
             if (localStorage.getItem(firstLoadCompleteFlag) && !localStorage.getItem(secondLoadCompleteFlag)) {
                 loadingPercentage = 111; // Pre-set loading percentage for the second load
@@ -805,7 +804,7 @@
 
 
 
- 
+     
 
          
 
@@ -1508,14 +1507,14 @@
 
 
 //////// IFRAME LOADING ////////
-
+        
 
         function updateIframe(sceneKey) {
             const iframeContainer = document.getElementById('iframeContainer');
             const mouseOverlay = document.getElementById('mouseOverlay');
             const bodyGalleryContainer = document.getElementById('bodyGalleryContainer');
 
-
+            removeAllScrollEventListeners()
 
 
             unhideElementsByClass("foreground-image-container");
@@ -1584,6 +1583,21 @@
 
             }
         }
+
+        function removeAllScrollEventListeners() {
+            // Get all elements in the document
+            const allElements = document.querySelectorAll('*');
+
+            // Iterate over each element
+            allElements.forEach(element => {
+                // Remove scroll event listeners from the element
+                element.removeEventListener('scroll', checkAndStartAnimationsOnScroll);
+                // Remove other scroll event listeners if needed
+            });
+        }
+
+
+
 
 
         function hideElementsByClass(className) {
@@ -2013,10 +2027,7 @@
                     };
 
                     menuContainer.addEventListener('click', handleMenuInteraction);
-                    menuContainer.addEventListener('touchend', function(event) {
-                        handleMenuInteraction(event);
-                        enableScroll();
-                    });
+                    menuContainer.addEventListener('touchend', handleMenuInteraction);
                     menuContainer.addEventListener('mouseover', () => animateTextDuringHover(menuContainer));
 
                     if (index === 0) {
@@ -2194,8 +2205,12 @@
         function initializeFirstScene() {
             currentSceneIndex = 0; // Set to the first scene
             //loadScene(currentSceneIndex); // Load the first scene
-            fadeInmenu()
+            fadeInmenu();
+
+            // Add scroll event listener after initializing the first scene
+            window.addEventListener('scroll', checkAndStartAnimationsOnScroll);
         }
+
 
 
         function shuffleMenu() {
@@ -3379,12 +3394,12 @@
           }
         }, { passive: false });
 
-
+        
     
         // Add event listener to resize in case the viewport size changes
         window.addEventListener('resize', updateVirtualCanvasSize);
 
-        window.addEventListener('scroll', checkAndStartAnimationsOnScroll);
+        
         
         window.addEventListener('resize', updateLogoVisibility);
 
