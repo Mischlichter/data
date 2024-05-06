@@ -2683,6 +2683,8 @@
                 });
             });
         }
+        
+        var menufade = false;
 
         function fadeInmenu() {
             return new Promise((resolve, reject) => {
@@ -2831,87 +2833,94 @@
         }
 
         function loadInterface(currentSceneIndex) {
-            // Extend: Function to ensure wrapper existence
-            function ensureWrapperExistence(wrapperClass, contentStructure) {
-                let wrapper = document.querySelector(`.${wrapperClass}`);
-                if (!wrapper) {
-                    wrapper = document.createElement('div');
-                    wrapper.className = wrapperClass;
-                    document.body.appendChild(wrapper); // Append wrapper to the body
-                    wrapper.innerHTML = contentStructure; // Set the inner HTML as per the structure required
-                }
-            }
-
-            // For scene index 3, remove the wrappers completely
-            if (currentSceneIndex === 3 || currentSceneIndex === 4) {
-                document.querySelectorAll('.scale-wrapper-background, .scale-wrapper-interface').forEach(wrapper => {
-                    wrapper.parentNode.removeChild(wrapper);
+            // Function to check the menufade condition and resolve when it's true
+            function waitForMenuFade() {
+                return new Promise((resolve, reject) => {
+                    const checkFade = () => {
+                        if (menufade) {
+                            resolve();
+                        } else {
+                            setTimeout(checkFade, 100); // Retry after 100 milliseconds
+                        }
+                    };
+                    checkFade();
                 });
-                return; // Exit the function after handling the special case for scene index 3
             }
 
-            // Ensure the existence of `.scale-wrapper-background` and `.scale-wrapper-interface` wrappers
-            ensureWrapperExistence('scale-wrapper-background', `
-                <div id="backgroundRoot">
-                    <div id="backgroundContainer">
-                        <div id="backgroundInterfaceContainer">
-                            <div id="interfaceBackground"></div>
+            waitForMenuFade().then(() => {
+                function ensureWrapperExistence(wrapperClass, contentStructure) {
+                    let wrapper = document.querySelector(`.${wrapperClass}`);
+                    if (!wrapper) {
+                        wrapper = document.createElement('div');
+                        wrapper.className = wrapperClass;
+                        document.body.appendChild(wrapper);
+                        wrapper.innerHTML = contentStructure;
+                    }
+                }
+
+                if (currentSceneIndex === 3 || currentSceneIndex === 4) {
+                    document.querySelectorAll('.scale-wrapper-background, .scale-wrapper-interface').forEach(wrapper => {
+                        wrapper.parentNode.removeChild(wrapper);
+                    });
+                    return;
+                }
+
+                ensureWrapperExistence('scale-wrapper-background', `
+                    <div id="backgroundRoot">
+                        <div id="backgroundContainer">
+                            <div id="backgroundInterfaceContainer">
+                                <div id="interfaceBackground"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `);
+                `);
 
-            ensureWrapperExistence('scale-wrapper-interface', `
-                <div id="interfaceContainer">
-                    <div id="interfaceSideLeft" class="sideImageContainer"></div>
-                    <div id="interfaceViewerContainer">
-                        <img id="interfaceViewerImage" alt="Viewer Image">
+                ensureWrapperExistence('scale-wrapper-interface', `
+                    <div id="interfaceContainer">
+                        <div id="interfaceSideLeft" class="sideImageContainer"></div>
+                        <div id="interfaceViewerContainer">
+                            <img id="interfaceViewerImage" alt="Viewer Image">
+                        </div>
+                        <div id="interfaceSideRight" class="sideImageContainer"></div>
                     </div>
-                    <div id="interfaceSideRight" class="sideImageContainer"></div>
-                </div>
-            `);
+                `);
 
-            // Your existing code to tile images and update the viewer image
-            const sceneFormatted = currentSceneIndex.toString().padStart(2, '0');
-            const imageHeight = 2048; // Fixed height for all images
+                const sceneFormatted = currentSceneIndex.toString().padStart(2, '0');
+                const imageHeight = 2048;
+                const backgroundUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/background/b${sceneFormatted}.png`;
+                const sideImageUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/side/s${sceneFormatted}.png`;
+                const viewerImageUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/v${sceneFormatted}.png`;
+                const viewerMaskUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/vm${sceneFormatted}.png`;
 
-            const backgroundUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/background/b${sceneFormatted}.png`;
-            const sideImageUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/side/s${sceneFormatted}.png`;
-            const viewerImageUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/v${sceneFormatted}.png`;
-            const viewerMaskUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/vm${sceneFormatted}.png`;
+                createVerticalTiles_a('interfaceBackground', backgroundUrl, imageHeight);
+                createVerticalTiles_b('interfaceSideLeft', sideImageUrl, imageHeight);
+                createVerticalTiles_b('interfaceSideRight', sideImageUrl, imageHeight);
 
-            createVerticalTiles_a('interfaceBackground', backgroundUrl, imageHeight);
-            createVerticalTiles_b('interfaceSideLeft', sideImageUrl, imageHeight);
-            createVerticalTiles_b('interfaceSideRight', sideImageUrl, imageHeight);
-
-            const viewerImageElement = document.getElementById('interfaceViewerImage');
-
-            // Check if the viewer image element exists and is part of the DOM
-            if (viewerImageElement && document.body.contains(viewerImageElement)) {
-                // Create a new Image object to preload the viewer image
-                const tempImage = new Image();
-                tempImage.onload = function() {
-                    // Once the image is fully loaded, apply it to the viewerImageElement
-                    viewerImageElement.src = tempImage.src;
-                    viewerImageElement.style.maskImage = `url('${viewerMaskUrl}')`;
-                    viewerImageElement.style.webkitMaskImage = `url('${viewerMaskUrl}')`;
-                    viewerImageElement.style.maskSize = 'cover';
-                    viewerImageElement.style.webkitMaskSize = 'cover';
-
-                    // Now that everything is ready and rendered, start the fade-in process
-                    setTimeout(() => {
-                        fadeInElements(); // This function should handle fading in the viewer and associated elements
-                    }, 111); // Delay to allow the browser to render the updated image before fading in
-                };
-                tempImage.onerror = function() {
-                    console.error("Failed to load image at url:", viewerImageUrl);
-                };
-                tempImage.src = viewerImageUrl; // Set the image source which starts loading the image
-            } else {
-                console.log("Viewer image element does not exist in the DOM.");
-            }
-
+                const viewerImageElement = document.getElementById('interfaceViewerImage');
+                if (viewerImageElement && document.body.contains(viewerImageElement)) {
+                    const tempImage = new Image();
+                    tempImage.onload = () => {
+                        viewerImageElement.src = tempImage.src;
+                        viewerImageElement.style.maskImage = `url('${viewerMaskUrl}')`;
+                        viewerImageElement.style.webkitMaskImage = `url('${viewerMaskUrl}')`;
+                        viewerImageElement.style.maskSize = 'cover';
+                        viewerImageElement.style.webkitMaskSize = 'cover';
+                        setTimeout(() => {
+                            fadeInElements();
+                        }, 111);
+                    };
+                    tempImage.onerror = () => {
+                        console.error("Failed to load image at url:", viewerImageUrl);
+                    };
+                    tempImage.src = viewerImageUrl;
+                } else {
+                    console.log("Viewer image element does not exist in the DOM.");
+                }
+            }).catch(error => {
+                console.error("Error waiting for menufade:", error);
+            });
         }
+
 
         
 
