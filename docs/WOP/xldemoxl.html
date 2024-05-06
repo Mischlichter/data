@@ -781,6 +781,7 @@
             const secondLoadCompleteFlag = 'secondLoadComplete';
             let loadingPercentage = 0; // Variable to store loading percentage
 
+
             // Check the flags immediately and adjust the loadingPercentage if it's the second load
             if (localStorage.getItem(firstLoadCompleteFlag) && !localStorage.getItem(secondLoadCompleteFlag)) {
                 loadingPercentage = 111; // Pre-set loading percentage for the second load
@@ -804,7 +805,7 @@
 
 
 
-     
+ 
 
          
 
@@ -1507,7 +1508,7 @@
 
 
 //////// IFRAME LOADING ////////
-        
+
 
         function updateIframe(sceneKey) {
             const iframeContainer = document.getElementById('iframeContainer');
@@ -1582,22 +1583,6 @@
 
 
             }
-        }
-
-        function resetPageStyles() {
-            // Re-enable scrolling on the body and html
-            document.body.style.overflow = '';
-            document.documentElement.style.overflow = '';
-
-            // Reset any fixed or absolute positioning that might be applied to body elements
-            document.body.style.position = '';
-
-            // Remove event listeners that may have been added during the gallery view
-            // Example: assuming a function disableScroll() added event listeners
-            enableScroll();
-
-            // Reset any additional styles or modifications
-            // This depends on what else might be manipulated during your gallery's runtime
         }
 
 
@@ -1950,128 +1935,104 @@
             });
         }
 
-        let menuContainerIds = [];
-        let isMenuLoaded = false;
-        let blockMenuInteractions = false;  // This will control whether interactions are allowed
-        var menufade = false;
-
-        function blockInteractions() {
-                blockMenuInteractions = true;
-        }
-
-        function unblockInteractions() {
-            blockMenuInteractions = false;
-        }
-
-        function isInteractionBlocked() {
-        return blockMenuInteractions;
-        }
+        let menuContainerIds = []; // Global or accessible scope
 
         function loadMenu(menuData) {
-            return new Promise((resolve, reject) => {
-                isAnimating = true;
+            isAnimating = true;
 
-                setTimeout(() => {
-                    isAnimating = false;
-                }, 4000);
+            setTimeout(() => {
+                isAnimating = false;
+            }, 4000);
 
-                let menuBar = document.querySelector('.menu-bar');
-                if (!menuBar) {
-                    menuBar = document.createElement('div');
-                    menuBar.className = 'menu-bar';
-                    document.body.appendChild(menuBar);
-                } else {
-                    menuBar.innerHTML = '';
+            let menuBar = document.querySelector('.menu-bar');
+            if (!menuBar) {
+                menuBar = document.createElement('div');
+                menuBar.className = 'menu-bar';
+                document.body.appendChild(menuBar);
+            } else {
+                menuBar.innerHTML = '';
+            }
+
+            const logoImg = document.createElement('img');
+            logoImg.src = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logo5.png';
+            logoImg.style.marginRight = '20px';
+            logoImg.id = 'menuLogo';
+            menuBar.appendChild(logoImg);
+
+            menuContainerIds = [];
+            let currentlyActiveMenuItemId = 'menuContainer0';
+
+            const handleInteraction = async (itemId, index) => {
+                if ((currentlyActiveMenuItemId === 'menuLogo' && itemId === 'menuContainer0') ||
+                    (currentlyActiveMenuItemId === 'menuContainer0' && itemId === 'menuLogo')) {
+                    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+                    return;
                 }
 
-                const logoImg = document.createElement('img');
-                logoImg.src = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logo5.png';
-                logoImg.style.marginRight = '20px';
-                logoImg.id = 'menuLogo';
-                menuBar.appendChild(logoImg);
+                if (currentlyActiveMenuItemId === itemId) {
+                    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+                    return;
+                }
 
-                menuContainerIds = [];
-                let currentlyActiveMenuItemId = 'menuContainer0';
+                currentlyActiveMenuItemId = itemId;
+                await fadeOutElements();
+                currentSceneIndex = (itemId === 'menuLogo') ? 0 : index;
 
-                const handleInteraction = async (itemId, index) => {
-                    if (blockMenuInteractions) return;
-                    if ((currentlyActiveMenuItemId === 'menuLogo' && itemId === 'menuContainer0') ||
-                        (currentlyActiveMenuItemId === 'menuContainer0' && itemId === 'menuLogo')) {
-                        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-                        return;
-                    }
+                // Load the selected scene
+                loadScene(currentSceneIndex);
 
-                    if (currentlyActiveMenuItemId === itemId) {
-                        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-                        return;
-                    }
+                // Always highlight the first menu item when the logo is clicked
+                if (itemId === 'menuLogo') {
+                    highlightActiveMenuItem('menuContainer0'); // Highlight the first menu item when the logo is clicked
+                } else {
+                    highlightActiveMenuItem(itemId); // Otherwise, highlight the current menu item
+                }
 
-                    currentlyActiveMenuItemId = itemId;
-                    await fadeOutElements();
-                    currentSceneIndex = (itemId === 'menuLogo') ? 0 : index;
+                triggerOrientationWithoutCalibration();
+            };
 
-                    // Load the selected scene
-                    loadScene(currentSceneIndex);
 
-                    // Always highlight the first menu item when the logo is clicked
-                    if (itemId === 'menuLogo') {
-                        highlightActiveMenuItem('menuContainer0'); // Highlight the first menu item when the logo is clicked
-                    } else {
-                        highlightActiveMenuItem(itemId); // Otherwise, highlight the current menu item
-                    }
+            logoImg.addEventListener('click', () => handleInteraction('menuLogo', 0));
+            logoImg.addEventListener('touchend', () => handleInteraction('menuLogo', 0));
 
-                    
+            menuData.forEach((menuItem, index) => {
+                const menuContainer = document.createElement('div');
+                menuContainer.id = `menuContainer${index}`;
+                menuContainer.className = 'menu-container';
+                menuContainer.innerText = menuItem.label;
+                menuBar.appendChild(menuContainer);
+
+                let isTouch = false;
+
+                const handleMenuInteraction = async (event) => {
+                    if (isTouch && event.type === 'click') return;
+                    isTouch = event.type === 'touchend';
+                    handleInteraction(menuContainer.id, index);
                 };
 
+                menuContainer.addEventListener('click', handleMenuInteraction);
+                menuContainer.addEventListener('touchend', handleMenuInteraction);
+                menuContainer.addEventListener('mouseover', () => animateTextDuringHover(menuContainer));
 
-                logoImg.addEventListener('click', () => handleInteraction('menuLogo', 0));
-                logoImg.addEventListener('touchend', () => handleInteraction('menuLogo', 0));
+                if (index === 0 || index === 3) {
+                    setTimeout(() => animateTextDuringHover(menuContainer), 5000);
+                }
 
-                menuData.forEach((menuItem, index) => {
-                    const menuContainer = document.createElement('div');
-                    menuContainer.id = `menuContainer${index}`;
-                    menuContainer.className = 'menu-container';
-                    menuContainer.innerText = menuItem.label;
-                    menuBar.appendChild(menuContainer);
+                menuContainerIds.push(menuContainer.id);
+            });
 
-                    let isTouch = false;
+            const fakeMenuItem1 = document.createElement('div');
+            fakeMenuItem1.className = 'menu-container';
+            fakeMenuItem1.setAttribute('data-fake', 'true');
+            menuBar.insertBefore(fakeMenuItem1, menuBar.children[1]);
 
-                    const handleMenuInteraction = async (event) => {
-                        if (isTouch && event.type === 'click') return;
-                        isTouch = event.type === 'touchend';
-                        handleInteraction(menuContainer.id, index);
-                    };
+            const fakeMenuItem2 = document.createElement('div');
+            fakeMenuItem2.className = 'menu-container';
+            fakeMenuItem2.setAttribute('data-fake', 'true');
+            menuBar.insertBefore(fakeMenuItem2, menuBar.children[5]);
 
-                    menuContainer.addEventListener('click', handleMenuInteraction);
-                    menuContainer.addEventListener('touchend', handleMenuInteraction);
-                    menuContainer.addEventListener('mouseover', () => animateTextDuringHover(menuContainer));
-
-                    if (index === 0) {
-                        setTimeout(() => animateTextDuringHover(menuContainer), 5000);
-                    }
-
-                    menuContainerIds.push(menuContainer.id);
-                });
-
-                const fakeMenuItem1 = document.createElement('div');
-                fakeMenuItem1.className = 'menu-container';
-                fakeMenuItem1.setAttribute('data-fake', 'true');
-                menuBar.insertBefore(fakeMenuItem1, menuBar.children[1]);
-
-                const fakeMenuItem2 = document.createElement('div');
-                fakeMenuItem2.className = 'menu-container';
-                fakeMenuItem2.setAttribute('data-fake', 'true');
-                menuBar.insertBefore(fakeMenuItem2, menuBar.children[5]);
-
-               
-                resolve();
-
-            }).then(() => {
-                updateLogoVisibility();
-                updateMenu(menuData);
-                triggerOrientationWithoutCalibration();
-                isMenuLoaded = true;
-            });    
+            updateLogoVisibility();
+            updateMenu(menuData);
         }
 
 
@@ -2209,29 +2170,20 @@
 
 
         function startAllMenuAnimations() {
-            if (!isMenuLoaded) {
-                //console.log("Menu is not loaded yet. Retrying...");
-                setTimeout(startAllMenuAnimations, 100); // Retry after 500 milliseconds
-                return;
-            }
-
             menuContainerIds.forEach(containerId => {
                 startAnimationForMenuContainer(containerId);
-                if (containerId === 'menuContainer0') {
-                    initializeFirstScene();
-                }
+
+            if (containerId === 'menuContainer0') {
+                initializeFirstScene();
+            }
             });
         }
 
         function initializeFirstScene() {
             currentSceneIndex = 0; // Set to the first scene
             //loadScene(currentSceneIndex); // Load the first scene
-            fadeInmenu();
-
-            // Add scroll event listener after initializing the first scene
-            window.addEventListener('scroll', checkAndStartAnimationsOnScroll);
+            fadeInmenu()
         }
-
 
 
         function shuffleMenu() {
@@ -2639,90 +2591,37 @@
             return /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
         }
 
-        let tiles = { a: false, b: false };
-
         function fadeInElements() {
-            const waitForTiles = () => {
-                return new Promise((resolve) => {
-                    const checkTiles = () => {
-                        if (tiles.a && tiles.b) {
-                            resolve(); // Resolve the promise when both tiles.a and tiles.b are true
+            const selectors = ['#interfaceContainer', '#backgroundContainer', '#iframeContainer', '#bodyGalleryContainer', '.flex-container'];
+            selectors.forEach(selector => {
+                const elements = document.querySelectorAll(selector);
+                elements.forEach(element => {
+                    if (element) {
+                        element.style.opacity = 1; // Set opacity to 1
+                        if (isIOS()) {
+                            element.style.transition = 'none'; // Remove transitions for iOS
                         } else {
-                            setTimeout(checkTiles, 100); // Check every 100 milliseconds
+                            element.style.transition = 'opacity 1s ease-in-out'; // Apply transitions for non-iOS
                         }
-                    };
-                    checkTiles(); // Start checking tiles
-                });
-            };
-
-            // Wait for both tiles.a and tiles.b to become true
-            waitForTiles().then(() => {
-                const selectors = ['#interfaceContainer', '#backgroundContainer', '#iframeContainer', '#bodyGalleryContainer', '.flex-container'];
-                let animationCount = 0;
-
-                const animationEndHandler = () => {
-                    animationCount--;
-                    if (animationCount === 0) {
-                        shouldFadeIn = true; // Set the flag after all animations have ended
                     }
-                };
-
-                selectors.forEach(selector => {
-                    const elements = document.querySelectorAll(selector);
-                    elements.forEach(element => {
-                        if (element) {
-                            animationCount++;
-                            element.style.opacity = 1; // Set opacity to 1
-                            if (isIOS()) {
-                                element.style.transition = 'none'; // Remove transitions for iOS
-                            } else {
-                                element.style.transition = 'opacity 1s ease-in-out'; // Apply transitions for non-iOS
-                            }
-                            element.addEventListener('transitionend', animationEndHandler);
-                        }
-                    });
                 });
             });
         }
-        
-
 
         function fadeInmenu() {
-            return new Promise((resolve, reject) => {
-                const selectors = ['.menu-bar', '.menu-container'];
-                let animationCount = 0;
-
-                const animationEndHandler = () => {
-                    animationCount--;
-                    if (animationCount === 0) {
-                        // Set the flag after all animations have ended
-                        menufade = true;
-                        resolve(); // Resolve the promise to indicate that animations have completed
-                    }
-                };
-
-                selectors.forEach(selector => {
-                    const elements = document.querySelectorAll(selector);
-                    elements.forEach(element => {
-                        if (element) {
-                            animationCount++;
-                            element.style.opacity = 1; // Set opacity to 1
-                            if (!isIOS()) {
-                                element.style.transition = 'opacity 0.5s ease-in-out'; // Apply a half-second transition for non-iOS
-                                element.addEventListener('transitionend', animationEndHandler);
-                            } else {
-                                // If it's iOS, immediately set the flag and resolve the promise
-                                menufade = true;
-                                resolve();
-                            }
+            const selectors = ['.menu-bar', '.menu-container'];
+            selectors.forEach(selector => {
+                const elements = document.querySelectorAll(selector);
+                elements.forEach(element => {
+                    if (element) {
+                        element.style.opacity = 1; // Set opacity to 1
+                        if (isIOS()) {
+                            element.style.transition = 'none'; // Remove transitions for iOS
+                        } else {
+                            element.style.transition = 'opacity 0.5s ease-in-out'; // Apply a half-second transition for non-iOS
                         }
-                    });
+                    }
                 });
-                
-                // If no animations are found, resolve the promise immediately
-                if (animationCount === 0) {
-                    resolve();
-                }
             });
         }
 
@@ -2762,69 +2661,52 @@
 
 
         function createVerticalTiles_a(containerId, imageUrl, imageHeight) {
-            return new Promise((resolve, reject) => {
-                const container = document.getElementById(containerId);
-                container.innerHTML = ''; // Clear existing content
+            const container = document.getElementById(containerId);
+            container.innerHTML = ''; // Clear existing content
 
-                // Assuming the container's height is directly based on its content (the images)
-                // We calculate the number of tiles needed to fill the container plus one for overflow
-                const numTiles = 11; // Since you mentioned wanting about 10 tiles
+            // Assuming the container's height is directly based on its content (the images)
+            // We calculate the number of tiles needed to fill the container plus one for overflow
+            const numTiles = 11; // Since you mentioned wanting about 10 tiles
 
-                for (let i = 0; i < numTiles; i++) {
-                    const img = document.createElement('img');
-                    img.src = imageUrl;
-                    img.style.position = 'absolute';
-                    img.style.top = `${i * imageHeight}px`;
-                    img.style.left = 0;
-                    img.style.width = '100%'; // Stretch the image to fill the container's width
-                    img.style.height = `${imageHeight}px`; // Set a fixed height for direct tiling
-                    container.appendChild(img);
-                    requestAnimationFrame(updateParallax);
-                    
-                    // This function needs to be called to update the virtual canvas size accordingly
-                    delayedVirtualCanvasUpdate();
-                }
-
-                // Resolve the promise to indicate that tiles are constructed
-                resolve();
-            }).then(() => {
-                tiles.a = true;
-                // Set the flag for tiles a to true after the promise is resolved
+            for (let i = 0; i < numTiles; i++) {
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.style.position = 'absolute';
+                img.style.top = `${i * imageHeight}px`;
+                img.style.left = 0;
+                img.style.width = '100%'; // Stretch the image to fill the container's width
+                img.style.height = `${imageHeight}px`; // Set a fixed height for direct tiling
+                container.appendChild(img);
+                requestAnimationFrame(updateParallax);
                 
-                
-            });
+                // This function needs to be called to update the virtual canvas size accordingly
+                delayedVirtualCanvasUpdate();
+            }
         }
 
+
+
         function createVerticalTiles_b(containerId, imageUrl, imageHeight) {
-            return new Promise((resolve, reject) => {
-                const container = document.getElementById(containerId);
-                container.innerHTML = ''; // Clear existing content
+            const container = document.getElementById(containerId);
+            container.innerHTML = ''; // Clear existing content
 
+            // Assuming the container's height is directly based on its content (the images)
+            // We calculate the number of tiles needed to fill the container plus one for overflow
+            const numTiles = 11; // Since you mentioned wanting about 10 tiles
+
+            for (let i = 0; i < numTiles; i++) {
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.style.position = 'absolute';
+                img.style.top = `${i * imageHeight}px`;
+                img.style.left = 0;
+                img.style.width = '100%'; // Stretch the image to fill the container's width
+                img.style.height = `${imageHeight}px`; // Set a fixed height for direct tiling
+                container.appendChild(img);
                 
-                // Assuming the container's height is directly based on its content (the images)
-                // We calculate the number of tiles needed to fill the container plus one for overflow
-                const numTiles = 11; // Since you mentioned wanting about 10 tiles
-
-                for (let i = 0; i < numTiles; i++) {
-                    const img = document.createElement('img');
-                    img.src = imageUrl;
-                    img.style.position = 'absolute';
-                    img.style.top = `${i * imageHeight}px`;
-                    img.style.left = 0;
-                    img.style.width = '100%'; // Stretch the image to fill the container's width
-                    img.style.height = `${imageHeight}px`; // Set a fixed height for direct tiling
-                    container.appendChild(img);
-                    
-                    
-                    updateVirtualCanvasSize();
-                }
-
-                // Resolve the promise to indicate that tiles are constructed
-                resolve();
-            }).then(() => {
-                // Set the flag for tiles b to true after the promise is resolved
-                tiles.b = true;
-            });
+                
+                updateVirtualCanvasSize();
+            }
         }
 
         function delayedVirtualCanvasUpdate() {
@@ -2916,7 +2798,9 @@
 
         }
 
-        
+        function elementExistsInDOM(element) {
+            return document.body.contains(element);
+        }
 
         let lastScrollY = 0;
 
@@ -2977,12 +2861,10 @@
 
         function animateText(element, finalText, duration, delay, finalColor = { r: 0, g: 255, b: 204 }) {
             var frameCount = 0; // Tracks frames
-            var totalFrames = 180; // Adjust for speed of color transitions
+            var totalFrames = 25; // Adjust for speed of color transitions
 
-            // Assign a unique random phase for each color component
-            var randomPhaseR = Math.random() * 2 * Math.PI;
-            var randomPhaseG = Math.random() * 2 * Math.PI;
-            var randomPhaseB = Math.random() * 2 * Math.PI;
+            // Assign a random phase for each element to start its color cycle
+            var randomPhase = Math.random() * 2 * Math.PI;
 
             setTimeout(function() {
                 var currentText = generateRandomString(finalText.length);
@@ -2995,16 +2877,18 @@
                 var shuffleCount = 0;
                 var lastRender = performance.now();
 
-                // Adjusted to use specific random phases for each color component
-                function getColorComponent(phaseShift, randomPhase) {
+                function getColorComponent(phaseShift) {
+                    // Incorporate the random phase into the cycling
                     return Math.floor(127.5 * (1 + Math.sin(2 * Math.PI * frameCount / totalFrames + phaseShift + randomPhase)));
                 }
 
                 function step(timestamp) {
                     var progress = timestamp - lastRender;
                     if (progress > intervalTime) {
+                        // Update the lastRender time
                         lastRender = timestamp - (progress % intervalTime);
 
+                        // Update logic remains the same
                         if (shuffleCount % shuffleFrequency === 0 && index < finalText.length) {
                             currentText = currentText.substring(0, index) + finalText.charAt(index) + generateRandomString(finalText.length - index - 1);
                             index++;
@@ -3016,9 +2900,9 @@
                         element.style.opacity = Math.min(1, parseFloat(element.style.opacity) + 0.05);
 
                         let colorTransitionFactor = index / finalText.length;
-                        let r = getColorComponent(0, randomPhaseR);
-                        let g = getColorComponent(2 * Math.PI / 3, randomPhaseG);
-                        let b = getColorComponent(4 * Math.PI / 3, randomPhaseB);
+                        let r = getColorComponent(0);
+                        let g = getColorComponent(2 * Math.PI / 3);
+                        let b = getColorComponent(4 * Math.PI / 3);
 
                         r = Math.floor(r + (finalColor.r - r) * colorTransitionFactor);
                         g = Math.floor(g + (finalColor.g - g) * colorTransitionFactor);
@@ -3030,7 +2914,7 @@
                         if (index === finalText.length && shuffleCount % shuffleFrequency === 0) {
                             element.textContent = finalText;
                             element.style.opacity = '1';
-                            element.style.color = `rgb(${finalColor.r}, ${finalColor.g}, ${finalColor.b})`;
+                            element.style.color = `rgb(${finalColor.r}, ${finalColor.g}, ${finalColor.b})`; // Set final color
                             return;
                         }
                     }
@@ -3040,7 +2924,6 @@
                 requestAnimationFrame(step);
             }, delay);
         }
-
 
 
 
@@ -3417,13 +3300,11 @@
             event.preventDefault();
           }
         }, { passive: false });
-
-        
     
         // Add event listener to resize in case the viewport size changes
         window.addEventListener('resize', updateVirtualCanvasSize);
 
-        
+        window.addEventListener('scroll', checkAndStartAnimationsOnScroll);
         
         window.addEventListener('resize', updateLogoVisibility);
 
