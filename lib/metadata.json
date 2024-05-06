@@ -6,5 +6,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "16026995437"
+    },
+    "63017049.jpg": {
+        "File Name": "63017049.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "0.8] atmosphere, a testament to the fusion of tradition and future.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "63017049"
     }
 }
