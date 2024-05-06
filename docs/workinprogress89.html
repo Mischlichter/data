@@ -2013,7 +2013,10 @@
                     };
 
                     menuContainer.addEventListener('click', handleMenuInteraction);
-                    menuContainer.addEventListener('touchend', handleMenuInteraction);
+                    menuContainer.addEventListener('touchend', function(event) {
+                        handleMenuInteraction(event);
+                        enableScroll();
+                    });
                     menuContainer.addEventListener('mouseover', () => animateTextDuringHover(menuContainer));
 
                     if (index === 0) {
@@ -3376,7 +3379,7 @@
           }
         }, { passive: false });
 
-        
+
     
         // Add event listener to resize in case the viewport size changes
         window.addEventListener('resize', updateVirtualCanvasSize);
