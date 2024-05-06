@@ -1963,7 +1963,7 @@
         }
 
         function isInteractionBlocked() {
-            return blockMenuInteractions;
+        return blockMenuInteractions;
         }
 
         function loadMenu(menuData) {
@@ -2208,12 +2208,17 @@
 
 
         function startAllMenuAnimations() {
+            if (!isMenuLoaded) {
+                //console.log("Menu is not loaded yet. Retrying...");
+                setTimeout(startAllMenuAnimations, 100); // Retry after 500 milliseconds
+                return;
+            }
+
             menuContainerIds.forEach(containerId => {
                 startAnimationForMenuContainer(containerId);
-
-            if (containerId === 'menuContainer0') {
-                initializeFirstScene();
-            }
+                if (containerId === 'menuContainer0') {
+                    initializeFirstScene();
+                }
             });
         }
 
