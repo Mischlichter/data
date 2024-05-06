@@ -1485,36 +1485,27 @@ const galleryHTML = `
 
         // Attach the click event listener to the #text-info2 element
         document.addEventListener('DOMContentLoaded', function() {
-            //console.log('DOM fully loaded and parsed');
-
             document.body.addEventListener('click', function(event) {
-                //console.log('Click event detected on body');
-
                 if (event.target.closest('#text-info2')) {
-                    //console.log('Click inside #text-info2');
-
                     const promptElement = document.getElementById('text-prompt2');
                     if (promptElement) {
-                        //console.log('Found #text-prompt2:', promptElement);
-
-                        const promptText = promptElement.textContent.trim();
-                        console.log('Prompt text:', promptText);
+                        // Retrieve the text content and remove the 'Prompt:' part before trimming whitespace
+                        const promptText = promptElement.textContent.replace('Prompt:', '').trim();
+                        console.log('Prompt text:', promptText);  // This log shows the modified prompt text
 
                         if (promptText) {
                             navigator.clipboard.writeText(promptText)
                                 .then(() => {
-                                    //console.log('Successfully copied prompt text to clipboard');
-                                    showNotification('Prompt Text copied!');
+                                    showNotification('Prompt Text copied!');  // Notification text adjusted for clarity
                                 })
                                 .catch(err => {
-                                    //console.error('Failed to copy prompt text:', err);
                                     showNotification('Failed to copy prompt text. Please try again.');
                                 });
                         } else {
-                            //console.log('No prompt text found to copy');
+                            console.log('No prompt text found to copy');
                         }
                     } else {
-                        //console.log('Prompt element not found');
+                        console.log('Prompt element not found');
                     }
                 }
             });
