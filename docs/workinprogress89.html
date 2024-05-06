@@ -1526,15 +1526,8 @@
                 existingIframe.remove(); // Remove the old iframe
             }
             if (bodyGalleryContainer) {
-                console.log('Resetting styles and clearing gallery content');
-
-                // First, reset all dynamic styles and behaviors to ensure a clean state
-                resetPageStyles(); // Custom function to reset styles if necessary
-
-                // Then clear the gallery content
                 bodyGalleryContainer.innerHTML = ''; // Clear body gallery content
             }
-
 
             if (sceneKey === 'scene04') {
                 // Logic for scene04 (Gallery)
@@ -1591,7 +1584,21 @@
             }
         }
 
-        
+        function resetPageStyles() {
+            // Re-enable scrolling on the body and html
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
+
+            // Reset any fixed or absolute positioning that might be applied to body elements
+            document.body.style.position = '';
+
+            // Remove event listeners that may have been added during the gallery view
+            // Example: assuming a function disableScroll() added event listeners
+            enableScroll();
+
+            // Reset any additional styles or modifications
+            // This depends on what else might be manipulated during your gallery's runtime
+        }
 
 
         function hideElementsByClass(className) {
