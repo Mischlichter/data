@@ -345,9 +345,12 @@ html {
     transition: transform 0.3s ease; /* Added hover transition to the container */
 }
 
-#gallery-container .image-container:hover {
-    transform: scale(1.1);
+@media (hover: hover) and (pointer: fine) {
+    #gallery-container .image-container:hover {
+        transform: scale(1.1);
+    }
 }
+
 
 .hidden-image {
     opacity: 0;
