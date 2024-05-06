@@ -2366,32 +2366,25 @@
 
         function loadScene(index) {
             const scene = scenesData[index];
-            const sceneImages = scenesiData[index];
+            const sceneImages = scenesiData[index]; // Assuming scenesiData is structured similarly
 
             if (!scene) return;
 
             // Remove all existing containers and dynamic styles
-            document.querySelectorAll('.flex-container, .flex-icontainer').forEach(container => container.remove());
+            const existingContainers = document.querySelectorAll('.flex-container, .flex-icontainer');
+            existingContainers.forEach(container => container.remove());
+
+            // Clear dynamic styles
             clearDynamicStyles();
 
-            function waitForMenuFade() {
-                if (menufade) {
-                    loadInterface(index);
-                    let formattedSceneKey = scene.sceneKey.length === 6 ? `scene0${scene.sceneKey.charAt(5)}` : scene.sceneKey;
-                    updateIframe(formattedSceneKey);
+            loadInterface(index);
 
-                    // Now that we have the menufade, we can proceed with the rest of the setup.
-                    setupScene(index, scene, sceneImages);
-                } else {
-                    setTimeout(waitForMenuFade, 100); // Check again after 100 milliseconds
-                }
-            }
+            let formattedSceneKey = scene.sceneKey.length === 6 ? `scene0${scene.sceneKey.charAt(5)}` : scene.sceneKey;
 
-            waitForMenuFade(); // Initiate the check
-        }
-
-        function setupScene(index, scene, sceneImages) {
-            // Place the rest of your loadScene logic here that depends on menufade being true
+            // Update the iframe with the new scene
+            updateIframe(formattedSceneKey);
+            //console.log('Formatted Scene Key:', formattedSceneKey);
+            // Merge and sort text and image containers
             let combinedData = [];
             Object.keys(scene.containers).forEach(key => {
                 combinedData.push({ type: 'text', key: key, content: scene.containers[key] });
@@ -2409,17 +2402,21 @@
                 return numA - numB || (a.type === 'text' ? -1 : 1);
             });
 
+            // Create containers in sorted order
             combinedData.forEach(item => {
                 const container = document.createElement('div');
                 container.id = item.key;
                 container.className = item.type === 'text' ? 'flex-container' : 'flex-icontainer';
                 document.body.appendChild(container);
+
                 if (item.type === 'text') {
                     attachLinkToContainer(container, item.content.style);
                 }
+
                 const style = document.createElement('style');
                 style.innerHTML = item.content.style;
                 document.head.appendChild(style);
+                dynamicStyles.push(style);
 
                 if (item.type === 'image') {
                     const image = document.createElement('img');
@@ -2428,14 +2425,18 @@
                 }
             });
 
-            createStyledFooter();
+            // Create and style the footer
+            createStyledFooter()
+
             currentSceneData = scene;
+
+            // Update containers when loading a new scene
             updateAllContainers(scene);
+
             highlightActiveMenuItem(`menuContainer${index}`);
             observeImagesForAnimation();
             createScrollToTopButton();
         }
-
 
         function createScrollToTopButton() {
             const button = document.createElement('button');
@@ -2976,10 +2977,12 @@
 
         function animateText(element, finalText, duration, delay, finalColor = { r: 0, g: 255, b: 204 }) {
             var frameCount = 0; // Tracks frames
-            var totalFrames = 17; // Adjust for speed of color transitions
+            var totalFrames = 36; // Adjust for speed of color transitions
 
-            // Assign a random phase for each element to start its color cycle
-            var randomPhase = Math.random() * 2 * Math.PI;
+            // Assign a unique random phase for each color component
+            var randomPhaseR = Math.random() * 2 * Math.PI;
+            var randomPhaseG = Math.random() * 2 * Math.PI;
+            var randomPhaseB = Math.random() * 2 * Math.PI;
 
             setTimeout(function() {
                 var currentText = generateRandomString(finalText.length);
@@ -2992,18 +2995,16 @@
                 var shuffleCount = 0;
                 var lastRender = performance.now();
 
-                function getColorComponent(phaseShift) {
-                    // Incorporate the random phase into the cycling
+                // Adjusted to use specific random phases for each color component
+                function getColorComponent(phaseShift, randomPhase) {
                     return Math.floor(127.5 * (1 + Math.sin(2 * Math.PI * frameCount / totalFrames + phaseShift + randomPhase)));
                 }
 
                 function step(timestamp) {
                     var progress = timestamp - lastRender;
                     if (progress > intervalTime) {
-                        // Update the lastRender time
                         lastRender = timestamp - (progress % intervalTime);
 
-                        // Update logic remains the same
                         if (shuffleCount % shuffleFrequency === 0 && index < finalText.length) {
                             currentText = currentText.substring(0, index) + finalText.charAt(index) + generateRandomString(finalText.length - index - 1);
                             index++;
@@ -3015,9 +3016,9 @@
                         element.style.opacity = Math.min(1, parseFloat(element.style.opacity) + 0.05);
 
                         let colorTransitionFactor = index / finalText.length;
-                        let r = getColorComponent(0);
-                        let g = getColorComponent(2 * Math.PI / 3);
-                        let b = getColorComponent(4 * Math.PI / 3);
+                        let r = getColorComponent(0, randomPhaseR);
+                        let g = getColorComponent(2 * Math.PI / 3, randomPhaseG);
+                        let b = getColorComponent(4 * Math.PI / 3, randomPhaseB);
 
                         r = Math.floor(r + (finalColor.r - r) * colorTransitionFactor);
                         g = Math.floor(g + (finalColor.g - g) * colorTransitionFactor);
@@ -3029,7 +3030,7 @@
                         if (index === finalText.length && shuffleCount % shuffleFrequency === 0) {
                             element.textContent = finalText;
                             element.style.opacity = '1';
-                            element.style.color = `rgb(${finalColor.r}, ${finalColor.g}, ${finalColor.b})`; // Set final color
+                            element.style.color = `rgb(${finalColor.r}, ${finalColor.g}, ${finalColor.b})`;
                             return;
                         }
                     }
@@ -3039,6 +3040,7 @@
                 requestAnimationFrame(step);
             }, delay);
         }
+
 
 
 
