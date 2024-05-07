@@ -53,21 +53,20 @@ jobs:
     needs: extract-metadata
     runs-on: ubuntu-latest
     steps:
-      - name: Check Deployment Status
+      - name: Extract and Check Newly Created Pages
         run: |
-          url="https://mischlichter.github.io/gallerycom/"
-          attempt_limit=5
-          attempt_num=1
-          while [ $attempt_num -le $attempt_limit ]; do
-            echo "Checking if site is live: Attempt $attempt_num"
+          # Extract the last commit log
+          commit_log=$(git log -1 --name-only --pretty=format:"")
+          # Parse new HTML filenames from the commit log
+          urls=$(echo "$commit_log" | grep 'docs/sharing/' | sed 's/docs\/sharing\///' | awk '{print "https://mischlichter.github.io/gallerycom/"$1}')
+          # Check each URL
+          for url in $urls; do
+            echo "Checking if site is live: $url"
             response=$(curl -o /dev/null -s -w "%{http_code}\n" $url)
             if [ "$response" -eq 200 ]; then
-              echo "Site is live!"
-              break
+              echo "$url is live!"
             else
-              echo "Site not ready yet, retrying in 30 seconds..."
+              echo "$url not ready yet, retrying..."
               sleep 30
             fi
-            ((attempt_num++))
           done
-
