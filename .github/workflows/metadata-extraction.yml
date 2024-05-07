@@ -52,16 +52,13 @@ jobs:
     - name: List Committed HTML Files
       id: file-list
       run: |
-        files=$(git diff --name-only HEAD^ HEAD | grep '\.html$')
-        echo "::set-output name=html_files::$files"
+        files=$(git diff --name-only HEAD^ HEAD | grep 'docs/sharing/.*\.html$')
+        echo "FILES=$files" >> $GITHUB_ENV
 
     - name: Check Live Status on hogeai.com
       run: |
-        # Extracting filenames of committed HTML files
-        files=$(git diff --name-only HEAD^ HEAD | grep 'docs/sharing/.*\.html$')
-        echo "Files to check: $files"
-        # Loop over each file and construct the URL to check
-        for file in $files
+        # Extracting filenames of committed HTML files from the environment variable
+        for file in $FILES
         do
           # Strip the directory path and construct the URL
           filename="${file#docs/sharing/}"  # This removes the 'docs/sharing/' part from the path
