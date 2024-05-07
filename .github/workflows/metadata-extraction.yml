@@ -8,7 +8,6 @@ on:
 jobs:
   extract-metadata:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
@@ -31,13 +30,13 @@ jobs:
       run: python lib/library_and_pages_x.py
 
     - name: Stash any changes
-      run: git stash  # Stashes any unstaged changes
+      run: git stash
 
     - name: Pull latest changes from the repository
-      run: git pull --rebase  # Now should work with a clean working directory
+      run: git pull --rebase
 
     - name: Pop the stash
-      run: git stash pop  # Restores the changes
+      run: git stash pop
 
     - name: Commit and Push Changes
       run: |
@@ -49,25 +48,15 @@ jobs:
         git commit -m "Update image metadata, HTML pages, and favicons" || echo "No changes to commit"
         git push || echo "Failed to push changes. Check for potential conflicts or issues."
 
-    - name: List Committed HTML Files
-      id: file-list
+    - name: Visit New Pages
       run: |
         files=$(git diff --name-only HEAD^ HEAD | grep 'docs/sharing/.*\.html$')
-        echo "FILES=$files" >> $GITHUB_ENV
-
-    - name: Check Live Status on hogeai.com
-      run: |
-        # Extracting filenames of committed HTML files from the environment variable
-        for file in $FILES
+        echo "Files to visit: $files"
+        for file in $files
         do
-          # Strip the directory path and construct the URL
           filename="${file#docs/sharing/}"  # This removes the 'docs/sharing/' part from the path
           url="https://hogeai.com/sharing/${filename}"
-          echo "Checking URL: $url"
-          # Check if the URL is live
-          while ! curl --output /dev/null --silent --head --fail --location "$url"; do
-            echo "Waiting for $url to be live..."
-            sleep 5
-          done
-          echo "$url is live."
+          echo "Visiting URL: $url"
+          curl --output /dev/null --silent --location "$url"
+          echo "$url has been visited."
         done
