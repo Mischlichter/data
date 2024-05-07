@@ -58,7 +58,7 @@ jobs:
         echo "Git configuration set."
 
         # Extract the last commit log
-        commit_log=$(git log -1 --name-only --pretty=format:"")
+        commit_log=$(git log -1 --name-only)
         echo "Commit log: $commit_log"
 
         # Parse new HTML filenames from the commit log, converting JPG filenames to HTML
@@ -70,7 +70,7 @@ jobs:
           echo "Checking if site is live: $url"
           response=$(curl -o /dev/null -s -w "%{http_code}\n" $url)
           while [ "$response" -ne 200 ]; do
-            echo "$url not ready yet, retrying in 30 seconds..."
+            echo "$url not ready yet, response code $response, retrying in 30 seconds..."
             sleep 30
             response=$(curl -o /dev/null -s -w "%{http_code}\n" $url)
           done
