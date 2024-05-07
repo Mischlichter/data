@@ -49,7 +49,6 @@ jobs:
         git commit -m "Update image metadata, HTML pages, and favicons" || echo "No changes to commit"
         git push || echo "Failed to push changes. Check for potential conflicts or issues."
 
-
   check-site-availability:
     needs: extract-metadata
     runs-on: ubuntu-latest
@@ -64,13 +63,16 @@ jobs:
           # Ensure git knows your identity (might be necessary in some contexts)
           git config --global user.email "you@example.com"
           git config --global user.name "Your Name"
+          echo "Git configuration set."
 
           # Extract the last commit log
           commit_log=$(git log -1 --name-only --pretty=format:"")
-          
+          echo "Commit log: $commit_log"
+
           # Parse new HTML filenames from the commit log
           urls=$(echo "$commit_log" | grep 'docs/sharing/' | sed 's/docs\/sharing\///' | awk '{print "https://mischlichter.github.io/gallerycom/"$1}')
-          
+          echo "URLs to check: $urls"
+
           # Check each URL
           for url in $urls; do
             echo "Checking if site is live: $url"
@@ -82,4 +84,3 @@ jobs:
               sleep 30
             fi
           done
-
