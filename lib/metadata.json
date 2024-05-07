@@ -2054,5 +2054,21 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "47672513196"
+    },
+    "86190040856.jpg": {
+        "File Name": "86190040856.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "In an ethereal space where Art Deco fuses with holographic technology, HogeAI man glides through a grand hall of geometric patterns and light projections. Mirrored surfaces reflect a surreal blend of past elegance and futuristic innovation, creating a mesmerizing dance of shadows and light. The air is a symphony of classical melodies intertwined with digital harmonies, enveloping HogeAI in a cloak of auditory and visual splendor. His journey through this majestic hall brings to life vivid displays of opulent colors and intricate light designs, a celebration of history and progress intertwined. Hasselblad photo, chibi hogeai, (extremely visionary white furry HogeAI man standing at the edge of a digital dreamscape) cascading waterfalls of liquid light, floating islands of consciousness, bob ross painting in color connection, raytracing, hdr, 8k uhd extremely detailed fur puppy, high details. Ethereal bridges connect realms of th...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "86190040856"
+    },
+    "21957647349.jpg": {
+        "File Name": "21957647349.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "In the midst of an ancient, sprawling city on the planet Thalassa, HogeAI man finds himself surrounded by towering structures and winding streets that tell the story of a civilization that once thrived. The buildings, adorned with intricate carvings and statues, are testament to the artistic prowess of the Thalassians. The air is filled with the sound of flowing water from numerous fountains and aqueducts, a reminder of the city's relationship with the sea. As night falls, the city comes alive with a different kind of beauty. Lights flicker on in the windows of the buildings, casting a warm, inviting glow on the streets below. HogeAI, his cloak adorned with patterns reminiscent of Thalassian art, wanders through the city, feeling a deep connection to its history and culture. Hasselblad photo, chibi hogeai, (grounded white furry HogeAI man rooted within the sacred geometries of the Vesica Piscis) bob ross painting in color conn...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "21957647349"
     }
 }
