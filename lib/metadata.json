@@ -2286,5 +2286,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "42700349877"
+    },
+    "66491621830.jpg": {
+        "File Name": "66491621830.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "On a moonlit beach, HogeAI man experiences a nocturnal festival where cannabis culture is celebrated under the stars. The sand is woven with patterns of THC crystals, shimmering under the moonlight. Around him, revelers adorned in bioluminescent tattoos share stories and strains, creating a communal bond that transcends the physical realm. HogeAI, in an outfit that mirrors the night sky and the glowing patterns on the beach, feels a sense of unity and peace in this gathering, a tribute to the plant that has brought them all together. Hasselblad photo, chibi hogeai, luminescent white hogeai man, strolling amidst a bioluminescent forest, twinkling starlit canopy, ethereal spirits, bob ross painting in color connection, raytracing, HDR, 8K UHD, intricate glowing tattoos, light-woven garments, dreamlike aura, 4K, next-gen, ultra-detailed, 3D Octane rendering, Unreal Engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg r...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "66491621830"
     }
 }
