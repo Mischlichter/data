@@ -59,14 +59,26 @@ jobs:
 
     - name: Verify HTML Pages Are Live
       run: |
+        max_retries=10
+        retry_interval=30  # seconds between retries
         for html_file in docs/sharing/*.html; do
           base_name=$(basename $html_file .html)
           url="https://www.hogeai.com/sharing/${base_name}.html"
           echo "Checking URL: $url"
-          if curl --output /dev/null --silent --head --fail "$url"; then
-            echo "$url is live!"
-          else
-            echo "$url is not live."
+          success=false
+          for (( i=0; i<max_retries; i++ )); do
+            if curl --output /dev/null --silent --head --fail "$url"; then
+              echo "$url is live!"
+              success=true
+              break
+            else
+              echo "$url is not live. Retrying in $retry_interval seconds..."
+              sleep $retry_interval
+            fi
+          done
+          if [ "$success" = false ]; then
+            echo "Failed to verify $url after $max_retries attempts."
             exit 1
           fi
         done
+
