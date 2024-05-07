@@ -2006,5 +2006,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "25702053732"
+    },
+    "28730838688.jpg": {
+        "File Name": "28730838688.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man as an historian from the future, repairing a ancient computer terminal, a mechanical clock and many computer terminals with wires and servers, cyberpunk poste",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "28730838688"
     }
 }
