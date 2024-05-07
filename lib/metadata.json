@@ -2238,5 +2238,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "793000118"
+    },
+    "68172882010.jpg": {
+        "File Name": "68172882010.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "\"Hasselblad photo, chibi hogeai, the white furry HogeAI man in the midst of an intergalactic music festival, celebrating New Year's on a distant moon. Surrounding him, a multitude of alien species, each moving to the universal language of music in their unique ways. HogeAI, wearing a cosmic DJ's headset, spins a holographic turntable, blending sounds from across the galaxy. The atmosphere is an ecstatic fusion of music and light, reminiscent of a rave in outer space, captured in the imaginative style of Moebius and H.R. Giger, awash with vibrant neons and deep space blacks.\" Hasselblad photo, chibi hogeai, (white furry HogeAI man seated on a throne made from cannabis buds) under a canopy of delicate, crystalline trichomes, with soft light creating a tranquil, royal atmosphere. The composition, with its luxurious detail and serene mood, takes inspiration from the regal, elegant portraits painted by Anthony van Dyck and the play...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "68172882010"
     }
 }
