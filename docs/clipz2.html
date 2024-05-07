@@ -91,20 +91,24 @@
 
         button#muteButton {
             padding: 10px 20px;
-            font-family: 'JetBrainsMono-Bold'; /* Consistent with the menu */
-            font-size: 16px;                   /* Size from the menu */
-            background-color: black;           /* Background color like the menu */
-            color: #00ffcc;                    /* Highlight color for the text, matching the menu border */
-            border: 2px solid #00ffcc;         /* Border color to match the menu */
-            border-radius: 20px;               /* Rounded corners like the menu */
+            font-family: 'JetBrainsMono-Bold';
+            font-size: 16px;
+            background-color: black;
+            color: #00ffcc;
+            border: 2px solid #00ffcc;
+            border-radius: 20px;
             cursor: pointer;
             outline: none;
             z-index: 111111111111111111;
-            position: absolute;                /* Ensures the button does not disrupt other elements */
-            bottom: 20px;                      /* Adjust as necessary for positioning */
-            right: 20px;                       /* Adjust as necessary for positioning */
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* Slight shadow for depth */
+            position: absolute;
+            bottom: 20px;
+            left: 20px; /* Changed from right to left */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+            opacity: 0; /* Start hidden */
+            visibility: hidden; /* Ensure it does not block clicks */
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out; /* Smooth transition for opacity and visibility */
         }
+
 
         .videoWrapper:hover #muteButton {
             opacity: 1;
@@ -125,7 +129,8 @@
         </div>
         <!-- Mute/Unmute Button -->
    
-        <button id="muteButton" onclick="toggleMute()">Unmute</button>
+        <button id="muteButton">Unmute</button>
+
 
 
     </div>
@@ -188,6 +193,17 @@
 
             // Attach event listener to the muteButton here, inside the onload where toggleMute is defined
             document.getElementById('muteButton').addEventListener('click', toggleMute);
+
+            document.querySelector('.videoWrapper').addEventListener('mouseenter', function() {
+                document.getElementById('muteButton').style.opacity = 1;
+                document.getElementById('muteButton').style.visibility = 'visible';
+            });
+
+            document.querySelector('.videoWrapper').addEventListener('mouseleave', function() {
+                document.getElementById('muteButton').style.opacity = 0;
+                document.getElementById('muteButton').style.visibility = 'hidden';
+            });
+
 
         };
 
