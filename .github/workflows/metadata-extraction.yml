@@ -8,63 +8,65 @@ on:
 jobs:
   extract-metadata:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
 
-    - name: Install Python Dependencies
-      run: |
-        pip install Pillow
+      - name: Install Python Dependencies
+        run: |
+          pip install Pillow
 
-    - name: Install exiftool
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y exiftool
+      - name: Install exiftool
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y exiftool
 
-    - name: Run Metadata Extraction Script
-      run: python lib/library_and_pages_x.py
+      - name: Run Metadata Extraction Script
+        run: python lib/library_and_pages_x.py
 
-    - name: Stash any changes
-      run: git stash
+      - name: Stash any changes
+        run: git stash
 
-    - name: Pull latest changes from the repository
-      run: git pull --rebase
+      - name: Pull latest changes from the repository
+        run: git pull --rebase
 
-    - name: Pop the stash
-      run: git stash pop
+      - name: Pop the stash
+        run: git stash pop
 
-    - name: Commit and Push Changes
-      run: |
-        git config --global user.name 'Mischlichter'
-        git config --global user.email 'alex.stephan.weimar@web.de'
-        git add lib/metadata.json
-        git add docs/sharing/*.html
-        git add docs/sharing/*_favicon.ico
-        git commit -m "Update image metadata, HTML pages, and favicons" || echo "No changes to commit"
-        git push || echo "Failed to push changes. Check for potential conflicts or issues."
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name 'Mischlichter'
+          git config --global user.email 'alex.stephan.weimar@web.de'
+          git add lib/metadata.json
+          git add docs/sharing/*.html
+          git add docs/sharing/*_favicon.ico
+          git commit -m "Update image metadata, HTML pages, and favicons" || echo "No changes to commit"
+          git push || echo "Failed to push changes. Check for potential conflicts or issues."
 
-    - name: Check and Visit New Pages
-      run: |
-        files=$(git diff --name-only HEAD^ HEAD | grep 'docs/sharing/.*\.html$')
-        echo "Files to process: $files"
-        for file in $files
-        do
-          filename="${file#docs/sharing/}"  # This removes the 'docs/sharing/' part from the path
-          url="https://hogeai.com/sharing/${filename}"
-          echo "Checking URL: $url"
-          # Check if the URL is live and responding with a 200 status code
-          while ! curl --output /dev/null --silent --head --fail --location --write-out '%{http_code}' "$url" | grep '200'; do
-            echo "Waiting for $url to be live..."
-            sleep 5
-          done
-          echo "$url is confirmed live with 200 OK status."
-          # Now perform a full visit
-          curl --output /dev/null --silent --location "$url"
-          echo "$url has been fully visited."
-        done
+  check-live-status:
+    needs: extract-metadata
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check and Visit New Pages
+        run: |
+          files=$(git diff --name-only HEAD^ HEAD | grep 'docs/sharing/.*\.html$')
+          echo "Files to process: $files"
+          for file in $files
+          do
+            filename="${file#docs/sharing/}"  # Removes 'docs/sharing/' from the path
+            url="https://hogeai.com/sharing/${filename}"
+            echo "Checking URL: $url"
+            # Check if the URL is live and responding with a 200 status code
+            while ! curl --output /dev/null --silent --head --fail --location --write-out '%{http_code}' "$url" | grep '200'; do
+              echo "Waiting for $url to be live..."
+              sleep 5
+            done
+            echo "$url is confirmed live with 200 OK status."
+            # Now perform a full visit
+            curl --output /dev/null --silent --location "$url"
+            echo "$url has been fully visited."
