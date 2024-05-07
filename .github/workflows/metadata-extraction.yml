@@ -49,7 +49,7 @@ jobs:
         git commit -m "Update image metadata, HTML pages, and favicons" || echo "No changes to commit"
         git push || echo "Failed to push changes. Check for potential conflicts or issues."
 
-  jobs:
+
   check-site-availability:
     needs: extract-metadata
     runs-on: ubuntu-latest
