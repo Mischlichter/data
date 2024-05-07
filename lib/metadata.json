@@ -2246,5 +2246,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "68172882010"
+    },
+    "86758681967.jpg": {
+        "File Name": "86758681967.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man engaged in a tranquil tea ceremony with ethereal creatures) in a secret glade illuminated by glowing spores. The delicate light casts soft shadows, highlighting the intricate details of the otherworldly flora surrounding them. The scene, rich with symbolism and delicate beauty, is influenced by the meticulous and dreamy aesthetic of Hieronymus Bosch and the whimsical, detailed illustrations of Beatrix Potter. At the heart of the grove stands a majestic cannabis tree, its bark resembling polished chrome and leaves glistening like crystals. This tree symbolizes the harmonious union of the organic essence of cannabis and the marvels of future technology. As the night deepens, the grove transforms into a spectacle of light and sound, a celebration of the cannabis culture in a crescendo of sensory ecstasy. This living artwork, where each element from the tiniest leaf to the va...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "86758681967"
     }
 }
