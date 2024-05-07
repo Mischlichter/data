@@ -54,7 +54,12 @@ jobs:
     steps:
       - name: Check and Visit New Pages
         run: |
-          files=$(git diff --name-only HEAD^ HEAD | grep 'docs/sharing/.*\.html$')
+          # Check if there are previous commits to compare against
+          if git rev-parse HEAD^ >/dev/null 2>&1; then
+            files=$(git diff --name-only HEAD^ HEAD | grep 'docs/sharing/.*\.html$')
+          else
+            files=$(git ls-files 'docs/sharing/*.html')
+          fi
           echo "Files to process: $files"
           for file in $files
           do
