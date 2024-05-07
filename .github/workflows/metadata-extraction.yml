@@ -62,14 +62,26 @@ jobs:
     steps:
     - name: Check if Pages are Live
       run: |
+        max_retries=10  # Maximum number of retries
+        retry_interval=30  # Wait 30 seconds between each retry
         for html_file in ${{ needs.extract-metadata.outputs.html-files }}
         do
           url="https://www.hogeai.com/sharing/${html_file}"
           echo "Checking URL: $url"
-          if curl --output /dev/null --silent --head --fail "$url"; then
-            echo "$url is live!"
-          else
-            echo "$url is not live."
+          count=0
+          while [ $count -lt $max_retries ]; do
+            if curl --output /dev/null --silent --head --fail "$url"; then
+              echo "$url is live!"
+              break
+            else
+              echo "$url is not yet live. Retrying in $retry_interval seconds..."
+              sleep $retry_interval
+              ((count++))
+            fi
+          done
+          if [ $count -eq $max_retries ]; then
+            echo "Failed to verify $url after $max_retries attempts."
             exit 1
           fi
         done
+
