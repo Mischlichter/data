@@ -1,4 +1,4 @@
-name: Image Metadata Extraction and Webpage Verification
+name: Image Metadata Extraction
 
 on:
   push:
@@ -8,8 +8,6 @@ on:
 jobs:
   extract-metadata:
     runs-on: ubuntu-latest
-    outputs:
-      html-files: ${{ steps.extract_filenames.outputs.filenames }}
 
     steps:
     - name: Checkout Repository
@@ -21,20 +19,25 @@ jobs:
         python-version: '3.x'
 
     - name: Install Python Dependencies
-      run: pip install Pillow
+      run: |
+        pip install Pillow
 
     - name: Install exiftool
       run: |
         sudo apt-get update
         sudo apt-get install -y exiftool
 
-    - name: Run Metadata Extraction Script and Capture Output
-      id: extract_filenames
-      run: |
-        python lib/library_and_pages_x.py
-        # Assuming your script echoes paths like "Page created: docs/sharing/filename.html"
-        FILE_PATHS=$(grep -oP 'Page created: \Kdocs/sharing/.*?\.html' script_output.txt)
-        echo "::set-output name=filenames::$FILE_PATHS"
+    - name: Run Metadata Extraction Script
+      run: python lib/library_and_pages_x.py
+
+    - name: Stash any changes
+      run: git stash  # Stashes any unstaged changes
+
+    - name: Pull latest changes from the repository
+      run: git pull --rebase  # Now should work with a clean working directory
+
+    - name: Pop the stash
+      run: git stash pop  # Restores the changes
 
     - name: Commit and Push Changes
       run: |
@@ -43,19 +46,22 @@ jobs:
         git add lib/metadata.json
         git add docs/sharing/*.html
         git add docs/sharing/*_favicon.ico
-        git commit -m "Update image metadata, HTML pages, and favicons"
-        git push
+        git commit -m "Update image metadata, HTML pages, and favicons" || echo "No changes to commit"
+        git push || echo "Failed to push changes. Check for potential conflicts or issues."
 
   check-website:
     needs: extract-metadata
     runs-on: ubuntu-latest
 
     steps:
-    - name: Check if Pages are Live
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Verify HTML Pages Are Live
       run: |
-        for filename in ${{ needs.extract-metadata.outputs.html-files }}
-        do
-          url="https://www.hogeai.com/sharing/${filename}"
+        for html_file in docs/sharing/*.html; do
+          base_name=$(basename $html_file .html)
+          url="https://www.hogeai.com/sharing/${base_name}.html"
           echo "Checking URL: $url"
           if curl --output /dev/null --silent --head --fail "$url"; then
             echo "$url is live!"
