@@ -2270,5 +2270,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "60700431252"
+    },
+    "5175572073.jpg": {
+        "File Name": "5175572073.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "\"Beneath the waves of an oceanic dreamscape, HogeAI man experiences New Year's Eve in an underwater utopia, where coral reefs pulse with neon life and sea creatures glow with inner luminescence. The water around him is a fluid medium for psychedelic art, as HogeAI, wearing a suit of living coral, swims among fantastical sea beings that sing in harmonies of light. This submerged celebration is a journey into the depths of the subconscious, where every swirl of color and movement tells a story of mystical wonder.\" Hasselblad photo, chibi hogeai, (reverent white furry HogeAI man gazing into the heart of a luminous Merkaba) bob ross painting in color connection, raytracing, hdr, 8k uhd. Geometries of ascension revolve, each facet revealing layers of multidimensional truths. Vortices of pure energy spiral, drenched in hues of emerald green and deep celestial blue, an odyssey of enlightenment and evolution, as depicted by bayard wu ...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "5175572073"
     }
 }
