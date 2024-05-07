@@ -8,6 +8,8 @@ on:
 jobs:
   extract-metadata:
     runs-on: ubuntu-latest
+    outputs:
+      filelist: ${{ steps.file-list.outputs.html_files }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -48,30 +50,32 @@ jobs:
           git commit -m "Update image metadata, HTML pages, and favicons" || echo "No changes to commit"
           git push || echo "Failed to push changes. Check for potential conflicts or issues."
 
+      - name: List Committed HTML Files
+        id: file-list
+        run: |
+          files=$(git diff --name-only HEAD^ HEAD | grep '\.html$')
+          echo "::set-output name=html_files::$files"
+
   check-live-status:
     needs: extract-metadata
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
       - name: Check and Visit New Pages
         run: |
-          # Check if there are previous commits to compare against
-          if git rev-parse HEAD^ >/dev/null 2>&1; then
-            files=$(git diff --name-only HEAD^ HEAD | grep 'docs/sharing/.*\.html$')
-          else
-            files=$(git ls-files 'docs/sharing/*.html')
-          fi
+          files="${{ needs.extract-metadata.outputs.filelist }}"
           echo "Files to process: $files"
           for file in $files
           do
             filename="${file#docs/sharing/}"  # Removes 'docs/sharing/' from the path
             url="https://hogeai.com/sharing/${filename}"
             echo "Checking URL: $url"
-            # Check if the URL is live and responding with a 200 status code
             while ! curl --output /dev/null --silent --head --fail --location --write-out '%{http_code}' "$url" | grep '200'; do
               echo "Waiting for $url to be live..."
               sleep 5
             done
             echo "$url is confirmed live with 200 OK status."
-            # Now perform a full visit
             curl --output /dev/null --silent --location "$url"
             echo "$url has been fully visited."
