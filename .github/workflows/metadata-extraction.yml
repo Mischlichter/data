@@ -10,69 +10,64 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0  # Ensures the full git history is available
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
 
-      - name: Install Python Dependencies
-        run: |
-          pip install Pillow
+    - name: Install Python Dependencies
+      run: pip install Pillow
 
-      - name: Install exiftool
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y exiftool
+    - name: Install exiftool
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y exiftool
 
-      - name: Run Metadata Extraction Script
-        run: python lib/library_and_pages_x.py
+    - name: Run Metadata Extraction Script
+      run: python lib/library_and_pages_x.py
 
-      - name: Commit and Push Changes
-        run: |
-          git config --global user.name 'Mischlichter'
-          git config --global user.email 'alex.stephan.weimar@web.de'
-          git add .
-          git commit -m "Update image metadata and HTML pages" || echo "No changes to commit"
-          git push || echo "Failed to push changes. Check for potential conflicts or issues."
+    - name: Extract Filenames from Commit
+      id: filenames
+      run: |
+        FILES=$(git diff --name-only ${{ github.sha }} | grep '\.jpg$')
+        echo "::set-output name=filenames::$(echo $FILES | sed 's/.jpg$/.html/' | xargs -n 1 basename)"
+
+    - name: Commit and Push Changes
+      run: |
+        git config --global user.name 'Mischlichter'
+        git config --global user.email 'alex.stephan.weimar@web.de'
+        git add .
+        git commit -m "Update image metadata and HTML pages" || echo "No changes to commit"
+        git push || echo "Failed to push changes. Check for potential conflicts or issues."
 
   check-website:
     needs: extract-metadata
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Extract Filenames from Push
-        id: get_filenames
-        run: |
-          echo "Files Changed:"
-          FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep '\.jpg$')
-          echo $FILES
-          HTML_FILES=$(echo "$FILES" | sed 's/.jpg$/.html/' | xargs -I {} echo "docs/sharing/{}")
-          echo "::set-output name=filenames::$HTML_FILES"
-
-      - name: Check if Pages are Live
-        run: |
-          for filename in ${{ steps.get_filenames.outputs.filenames }}
-          do
-            url="https://www.hogeai.com/sharing/${filename##*/}"
-            echo "Checking URL: $url"
-            max_retries=10
-            for ((i=1; i<=max_retries; i++)); do
-              if curl --output /dev/null --silent --head --fail "$url"; then
-                echo "$url is live!"
-                break
-              else
-                echo "$url is not yet live. Retrying in 30 seconds..."
-                sleep 30
-              fi
-            done
-            if [ $i -gt $max_retries ]; then
-              echo "Failed to verify $url after $max_retries attempts."
-              exit 1
+    - name: Check if Pages are Live
+      run: |
+        for filename in ${{ needs.extract-metadata.outputs.filenames }}
+        do
+          url="https://www.hogeai.com/sharing/${filename}"
+          echo "Checking URL: $url"
+          max_retries=10
+          for ((i=1; i<=max_retries; i++)); do
+            if curl --output /dev/null --silent --head --fail "$url"; then
+              echo "$url is live!"
+              break
+            else
+              echo "$url is not yet live. Retrying in 30 seconds..."
+              sleep 30
             fi
           done
+          if [ $i -gt $max_retries ]; then
+            echo "Failed to verify $url after $max_retries attempts."
+            exit 1
+          fi
+        done
