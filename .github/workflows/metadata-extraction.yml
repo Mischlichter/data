@@ -50,42 +50,42 @@ jobs:
           git push || echo "Failed to push changes. Check for potential conflicts or issues."
 
   check-website:
-      needs: extract-metadata  # Wait for the first job to finish
-      runs-on: ubuntu-latest
+    needs: extract-metadata  # Wait for the first job to finish
+    runs-on: ubuntu-latest
 
-      steps:
-        - name: Checkout Repository
-          uses: actions/checkout@v2  # Ensure the repository is checked out
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2  # Ensure the repository is checked out
 
-        - name: Get Filename from Pushed JPG
-          id: get_filename
-          run: echo "::set-output name=filename::$(basename $(git diff-tree --name-only ${{ github.sha }} | grep '.jpg' | sed 's/\.jpg$//'))"
+      - name: Get Filename from Pushed JPG
+        id: get_filename
+        run: echo "::set-output name=filename::$(basename $(git diff-tree --name-only ${{ github.sha }} | grep '.jpg' | sed 's/\.jpg$//'))"
 
-        - name: Construct Website URL
-          id: construct_url
-          run: |
-            filename="${{ steps.get_filename.outputs.filename }}"
-            url="https://www.hogeai.com/sharing/${filename}.html"
-            echo "Website URL: $url"
-            echo "::set-output name=url::$url"
+      - name: Construct Website URL
+        id: construct_url
+        run: |
+          filename="${{ steps.get_filename.outputs.filename }}"
+          url="https://www.hogeai.com/sharing/${filename}.html"
+          echo "Website URL: $url"
+          echo "::set-output name=url::$url"
 
-        - name: Wait for GitHub Pages Deployment
-          run: |
-            max_retries=10
-            retry_interval=30
-            url="${{ steps.construct_url.outputs.url }}"
-            count=0
-            while [ $count -lt $max_retries ]; do
-              if curl --output /dev/null --silent --head --fail "$url"; then
-                echo "Website is live!"
-                break
-              else
-                echo "Website is not yet live. Retrying in $retry_interval seconds..."
-                sleep $retry_interval
-                ((count++))
-              fi
-            done
-            if [ $count -eq $max_retries ]; then
-              echo "Website did not become live after $((max_retries * retry_interval)) seconds."
-              exit 1
+      - name: Wait for GitHub Pages Deployment
+        run: |
+          max_retries=10
+          retry_interval=30
+          url="${{ steps.construct_url.outputs.url }}"
+          count=0
+          while [ $count -lt $max_retries ]; do
+            if curl --output /dev/null --silent --head --fail "$url"; then
+              echo "Website is live!"
+              break
+            else
+              echo "Website is not yet live. Retrying in $retry_interval seconds..."
+              sleep $retry_interval
+              ((count++))
             fi
+          done
+          if [ $count -eq $max_retries ]; then
+            echo "Website did not become live after $((max_retries * retry_interval)) seconds."
+            exit 1
+          fi
