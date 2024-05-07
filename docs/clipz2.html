@@ -194,41 +194,44 @@
             // Attach event listener to the muteButton here, inside the onload where toggleMute is defined
             document.getElementById('muteButton').addEventListener('click', toggleMute);
 
-            document.querySelector('.videoWrapper').addEventListener('mouseenter', function() {
-                document.getElementById('muteButton').style.opacity = 1;
-                document.getElementById('muteButton').style.visibility = 'visible';
-            });
-
-            document.querySelector('.videoWrapper').addEventListener('mouseleave', function() {
-                document.getElementById('muteButton').style.opacity = 0;
-                document.getElementById('muteButton').style.visibility = 'hidden';
-            });
-
             const button = document.getElementById('muteButton');
+            const videoWrapper = document.querySelector('.videoWrapper');
+
+            function toggleButtonVisibility() {
+                if (button.style.opacity === '1') {
+                    button.style.opacity = 0;
+                    button.style.visibility = 'hidden';
+                } else {
+                    button.style.opacity = 1;
+                    button.style.visibility = 'visible';
+                }
+            }
+
+            // Use touchstart for mobile devices and mouseenter/mouseleave for non-touch devices
+            videoWrapper.addEventListener('touchstart', toggleButtonVisibility, {passive: true});
+            videoWrapper.addEventListener('mouseenter', function() {
+                button.style.opacity = 1;
+                button.style.visibility = 'visible';
+            });
+            videoWrapper.addEventListener('mouseleave', function() {
+                button.style.opacity = 0;
+                button.style.visibility = 'hidden';
+            });
 
             function adjustButtonPosition() {
-                // Calculate the current aspect ratio of the window
                 const aspectRatio = window.innerWidth / window.innerHeight;
-                // Define the target aspect ratio for portrait mode (9/16)
                 const targetAspectRatio = 9 / 16;
-                // Calculate interpolation factor based on current and target aspect ratios
                 let interpolationFactor = Math.max(0, Math.min(1, (aspectRatio - targetAspectRatio) / (1 - targetAspectRatio)));
-
-                // Determine the button position from 20% to 2% as the aspect ratio approaches portrait mode
                 const bottomPosition = 24 - (22 * interpolationFactor) + '%';
-
-                // Update the bottom property with smooth transition
                 button.style.bottom = bottomPosition;
             }
 
-            // Attach event listeners
             window.addEventListener('resize', adjustButtonPosition);
             adjustButtonPosition(); // Initial call to set the position        
 
-
         };
-
     </script>
+
 
     <script>
         async function fetchVideoUrls() {
