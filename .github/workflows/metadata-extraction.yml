@@ -3,11 +3,13 @@ name: Image Metadata Extraction
 on:
   push:
     paths:
-      - 'gallerycom/**'
+      - 'gallerycom/**/*.jpg'
 
 jobs:
   extract-metadata:
     runs-on: ubuntu-latest
+    outputs:
+      html-files: ${{ steps.extract_filenames.outputs.filenames }}
 
     steps:
     - name: Checkout Repository
@@ -19,25 +21,29 @@ jobs:
         python-version: '3.x'
 
     - name: Install Python Dependencies
-      run: |
-        pip install Pillow
+      run: pip install Pillow
 
     - name: Install exiftool
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y exiftool
+      run: sudo apt-get update && sudo apt-get install -y exiftool
 
     - name: Run Metadata Extraction Script
       run: python lib/library_and_pages_x.py
 
+    - name: Extract Filenames of Pushed JPGs
+      id: extract_filenames
+      run: |
+        FILES=$(git diff --name-only ${{ github.sha }}^ ${{ github.sha }} | grep '\.jpg$')
+        HTML_FILES=$(echo "$FILES" | sed 's/.jpg$/.html/' | xargs -I{} echo "docs/sharing/{}")
+        echo "::set-output name=filenames::$HTML_FILES"
+
     - name: Stash any changes
-      run: git stash  # Stashes any unstaged changes
+      run: git stash
 
     - name: Pull latest changes from the repository
-      run: git pull --rebase  # Now should work with a clean working directory
+      run: git pull --rebase
 
     - name: Pop the stash
-      run: git stash pop  # Restores the changes
+      run: git stash pop
 
     - name: Commit and Push Changes
       run: |
@@ -46,39 +52,24 @@ jobs:
         git add lib/metadata.json
         git add docs/sharing/*.html
         git add docs/sharing/*_favicon.ico
-        git commit -m "Update image metadata, HTML pages, and favicons" || echo "No changes to commit"
-        git push || echo "Failed to push changes. Check for potential conflicts or issues."
+        git commit -m "Update image metadata, HTML pages, and favicons"
+        git push
 
   check-website:
     needs: extract-metadata
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
-
-    - name: Verify HTML Pages Are Live
+    - name: Check if Pages are Live
       run: |
-        max_retries=10
-        retry_interval=30  # seconds between retries
-        for html_file in docs/sharing/*.html; do
-          base_name=$(basename $html_file .html)
-          url="https://www.hogeai.com/sharing/${base_name}.html"
+        for html_file in ${{ needs.extract-metadata.outputs.html-files }}
+        do
+          url="https://www.hogeai.com/sharing/${html_file}"
           echo "Checking URL: $url"
-          success=false
-          for (( i=0; i<max_retries; i++ )); do
-            if curl --output /dev/null --silent --head --fail "$url"; then
-              echo "$url is live!"
-              success=true
-              break
-            else
-              echo "$url is not live. Retrying in $retry_interval seconds..."
-              sleep $retry_interval
-            fi
-          done
-          if [ "$success" = false ]; then
-            echo "Failed to verify $url after $max_retries attempts."
+          if curl --output /dev/null --silent --head --fail "$url"; then
+            echo "$url is live!"
+          else
+            echo "$url is not live."
             exit 1
           fi
         done
-
