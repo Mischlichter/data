@@ -29,7 +29,9 @@ jobs:
 
     - name: Extract Filename
       id: extract-filename
-      run: echo "::set-output name=filename::${{ github.event.inputs.filename }}"  # Adjust this line to get the correct filename input
+      run: |
+        filename=$(git diff --name-only HEAD^ HEAD | grep '\.jpg$')
+        echo "::set-output name=filename::${filename##*/}"
 
     - name: Run Metadata Extraction Script
       run: python lib/library_and_pages_x.py
@@ -56,10 +58,13 @@ jobs:
     - name: Construct Address and Check Live Status
       run: |
         filename="${{ steps.extract-filename.outputs.filename }}"
-        filename="${filename%.*}.html"  # Removes the extension from the filename and adds .html
+        filename="${filename%.*}.html"
         url="https://hogeai.com/sharing/$filename"
-        while ! curl --output /dev/null --silent --head --fail "$url"; do
+        while ! curl --output /dev/null --silent --head --fail --location --write-out '%{http_code}' "$url" | grep '200'; do
           echo "Waiting for $url to be live..."
           sleep 5
         done
         echo "$url is live."
+
+
+          
