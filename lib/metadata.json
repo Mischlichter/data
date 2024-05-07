@@ -2262,5 +2262,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "85258995885"
+    },
+    "60700431252.jpg": {
+        "File Name": "60700431252.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Floating in an asteroid field, HogeAI man discovers a hidden oasis, a space station dedicated to the preservation of psychedelic cannabis genetics. Here, in a labyrinth of biodomes, strains thought lost to time thrive, their psychedelic effects amplified by the unique conditions of space. HogeAI, in a suit embedded with asteroid minerals, explores this sanctuary, a testament to the diversity and resilience of cannabis in the cosmos. Hasselblad photo, chibi hogeai, (white furry HogeAI man engaged in a tranquil tea ceremony with ethereal creatures) in a secret glade illuminated by glowing spores. The delicate light casts soft shadows, highlighting the intricate details of the otherworldly flora surrounding them. The scene, rich with symbolism and delicate beauty, is influenced by the meticulous and dreamy aesthetic of Hieronymus Bosch and the whimsical, detailed illustrations of Beatrix Potter.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "60700431252"
     }
 }
