@@ -1998,5 +1998,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "54981347547"
+    },
+    "25702053732.jpg": {
+        "File Name": "25702053732.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man in a painting from leonardo da vinci style",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "25702053732"
     }
 }
