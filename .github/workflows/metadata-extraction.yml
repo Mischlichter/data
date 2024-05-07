@@ -1,9 +1,9 @@
-name: Image Metadata Extraction
+name: Image Metadata Extraction and Webpage Verification
 
 on:
   push:
     paths:
-      - 'gallerycom/**/*.jpg'  # Trigger only on the push of JPG files in the gallerycom directory
+      - 'gallerycom/**/*.jpg'
 
 jobs:
   extract-metadata:
@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2  # Ensure the repository is checked out
+        uses: actions/checkout@v2
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -30,62 +30,49 @@ jobs:
       - name: Run Metadata Extraction Script
         run: python lib/library_and_pages_x.py
 
-      - name: Stash any changes
-        run: git stash  # Stashes any unstaged changes
-
-      - name: Pull latest changes from the repository
-        run: git pull --rebase  # Now should work with a clean working directory
-
-      - name: Pop the stash
-        run: git stash pop  # Restores the changes
-
       - name: Commit and Push Changes
         run: |
           git config --global user.name 'Mischlichter'
           git config --global user.email 'alex.stephan.weimar@web.de'
-          git add lib/metadata.json
-          git add docs/sharing/*.html
-          git add docs/sharing/*_favicon.ico
-          git commit -m "Update image metadata, HTML pages, and favicons" || echo "No changes to commit"
+          git add .
+          git commit -m "Update image metadata and HTML pages" || echo "No changes to commit"
           git push || echo "Failed to push changes. Check for potential conflicts or issues."
 
   check-website:
-    needs: extract-metadata  # Wait for the first job to finish
+    needs: extract-metadata
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2  # Ensure the repository is checked out
+        uses: actions/checkout@v2
 
-      - name: Get Filename from Pushed JPG
-        id: get_filename
-        run: echo "::set-output name=filename::$(basename $(git diff-tree --name-only ${{ github.sha }} | grep '.jpg' | sed 's/\.jpg$//'))"
-
-      - name: Construct Website URL
-        id: construct_url
+      - name: Extract Filenames from Push
+        id: get_filenames
         run: |
-          filename="${{ steps.get_filename.outputs.filename }}"
-          url="https://www.hogeai.com/sharing/${filename}.html"
-          echo "Website URL: $url"
-          echo "::set-output name=url::$url"
+          echo "Files Changed:"
+          FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep '\.jpg$')
+          echo $FILES
+          HTML_FILES=$(echo "$FILES" | sed 's/.jpg$/.html/' | xargs -I {} echo "docs/sharing/{}")
+          echo "::set-output name=filenames::$HTML_FILES"
 
-      - name: Wait for GitHub Pages Deployment
+      - name: Check if Pages are Live
         run: |
-          max_retries=10
-          retry_interval=30
-          url="${{ steps.construct_url.outputs.url }}"
-          count=0
-          while [ $count -lt $max_retries ]; do
-            if curl --output /dev/null --silent --head --fail "$url"; then
-              echo "Website is live!"
-              break
-            else
-              echo "Website is not yet live. Retrying in $retry_interval seconds..."
-              sleep $retry_interval
-              ((count++))
+          for filename in ${{ steps.get_filenames.outputs.filenames }}
+          do
+            url="https://www.hogeai.com/sharing/${filename##*/}"
+            echo "Checking URL: $url"
+            max_retries=10
+            for ((i=1; i<=max_retries; i++)); do
+              if curl --output /dev/null --silent --head --fail "$url"; then
+                echo "$url is live!"
+                break
+              else
+                echo "$url is not yet live. Retrying in 30 seconds..."
+                sleep 30
+              fi
+            done
+            if [ $i -gt $max_retries ]; then
+              echo "Failed to verify $url after $max_retries attempts."
+              exit 1
             fi
           done
-          if [ $count -eq $max_retries ]; then
-            echo "Website did not become live after $((max_retries * retry_interval)) seconds."
-            exit 1
-          fi
