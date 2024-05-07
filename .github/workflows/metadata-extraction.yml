@@ -57,14 +57,20 @@ jobs:
 
     - name: Check Live Status on hogeai.com
       run: |
-        for file in $(git diff --name-only HEAD^ HEAD | grep '\.html$')
+        # Extracting filenames of committed HTML files
+        files=$(git diff --name-only HEAD^ HEAD | grep 'docs/sharing/.*\.html$')
+        echo "Files to check: $files"
+        # Loop over each file and construct the URL to check
+        for file in $files
         do
-          url="https://hogeai.com/sharing/${file}"
+          # Strip the directory path and construct the URL
+          filename="${file#docs/sharing/}"  # This removes the 'docs/sharing/' part from the path
+          url="https://hogeai.com/sharing/${filename}"
           echo "Checking URL: $url"
+          # Check if the URL is live
           while ! curl --output /dev/null --silent --head --fail --location "$url"; do
             echo "Waiting for $url to be live..."
             sleep 5
           done
           echo "$url is live."
         done
-
