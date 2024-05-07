@@ -3,86 +3,86 @@ name: Image Metadata Extraction
 on:
   push:
     paths:
-      - 'gallerycom/**'
+      - 'gallerycom/**/*.jpg'  # Trigger only on the push of JPG files in the gallerycom directory
 
 jobs:
   extract-metadata:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
 
-    - name: Install Python Dependencies
-      run: |
-        pip install Pillow
+      - name: Install Python Dependencies
+        run: |
+          pip install Pillow
 
-    - name: Install exiftool
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y exiftool
+      - name: Install exiftool
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y exiftool
 
-    - name: Run Metadata Extraction Script
-      run: python lib/library_and_pages_x.py
+      - name: Run Metadata Extraction Script
+        run: python lib/library_and_pages_x.py
 
-    - name: Stash any changes
-      run: git stash  # Stashes any unstaged changes
+      - name: Stash any changes
+        run: git stash  # Stashes any unstaged changes
 
-    - name: Pull latest changes from the repository
-      run: git pull --rebase  # Now should work with a clean working directory
+      - name: Pull latest changes from the repository
+        run: git pull --rebase  # Now should work with a clean working directory
 
-    - name: Pop the stash
-      run: git stash pop  # Restores the changes
+      - name: Pop the stash
+        run: git stash pop  # Restores the changes
 
-    - name: Commit and Push Changes
-      run: |
-        git config --global user.name 'Mischlichter'
-        git config --global user.email 'alex.stephan.weimar@web.de'
-        git add lib/metadata.json
-        git add docs/sharing/*.html
-        git add docs/sharing/*_favicon.ico
-        git commit -m "Update image metadata, HTML pages, and favicons" || echo "No changes to commit"
-        git push || echo "Failed to push changes. Check for potential conflicts or issues."
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name 'Mischlichter'
+          git config --global user.email 'alex.stephan.weimar@web.de'
+          git add lib/metadata.json
+          git add docs/sharing/*.html
+          git add docs/sharing/*_favicon.ico
+          git commit -m "Update image metadata, HTML pages, and favicons" || echo "No changes to commit"
+          git push || echo "Failed to push changes. Check for potential conflicts or issues."
 
-    check-website:
-        needs: extract-metadata  # Wait for the first job to finish
-        runs-on: ubuntu-latest
+  check-website:
+    needs: extract-metadata  # Wait for the first job to finish
+    runs-on: ubuntu-latest
 
-        steps:
-        - name: Get Filename from Pushed JPG
-          id: get_filename
-          run: echo "::set-output name=filename::$(basename $(git diff-tree --name-only ${{ github.sha }} | grep '.jpg'))"
+    steps:
+      - name: Get Filename from Pushed JPG
+        id: get_filename
+        run: echo "::set-output name=filename::$(basename $(git diff-tree --name-only ${{ github.sha }} | grep '.jpg'))"
 
-        - name: Construct Website URL
-          id: construct_url
-          run: |
-            filename="${{ steps.get_filename.outputs.filename }}"
-            url="https://www.hogeai.com/sharing/${filename%.jpg}.html"  # Remove .jpg extension
-            echo "Website URL: $url"
-            echo "::set-output name=url::$url"
+      - name: Construct Website URL
+        id: construct_url
+        run: |
+          filename="${{ steps.get_filename.outputs.filename }}"
+          url="https://www.hogeai.com/sharing/${filename%.jpg}.html"  # Remove .jpg extension
+          echo "Website URL: $url"
+          echo "::set-output name=url::$url"
 
-        - name: Wait for GitHub Pages Deployment
-          run: |
-            max_retries=10
-            retry_interval=30
-            url="${{ steps.construct_url.outputs.url }}"
-            count=0
-            while [ $count -lt $max_retries ]; do
-              if curl --output /dev/null --silent --head --fail "$url"; then
-                echo "Website is live!"
-                break
-              else
-                echo "Website is not yet live. Retrying in $retry_interval seconds..."
-                sleep $retry_interval
-                ((count++))
-              fi
-            done
-            if [ $count -eq $max_retries ]; then
-              echo "Website did not become live after $((max_retries * retry_interval)) seconds."
-              exit 1
+      - name: Wait for GitHub Pages Deployment
+        run: |
+          max_retries=10
+          retry_interval=30
+          url="${{ steps.construct_url.outputs.url }}"
+          count=0
+          while [ $count -lt $max_retries ]; do
+            if curl --output /dev/null --silent --head --fail "$url"; then
+              echo "Website is live!"
+              break
+            else
+              echo "Website is not yet live. Retrying in $retry_interval seconds..."
+              sleep $retry_interval
+              ((count++))
             fi
+          done
+          if [ $count -eq $max_retries ]; then
+            echo "Website did not become live after $((max_retries * retry_interval)) seconds."
+            exit 1
+          fi
