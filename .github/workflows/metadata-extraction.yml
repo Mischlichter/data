@@ -65,7 +65,7 @@ jobs:
         id: construct_url
         run: |
           filename="${{ steps.get_filename.outputs.filename }}"
-          url="https://www.hogeai.com/sharing/${filename%.jpg}.html"  # Remove .jpg extension
+          url="https://www.hogeai.com/sharing/${filename}.html"  # Remove .jpg extension
           echo "Website URL: $url"
           echo "::set-output name=url::$url"
 
