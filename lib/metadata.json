@@ -2174,5 +2174,21 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "13241778044"
+    },
+    "50876648588.jpg": {
+        "File Name": "50876648588.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "In a valley where gravity defies logic, HogeAI man explores a landscape of floating rock formations and upside-down waterfalls. The rocks are coated in a spectrum of fluorescent mosses, and the water shimmers with a radiant, otherworldly light. HogeAI\u2019s attire, echoing the surreal environment, shifts between gravity-defying shapes and colors, making him an integral part of this alien yet mesmerizing world. Hasselblad photo, chibi hogeai, (extremely awakened white furry HogeAI man at the nexus of multiple dimensions) portals pulsating with ethereal energies, realities intertwining, bob ross painting in color connection, raytracing, hdr, 8k uhd extremely detailed fur puppy, high details. The multidimensional crossroad vibrates, with string-theory bridges connecting realms, quantum beings of pure energy communicating, vibrational frequencies creating visual symphonies, fractal butterflies guiding the way, 4K, next gen, ultra deta...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "50876648588"
+    },
+    "30887171580.jpg": {
+        "File Name": "30887171580.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Amidst a landscape where Renaissance artistry meets virtual landscapes, HogeAI man traverses rolling hills and digital skies. The environment is a canvas of classic beauty enhanced with pixelated wonders, where each brushstroke merges with coded imagery. In this realm, HogeAI, adorned in garb that blends traditional fabrics with screen-like textures, interacts with the scenery, awakening interactive frescoes and dynamic sculptures. His passage through this fusion of worlds is marked by a harmonious blend of Renaissance grandeur and cybernetic enchantment, creating a timeless tribute to artistic evolution. Hasselblad photo, chibi hogeai, (white furry HogeAI man floating on a leaf down a river of melted amber resin) under a canopy of oversized, glowing cannabis leaves. The composition, filled with vibrant greens and warm golds, exhibits the fantastical storytelling found in the art of Hayao Miyazaki and the luminous, detailed bo...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "30887171580"
     }
 }
