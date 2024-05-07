@@ -5,9 +5,6 @@ MIT Licensed
 Copyright (c) 2014 Rafał Lindemann. http://panrafal.github.com/depthy
 */
 
-
-
-
 PIXI.ColorMatrixFilter2 = function()
 {
   'use strict';
@@ -707,9 +704,6 @@ PIXI.DepthPerspectiveFilter = function(texture, quality, sprite)
       pauseRender: false,
     };
 
-  var pauseRender = false;
-
-
   var DepthyViewer = root.DepthyViewer = function(element, options) {
     var self = this,
         canvas, app, stage, renderer, stats,
@@ -727,9 +721,6 @@ PIXI.DepthPerspectiveFilter = function(texture, quality, sprite)
         depthFilter, compoundSprite, previewSprite,
 
         depthOffset = {x: 0, y: 0}, easedOffset = depthOffset;
-        pauseRender = false;  // Add pauseRender flag
-
-        
 
     options = defaultOptions;
     
@@ -737,14 +728,40 @@ PIXI.DepthPerspectiveFilter = function(texture, quality, sprite)
     var xbase = options.xbase || 0;
     var ybase = options.ybase || 0;
     
-    // Accessor and mutator for pauseRender
-    self.getPauseRender = function() {
-        return pauseRender;
+    this.destroyApp = function() {
+        // Stop the render loop
+        if (renderLoop) {
+            cancelAnimationFrame(renderLoop);
+            renderLoop = null;
+        }
+
+        // Destroy PIXI textures and sprites
+        if (imageTextureSprite) {
+            imageTextureSprite.destroy({children: true, texture: true, baseTexture: true});
+        }
+        if (depthTextureSprite) {
+            depthTextureSprite.destroy({children: true, texture: true, baseTexture: true});
+        }
+        if (imageRender) {
+            imageRender.destroy(true);
+        }
+        if (depthRender) {
+            depthRender.destroy(true);
+        }
+
+        // Destroy PIXI application and its resources
+        if (app) {
+            app.destroy(true);
+            if (element && element.contains(app.view)) {
+                element.removeChild(app.view);
+            }
+            app = null;
+        }
+
+        // Additional cleanup (filters, etc.)
+        // ...
     };
 
-    self.setPauseRender = function(value) {
-        pauseRender = value;
-    };
     // PRIVATE FUNCTIONS
     function init() {
       initRenderer();
@@ -759,8 +776,6 @@ PIXI.DepthPerspectiveFilter = function(texture, quality, sprite)
         stage = app.stage;
         renderer = app.renderer;
         canvas = renderer.view;
-
-
 
         discardAlphaFilter = createDiscardAlphaFilter();
         resetAlphaFilter = createDiscardAlphaFilter(1.0);
@@ -1341,28 +1356,18 @@ PIXI.DepthPerspectiveFilter = function(texture, quality, sprite)
     }
 
     var lastLoopTime = 0;
-    var frameCount = 0; // Counter to track the number of frames rendered
-
     function renderLoop() {
-        
+      if (!options.pauseRender) {
+        quality.ms = lastLoopTime && (performance.now() - lastLoopTime);
+        lastLoopTime = performance.now();
 
-        if (!pauseRender) {
-            quality.ms = lastLoopTime && (performance.now() - lastLoopTime);
-            lastLoopTime = performance.now();
-
-            stats && stats.begin();
-            render();
-            stats && stats.end();
-
-            frameCount++; // Increment frame counter
-            if (frameCount % 10 === 0) { // Check if the frame count is a multiple of 10
-                //console.log("Rendering... Frame count: " + frameCount);
-            }
-        } else {
-            //console.log("Rendering paused"); // Log when rendering is paused
-        }
-        requestAnimationFrame(renderLoop);
+        stats && stats.begin();
+        render();
+        stats && stats.end();
+      }
+      requestAnimationFrame( renderLoop );
     }
+
     // PUBLIC FUNCTIONS
 
     this.setOptions = function(newOptions) {
@@ -1751,8 +1756,5 @@ PIXI.DepthPerspectiveFilter = function(texture, quality, sprite)
   };
 
   DepthyViewer.defaultOptions = defaultOptions;
-
-  
-
 
 })(window);

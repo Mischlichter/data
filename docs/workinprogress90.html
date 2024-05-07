@@ -1507,6 +1507,7 @@
 
 //////// IFRAME LOADING ////////
         
+        var iframeIsVisible = false;
 
         function updateIframe(sceneKey) {
             const iframeContainer = document.getElementById('iframeContainer');
@@ -1560,7 +1561,6 @@
             }
 
             function setupIframe(src) {
-                
                 iframeContainer.style.display = 'block';
                 if (mouseOverlay) {
                     mouseOverlay.style.display = 'block';
@@ -1574,13 +1574,46 @@
                 newIframe.style.height = '100vh';
                 newIframe.style.border = 'none';
                 newIframe.src = src;
-                iframeContainer.appendChild(newIframe);
 
+                // Wait for the iframe to load completely before setting up the observer
+                newIframe.onload = function() {
+                    //console.log('Iframe fully loaded');
+                    if (newIframe.contentWindow) {
+                        setupObserver(newIframe);
+                    } else {
+                        console.error('Iframe contentWindow is not available after load!');
+                    }
+                };
+
+                iframeContainer.appendChild(newIframe);
                 hideBackground();
                 scrollToTop();
-
-
             }
+
+            function setupObserver(iframe) {
+                let observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && iframe.contentWindow) {
+                            //console.log('Iframe is now visible. Sending message.');
+                            iframeIsVisible = true;  // Update global variable
+                            iframe.contentWindow.postMessage({ type: 'visibilityChange', isVisible: true }, '*');
+                        } else if (!entry.isIntersecting && iframe.contentWindow) {
+                            //console.log('Iframe is now not visible. Sending message.');
+                            iframeIsVisible = false;  // Update global variable
+                            iframe.contentWindow.postMessage({ type: 'visibilityChange', isVisible: false }, '*');
+                        }
+                    });
+                }, {
+                    root: null,
+                    threshold: 0.1
+                });
+
+                observer.observe(iframe);
+            }
+
+
+
+
         }
 
         function resetPageStyles() {
