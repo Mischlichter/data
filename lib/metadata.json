@@ -2150,5 +2150,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "76516590142"
+    },
+    "38581098458.jpg": {
+        "File Name": "38581098458.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Amidst the crystalline dunes of a desert planet, HogeAI man discovers an ancient temple, a relic from a civilization that mastered the art of psychedelic architecture. The temple, carved from a single massive crystal, glimmers under the twin suns, casting prisms of light across the sand. Inside, the walls are lined with intricate carvings that seem to move and change, telling stories of a people who sought to harness the power of their suns and the stars. The air inside the temple is cool and still, a stark contrast to the desert heat. The atmosphere is heavy with the weight of history and the mystery of the unknown. HogeAI, his attire echoing the crystal hues of the temple, moves through the space with a sense of reverence, each step revealing new wonders \u2013 from hidden chambers filled with alien artifacts to murals that depict cosmic events in vibrant, hallucinogenic colors. Hasselblad photo, chibi hogeai, (extremely charisma...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "38581098458"
     }
 }
