@@ -2230,5 +2230,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "4239876520"
+    },
+    "793000118.jpg": {
+        "File Name": "793000118.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "In a cosmic retreat where the spirit of ganja merges with a virtual Eden, HogeAI man discovers a haven of floating islands, each a microcosm of cannabis culture. These islands, lush with strains from around the galaxy, glow with a bioluminescence that illuminates the night. The air is a blend of aromatic terpenes and digital ether, creating a scent that is both grounding and otherworldly. HogeAI, wearing a garment that shifts with the colors of the most exotic strains, interacts with the islands, his touch igniting a cascade of light and color, revealing hidden patterns in the foliage. The islands' centerpiece, a majestic cannabis tree with leaves of holographic resonance, stands as a testament to the harmony of nature and innovation. Here, HogeAI is enveloped in an immersive experience that celebrates the ancient plant in a symphony of futuristic wonder. Hasselblad photo, chibi hogeai, (white furry HogeAI man-woman as a libra...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "793000118"
     }
 }
