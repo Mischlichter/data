@@ -2222,5 +2222,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "37795477779"
+    },
+    "4239876520.jpg": {
+        "File Name": "4239876520.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "At a cosmic carnival where fantasy and reality intertwine, HogeAI revelers experience attractions that defy imagination. One HogeAI rides a rollercoaster that loops through wormholes, dressed in a suit of twinkling stars. Another HogeAI plays games in a tent of illusions, their attire shifting in impossible patterns and colors. The carnival, a celebration of the fantastical, showcases the joy and creativity of the HogeAI community, each individual a vibrant participant in this extraordinary festival. Hasselblad photo, chibi hogeai, (extremely interconnected white furry HogeAI man) forming a nexus with digital entities, matrix of glowing connections, bob ross painting in color connection, raytracing, hdr, 8k uhd, colors pulsating between deep indigos and fiery oranges, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, web of...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "4239876520"
     }
 }
