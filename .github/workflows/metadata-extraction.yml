@@ -54,7 +54,7 @@ jobs:
         id: file-list
         run: |
           files=$(git diff --name-only HEAD^ HEAD | grep '\.html$')
-          echo "files=$files" >> $GITHUB_ENV
+          echo "html_files=$files" >> $GITHUB_ENV
 
   check-live-status:
     needs: extract-metadata
@@ -65,9 +65,8 @@ jobs:
 
       - name: Check and Visit New Pages
         run: |
-          files="${{ needs.extract-metadata.outputs.filelist }}"
-          echo "Files to process: $files"
-          for file in $files
+          echo "Files to process: $html_files"
+          for file in $html_files
           do
             filename="${file#docs/sharing/}"  # Removes 'docs/sharing/' from the path
             url="https://hogeai.com/sharing/${filename}"
