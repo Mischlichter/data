@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2  # Ensure the repository is checked out
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -54,6 +54,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2  # Ensure the repository is checked out
+
       - name: Get Filename from Pushed JPG
         id: get_filename
         run: echo "::set-output name=filename::$(basename $(git diff-tree --name-only ${{ github.sha }} | grep '.jpg'))"
