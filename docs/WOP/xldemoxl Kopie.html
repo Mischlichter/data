@@ -692,8 +692,6 @@
 
 
 
-
-
     </style>
 
     
@@ -713,11 +711,9 @@
 
     <div class="mainpage">
         
-    <div id="permissionOverlay">
-        <button id="enableButton">ENTER HOGEAI</button>
-    </div>    
+        
 
-    </div>
+        </div>
         <div id="iframeContainer" style="position: relative; width: 100%; height: 100%;;z-index: 1;">
         <div id="mouseOverlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;z-index: 1;"></div>
  
@@ -747,7 +743,9 @@
         </div>
     </div>
 
-    
+    <div id="permissionOverlay">
+        <button id="enableButton">ENTER HOGEAI</button>
+    </div>
       
     </div>
 
@@ -1516,6 +1514,9 @@
             const mouseOverlay = document.getElementById('mouseOverlay');
             const bodyGalleryContainer = document.getElementById('bodyGalleryContainer');
 
+
+
+
             unhideElementsByClass("foreground-image-container");
 
             // Remove existing iframe and clear body gallery content
@@ -1530,28 +1531,29 @@
 
             if (sceneKey === 'scene04') {
                 // Logic for scene04 (Gallery)
-                toggleRemoveFooterActivation();
-                resetRemoveStyledFooterCounter();
+                toggleRemoveFooterActivation()
+                resetRemoveStyledFooterCounter()
                 iframeContainer.style.display = 'none';
                 if (mouseOverlay) {
                     mouseOverlay.style.display = 'none';
                 }
                 const bodyGallery = document.getElementById('bodyGalleryContainer');
-                if (bodyGallery) {
-                    bodyGallery.style.opacity = '1'; // Set opacity to fully visible
-                } else {
-                    console.error('bodyGalleryContainer not found in the DOM');
-                }
+                    if (bodyGallery) {
+                        bodyGallery.style.opacity = '1'; // Set opacity to fully visible
+                    } else {
+                        console.error('bodyGalleryContainer not found in the DOM');
+                    }
                 bodyGalleryContainer.style.display = 'block';
-                hideElementsByClass("foreground-image-container,");
+                hideElementsByClass("foreground-image-container");
                 loadGallery(); // Load the gallery for scene04
                 unhideBackground();
                 scrollToTop();
+
             } else if (sceneKey === 'scene05') {
                 // Logic for scene05 (Clipz)
                 hideElementsByClass("foreground-image-container");
 
-                setupDirectIframe('clipz2.html'); // Load clipz2.html for scene05 directly into the body
+                setupIframe('clipz2.html'); // Load clipz.html for scene05
                 fadeInElements();
             } else {
                 // Logic for other scenes
@@ -1573,43 +1575,31 @@
                 newIframe.style.border = 'none';
                 newIframe.src = src;
 
-                iframeContainer.appendChild(newIframe);
-                hideBackground();
-                scrollToTop();
-                iframeLoaded(newIframe);
-            }
-
-            function setupDirectIframe(src) {
-                const newIframe = document.createElement('iframe');
-                newIframe.id = 'sceneIframe';
-                newIframe.style.width = '100%';
-                newIframe.style.height = '100vh';
-                newIframe.style.border = 'none';
-                newIframe.src = src;
-
-                document.body.appendChild(newIframe); // Directly append to the body
-                hideBackground();
-                scrollToTop();
-                iframeLoaded(newIframe);
-            }
-
-            function iframeLoaded(iframe) {
                 // Wait for the iframe to load completely before setting up the observer
-                iframe.onload = function() {
-                    if (iframe.contentWindow) {
-                        setupObserver(iframe);
+                newIframe.onload = function() {
+                    //console.log('Iframe fully loaded');
+                    if (newIframe.contentWindow) {
+                        setupObserver(newIframe);
                     } else {
                         console.error('Iframe contentWindow is not available after load!');
                     }
                 };
+
+                iframeContainer.appendChild(newIframe);
+                hideBackground();
+                scrollToTop();
             }
 
             function setupObserver(iframe) {
                 let observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting && iframe.contentWindow) {
+                            //console.log('Iframe is now visible. Sending message.');
+                            iframeIsVisible = true;  // Update global variable
                             iframe.contentWindow.postMessage({ type: 'visibilityChange', isVisible: true }, '*');
                         } else if (!entry.isIntersecting && iframe.contentWindow) {
+                            //console.log('Iframe is now not visible. Sending message.');
+                            iframeIsVisible = false;  // Update global variable
                             iframe.contentWindow.postMessage({ type: 'visibilityChange', isVisible: false }, '*');
                         }
                     });
@@ -1617,8 +1607,13 @@
                     root: null,
                     threshold: 0.1
                 });
+
                 observer.observe(iframe);
             }
+
+
+
+
         }
 
         function resetPageStyles() {
