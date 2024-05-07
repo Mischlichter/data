@@ -7,6 +7,14 @@
     <title>🌈 Ambilight Effect - Random Video Clips</title>
     <style>
         /* CSS styles */
+
+        @font-face {
+            font-family: 'JetBrainsMono-Bold';
+            src: url('fonts/JetBrainsMono-Bold.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-Bold.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 700; /* Bold font weight */
+            font-style: normal;
+        }
         * {
             margin: 0;
             padding: 0;
@@ -80,6 +88,30 @@
         .no-scroll {
             overflow: hidden;
         }
+
+        button#muteButton {
+            padding: 10px 20px;
+            font-family: 'JetBrainsMono-Bold'; /* Consistent with the menu */
+            font-size: 16px;                   /* Size from the menu */
+            background-color: black;           /* Background color like the menu */
+            color: #00ffcc;                    /* Highlight color for the text, matching the menu border */
+            border: 2px solid #00ffcc;         /* Border color to match the menu */
+            border-radius: 20px;               /* Rounded corners like the menu */
+            cursor: pointer;
+            outline: none;
+            z-index: 111111111111111111;
+            position: absolute;                /* Ensures the button does not disrupt other elements */
+            bottom: 20px;                      /* Adjust as necessary for positioning */
+            right: 20px;                       /* Adjust as necessary for positioning */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* Slight shadow for depth */
+        }
+
+        .videoWrapper:hover #muteButton {
+            opacity: 1;
+            visibility: visible;
+        }
+
+
     </style>
 </head>
 <body class="no-scroll">
@@ -91,7 +123,13 @@
             </div>
             <canvas id="ambilight"></canvas>
         </div>
+        <!-- Mute/Unmute Button -->
+   
+        <button id="muteButton" onclick="toggleMute()">Unmute</button>
+
+
     </div>
+
 
 
     <script>
@@ -114,7 +152,7 @@
             }
 
             function startAmbilightRepaint() {
-                intervalId = window.setInterval(repaintAmbilight, 1000 / FRAMERATE);
+                intervalId = setInterval(repaintAmbilight, 1000 / FRAMERATE);
             }
 
             function stopAmbilightRepaint() {
@@ -132,7 +170,27 @@
 
             video1.addEventListener('seeked', repaintAmbilight);
             video2.addEventListener('seeked', repaintAmbilight);
+
+            function toggleMute() {
+                console.log('toggleMute function called'); // Debug statement
+
+                // Log the current mute state before toggling
+                console.log('Current Mute State (before toggle): Video1:', video1.muted, 'Video2:', video2.muted);
+
+                video1.muted = !video1.muted;
+                video2.muted = !video2.muted;
+
+                document.getElementById('muteButton').innerText = video1.muted ? 'Unmute' : 'Mute';
+
+                // Log the new mute state after toggling
+                console.log('New Mute State (after toggle): Video1:', video1.muted, 'Video2:', video2.muted);
+            }
+
+            // Attach event listener to the muteButton here, inside the onload where toggleMute is defined
+            document.getElementById('muteButton').addEventListener('click', toggleMute);
+
         };
+
     </script>
 
     <script>
@@ -165,7 +223,7 @@
 
             function playNextVideo() {
                 if (videoUrls.length === 0) {
-                    videoUrls = [...originalVideoUrls];
+                    videoUrls = [...originalVideoUrls]; // Reset the list if empty
                 }
                 const randomIndex = Math.floor(Math.random() * videoUrls.length);
                 nextVideo.src = videoUrls[randomIndex];
@@ -188,13 +246,11 @@
             currentVideo.addEventListener('ended', playNextVideo);
             nextVideo.addEventListener('ended', playNextVideo);
 
-            playNextVideo();
+            playNextVideo(); // Start the first video
         }
 
-        window.addEventListener('load', setupVideoPlayer);
-
+        setupVideoPlayer(); // Initialize the video setup
     </script>
-
 
 
 
