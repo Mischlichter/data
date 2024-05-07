@@ -65,8 +65,9 @@ jobs:
 
       - name: Check and Visit New Pages
         run: |
-          echo "Files to process: $html_files"
-          for file in $html_files
+          files="${{ needs.extract-metadata.outputs.filelist }}"
+          echo "Files to process: $files"
+          for file in $files
           do
             filename="${file#docs/sharing/}"  # Removes 'docs/sharing/' from the path
             url="https://hogeai.com/sharing/${filename}"
