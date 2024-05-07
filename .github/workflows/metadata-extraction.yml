@@ -49,30 +49,40 @@ jobs:
         git commit -m "Update image metadata, HTML pages, and favicons" || echo "No changes to commit"
         git push || echo "Failed to push changes. Check for potential conflicts or issues."
 
-   
-    - name: Extract and Check Newly Created Pages
+  check-website:
+    needs: extract-metadata  # Wait for the first job to finish
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Get Filename from Pushed JPG
+      id: get_filename
+      run: echo "::set-output name=filename::$(basename $(git diff-tree --name-only ${{ github.sha }} | grep '.jpg'))"
+
+    - name: Construct Website URL
+      id: construct_url
       run: |
-        # Ensure git knows your identity (might be necessary in some contexts)
-        git config --global user.email "you@example.com"
-        git config --global user.name "Your Name"
-        echo "Git configuration set."
+        filename="${{ steps.get_filename.outputs.filename }}"
+        url="https://www.hogeai.com/sharing/$(echo $filename | cut -d. -f1).html"
+        echo "Website URL: $url"
+        echo "::set-output name=url::$url"
 
-        # Extract the last commit log
-        commit_log=$(git log -1 --name-only)
-        echo "Commit log: $commit_log"
-
-        # Parse new HTML filenames from the commit log, converting JPG filenames to HTML
-        urls=$(echo "$commit_log" | grep 'data/gallerycom/.*\.jpg$' | sed 's/data\/gallerycom\/\(.*\)\.jpg$/https:\/\/www.hogeai.com\/sharing\/\1.html/')
-        echo "URLs to check: $urls"
-
-        # Check each URL
-        for url in $urls; do
-          echo "Checking if site is live: $url"
-          response=$(curl -o /dev/null -s -w "%{http_code}\n" $url)
-          while [ "$response" -ne 200 ]; do
-            echo "$url not ready yet, response code $response, retrying in 30 seconds..."
-            sleep 30
-            response=$(curl -o /dev/null -s -w "%{http_code}\n" $url)
-          done
-          echo "$url is live!"
+    - name: Check Website Availability
+      run: |
+        max_retries=10
+        retry_interval=30
+        url="${{ steps.construct_url.outputs.url }}"
+        count=0
+        while [ $count -lt $max_retries ]; do
+          if curl --output /dev/null --silent --head --fail "$url"; then
+            echo "Website is live!"
+            break
+          else
+            echo "Website is not yet live. Retrying in $retry_interval seconds..."
+            sleep $retry_interval
+            ((count++))
+          fi
         done
+        if [ $count -eq $max_retries ]; then
+          echo "Website did not become live after $((max_retries * retry_interval)) seconds."
+          exit 1
+        fi
