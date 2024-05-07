@@ -2158,5 +2158,21 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "38581098458"
+    },
+    "47933757982.jpg": {
+        "File Name": "47933757982.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "In a valley where gravity defies logic, HogeAI man explores a landscape of floating rock formations and upside-down waterfalls. The rocks are coated in a spectrum of fluorescent mosses, and the water shimmers with a radiant, otherworldly light. HogeAI\u2019s attire, echoing the surreal environment, shifts between gravity-defying shapes and colors, making him an integral part of this alien yet mesmerizing world. Hasselblad photo, chibi hogeai, (white furry HogeAI man navigating a digital bazaar) bustling with avatars and AI vendors. Stalls [glow radiant 1.0] showcasing virtual trinkets, meme artifacts, and digital spices. The air filled with [electronic harmonious 1.0] chimes signifying trades and bargains. The setting, a labyrinth of [neon shadow 0.9], creates a [vibrant bustling 0.8] market scene, an epitome of commerce in the digital age.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "47933757982"
+    },
+    "13241778044.jpg": {
+        "File Name": "13241778044.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hovering above a bustling futuristic metropolis, HogeAI man gazes down at a labyrinth of interconnected lives and pulsating digital pulses. The city below breathes a life of its own, a living organism of twinkling lights and vibrant energy. Each building, street, and hover-car is a nerve center of human and artificial coexistence, pulsing with the collective dreams and aspirations of its inhabitants. The night sky, aglow with neon constellations, reflects the boundless potential of this urban ecosystem. Watercolor panorama, chibi hogeai, (white furry HogeAI man sailing on a river of liquid gold) through a desert with singing sand dunes and skies painted with the colors of dusk and dawn. The landscape, with its fluid forms and magical-realism aesthetics, reflects the lyrical, atmospheric paintings of J.M.W. Turner, subtly mixed with the enchanting, narrative quality of Lisbeth Zwerger\u2019s illustrations.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "13241778044"
     }
 }
