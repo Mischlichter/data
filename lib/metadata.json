@@ -2070,5 +2070,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "21957647349"
+    },
+    "92387882307.jpg": {
+        "File Name": "92387882307.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man illustration by Matt Groening",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "92387882307"
     }
 }
