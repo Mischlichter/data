@@ -93,7 +93,7 @@
             padding: 10px 20px;
             font-family: 'JetBrainsMono-Bold';
             font-size: 16px;
-            background-color: black;
+            background-color: rgba(0, 0, 0, 0.7); /* Black with 50% opacity */
             color: #00ffcc;
             border: 2px solid #00ffcc;
             border-radius: 20px;
@@ -101,7 +101,7 @@
             outline: none;
             z-index: 111111111111111111;
             position: absolute;
-            bottom: 20px;
+            bottom: 2%;
             left: 20px; /* Changed from right to left */
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
             opacity: 0; /* Start hidden */
@@ -203,6 +203,27 @@
                 document.getElementById('muteButton').style.opacity = 0;
                 document.getElementById('muteButton').style.visibility = 'hidden';
             });
+
+            const button = document.getElementById('muteButton');
+
+            function adjustButtonPosition() {
+                // Calculate the current aspect ratio of the window
+                const aspectRatio = window.innerWidth / window.innerHeight;
+                // Define the target aspect ratio for portrait mode (9/16)
+                const targetAspectRatio = 9 / 16;
+                // Calculate interpolation factor based on current and target aspect ratios
+                let interpolationFactor = Math.max(0, Math.min(1, (aspectRatio - targetAspectRatio) / (1 - targetAspectRatio)));
+
+                // Determine the button position from 20% to 2% as the aspect ratio approaches portrait mode
+                const bottomPosition = 24 - (22 * interpolationFactor) + '%';
+
+                // Update the bottom property with smooth transition
+                button.style.bottom = bottomPosition;
+            }
+
+            // Attach event listeners
+            window.addEventListener('resize', adjustButtonPosition);
+            adjustButtonPosition(); // Initial call to set the position        
 
 
         };
