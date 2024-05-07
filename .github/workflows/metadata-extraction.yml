@@ -27,6 +27,10 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y exiftool
 
+    - name: Extract Filename
+      id: extract-filename
+      run: echo "::set-output name=filename::${GITHUB_EVENT_PATH##*/}"
+
     - name: Run Metadata Extraction Script
       run: python lib/library_and_pages_x.py
 
@@ -49,3 +53,13 @@ jobs:
         git commit -m "Update image metadata, HTML pages, and favicons" || echo "No changes to commit"
         git push || echo "Failed to push changes. Check for potential conflicts or issues."
 
+    - name: Construct Address and Check Live Status
+      run: |
+        filename="${{ steps.extract-filename.outputs.filename }}"
+        filename="${filename%.*}.html"
+        url="hogeai.com/sharing/$filename"
+        while ! curl --output /dev/null --silent --head --fail "$url"; do
+          echo "Waiting for $url to be live..."
+          sleep 5
+        done
+        echo "$url is live."
