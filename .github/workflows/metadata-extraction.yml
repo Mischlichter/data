@@ -57,11 +57,14 @@ jobs:
 
     - name: Check Live Status on hogeai.com
       run: |
-        for file in ${{ steps.file-list.outputs.html_files }}
+        for file in $(git diff --name-only HEAD^ HEAD | grep '\.html$')
         do
           url="https://hogeai.com/sharing/${file}"
-          while ! curl --output /dev/null --silent --head --fail --location --write-out '%{http_code}' "$url" | grep '200'; do
+          echo "Checking URL: $url"
+          while ! curl --output /dev/null --silent --head --fail --location "$url"; do
             echo "Waiting for $url to be live..."
             sleep 5
           done
           echo "$url is live."
+        done
+
