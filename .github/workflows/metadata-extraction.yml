@@ -1,3 +1,10 @@
+name: Image Metadata Extraction
+
+on:
+  push:
+    paths:
+      - 'gallerycom/**'
+
 jobs:
   extract-metadata:
     runs-on: ubuntu-latest
