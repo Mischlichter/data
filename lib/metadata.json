@@ -2478,5 +2478,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "91880288415"
+    },
+    "81701762439.jpg": {
+        "File Name": "81701762439.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "\"In a hidden New Year's Eve enclave, HogeAI man revels in a luminescent cave, illuminated by glowing crystals and bioluminescent plants. The air hums with the sound of a sitar, blending with electronic beats, as revelers in tie-dye and beadwork move in sync. HogeAI, adorned in a cloak of velvet patchwork, weaves through the crowd, leaving a trail of sparkling light in his wake. This mesmerizing scene, reminiscent of a psychedelic concert poster, is alive with vivid purples, radiant oranges, and electric blues.\" \"a cartoon hogeai man wearing sunglasses and a t - shirt, behance, trending on fiverr, insanely nice hair style, profile picture 1024px, timelapse, ghailan! , twitter pfp, the artist has used bright, reduce duplicate image, wearing jetpack, deviantar, neymar, caricature\"",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "81701762439"
     }
 }
