@@ -2526,5 +2526,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "74877236356"
+    },
+    "37194459987.jpg": {
+        "File Name": "37194459987.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "In an ethereal expanse where psychedelic visions meet the vastness of space, HogeAI man floats amidst a nebula garden of cosmic cannabis. Each plant glimmers with stardust, their leaves swirling in patterns that echo distant galaxies. The air, a blend of interstellar aromas and the heady scent of space-grown strains, envelops HogeAI in a celestial embrace. His attire, reflecting the infinite array of stars and nebulae, shifts with the cosmic winds, embracing the boundless creativity of the universe. \"a cartoon hogeai man wearing sunglasses and a t - shirt, behance, trending on fiverr, insanely nice hair style, profile picture 1024px, timelapse, ghailan! , twitter pfp, the artist has used bright, reduce duplicate image, wearing jetpack, deviantar, neymar, caricature\"",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "37194459987"
     }
 }
