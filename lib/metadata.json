@@ -2518,5 +2518,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "63565780829"
+    },
+    "74877236356.jpg": {
+        "File Name": "74877236356.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "In a city where reality is augmented at every turn, HogeAI man walks through streets that are a canvas for digital artists and psychedelic visionaries. Buildings serve as massive screens displaying an ever-changing array of art, from classic psychedelic patterns to modern interpretations of cosmic wonder. The people he passes are adorned in clothing that shifts and changes with their mood, reflecting their personal connection to the city around them. Parks within the city are oases of natural beauty, seamlessly integrated with holographic enhancements that augment the experience of nature. HogeAI, his attire a fusion of organic materials and digital interfaces, is a living embodiment of the city's ethos, a blend of tradition and innovation. \"a cartoon hogeai man wearing sunglasses and a t - shirt, behance, trending on fiverr, insanely nice hair style, profile picture 1024px, timelapse, ghailan! , twitter pfp, the artist has us...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "74877236356"
     }
 }
