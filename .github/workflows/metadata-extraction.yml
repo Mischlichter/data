@@ -70,7 +70,7 @@ jobs:
             echo "No HTML files to process."
             exit 0
           fi
-          IFS=' ' read -r -a html_files <<< "$files"
+          IFS=$'\n' read -r -d '' -a html_files <<< "$files"
           for file in "${html_files[@]}"
           do
             filename="${file#docs/sharing/}"  # Removes 'docs/sharing/' from the path
