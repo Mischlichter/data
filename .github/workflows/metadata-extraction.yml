@@ -52,6 +52,8 @@ jobs:
         id: file-list
         run: |
           git diff --name-only HEAD^ HEAD | grep '\.html$' > html_files.txt
+          ls -l  # Output directory contents for debugging
+          cat html_files.txt  # Output file content for debugging
 
   check-live-status:
     needs: extract-metadata
@@ -62,6 +64,7 @@ jobs:
 
       - name: Read HTML files list
         run: |
+          cat html_files.txt  # Output file content for debugging
           html_files=$(<html_files.txt)
           echo "::set-output name=html_files::$html_files"
 
