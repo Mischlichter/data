@@ -103,14 +103,17 @@ jobs:
             curl --output /dev/null --silent --location "$url"
             echo "$url has been fully visited."
 
-            # Trigger Twitter Card Validator
-            echo "Triggering Twitter Card validation for URL: $url"
-            response=$(curl -X POST -sL "https://cards-dev.twitter.com/validator" --data-urlencode "url=$url")
+            - name: Submit URL to Google
+              run: |
+                echo "Submitting URL to Google and Bing"
+                google_response=$(curl -X POST \
+                  -H "Content-Type: application/json" \
+                  -d "{\"url\": \"$url\", \"type\": \"URL_UPDATED\"}" \
+                  -H "Authorization: Bearer ${{ secrets.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 }}" \
+                  "https://indexing.googleapis.com/v3/urlNotifications:publish")
+                echo "Google API Response: $google_response"
+              env:
+                url: $url
+              
 
-            if echo "$response" | grep -q "Validation successful"; then
-              echo "Twitter card validation successful for URL: $url"
-            else
-              echo "Twitter card validation failed for URL: $url"
-              # Handle validation failure
-            fi
           done
