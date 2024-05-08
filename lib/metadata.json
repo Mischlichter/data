@@ -2382,5 +2382,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "78355965099"
+    },
+    "8102385046.jpg": {
+        "File Name": "8102385046.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man outstretched arm \ud83c\uddef\ud83c\uddf4 Caroline Chariot-Dayez",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "8102385046"
     }
 }
