@@ -8,8 +8,6 @@ on:
 jobs:
   extract-metadata:
     runs-on: ubuntu-latest
-    outputs:
-      filelist: ${{ steps.file-list.outputs.html_files }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -53,12 +51,7 @@ jobs:
       - name: List Committed HTML Files
         id: file-list
         run: |
-          files=$(git diff --name-only HEAD^ HEAD | grep '\.html$')
-          for file in $files
-          do
-            echo "${file}" >> $GITHUB_ENV
-          done
-          echo "html_files=$(echo $files)" >> $GITHUB_ENV
+          git diff --name-only HEAD^ HEAD | grep '\.html$' > html_files.txt
 
   check-live-status:
     needs: extract-metadata
@@ -67,15 +60,22 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
+      - name: Read HTML files list
+        run: |
+          html_files=$(<html_files.txt)
+          echo "::set-output name=html_files::$html_files"
+
       - name: Check and Visit New Pages
         id: check-pages
         run: |
-          html_files=(${{ needs.extract-metadata.outputs.filelist }})
-          if [ -z "${html_files}" ]; then
+          if [ -z "${{ needs.extract-metadata.outputs.filelist }}" ]; then
             echo "No HTML files to process."
             exit 0
           fi
           
+          # Read the file list into an array
+          IFS=$'\n' read -r -a html_files <<<"${{ needs.extract-metadata.outputs.filelist }}"
+
           # Process each file
           for file in "${html_files[@]}"
           do
