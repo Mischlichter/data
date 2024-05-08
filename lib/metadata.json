@@ -2398,5 +2398,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "26279871859"
+    },
+    "62483914002.jpg": {
+        "File Name": "62483914002.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man holding hands \ud83c\udf78 Caroline Gotch",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "62483914002"
     }
 }
