@@ -2342,5 +2342,21 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "49255417692"
+    },
+    "94157532876.jpg": {
+        "File Name": "94157532876.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, metallic white hogeai man, exploring a post-apocalyptic urban jungle, nature reclaiming skyscrapers, ethereal wildlife, bob ross painting in color connection, raytracing, HDR, 8K UHD, armor with sleek design, reflecting the surrounding ruins, 4K, next-gen, ultra-detailed, 3D Octane rendering, Unreal Engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, extremely vibrant twilight colors. In an underground enclave where acid punk's spirit thrives, HogeAI man discovers a labyrinth of alleyways lit by neon and echoing with the history of psychedelic and punk rock. Here, the walls tell stories of musical revolutions, each turn revealing a new chapter of cultural rebellion. The air is thick with the legacy of psychedelic pioneers and punk rock icons, blending into a tapestry of musical anarchy and artistic innovation.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "94157532876"
+    },
+    "33622226426.jpg": {
+        "File Name": "33622226426.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "A colorful crescent moon over an alien city, in the style of Roger Dean and Jean Giraud.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "33622226426"
     }
 }
