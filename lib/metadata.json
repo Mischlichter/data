@@ -2438,5 +2438,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "92710270426"
+    },
+    "85528638899.jpg": {
+        "File Name": "85528638899.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man head rest \ud83c\udfdf Antanas Sutkus",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "85528638899"
     }
 }
