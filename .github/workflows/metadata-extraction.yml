@@ -106,11 +106,14 @@ jobs:
 
       - name: Generate and Push Sitemap
         run: |
-          curl -L https://raw.githubusercontent.com/Mischlichter/data/main/lib/sitemap.js -o sitemap.js
-          node sitemap.js
+          curl -L https://raw.githubusercontent.com/Mischlichter/data/main/lib/sitemap.py -o sitemap.py
+          python sitemap.py
+          git config user.name 'github-actions'
+          git config user.email 'github-actions@github.com'
           git add sitemap.xml
-          git commit -m "Update sitemap"
+          git commit -m "Update sitemap" || echo "No changes to commit"
           git push
+
 
   notify-google:
     needs: check-live-status
