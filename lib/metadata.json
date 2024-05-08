@@ -2406,5 +2406,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "62483914002"
+    },
+    "76867039952.jpg": {
+        "File Name": "76867039952.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man split \ud83d\ude3b Hokusai",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "76867039952"
     }
 }
