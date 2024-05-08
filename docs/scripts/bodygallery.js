@@ -704,7 +704,7 @@ const galleryHTML = `
                             searchBar.style.opacity = 1; // Fade in
 
                                     // Optional: Focus on the search bar after loading is complete and it's visible
-                            searchBar.focus();
+                            //searchBar.focus();
 
                         }, 150); // Match the timeout with your CSS transition time
 
