@@ -9,7 +9,7 @@ jobs:
   extract-metadata:
     runs-on: ubuntu-latest
     outputs:
-      html_files_exist: ${{ steps.file-list.outputs.html_files_exist }}
+      html_files_exist: ${{ steps.check-html-files.outputs.html_files_exist }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -50,18 +50,19 @@ jobs:
           git push || echo "Failed to push changes. Check for potential conflicts or issues."
 
       - name: List Committed HTML Files
-        id: file-list
+        id: check-html-files
         run: |
           git diff --name-only HEAD^ HEAD | grep '\.html$' > html_files.txt
+          echo "Checking for HTML files..."
           cat html_files.txt  # Output file content for debugging
           if [ -s html_files.txt ]; then
-            echo "::set-output name=html_files_exist::true"
+            echo "true" > $GITHUB_ENV/html_files_exist
           else
-            echo "::set-output name=html_files_exist::false"
+            echo "false" > $GITHUB_ENV/html_files_exist
           fi
 
       - name: Upload HTML file list
-        if: steps.file-list.outputs.html_files_exist == 'true'
+        if: env.html_files_exist == 'true'
         uses: actions/upload-artifact@v2
         with:
           name: html-files
