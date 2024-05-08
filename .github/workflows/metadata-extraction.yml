@@ -58,7 +58,7 @@ jobs:
           do
             echo "${file}" >> $GITHUB_ENV
           done
-          echo "::set-output name=html_files::${files[@]}"
+          echo "html_files=${files[*]}" >> $GITHUB_ENV
 
   check-live-status:
     needs: extract-metadata
@@ -70,7 +70,7 @@ jobs:
       - name: Check and Visit New Pages
         id: check-pages
         run: |
-          html_files=(${{ needs.extract-metadata.outputs.html_files }})
+          html_files=(${{ needs.extract-metadata.outputs.filelist }})
           if [ -z "${html_files}" ]; then
             echo "No HTML files to process."
             exit 0
