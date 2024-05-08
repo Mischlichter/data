@@ -2566,5 +2566,29 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "85178286256"
+    },
+    "13934471559.jpg": {
+        "File Name": "13934471559.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "In a hidden valley that comes alive only on New Year's Eve, HogeAI man discovers a glowing garden where plants sing and crystals hum with energy. The garden, a fluorescent paradise, glows under a sky filled with auroras. HogeAI, in a garment woven from the threads of lunar light, partakes in a dance with ethereal beings, each step causing the ground to bloom with radiant flowers. The air is thick with sweet, intoxicating aromas, and the scene unfolds like a living, breathing painting, alive with pulsating colors and hypnotic rhythms.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "13934471559"
+    },
+    "74924479025.jpg": {
+        "File Name": "74924479025.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man deciphering an ancient alien codex) in a library of floating tomes, bob ross painting of knowledge beyond worlds. Glyphs glow with understanding, scripts of extinct civilizations hover, and wisdom of the cosmos is at the fingertips. Immersed in jade greens and ancient parchment yellows, 4K, next gen, 3d octane rendering, unreal engine 5, mystic allure, inspired by the genius of Brian Froud and bayard wu, a repository of the universe's mysteries. \"Hasselblad photo, chibi hogeai, the white furry HogeAI man leading a New Year's parade through a virtual reality wonderland. The parade features fantastical floats and characters from beloved memes and digital lore. HogeAI, in a cape adorned with animated memes, dances through the streets, spreading laughter and cheer. The scene is a digital artist's dream, reminiscent of the playful worlds of Keith Haring and the colorful landsc...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "74924479025"
+    },
+    "52445499451.jpg": {
+        "File Name": "52445499451.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "No prompt",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "52445499451"
     }
 }
