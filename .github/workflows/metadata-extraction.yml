@@ -11,12 +11,12 @@ jobs:
     outputs:
       html_files_exist: ${{ steps.check-html-files.outputs.html_files_exist }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4  # Updated to use the latest version supporting Node.js 20
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5  # Updated to the latest version
         with:
-          python-version: '3.x'
+          python-version: '3.10'  # Specific version to match with your requirements
 
       - name: Install Python Dependencies
         run: pip install Pillow
@@ -68,13 +68,12 @@ jobs:
           name: html-files
           path: html_files.txt
 
-
   check-live-status:
     needs: extract-metadata
     if: ${{ needs.extract-metadata.outputs.html_files_exist == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Download HTML files list
         uses: actions/download-artifact@v4
@@ -95,7 +94,6 @@ jobs:
             filename="${file#docs/sharing/}"  # Removes 'docs/sharing/' from the path
             url="https://hogeai.com/sharing/${filename}"
             echo "Checking URL: $url"
-            # Check if the URL is live
             while ! curl --output /dev/null --silent --head --fail --location --write-out '%{http_code}' "$url" | grep '200'; do
               echo "Waiting for $url to be live..."
               sleep 5
