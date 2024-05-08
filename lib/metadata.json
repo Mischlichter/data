@@ -2390,5 +2390,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "8102385046"
+    },
+    "26279871859.jpg": {
+        "File Name": "26279871859.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man walking \ud83d\ude9f Kunisada",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "26279871859"
     }
 }
