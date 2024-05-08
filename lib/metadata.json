@@ -2358,5 +2358,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "33622226426"
+    },
+    "18481723986.jpg": {
+        "File Name": "18481723986.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "\"hasselblad photo, chibi hogeai, full body portrait (extremely cute white furry hogeai man) in dynamic pose, extremely detailed fur puppy, high details, eating an icecream, detailed, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin\" hug \ud83c\udf2b",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "18481723986"
     }
 }
