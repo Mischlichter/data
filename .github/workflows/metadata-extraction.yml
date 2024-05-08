@@ -13,8 +13,6 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0  # Fetch all history for all branches and tags
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -56,7 +54,7 @@ jobs:
         id: file-list
         run: |
           files=$(git diff --name-only HEAD^ HEAD | grep '\.html$')
-          echo "::set-output name=html_files::$files"
+          echo "html_files=$files" >> $GITHUB_OUTPUT
 
   check-live-status:
     needs: extract-metadata
@@ -72,7 +70,8 @@ jobs:
             echo "No HTML files to process."
             exit 0
           fi
-          for file in $files
+          IFS=' ' read -r -a html_files <<< "$files"
+          for file in "${html_files[@]}"
           do
             filename="${file#docs/sharing/}"  # Removes 'docs/sharing/' from the path
             url="https://hogeai.com/sharing/${filename}"
