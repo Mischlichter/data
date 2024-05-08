@@ -127,14 +127,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check if Sitemap is Live
-        run: |
-          until curl --output /dev/null --silent --head --fail "https://hogeai.com/sitemap.xml"; do
-            echo "Waiting for sitemap to be live..."
-            sleep 5
-          done
-
-
       - name: Wait for HTML files to be in sitemap
         if: steps.check-live-status.outputs.html_files_exist == 'true'
         run: |
@@ -159,6 +151,7 @@ jobs:
               sleep 5
             fi
           done
+
 
 
       - name: Notify Google about the sitemap update
