@@ -54,7 +54,7 @@ jobs:
         id: file-list
         run: |
           files=$(git diff --name-only HEAD^ HEAD | grep '\.html$')
-          echo "html_files=$files" >> $GITHUB_OUTPUT
+          echo "::set-output name=html_files::${files[@]}"
 
   check-live-status:
     needs: extract-metadata
@@ -107,5 +107,3 @@ jobs:
               # Handle validation failure
             fi
           done
-
-
