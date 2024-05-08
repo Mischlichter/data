@@ -11,8 +11,7 @@ jobs:
     outputs:
       html_files_exist: ${{ steps.check-html-files.outputs.html_files_exist }}
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -56,9 +55,9 @@ jobs:
           echo "Checking for HTML files..."
           cat html_files.txt  # Output file content for debugging
           if [ -s html_files.txt ]; then
-            echo "true" > $GITHUB_ENV/html_files_exist
+            echo "html_files_exist=true" >> $GITHUB_ENV
           else
-            echo "false" > $GITHUB_ENV/html_files_exist
+            echo "html_files_exist=false" >> $GITHUB_ENV
           fi
 
       - name: Upload HTML file list
@@ -73,8 +72,7 @@ jobs:
     if: needs.extract-metadata.outputs.html_files_exist == 'true'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
       - name: Download HTML files list
         uses: actions/download-artifact@v2
