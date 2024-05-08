@@ -2486,5 +2486,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "81701762439"
+    },
+    "13764700098.jpg": {
+        "File Name": "13764700098.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "On an isolated moon orbiting a gas giant, HogeAI man discovers an ancient temple complex that predates known civilizations. The temple, carved from a luminescent mineral, glows with an eerie light, illuminating intricate carvings and statues that depict a fusion of various cosmic entities and psychedelic patterns. The air is electric with the residue of ancient rituals and forgotten sciences, each step within the temple echoing through the halls of time. Mysterious glyphs pulsate with a hypnotic rhythm, drawing HogeAI deeper into the temple's heart, where a central chamber opens up to reveal a cosmic map of the galaxy, each star and planet represented by a glowing gem. HogeAI, his suit adorned with symbols echoing the temple's carvings, feels a profound connection to this place, a sense of being part of something much larger and more ancient than himself. \"a cartoon hogeai man wearing sunglasses and a t - shirt, behance, trend...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "13764700098"
     }
 }
