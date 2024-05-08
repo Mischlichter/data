@@ -110,9 +110,11 @@ jobs:
           python sitemap.py
           git config user.name 'github-actions'
           git config user.email 'github-actions@github.com'
+          git pull --rebase  # Ensure the local branch is up-to-date
           git add sitemap.xml
           git commit -m "Update sitemap" || echo "No changes to commit"
           git push
+
 
 
   notify-google:
