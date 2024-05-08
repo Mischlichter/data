@@ -102,7 +102,8 @@ jobs:
             echo "$url is confirmed live with 200 OK status."
             curl --output /dev/null --silent --location "$url"
             echo "$url has been fully visited."
-            
+   
+
       - name: Generate and Push Sitemap
         run: |
           curl -L https://raw.githubusercontent.com/Mischlichter/data/main/lib/sitemap.js -o sitemap.js
