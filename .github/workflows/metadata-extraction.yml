@@ -54,11 +54,11 @@ jobs:
         id: file-list
         run: |
           files=$(git diff --name-only HEAD^ HEAD | grep '\.html$')
-          for file in "${files[@]}"
+          for file in $files
           do
             echo "${file}" >> $GITHUB_ENV
           done
-          echo "html_files=${files[*]}" >> $GITHUB_ENV
+          echo "html_files=$(echo $files)" >> $GITHUB_ENV
 
   check-live-status:
     needs: extract-metadata
