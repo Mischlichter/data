@@ -103,17 +103,12 @@ jobs:
             curl --output /dev/null --silent --location "$url"
             echo "$url has been fully visited."
 
-            - name: Submit URL to Google
-              run: |
-                echo "Submitting URL to Google and Bing"
-                google_response=$(curl -X POST \
-                  -H "Content-Type: application/json" \
-                  -d "{\"url\": \"$url\", \"type\": \"URL_UPDATED\"}" \
-                  -H "Authorization: Bearer ${{ secrets.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 }}" \
-                  "https://indexing.googleapis.com/v3/urlNotifications:publish")
-                echo "Google API Response: $google_response"
-              env:
-                url: $url
-              
-
+            # Submit URL to Google here
+            echo "Submitting URL to Google and Bing"
+            google_response=$(curl -X POST \
+              -H "Content-Type: application/json" \
+              -d "{\"url\": \"$url\", \"type\": \"URL_UPDATED\"}" \
+              -H "Authorization: Bearer ${{ secrets.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 }}" \
+              "https://indexing.googleapis.com/v3/urlNotifications:publish")
+            echo "Google API Response: $google_response"
           done
