@@ -2374,5 +2374,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "58481957608"
+    },
+    "78355965099.jpg": {
+        "File Name": "78355965099.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man a-pose \ud83c\ude38 Alexis Simon Belle",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "78355965099"
     }
 }
