@@ -65,12 +65,11 @@ jobs:
 
       - name: Check and Visit New Pages
         run: |
-          files="${{ needs.extract-metadata.outputs.filelist }}"
-          if [ -z "$files" ]; then
+          if [ -z "${{ needs.extract-metadata.outputs.filelist }}" ]; then
             echo "No HTML files to process."
             exit 0
           fi
-          IFS=$'\n' read -r -d '' -a html_files <<< "$files"
+          IFS=$'\n' read -r -a html_files <<< "${{ needs.extract-metadata.outputs.filelist }}"
           for file in "${html_files[@]}"
           do
             filename="${file#docs/sharing/}"  # Removes 'docs/sharing/' from the path
