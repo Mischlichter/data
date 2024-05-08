@@ -51,8 +51,8 @@ jobs:
       - name: List Committed HTML Files
         id: file-list
         run: |
-          git diff --name-only HEAD^ HEAD | grep '\.html$' > html_files.txt
-          cat html_files.txt  # Output file content for debugging
+          git diff --name-only HEAD^ HEAD | grep '\.html$' > $HOME/html_files.txt
+          cat $HOME/html_files.txt  # Output file content for debugging
 
   check-live-status:
     needs: extract-metadata
@@ -63,8 +63,8 @@ jobs:
 
       - name: Read HTML files list
         run: |
-          cat html_files.txt  # Output file content for debugging
-          html_files=$(<html_files.txt)
+          cat $HOME/html_files.txt  # Output file content for debugging
+          html_files=$(<$HOME/html_files.txt)
           echo "::set-output name=html_files::$html_files"
           
       - name: Check and Visit New Pages
