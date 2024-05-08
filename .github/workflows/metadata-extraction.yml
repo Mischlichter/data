@@ -102,7 +102,7 @@ jobs:
             echo "$url is confirmed live with 200 OK status."
             curl --output /dev/null --silent --location "$url"
             echo "$url has been fully visited."
-   
+          done  
 
       - name: Generate and Push Sitemap
         run: |
