@@ -107,8 +107,9 @@ jobs:
             echo "Submitting URL to Google and Bing"
             google_response=$(curl -X POST \
               -H "Content-Type: application/json" \
+              -H "Authorization: Bearer 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" \
               -d "{\"url\": \"$url\", \"type\": \"URL_UPDATED\"}" \
-              -H "Authorization: Bearer ${{ secrets.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 }}" \
               "https://indexing.googleapis.com/v3/urlNotifications:publish")
+
             echo "Google API Response: $google_response"
           done
