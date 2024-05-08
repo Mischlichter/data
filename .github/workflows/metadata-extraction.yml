@@ -106,16 +106,15 @@ jobs:
 
       - name: Generate and Push Sitemap
         run: |
-          curl -L https://raw.githubusercontent.com/Mischlichter/data/main/lib/sitemap.py -o sitemap.py
-          python sitemap.py
-          mv sitemap.xml myrepo/data/docs/sitemap.xml  # Move the generated sitemap to the desired location
-          cd myrepo  # Move to the root directory of your repository
+          python3 <(curl -sS https://raw.githubusercontent.com/Mischlichter/data/main/lib/sitemap.py)
+          mv sitemap.xml docs/sitemap.xml  # Move the generated sitemap to the desired location
           git config user.name 'github-actions'
           git config user.email 'github-actions@github.com'
           git pull --rebase  # Ensure the local branch is up-to-date
-          git add data/docs/sitemap.xml  # Add the sitemap to the staging area
+          git add docs/sitemap.xml  # Add the sitemap to the staging area
           git commit -m "Update sitemap" || echo "No changes to commit"
           git push  # Push the changes to the remote repository
+
 
 
 
