@@ -2462,5 +2462,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "69119206977"
+    },
+    "9593556871.jpg": {
+        "File Name": "9593556871.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "\"Hasselblad photo, chibi hogeai, the white furry HogeAI man in an underwater New Year's extravaganza in a submerged city of neon and glass. Surrounded by a kaleidoscope of marine life, guests in waterproof, illuminated attire explore the wonders of the deep. HogeAI, in a suit embedded with thousands of tiny LEDs, is a beacon of joy and wonder. The scene is an underwater festival of light and life, captured in the enchanting style of Ernst Haeckel and the vibrant underwater photography of David Doubilet, painted in hues of oceanic blue, coral pink, and bioluminescent purple.\" \"a cartoon hogeai man wearing sunglasses and a t - shirt, behance, trending on fiverr, insanely nice hair style, profile picture 1024px, timelapse, ghailan! , twitter pfp, the artist has used bright, reduce duplicate image, wearing jetpack, deviantar, neymar, caricature\"",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "9593556871"
     }
 }
