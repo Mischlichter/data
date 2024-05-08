@@ -93,5 +93,25 @@ jobs:
             filename="${file#docs/sharing/}"  # Removes 'docs/sharing/' from the path
             url="https://hogeai.com/sharing/${filename}"
             echo "Checking URL: $url"
-            # Add your existing logic to process each file
+     
+            # Check if the URL is live
+            while ! curl --output /dev/null --silent --head --fail --location --write-out '%{http_code}' "$url" | grep '200'; do
+              echo "Waiting for $url to be live..."
+              sleep 5
+            done
+            
+            echo "$url is confirmed live with 200 OK status."
+            curl --output /dev/null --silent --location "$url"
+            echo "$url has been fully visited."
+            
+            # Trigger Twitter Card Validator
+            echo "Triggering Twitter Card validation for URL: $url"
+            response=$(curl -X POST -sL "https://cards-dev.twitter.com/validator" --data-urlencode "url=$url")
+            
+            if echo "$response" | grep -q "Validation successful"; then
+              echo "Twitter card validation successful for URL: $url"
+            else
+              echo "Twitter card validation failed for URL: $url"
+              # Handle validation failure
+            fi
           done
