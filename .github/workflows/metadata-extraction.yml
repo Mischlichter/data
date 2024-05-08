@@ -51,14 +51,12 @@ jobs:
       - name: List Committed HTML Files
         id: check-html-files
         run: |
+          echo "html_files_exist=false" > $GITHUB_ENV
           git diff --name-only HEAD^ HEAD | grep '\.html$' > html_files.txt
           if [ -s html_files.txt ]; then
-            echo "html_files_exist=true" >> $GITHUB_ENV
-            echo "::set-output name=html_files_exist::true"
-          else
-            echo "html_files_exist=false" >> $GITHUB_ENV
-            echo "::set-output name=html_files_exist::false"
+            echo "html_files_exist=true" > $GITHUB_ENV
           fi
+          echo "html_files_exist=${html_files_exist}" > $GITHUB_OUTPUT
 
       - name: Upload HTML file list
         if: env.html_files_exist == 'true'
@@ -69,7 +67,7 @@ jobs:
 
   check-live-status:
     needs: extract-metadata
-    if: needs.extract-metadata.outputs.html_files_exist == 'true'
+    if: ${{ needs.extract-metadata.outputs.html_files_exist == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
