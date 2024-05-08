@@ -52,7 +52,6 @@ jobs:
         id: file-list
         run: |
           git diff --name-only HEAD^ HEAD | grep '\.html$' > html_files.txt
-          ls -l  # Output directory contents for debugging
           cat html_files.txt  # Output file content for debugging
 
   check-live-status:
