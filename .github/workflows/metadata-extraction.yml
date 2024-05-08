@@ -56,8 +56,9 @@ jobs:
           files=$(git diff --name-only HEAD^ HEAD | grep '\.html$')
           for file in "${files[@]}"
           do
-            echo "html_files=${file}" >> $GITHUB_ENV
+            echo "${file}" >> $GITHUB_ENV
           done
+          echo "::set-output name=html_files::${files[@]}"
 
   check-live-status:
     needs: extract-metadata
@@ -69,14 +70,12 @@ jobs:
       - name: Check and Visit New Pages
         id: check-pages
         run: |
+          html_files=(${{ needs.extract-metadata.outputs.html_files }})
           if [ -z "${html_files}" ]; then
             echo "No HTML files to process."
             exit 0
           fi
           
-          # Read the file list into an array
-          IFS=$'\n' read -r -a html_files <<<"${html_files}"
-
           # Process each file
           for file in "${html_files[@]}"
           do
