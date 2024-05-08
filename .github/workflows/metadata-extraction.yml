@@ -122,12 +122,37 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Check Sitemap is Live
         run: |
           until $(curl --output /dev/null --silent --head --fail "https://hogeai.com/sitemap.xml"); do
             echo "Waiting for sitemap to be live..."
             sleep 5
           done
+
+      - name: Wait for HTML files to be in sitemap
+        if: steps.check-live-status.outcome == 'success'
+        run: |
+          while true; do
+            all_files_found=true
+            for file in $(cat html_files.txt); do
+              filename=$(basename "$file")  # Extracts only the filename
+              url="https://hogeai.com/sharing/$filename"
+              if ! curl -sS "https://hogeai.com/sitemap.xml" | grep -q "$url"; then
+                all_files_found=false
+                break
+              fi
+            done
+
+            if [ "$all_files_found" = true ]; then
+              echo "All HTML files are found in the sitemap."
+              break
+            else
+              echo "Not all HTML files are found in the sitemap. Retrying in 5 seconds..."
+              sleep 5
+            fi
+          done
+
       - name: Notify Google about the sitemap update
         run: |
           curl http://www.google.com/ping?sitemap=https://hogeai.com/sitemap.xml
