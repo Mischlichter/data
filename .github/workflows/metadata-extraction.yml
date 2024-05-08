@@ -69,18 +69,14 @@ jobs:
           path: html_files.txt
 
   check-live-status:
+    needs: extract-metadata
+    if: ${{ needs.extract-metadata.outputs.html_files_exist == 'true' }}
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Download service account JSON file
-        run: |
-          curl -o service-account.json https://raw.githubusercontent.com/Mischlichter/data/main/lib/blibla.json
+      - uses: actions/checkout@v4
 
       - name: Download HTML files list
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: html-files
 
@@ -103,20 +99,16 @@ jobs:
               sleep 5
             done
 
-            # Submit URL to Google
+            echo "$url is confirmed live with 200 OK status."
+            curl --output /dev/null --silent --location "$url"
+            echo "$url has been fully visited."
+
+            # Submit URL to Google here
             echo "Submitting URL to Google and Bing"
-            client_email=$(jq -r '.client_email' service-account.json)
-            private_key=$(jq -r '.private_key' service-account.json)
-
-            jwt_token=$(echo -n "{\"alg\":\"RS256\",\"typ\":\"JWT\"}.{\"iss\":\"$client_email\",\"scope\":\"https://www.googleapis.com/auth/indexing\",\"aud\":\"https://oauth2.googleapis.com/token\",\"exp\":$(( $(date +%s) + 3600 )),\"iat\":$(date +%s)}" | openssl dgst -sha256 -sign <(echo "$private_key") -binary | openssl base64 -A | tr '+' '-' | tr '/' '_' | tr -d '=')
-
-            access_token=$(curl -s -X POST -H "Content-Type: application/x-www-form-urlencoded" -d "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=$jwt_token" "https://oauth2.googleapis.com/token" | jq -r '.access_token')
-
             google_response=$(curl -X POST \
               -H "Content-Type: application/json" \
-              -H "Authorization: Bearer $access_token" \
               -d "{\"url\": \"$url\", \"type\": \"URL_UPDATED\"}" \
+              -H "Authorization: Bearer ${{ secrets.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 }}" \
               "https://indexing.googleapis.com/v3/urlNotifications:publish")
             echo "Google API Response: $google_response"
           done
-
