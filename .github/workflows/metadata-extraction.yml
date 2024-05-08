@@ -143,8 +143,10 @@ jobs:
             for file in $(cat html_files.txt); do
               filename=$(basename "$file")  # Extracts only the filename
               url="https://hogeai.com/sharing/$filename"
+              echo "Checking URL: $url"
               if ! curl -sS "https://hogeai.com/sitemap.xml" | grep -q "$url"; then
                 all_files_found=false
+                echo "$filename not found in sitemap."
                 break
               fi
             done
@@ -157,6 +159,7 @@ jobs:
               sleep 5
             fi
           done
+
 
       - name: Notify Google about the sitemap update
         run: |
