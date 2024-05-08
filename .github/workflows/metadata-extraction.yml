@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Fetch all history for all branches and tags
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -53,8 +55,7 @@ jobs:
       - name: List Committed HTML Files
         id: file-list
         run: |
-          files=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep '\.html$')
-          echo "html_files=$files" >> $GITHUB_ENV
+          files=$(git diff --name-only HEAD^ HEAD | grep '\.html$')
           echo "::set-output name=html_files::$files"
 
   check-live-status:
@@ -68,19 +69,18 @@ jobs:
         run: |
           files="${{ needs.extract-metadata.outputs.filelist }}"
           if [ -z "$files" ]; then
-            echo "No HTML files to process"
+            echo "No HTML files to process."
             exit 0
           fi
-          IFS=' ' read -ra ADDR <<< "$files"
-          for file in "${ADDR[@]}"
+          for file in $files
           do
             filename="${file#docs/sharing/}"  # Removes 'docs/sharing/' from the path
             url="https://hogeai.com/sharing/${filename}"
             echo "Checking URL: $url"
-            while ! curl --output /dev/null --silent --head --fail "$url"; do
+            while ! curl --output /dev/null --silent --head --fail --location --write-out '%{http_code}' "$url" | grep '200'; do
               echo "Waiting for $url to be live..."
               sleep 5
             done
             echo "$url is confirmed live with 200 OK status."
-            curl --output /dev/null --silent "$url"
+            curl --output /dev/null --silent --location "$url"
             echo "$url has been fully visited."
