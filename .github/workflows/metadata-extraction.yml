@@ -146,12 +146,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests requests-oauthlib
 
-      - name: Tweet and delete
+      - name: Execute script to post and delete tweets
         env:
           TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
           TWITTER_API_SECRET: ${{ secrets.TWITTER_API_SECRET }}
           TWITTER_ACCESS_TOKEN: ${{ secrets.TWITTER_ACCESS_TOKEN }}
           TWITTER_ACCESS_TOKEN_SECRET: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}
-        run: python tweet_and_delete.py
+        run: python path/to/your_script.py
 
 

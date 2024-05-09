@@ -1,10 +1,8 @@
 import os
 import time
-import json
 from requests_oauthlib import OAuth1Session
 
 def create_oauth_session():
-    """Create and return an OAuth1 session."""
     return OAuth1Session(
         client_key=os.getenv('TWITTER_API_KEY'),
         client_secret=os.getenv('TWITTER_API_SECRET'),
@@ -12,51 +10,28 @@ def create_oauth_session():
         resource_owner_secret=os.getenv('TWITTER_ACCESS_TOKEN_SECRET')
     )
 
-def post_tweet(text, session):
-    """Post a tweet with the given text using the provided OAuth1 session."""
-    url = 'https://api.twitter.com/2/tweets'
-    payload = json.dumps({'text': text})
-    headers = {'Content-Type': 'application/json'}
-    response = session.post(url, headers=headers, data=payload)
-    
-    if response.status_code == 201:
-        print("Tweet successfully created.")
-        return response.json()['data']['id']
-    else:
-        print("Failed to post tweet:", response.text)
-        return None
+def read_html_files():
+    with open('html_files.txt', 'r') as file:
+        return [line.strip() for line in file.readlines()]
 
-def delete_tweet(tweet_id, session):
-    """Delete the tweet with the specified ID."""
-    url = f'https://api.twitter.com/2/tweets/{tweet_id}'
-    response = session.delete(url)
-    if response.status_code == 200:
-        print("Tweet successfully deleted.")
-    else:
-        print("Failed to delete tweet:", response.text)
-
-def main():
-    session = create_oauth_session()
-    try:
-        with open('html_files.txt', 'r') as file:
-            html_files = file.readlines()
-
-        for html_file in html_files:
-            filename = html_file.strip()
-            url = f"https://www.hogeai.com/sharing/{filename}"
-            
-            # Post the tweet
-            tweet_id = post_tweet(url, session)
-            if tweet_id:
-                print(f"Tweeted URL: {url}, Tweet ID: {tweet_id}")
-                
-                # Wait for 60 seconds
-                time.sleep(60)
-                
-                # Delete the tweet
-                delete_tweet(tweet_id, session)
-    except Exception as e:
-        print(f"An error occurred: {e}")
+def post_and_delete_tweets(html_files, session):
+    for html_file in html_files:
+        # Assuming the html_file variable holds a URL or a path that can be included in the tweet
+        tweet_text = f"Check out our latest content: https://hogeai.com/sharing/{html_file}"
+        response = session.post('https://api.twitter.com/2/tweets', json={'text': tweet_text})
+        if response.status_code == 201:
+            tweet_id = response.json()['data']['id']
+            print(f"Tweet posted successfully: {tweet_id}")
+            time.sleep(60)  # Wait for 60 seconds before deleting
+            delete_response = session.delete(f'https://api.twitter.com/2/tweets/{tweet_id}')
+            if delete_response.status_code == 200:
+                print("Tweet deleted successfully.")
+            else:
+                print(f"Failed to delete tweet: {delete_response.status_code}")
+        else:
+            print(f"Failed to post tweet: {response.text}")
 
 if __name__ == "__main__":
-    main()
+    session = create_oauth_session()
+    html_files = read_html_files()
+    post_and_delete_tweets(html_files, session)
