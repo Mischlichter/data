@@ -106,6 +106,7 @@ jobs:
 
       - name: Generate and Push Sitemap
         run: |
+          python3 -m pip install requests  # Install requests module for curl
           python3 <(curl -sS https://raw.githubusercontent.com/Mischlichter/data/main/sitemap.py)
           mv sitemap.xml docs/sitemap.xml  # Move the generated sitemap to the desired location
           git config user.name 'github-actions'
@@ -115,6 +116,8 @@ jobs:
           git add docs/sitemap.xml  # Add the sitemap to the staging area
           git commit -m "Update sitemap" || echo "No changes to commit"
           git push  # Push the changes to the remote repository
+
+
 
 
 
