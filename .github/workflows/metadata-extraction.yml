@@ -131,7 +131,6 @@ jobs:
           name: html-files
 
       - name: Wait for HTML files to be in sitemap
-        if: steps.check-live-status.outputs.html_files_exist == 'true'
         run: |
           while true; do
             all_files_found=true
@@ -154,8 +153,6 @@ jobs:
               sleep 5
             fi
           done
-
-
 
       - name: Notify Google about the sitemap update
         run: |
