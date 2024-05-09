@@ -21,11 +21,12 @@ def tweet_and_delete(client, file_path):
         
         for html_file in html_files:
             html_file = html_file.strip()
+            filename = os.path.basename(html_file)
             tweet_url = f"https://www.hogeai.com/sharing/{html_file}"  # Construct URL
             tweet = client.create_tweet(text=tweet_url)  # Post the tweet
             print(f"Tweet posted: {tweet.data['id']} - URL: {tweet_url}")
             
-            time.sleep(60)  # Wait for 60 seconds before deleting the tweet
+            time.sleep(30)  # Wait for 60 seconds before deleting the tweet
 
             client.delete_tweet(tweet.data['id'])  # Delete the tweet
             print(f"Deleted Tweet ID: {tweet.data['id']}")
