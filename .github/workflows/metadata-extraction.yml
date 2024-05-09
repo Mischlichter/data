@@ -138,12 +138,12 @@ jobs:
           while true; do
             all_files_found=true
             # Fetch the sitemap with no-cache option
-            sitemap_content=$(curl -sS -H "Cache-Control: no-cache" "https://hogeai.com/sitemap.xml")
+            sitemap_content=$(curl -sS -H "Cache-Control: no-cache" "https://www.hogeai.com/sitemap.xml")
             echo "Fetched sitemap content: $sitemap_content"  # Temporary: Check what is being fetched
 
             for file in $(cat html_files.txt); do
               filename=$(basename "$file")
-              url="https://hogeai.com/sharing/${filename}"
+              url="https://www.hogeai.com/sharing/${filename}"
               echo "Checking URL: $url"
               
               # Using grep to check URL presence
