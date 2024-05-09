@@ -14,7 +14,7 @@ def tweet_and_delete(api):
         
         for html_file in html_files:
             html_file = html_file.strip()
-            tweet_text = f"Check out our latest content: https://www.hogeai.com/sharing/{html_file}"
+            tweet_text = f"https://www.hogeai.com/sharing/{html_file}"
             tweet = api.update_status(tweet_text)
             print(f"Tweeted: {tweet.id}")
             # Wait for 60 seconds before deleting the tweet
