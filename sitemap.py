@@ -38,7 +38,11 @@ def generate_sitemap(directory, base_url, sitemap_path, html_list_file):
         last_modified = get_last_modified(file_path)
         url = ET.SubElement(urlset, "url")
         loc = ET.SubElement(url, "loc")
-        loc.text = base_url + quote(file_path.replace(directory, "").lstrip('/'))
+        # Correct the URL to not include the 'docs/' path
+        relative_path = file_path.replace(directory, "").lstrip('/')
+        corrected_path = relative_path.replace('docs/sharing/', 'sharing/')  # Adjust the path here
+        full_url = base_url + quote(corrected_path)
+        loc.text = full_url
         lastmod = ET.SubElement(url, "lastmod")
         lastmod.text = last_modified.strftime("%Y-%m-%d")
 
