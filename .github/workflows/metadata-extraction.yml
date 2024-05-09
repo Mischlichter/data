@@ -149,7 +149,7 @@ jobs:
         env:
           TWITTER_API_KEY: ${{ secrets.dZJfnep8yDvvCOWvgrdtKuN63 }}
           TWITTER_API_SECRET: ${{ secrets.iVWF4R6E5JS90Ss1AXXH4kQXjEucgHfEm7c7avxwcnBC34SDSV }}
-          TWITTER_ACCESS_TOKEN: ${{ secrets.949798332905476102-ljwO8OgzVdmKvftlNLwtHgHEbqvagbV }}  # Ensure proper naming
+          TWITTER_ACCESS_TOKEN: ${{ secrets.949798332905476102_ljwO8OgzVdmKvftlNLwtHgHEbqvagbV }}  # Ensure proper naming
           TWITTER_ACCESS_TOKEN_SECRET: ${{ secrets.HXEMae0XBMe9rYE57OQ3pNKuZmX2aC2uN9St0LxCDiAjj }}
         run: python tweet_and_delete.py
 
