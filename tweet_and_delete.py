@@ -37,7 +37,6 @@ def delete_tweet(tweet_id, session):
 
 def main():
     session = create_oauth_session()
-
     try:
         with open('html_files.txt', 'r') as file:
             html_files = file.readlines()
@@ -50,7 +49,7 @@ def main():
             tweet_id = post_tweet(url, session)
             if tweet_id:
                 print(f"Tweeted URL: {url}, Tweet ID: {tweet_id}")
-            
+                
                 # Wait for 60 seconds
                 time.sleep(60)
                 
