@@ -28,7 +28,7 @@ def tweet_and_delete(api):
             print(f"Tweeted: {tweet.id}")
 
             # Wait for 10 seconds
-            time.sleep(10)
+            time.sleep(60)
 
             # Delete the tweet
             api.destroy_status(tweet.id)
