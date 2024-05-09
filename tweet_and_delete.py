@@ -1,15 +1,18 @@
 import tweepy
-import time
 import os
 
 def create_client():
-    return tweepy.Client(
+    # Initialize the Tweepy Client with OAuth 2.0 User Context credentials
+    client = tweepy.Client(
         consumer_key=os.getenv('TWITTER_API_KEY'),
         consumer_secret=os.getenv('TWITTER_API_SECRET'),
         access_token=os.getenv('TWITTER_ACCESS_TOKEN'),
         access_token_secret=os.getenv('TWITTER_ACCESS_TOKEN_SECRET'),
+        bearer_token=os.getenv('BEARER_TOKEN'),  # Optional: For methods that can use Bearer Token
+        return_type=requests.Response,  # Optional: To handle the response directly
         wait_on_rate_limit=True
     )
+    return client
 
 def tweet_and_delete(client, file_path):
     try:
