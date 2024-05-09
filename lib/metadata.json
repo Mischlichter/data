@@ -2742,5 +2742,13 @@
         "Model": "HOGExDELI",
         "Creator": "@Mischlichter",
         "Seed": "55163800815"
+    },
+    "90166583855.jpg": {
+        "File Name": "90166583855.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "cute furry hogeai man with blue shiny reflective sunglasses, playboy cover, high polished ultra gem dazecore",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "90166583855"
     }
 }
