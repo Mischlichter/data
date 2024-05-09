@@ -5,6 +5,7 @@ from requests_oauthlib import OAuth1Session
 
 def create_oauth_session(consumer_key, consumer_secret, access_token, access_token_secret):
     """Create an OAuth1 session."""
+    print(f"Creating OAuth session with: {consumer_key}, {consumer_secret}, {access_token}, {access_token_secret}")  # Debug output
     return OAuth1Session(consumer_key, client_secret=consumer_secret, resource_owner_key=access_token, resource_owner_secret=access_token_secret)
 
 def post_tweet(url, session):
@@ -32,6 +33,10 @@ def main():
     consumer_secret = os.getenv('TWITTER_API_SECRET')
     access_token = os.getenv('TWITTER_ACCESS_TOKEN')
     access_token_secret = os.getenv('TWITTER_ACCESS_TOKEN_SECRET')
+    
+    if not all([consumer_key, consumer_secret, access_token, access_token_secret]):
+        print("Error: Missing one or more required environment variables.")
+        return
     
     session = create_oauth_session(consumer_key, consumer_secret, access_token, access_token_secret)
     
