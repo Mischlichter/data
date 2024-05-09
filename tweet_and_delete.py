@@ -1,42 +1,40 @@
-import requests
 import os
 import time
 import json
+from requests_oauthlib import OAuth1Session
 
-def create_headers(bearer_token):
-    """Create the necessary headers for the request."""
-    headers = {
-        "Authorization": f"Bearer {bearer_token}",
-        "Content-Type": "application/json"
-    }
-    return headers
+def create_oauth_session(consumer_key, consumer_secret, access_token, access_token_secret):
+    """Create an OAuth1 session."""
+    return OAuth1Session(consumer_key, client_secret=consumer_secret, resource_owner_key=access_token, resource_owner_secret=access_token_secret)
 
-def post_tweet(url, bearer_token):
+def post_tweet(url, session):
     """Post a tweet containing just the URL."""
     api_url = "https://api.twitter.com/2/tweets"
-    headers = create_headers(bearer_token)
-    payload = json.dumps({
-        "text": url  # Tweet content is just the URL
-    })
-    response = requests.post(api_url, headers=headers, data=payload)
+    payload = json.dumps({"text": url})  # Tweet content is just the URL
+    response = session.post(api_url, data=payload)
     if response.status_code == 201:
         print("Tweet successfully created.")
         return response.json()['data']['id']
     else:
         raise Exception(f"Failed to post tweet: {response.status_code}, {response.text}")
 
-def delete_tweet(tweet_id, bearer_token):
+def delete_tweet(tweet_id, session):
     """Delete the specified tweet."""
     api_url = f"https://api.twitter.com/2/tweets/{tweet_id}"
-    headers = create_headers(bearer_token)
-    response = requests.delete(api_url, headers=headers)
+    response = session.delete(api_url)
     if response.status_code == 200:
         print("Tweet successfully deleted.")
     else:
         raise Exception(f"Failed to delete tweet: {response.status_code}, {response.text}")
 
 def main():
-    bearer_token = os.getenv('BEARER_TOKEN')
+    consumer_key = os.getenv('TWITTER_API_KEY')
+    consumer_secret = os.getenv('TWITTER_API_SECRET')
+    access_token = os.getenv('TWITTER_ACCESS_TOKEN')
+    access_token_secret = os.getenv('TWITTER_ACCESS_TOKEN_SECRET')
+    
+    session = create_oauth_session(consumer_key, consumer_secret, access_token, access_token_secret)
+    
     try:
         with open('html_files.txt', 'r') as file:
             html_files = file.readlines()
@@ -46,14 +44,14 @@ def main():
             url = f"https://www.hogeai.com/sharing/{filename}"
             
             # Post the tweet
-            tweet_id = post_tweet(url, bearer_token)
+            tweet_id = post_tweet(url, session)
             print(f"Tweeted URL: {url}, Tweet ID: {tweet_id}")
             
             # Wait for 60 seconds
             time.sleep(60)
             
             # Delete the tweet
-            delete_tweet(tweet_id, bearer_token)
+            delete_tweet(tweet_id, session)
             
     except Exception as e:
         print(f"An error occurred: {e}")
