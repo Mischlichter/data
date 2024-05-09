@@ -2,31 +2,37 @@ import tweepy
 import time
 import os
 
-def authenticate():
-    # Create an OAuthHandler instance with your consumer keys and access tokens
-    auth = tweepy.OAuthHandler(os.getenv('TWITTER_API_KEY'), os.getenv('TWITTER_API_SECRET'))
-    auth.set_access_token(os.getenv('TWITTER_ACCESS_TOKEN'), os.getenv('TWITTER_ACCESS_TOKEN_SECRET'))
-    
-    # Create a Tweepy API object to interact with the Twitter API
-    api = tweepy.API(auth, wait_on_rate_limit=True)
-    return api
+def create_client():
+    # Initialize the Tweepy Client with OAuth 2.0 Bearer Token
+    client = tweepy.Client(
+        bearer_token=os.getenv('BEARER_TOKEN'),
+        consumer_key=os.getenv('TWITTER_API_KEY'),  # These are only needed if user-context actions are necessary
+        consumer_secret=os.getenv('TWITTER_API_SECRET'),
+        access_token=os.getenv('TWITTER_ACCESS_TOKEN'),
+        access_token_secret=os.getenv('TWITTER_ACCESS_TOKEN_SECRET'),
+        wait_on_rate_limit=True
+    )
+    return client
 
-def tweet_and_delete(api):
+def tweet_and_delete(client, file_path):
     try:
-        # Posting a tweet
-        tweet = api.update_status("Hello, world!")
-        print(f"Tweet posted: {tweet.id}")
+        with open(file_path, 'r') as file:
+            html_files = file.readlines()
+        
+        for html_file in html_files:
+            html_file = html_file.strip()
+            tweet_url = f"https://www.hogeai.com/sharing/{html_file}"  # Construct URL
+            tweet = client.create_tweet(text=tweet_url)  # Post the tweet
+            print(f"Tweet posted: {tweet.data['id']} - URL: {tweet_url}")
+            
+            time.sleep(60)  # Wait for 60 seconds before deleting the tweet
 
-        # Waiting for visibility or user interaction
-        time.sleep(60)  # 60 seconds wait
-
-        # Deleting the tweet
-        api.destroy_status(tweet.id)
-        print(f"Tweet deleted: {tweet.id}")
+            client.delete_tweet(tweet.data['id'])  # Delete the tweet
+            print(f"Deleted Tweet ID: {tweet.data['id']}")
 
     except Exception as e:
         print(f"An error occurred: {e}")
 
 if __name__ == "__main__":
-    api = authenticate()
-    tweet_and_delete(api)
+    api_client = create_client()
+    tweet_and_delete(api_client, 'html_files.txt')  # Ensure the file 'html_files.txt' is in the same directory or provide the correct path
