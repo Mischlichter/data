@@ -144,7 +144,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install tweepy
+          pip install TwitterAPI
 
       - name: Execute script to post and delete tweets
         env:
