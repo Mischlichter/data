@@ -10,8 +10,11 @@ docs_path = "./docs"
 sitemap_path = "./docs/sitemap.xml"
 
 def get_last_modified(file_path):
-    """Get the last modified date of a file."""
-    return datetime.fromtimestamp(os.path.getmtime(file_path))
+    """Get the last modified date of a file if it exists."""
+    if os.path.exists(file_path):
+        return datetime.fromtimestamp(os.path.getmtime(file_path))
+    else:
+        return datetime.now()  # Use current time if the file isn't found
 
 def generate_sitemap(directory, base_url, sitemap_path, html_list_file):
     """Generate the sitemap XML file, including specific HTML files."""
@@ -22,8 +25,8 @@ def generate_sitemap(directory, base_url, sitemap_path, html_list_file):
         html_files = file.readlines()
         html_files = [line.strip() for line in html_files]
 
-    # Remove duplicates and include files from directory scan
-    all_files = set(html_files)
+    # Include files from directory scan and ensure all specified files are considered
+    all_files = set(os.path.join(directory, f) for f in html_files)
     for subdir, dirs, files in os.walk(directory):
         for file in files:
             if file.endswith(".html"):
