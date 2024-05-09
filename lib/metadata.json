@@ -2814,5 +2814,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "26606573618"
+    },
+    "51486213628.jpg": {
+        "File Name": "51486213628.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man at a virtual graffiti wall) spraying vibrant codes that come to life as 3D animations. The alley is lit by [neon pulsing 1.0] lights casting dynamic shadows, revealing hidden messages in the art. A rhythmic bass [pounds resonates 1.0] from a nearby underground club, its entrance guarded by an avatar bouncer with shifting fractal tattoos.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "51486213628"
     }
 }
