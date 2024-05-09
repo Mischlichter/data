@@ -72,6 +72,7 @@ jobs:
     needs: extract-metadata
     if: ${{ needs.extract-metadata.outputs.html_files_exist == 'true' }}
     runs-on: ubuntu-latest
+    needs: check-live-status
     steps:
       - uses: actions/checkout@v4
 
