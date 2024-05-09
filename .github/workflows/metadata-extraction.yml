@@ -104,10 +104,9 @@ jobs:
             echo "$url has been fully visited."
           done  
 
-      - name: Download and Run Sitemap Script
+      - name: Generate Sitemap
         run: |
-          curl -L https://raw.githubusercontent.com/Mischlichter/data/main/lib/sitemap.py -o sitemap.py
-          python sitemap.py
+          python ./sitemap.py
       - name: Commit and Push Sitemap
         run: |
           git config user.name 'github-actions'
@@ -126,6 +125,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Download HTML files list
+        uses: actions/download-artifact@v4
+        with:
+          name: html-files
 
       - name: Wait for HTML files to be in sitemap
         if: steps.check-live-status.outputs.html_files_exist == 'true'
