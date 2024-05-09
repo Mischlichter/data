@@ -2822,5 +2822,45 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "51486213628"
+    },
+    "92779436607.jpg": {
+        "File Name": "92779436607.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man at a virtual graffiti wall) spraying vibrant codes that come to life as 3D animations. The alley is lit by [neon pulsing 1.0] lights casting dynamic shadows, revealing hidden messages in the art. A rhythmic bass [pounds resonates 1.0] from a nearby underground club, its entrance guarded by an avatar bouncer with shifting fractal tattoos.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "92779436607"
+    },
+    "81423530949.jpg": {
+        "File Name": "81423530949.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man at a virtual graffiti wall) spraying vibrant codes that come to life as 3D animations. The alley is lit by [neon pulsing 1.0] lights casting dynamic shadows, revealing hidden messages in the art. A rhythmic bass [pounds resonates 1.0] from a nearby underground club, its entrance guarded by an avatar bouncer with shifting fractal tattoos.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "81423530949"
+    },
+    "34410830968.jpg": {
+        "File Name": "34410830968.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man unlocking a dimensional gate) with a crystalline key, bob ross painting of surreal connections, raytracing, hdr, 8k uhd. Beyond the gateway lies realms of floating islands, waterfalls defying gravity, mystical creatures of legend and lore, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Frank Frazetta, bayard wu, greg rutkowski, colors swirling with deep reds and ethereal whites, a symphony of mysteries unfolding.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "34410830968"
+    },
+    "84491825327.jpg": {
+        "File Name": "84491825327.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man unlocking a dimensional gate) with a crystalline key, bob ross painting of surreal connections, raytracing, hdr, 8k uhd. Beyond the gateway lies realms of floating islands, waterfalls defying gravity, mystical creatures of legend and lore, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Frank Frazetta, bayard wu, greg rutkowski, colors swirling with deep reds and ethereal whites, a symphony of mysteries unfolding.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "84491825327"
+    },
+    "32369849147.jpg": {
+        "File Name": "32369849147.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man at a virtual graffiti wall) spraying vibrant codes that come to life as 3D animations. The alley is lit by [neon pulsing 1.0] lights casting dynamic shadows, revealing hidden messages in the art. A rhythmic bass [pounds resonates 1.0] from a nearby underground club, its entrance guarded by an avatar bouncer with shifting fractal tattoos.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "32369849147"
     }
 }
