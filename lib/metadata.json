@@ -2958,5 +2958,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "42882624383"
+    },
+    "13380077572.jpg": {
+        "File Name": "13380077572.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "\ud83c\udfdc hogeai man parying with friends",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "13380077572"
     }
 }
