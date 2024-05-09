@@ -1,5 +1,6 @@
 import tweepy
 import os
+import time  # Ensure you import time
 
 def create_client():
     # Initialize the Tweepy Client with OAuth 2.0 User Context credentials
@@ -9,7 +10,6 @@ def create_client():
         access_token=os.getenv('TWITTER_ACCESS_TOKEN'),
         access_token_secret=os.getenv('TWITTER_ACCESS_TOKEN_SECRET'),
         bearer_token=os.getenv('BEARER_TOKEN'),  # Optional: For methods that can use Bearer Token
-        return_type=requests.Response,  # Optional: To handle the response directly
         wait_on_rate_limit=True
     )
     return client
