@@ -2886,5 +2886,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "90022550476"
+    },
+    "84974956891.jpg": {
+        "File Name": "84974956891.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man perched high above a sprawling metropolis of trading floors) where soaring holographic charts pulse with life, traders, cloaked in robes adorned with [diamond-studded golden-threaded 1.0] cryptocurrency emblems, navigate a dance floor that shifts with market sentiment. The grandeur is illuminated by a chandelier, not just of light, but of fluctuating HogeAI coin values, turning every glint into a story of affluence.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "84974956891"
     }
 }
