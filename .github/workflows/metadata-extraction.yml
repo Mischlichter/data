@@ -137,11 +137,19 @@ jobs:
         run: |
           while true; do
             all_files_found=true
+            # Fetch the sitemap with no-cache option
+            sitemap_content=$(curl -sS -H "Cache-Control: no-cache" "https://hogeai.com/sitemap.xml")
+            echo "Fetched sitemap content: $sitemap_content"  # Temporary: Check what is being fetched
+
             for file in $(cat html_files.txt); do
-              filename=$(basename "$file")  # Extracts only the filename
-              url="https://hogeai.com/sharing/$filename"
+              filename=$(basename "$file")
+              url="https://hogeai.com/sharing/${filename}"
               echo "Checking URL: $url"
-              if ! curl -sS "https://hogeai.com/sitemap.xml" | grep -q "$url"; then
+              
+              # Using grep to check URL presence
+              if echo "$sitemap_content" | grep -q "$(echo $url | sed 's/\//\\\//g')"; then
+                echo "$filename found in sitemap."
+              else
                 all_files_found=false
                 echo "$filename not found in sitemap."
                 break
@@ -156,6 +164,7 @@ jobs:
               sleep 5
             fi
           done
+
 
       - name: Notify Google about the sitemap update
         run: |
