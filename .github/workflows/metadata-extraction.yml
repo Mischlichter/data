@@ -168,4 +168,4 @@ jobs:
 
       - name: Notify Google about the sitemap update
         run: |
-          curl http://www.google.com/ping?sitemap=https://hogeai.com/sitemap.xml
+          curl http://www.google.com/ping?sitemap=https://www.hogeai.com/sitemap.xml
