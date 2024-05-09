@@ -144,7 +144,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests requests-oauthlib
+          pip install tweepy
 
       - name: Execute script to post and delete tweets
         env:

@@ -1,37 +1,36 @@
-import os
+import tweepy
 import time
-from requests_oauthlib import OAuth1Session
+import os
 
-def create_oauth_session():
-    return OAuth1Session(
-        client_key=os.getenv('TWITTER_API_KEY'),
-        client_secret=os.getenv('TWITTER_API_SECRET'),
-        resource_owner_key=os.getenv('TWITTER_ACCESS_TOKEN'),
-        resource_owner_secret=os.getenv('TWITTER_ACCESS_TOKEN_SECRET')
+def create_client():
+    return tweepy.Client(
+        consumer_key=os.getenv('TWITTER_API_KEY'),
+        consumer_secret=os.getenv('TWITTER_API_SECRET'),
+        access_token=os.getenv('TWITTER_ACCESS_TOKEN'),
+        access_token_secret=os.getenv('TWITTER_ACCESS_TOKEN_SECRET'),
+        wait_on_rate_limit=True
     )
 
-def read_html_files():
-    with open('html_files.txt', 'r') as file:
-        return [line.strip() for line in file.readlines()]
+def tweet_and_delete(client, file_path):
+    try:
+        with open(file_path, 'r') as file:
+            html_files = file.readlines()
+        
+        for html_file in html_files:
+            html_file = html_file.strip()
+            tweet_text = f"Check out our latest content: https://www.hogeai.com/sharing/{html_file}"
+            response = client.create_tweet(text=tweet_text)
+            print(f"Tweeted: {response.data['id']} - {tweet_text}")
+            
+            # Wait for 60 seconds before deleting the tweet
+            time.sleep(60)
+            
+            client.delete_tweet(response.data['id'])
+            print(f"Deleted Tweet ID: {response.data['id']}")
 
-def post_and_delete_tweets(html_files, session):
-    for html_file in html_files:
-        # Assuming the html_file variable holds a URL or a path that can be included in the tweet
-        tweet_text = f"Check out our latest content: https://hogeai.com/sharing/{html_file}"
-        response = session.post('https://api.twitter.com/2/tweets', json={'text': tweet_text})
-        if response.status_code == 201:
-            tweet_id = response.json()['data']['id']
-            print(f"Tweet posted successfully: {tweet_id}")
-            time.sleep(60)  # Wait for 60 seconds before deleting
-            delete_response = session.delete(f'https://api.twitter.com/2/tweets/{tweet_id}')
-            if delete_response.status_code == 200:
-                print("Tweet deleted successfully.")
-            else:
-                print(f"Failed to delete tweet: {delete_response.status_code}")
-        else:
-            print(f"Failed to post tweet: {response.text}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 if __name__ == "__main__":
-    session = create_oauth_session()
-    html_files = read_html_files()
-    post_and_delete_tweets(html_files, session)
+    client = create_client()
+    tweet_and_delete(client, 'html_files.txt')
