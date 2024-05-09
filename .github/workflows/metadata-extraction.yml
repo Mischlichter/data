@@ -106,7 +106,7 @@ jobs:
 
       - name: Delay before Sync
         run: sleep 5  
-        
+
       - name: Sync Filesystem
         run: sudo sync    
 
@@ -122,7 +122,6 @@ jobs:
           git fetch --all
           git rebase origin/main  # Replace 'main' with your default branch if different
           git push
-
 
 
 
