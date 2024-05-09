@@ -6,13 +6,14 @@ from requests_oauthlib import OAuth1Session
 def create_oauth_session(consumer_key, consumer_secret, access_token, access_token_secret):
     """Create an OAuth1 session."""
     print(f"Creating OAuth session with: {consumer_key}, {consumer_secret}, {access_token}, {access_token_secret}")  # Debug output
-    return OAuth1Session(consumer_key, client_secret=consumer_secret, resource_owner_key=access_token, resource_owner_secret=access_token_secret)
+    return OAuth1Session(consumer_key, consumer_secret=consumer_secret, resource_owner_key=access_token, resource_owner_secret=access_token_secret)
 
 def post_tweet(url, session):
     """Post a tweet containing just the URL."""
     api_url = "https://api.twitter.com/2/tweets"
+    headers = {"Content-Type": "application/json"}  # Set content type for JSON
     payload = json.dumps({"text": url})  # Tweet content is just the URL
-    response = session.post(api_url, data=payload)
+    response = session.post(api_url, headers=headers, data=payload)
     if response.status_code == 201:
         print("Tweet successfully created.")
         return response.json()['data']['id']
