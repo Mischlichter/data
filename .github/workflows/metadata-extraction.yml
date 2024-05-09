@@ -73,7 +73,10 @@ jobs:
     if: ${{ needs.extract-metadata.outputs.html_files_exist == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetches all history for all branches and tags
 
       - name: Download HTML files list
         uses: actions/download-artifact@v4
@@ -86,47 +89,45 @@ jobs:
             echo "No HTML files to process."
             exit 0
           fi
-
           cat html_files.txt  # Output file content for debugging
           IFS=$'\n' read -r -a html_files <<< "$(cat html_files.txt)"
-
           for file in "${html_files[@]}"; do
-            filename="${file#docs/sharing/}"  # Removes 'docs/sharing/' from the path
+            filename="${file#docs/sharing/}"
             url="https://hogeai.com/sharing/${filename}"
             echo "Checking URL: $url"
             while ! curl --output /dev/null --silent --head --fail --location --write-out '%{http_code}' "$url" | grep '200'; do
               echo "Waiting for $url to be live..."
               sleep 5
             done
-
             echo "$url is confirmed live with 200 OK status."
             curl --output /dev/null --silent --location "$url"
             echo "$url has been fully visited."
-          done  
+
+      - name: Re-checkout Repository to Refresh Files
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Generate Sitemap
         run: |
           python ./sitemap.py
+
       - name: Commit and Push Sitemap
         run: |
           git config user.name 'github-actions'
           git config user.email 'github-actions@github.com'
           git add docs/sitemap.xml
           git commit -m "Update sitemap" || echo "No changes to commit"
-          git fetch --all
-          git rebase origin/main  # Replace 'main' with your default branch if different
           git push
-
-
-
-
-
 
   notify-google:
     needs: check-live-status
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Download HTML files list
         uses: actions/download-artifact@v4
         with:
@@ -146,7 +147,6 @@ jobs:
                 break
               fi
             done
-
             if [ "$all_files_found" = true ]; then
               echo "All HTML files are found in the sitemap."
               break
