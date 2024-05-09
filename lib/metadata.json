@@ -2734,5 +2734,13 @@
         "Model": "HOGExAZO",
         "Creator": "@Mischlichter",
         "Seed": "42093635250"
+    },
+    "55163800815.jpg": {
+        "File Name": "55163800815.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai person rap album cover, hogeai man as pimp posing in black and golden adidas tracksuit and hat. hogeai person gangsta style , summer, intricate futuristic neigborhood prefabricated buildings cyberpunk new york ghetto, old shiny Mercedes car lowrider, graffiti on walls, light reflections in puddles, citytrain and skylne in background, cinematic night scene, hiphop movie, golden colors",
+        "Model": "HOGExDELI",
+        "Creator": "@Mischlichter",
+        "Seed": "55163800815"
     }
 }
