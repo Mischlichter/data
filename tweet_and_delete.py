@@ -1,18 +1,27 @@
 import tweepy
 import os
 
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+
 def create_api():
     consumer_key = os.getenv('TWITTER_API_KEY')
     consumer_secret = os.getenv('TWITTER_API_SECRET')
-    # Correcting the token format from underscore to dash
     access_token = os.getenv('TWITTER_ACCESS_TOKEN').replace('_', '-')
     access_token_secret = os.getenv('TWITTER_ACCESS_TOKEN_SECRET').replace('_', '-')
+    
+    logging.debug(f"Consumer Key: {consumer_key}")
+    logging.debug(f"Consumer Secret: {consumer_secret}")
+    logging.debug(f"Access Token: {access_token}")
+    logging.debug(f"Access Token Secret: {access_token_secret}")
     
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
     
     api = tweepy.API(auth)
     return api
+
 
 def tweet_and_delete(api):
     try:
