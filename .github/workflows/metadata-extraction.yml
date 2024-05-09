@@ -126,7 +126,7 @@ jobs:
 
   tweet-and-delete:
     runs-on: ubuntu-latest
-    needs: [extract-metadata]  # This ensures it runs after the metadata extraction job if you need the output from that job
+    needs: check-live-status
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
