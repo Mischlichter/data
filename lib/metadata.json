@@ -2902,5 +2902,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "78228925336"
+    },
+    "33027990069.jpg": {
+        "File Name": "33027990069.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man unlocking a dimensional gate) with a crystalline key, bob ross painting of surreal connections, raytracing, hdr, 8k uhd. Beyond the gateway lies realms of floating islands, waterfalls defying gravity, mystical creatures of legend and lore, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Frank Frazetta, bayard wu, greg rutkowski, colors swirling with deep reds and ethereal whites, a symphony of mysteries unfolding.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "33027990069"
     }
 }
