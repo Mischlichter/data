@@ -22,7 +22,7 @@ def tweet_and_delete(client, file_path):
         for html_file in html_files:
             html_file = html_file.strip()
             filename = os.path.basename(html_file)
-            tweet_url = f"https://www.hogeai.com/sharing/{html_file}"  # Construct URL
+            tweet_url = f"https://www.hogeai.com/sharing/{filename}"  # Construct URL
             tweet = client.create_tweet(text=tweet_url)  # Post the tweet
             print(f"Tweet posted: {tweet.data['id']} - URL: {tweet_url}")
             
