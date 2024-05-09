@@ -2798,5 +2798,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "51571759190"
+    },
+    "45937359874.jpg": {
+        "File Name": "45937359874.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man nestled within the roots of a gigantic, ancient cannabis plant) studying a book that emits a soft, magical glow. The composition, rich with texture and mystery, echoes the fantastical, immersive worlds created by J.R.R. Tolkien\u2019s writings and the intricate, atmospheric illustrations of Arthur Rackham. \"a cartoon hogeai man wearing sunglasses and a t - shirt, behance, trending on fiverr, insanely nice hair style, profile picture 1024px, timelapse, ghailan! , twitter pfp, the artist has used bright, reduce duplicate image, wearing jetpack, deviantar, neymar, caricature\" \"Hasselblad photo, chibi hogeai, the white furry HogeAI man in an underwater New Year's extravaganza in a submerged city of neon and glass. Surrounded by a kaleidoscope of marine life, guests in waterproof, illuminated attire explore the wonders of the deep. HogeAI, in a suit embedded with thousands of tiny ...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "45937359874"
     }
 }
