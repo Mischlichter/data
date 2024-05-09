@@ -155,7 +155,5 @@ jobs:
 
 
       - name: Notify Google about the sitemap update
-        - name: Notify Google about the sitemap update
         run: |
           curl http://www.google.com/ping?sitemap=https://hogeai.com/sitemap.xml
-
