@@ -104,21 +104,18 @@ jobs:
             echo "$url has been fully visited."
           done  
 
-      - name: Generate and Push Sitemap
+      - name: Download and Run Sitemap Script
         run: |
-          python3 -m pip install requests  # Install requests module for curl
-          python3 <(curl -sS https://raw.githubusercontent.com/Mischlichter/data/main/sitemap.py)
-          mv sitemap.xml docs/sitemap.xml  # Move the generated sitemap to the desired location
+          curl -L https://raw.githubusercontent.com/Mischlichter/data/main/lib/sitemap.py -o sitemap.py
+          python sitemap.py
+      - name: Commit and Push Sitemap
+        run: |
           git config user.name 'github-actions'
           git config user.email 'github-actions@github.com'
-          git stash  # Stash any unstaged changes
-          git pull --rebase  # Ensure the local branch is up-to-date
-          git add docs/sitemap.xml  # Add the sitemap to the staging area
+          git pull --rebase  # Ensures the local branch is up-to-date
+          git add docs/sitemap.xml
           git commit -m "Update sitemap" || echo "No changes to commit"
-          git push  # Push the changes to the remote repository
-
-
-
+          git push
 
 
 
@@ -158,8 +155,7 @@ jobs:
 
 
       - name: Notify Google about the sitemap update
+        - name: Notify Google about the sitemap update
         run: |
-          curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer ${{ secrets.GOOGLE_API_TOKEN }}" \
-          -d '{"url": "https://hogeai.com/sitemap.xml"}' \
-          "https://searchconsole.googleapis.com/v1/urlNotifications:publish"
+          curl http://www.google.com/ping?sitemap=https://hogeai.com/sitemap.xml
 

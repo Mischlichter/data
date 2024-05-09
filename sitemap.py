@@ -6,7 +6,7 @@ from datetime import datetime
 # Configuration
 base_url = "https://www.hogeai.com/"  # Adjusted base URL of your site
 docs_path = "./docs"  # Local path to the 'docs' directory relative to where the script is run
-sitemap_path = "./sitemap.xml"  # Path to save the sitemap
+sitemap_path = "./docs/sitemap.xml"  # Path to save the sitemap in the docs directory
 
 def get_last_modified(file_path):
     """Get the last modified date of a file."""
