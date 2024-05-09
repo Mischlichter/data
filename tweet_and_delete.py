@@ -1,30 +1,32 @@
 import tweepy
+import time
 import os
 
-def create_api():
-    auth = tweepy.OAuthHandler(os.getenv('API_KEY'), os.getenv('API_SECRET'))
-    auth.set_access_token(os.getenv('ACCESS_TOKEN'), os.getenv('ACCESS_TOKEN_SECRET'))
-    api = tweepy.API(auth)
+def authenticate():
+    # Create an OAuthHandler instance with your consumer keys and access tokens
+    auth = tweepy.OAuthHandler(os.getenv('TWITTER_API_KEY'), os.getenv('TWITTER_API_SECRET'))
+    auth.set_access_token(os.getenv('TWITTER_ACCESS_TOKEN'), os.getenv('TWITTER_ACCESS_TOKEN_SECRET'))
+    
+    # Create a Tweepy API object to interact with the Twitter API
+    api = tweepy.API(auth, wait_on_rate_limit=True)
     return api
 
 def tweet_and_delete(api):
     try:
-        with open('html_files.txt', 'r') as file:
-            html_files = file.readlines()
-        
-        for html_file in html_files:
-            html_file = html_file.strip()
-            tweet_text = f"https://www.hogeai.com/sharing/{html_file}"
-            tweet = api.update_status(tweet_text)
-            print(f"Tweeted: {tweet.id}")
-            # Wait for 60 seconds before deleting the tweet
-            time.sleep(60)
-            api.destroy_status(tweet.id)
-            print(f"Deleted Tweet ID: {tweet.id}")
+        # Posting a tweet
+        tweet = api.update_status("Hello, world!")
+        print(f"Tweet posted: {tweet.id}")
+
+        # Waiting for visibility or user interaction
+        time.sleep(60)  # 60 seconds wait
+
+        # Deleting the tweet
+        api.destroy_status(tweet.id)
+        print(f"Tweet deleted: {tweet.id}")
 
     except Exception as e:
         print(f"An error occurred: {e}")
 
 if __name__ == "__main__":
-    api = create_api()
+    api = authenticate()
     tweet_and_delete(api)
