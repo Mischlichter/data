@@ -123,49 +123,47 @@ jobs:
           git push
 
 
-  notify-google:
-    needs: check-live-status
+  tweet-and-delete:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
       - name: Download HTML files list
         uses: actions/download-artifact@v4
         with:
           name: html-files
-
-      - name: Wait for HTML files to be in sitemap
+      
+      - name: Tweet and delete
+        env:
+          TWITTER_API_KEY: ${{ secrets.dZJfnep8yDvvCOWvgrdtKuN63 }}
+          TWITTER_API_SECRET: ${{ secrets.iVWF4R6E5JS90Ss1AXXH4kQXjEucgHfEm7c7avxwcnBC34SDSV }}
+          TWITTER_ACCESS_TOKEN: ${{ secrets.949798332905476102-ljwO8OgzVdmKvftlNLwtHgHEbqvagbV }}
+          TWITTER_ACCESS_TOKEN_SECRET: ${{ secrets.HXEMae0XBMe9rYE57OQ3pNKuZmX2aC2uN9St0LxCDiAjj }}
         run: |
-          while true; do
-            all_files_found=true
-            # Fetch the sitemap with no-cache option
-            sitemap_content=$(curl -sS -H "Cache-Control: no-cache" "https://www.hogeai.com/sitemap.xml")
-            echo "Fetched sitemap content: $sitemap_content"  # Temporary: Check what is being fetched
+          # Read each file name and compose tweet
+          for file in $(cat html_files.txt); do
+            filename=$(basename "$file")
+            url="https://www.hogeai.com/sharing/${filename}"
+            tweet_content="Check out our new content: $url"
+            
+            # Create a draft tweet
+            draft_response=$(twurl -X POST "/2/tweets/drafts" -d "{\"text\":\"$tweet_content\"}")
+            draft_id=$(echo $draft_response | jq -r '.data.id')
+            echo "Draft created: $draft_id"
 
-            for file in $(cat html_files.txt); do
-              filename=$(basename "$file")
-              url="https://www.hogeai.com/sharing/${filename}"
-              echo "Checking URL: $url"
-              
-              # Using grep to check URL presence
-              if echo "$sitemap_content" | grep -q "$(echo $url | sed 's/\//\\\//g')"; then
-                echo "$filename found in sitemap."
-              else
-                all_files_found=false
-                echo "$filename not found in sitemap."
-                break
-              fi
-            done
+            # Calculate scheduled time which is 5 minutes from now
+            scheduled_time=$(date -u -d "5 minutes" +"%Y-%m-%dT%H:%M:%SZ")
 
-            if [ "$all_files_found" = true ]; then
-              echo "All HTML files are found in the sitemap."
-              break
-            else
-              echo "Not all HTML files are found in the sitemap. Retrying in 5 seconds..."
-              sleep 5
-            fi
+            # Schedule the draft to be posted
+            schedule_response=$(twurl -X POST "/2/tweets" -d "{\"text\":\"$tweet_content\", \"scheduled_tweet_id\":\"$draft_id\", \"scheduled_time\":\"$scheduled_time\"}")
+            scheduled_tweet_id=$(echo $schedule_response | jq -r '.data.id')
+            echo "Scheduled Tweet ID: $scheduled_tweet_id"
+
+            # Wait for 10 seconds
+            sleep 10
+
+            # Delete the scheduled tweet
+            twurl -X DELETE "/2/tweets/$scheduled_tweet_id"
+            echo "Deleted scheduled tweet: $scheduled_tweet_id"
           done
-
-
-      - name: Notify Google about the sitemap update
-        run: |
-          curl http://www.google.com/ping?sitemap=https://www.hogeai.com/sitemap.xml
