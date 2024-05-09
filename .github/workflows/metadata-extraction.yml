@@ -133,37 +133,43 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: html-files
-      
-      - name: Tweet and delete
-        env:
-          TWITTER_API_KEY: ${{ secrets.dZJfnep8yDvvCOWvgrdtKuN63 }}
-          TWITTER_API_SECRET: ${{ secrets.iVWF4R6E5JS90Ss1AXXH4kQXjEucgHfEm7c7avxwcnBC34SDSV }}
-          TWITTER_ACCESS_TOKEN: ${{ secrets.949798332905476102-ljwO8OgzVdmKvftlNLwtHgHEbqvagbV }}
-          TWITTER_ACCESS_TOKEN_SECRET: ${{ secrets.HXEMae0XBMe9rYE57OQ3pNKuZmX2aC2uN9St0LxCDiAjj }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'  # Use an appropriate Python version
+
+      - name: Install dependencies
         run: |
-          # Read each file name and compose tweet
-          for file in $(cat html_files.txt); do
-            filename=$(basename "$file")
-            url="https://www.hogeai.com/sharing/${filename}"
-            tweet_content="Check out our new content: $url"
-            
-            # Create a draft tweet
-            draft_response=$(twurl -X POST "/2/tweets/drafts" -d "{\"text\":\"$tweet_content\"}")
-            draft_id=$(echo $draft_response | jq -r '.data.id')
-            echo "Draft created: $draft_id"
+          python -m pip install --upgrade pip
+          pip install tweepy
 
-            # Calculate scheduled time which is 5 minutes from now
-            scheduled_time=$(date -u -d "5 minutes" +"%Y-%m-%dT%H:%M:%SZ")
+      tweet-and-delete:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v4
+          
+          - name: Download HTML files list
+            uses: actions/download-artifact@v4
+            with:
+              name: html-files
 
-            # Schedule the draft to be posted
-            schedule_response=$(twurl -X POST "/2/tweets" -d "{\"text\":\"$tweet_content\", \"scheduled_tweet_id\":\"$draft_id\", \"scheduled_time\":\"$scheduled_time\"}")
-            scheduled_tweet_id=$(echo $schedule_response | jq -r '.data.id')
-            echo "Scheduled Tweet ID: $scheduled_tweet_id"
+          - name: Set up Python
+            uses: actions/setup-python@v2
+            with:
+              python-version: '3.8'  # Use an appropriate Python version
 
-            # Wait for 10 seconds
-            sleep 10
+          - name: Install dependencies
+            run: |
+              python -m pip install --upgrade pip
+              pip install tweepy
 
-            # Delete the scheduled tweet
-            twurl -X DELETE "/2/tweets/$scheduled_tweet_id"
-            echo "Deleted scheduled tweet: $scheduled_tweet_id"
-          done
+          - name: Tweet and delete
+            env:
+              TWITTER_API_KEY: ${{ secrets.dZJfnep8yDvvCOWvgrdtKuN63 }}
+              TWITTER_API_SECRET: ${{ secrets.iVWF4R6E5JS90Ss1AXXH4kQXjEucgHfEm7c7avxwcnBC34SDSV }}
+              TWITTER_ACCESS_TOKEN: ${{ secrets.949798332905476102-ljwO8OgzVdmKvftlNLwtHgHEbqvagbV }}  # Notice the underscore replacement if modified
+              TWITTER_ACCESS_TOKEN_SECRET: ${{ secrets.HXEMae0XBMe9rYE57OQ3pNKuZmX2aC2uN9St0LxCDiAjj }}
+            run: python tweet_and_delete.py
+
