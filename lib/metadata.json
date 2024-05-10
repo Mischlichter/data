@@ -3110,5 +3110,21 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "81345222158"
+    },
+    "90700495300.jpg": {
+        "File Name": "90700495300.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "On a distant planet where bioluminescent forests stretch under a sky of swirling auroras, HogeAI man ventures into a world where every element is infused with psychedelic wonder. The trees, towering and twisted, glow with an inner light that shifts from deep purples to vibrant greens. Underfoot, the moss-covered ground feels alive, pulsating gently in response to his steps. In this forest, the air is thick with a heady mix of alien fragrances \u2013 hints of jasmine intermingling with unknown, yet intoxicating, scents. The sounds of this forest are a symphony of surreal melodies, with unseen creatures adding their voices to the chorus. Here, HogeAI's cloak, a marvel of reactive fabrics, blends seamlessly with the environment, changing colors and patterns in a mesmerizing dance. This alien forest is not just a place of visual splendor; it's an immersive experience that engages every sense, drawing HogeAI deeper into its mystical emb...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "90700495300"
+    },
+    "95192299330.jpg": {
+        "File Name": "95192299330.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man sipping an elixir at a lavish crypto lounge) surrounded by patrons, each a magnate of their crypto realm. Curtains made of shimmering binary cascade from above, while the bar displays bottles, not of drinks, but of distilled digital successes. The ambiance resonates with [ethereal mesmerizing 1.0] tunes, each note celebrating HogeAI coin's victories.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "95192299330"
     }
 }
