@@ -3198,5 +3198,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "99485684992"
+    },
+    "51512018912.jpg": {
+        "File Name": "51512018912.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man bot robot doing a robot dance, in a factory where hogeai robots are assembled, thousands of robots dancing , intrigcate factory with parts and wires and computer terminals, extremly detailled like in a tim burton movie mixed with robocop",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "51512018912"
     }
 }
