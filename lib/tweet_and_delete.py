@@ -26,7 +26,7 @@ def tweet_and_delete(client, file_path):
             tweet = client.create_tweet(text=tweet_url)  # Post the tweet
             print(f"Tweet posted: {tweet.data['id']} - URL: {tweet_url}")
             
-            time.sleep(11)  # Wait for 60 seconds before deleting the tweet
+            time.sleep(1)  # Wait for 60 seconds before deleting the tweet
 
             client.delete_tweet(tweet.data['id'])  # Delete the tweet
             print(f"Deleted Tweet ID: {tweet.data['id']}")
