@@ -40,7 +40,11 @@ def generate_sitemap(directory, base_url, sitemap_path, html_list_file):
         loc = ET.SubElement(url, "loc")
         # Correct the URL to not include the 'docs/' path
         relative_path = file_path.replace(directory, "").lstrip('/')
-        corrected_path = relative_path.replace('docs/sharing/', 'sharing/')  # Adjust the path here
+        # Make sure not to add 'sharing/' if it's already part of the base URL
+        if 'docs/sharing/' in file_path:
+            corrected_path = relative_path.replace('docs/sharing/', '')
+        else:
+            corrected_path = relative_path
         full_url = base_url + quote(corrected_path)
         loc.text = full_url
         lastmod = ET.SubElement(url, "lastmod")
