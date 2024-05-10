@@ -3126,5 +3126,21 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "95192299330"
+    },
+    "19643763603.jpg": {
+        "File Name": "19643763603.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man seated on a throne made from cannabis buds) under a canopy of delicate, crystalline trichomes, with soft light creating a tranquil, royal atmosphere. The composition, with its luxurious detail and serene mood, takes inspiration from the regal, elegant portraits painted by Anthony van Dyck and the playful, imaginative works of Roald Dahl.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "19643763603"
+    },
+    "67137182914.jpg": {
+        "File Name": "67137182914.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man-woman as a potter sculpting a clay vase) in a sunlit studio, bob ross painting of spinning pottery wheel and splattered clay. The feel of wet clay between fingers, the concentration of molding form, and the satisfaction of a creation, 4K, next gen, 3d octane rendering, unreal engine 5, inspired by the timeless craft of pottery and the artistry of Beatrice Wood.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "67137182914"
     }
 }
