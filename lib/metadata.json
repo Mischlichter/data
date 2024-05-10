@@ -3182,5 +3182,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "81263031840"
+    },
+    "14061971631.jpg": {
+        "File Name": "14061971631.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (curious white furry HogeAI man interacting with a sentient nebula) that morphs into various shapes responding to his thoughts, bob ross painting in color connection, raytracing, hdr, 8k uhd. This galactic entity, old as the cosmos, shares tales of stars being born and galaxies merging, a dance of creation and decay, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, colors undulating between deep space navy and luminous gold, an intimate conversation between man and universe.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "14061971631"
     }
 }
