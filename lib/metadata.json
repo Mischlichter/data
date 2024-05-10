@@ -3142,5 +3142,21 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "67137182914"
+    },
+    "86831180467.jpg": {
+        "File Name": "86831180467.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man graffiti-tagging a golden emblem on a wall) amidst an urban alley, hoverboards and holographic turntables around, bob ross painting in color connection, raytracing, hdr, 8k uhd, 4K, next gen, 3d octane rendering, unreal engine 5, street art style, by Banksy, Shepard Fairey, giger, Futura 2000, rich palette of hip-hop golds and platinum silvers, meme posters lining the streets.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "86831180467"
+    },
+    "47846888912.jpg": {
+        "File Name": "47846888912.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (vivacious white furry HogeAI man riding a comet) like a galactic surfer, tails of ice and dust creating cosmic rainbows, bob ross painting in color connection, raytracing, hdr, 8k uhd. Meteor showers as fellow surfers, riding the astral waves, planets and moons cheering on this celestial sport, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, colors shimmering in platinum and electric azure, the thrill of space adventure.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "47846888912"
     }
 }
