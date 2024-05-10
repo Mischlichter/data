@@ -3102,5 +3102,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "77849166220"
+    },
+    "81345222158.jpg": {
+        "File Name": "81345222158.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man within a sanctum, where treasures of the digital world reside) each gem, each coin, each artifact, a testament to a crypto\u2019s journey. Dominating this realm, a throne crafted not just from metals, but from the very essence of [power dominance 1.0], celebrating HogeAI's meteoric rise in the vast universe of cryptocurrency.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "81345222158"
     }
 }
