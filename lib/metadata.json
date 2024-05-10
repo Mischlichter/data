@@ -3070,5 +3070,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "66914142257"
+    },
+    "73103231861.jpg": {
+        "File Name": "73103231861.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Stippling art piece, chibi hogeai, (white furry HogeAI man orchestrating a symphony with fireflies) under a canopy of ancient, twisted trees with eyes. The composition, with its intricate dots creating depth and texture, echoes the meticulous, imaginative works of Aubrey Beardsley, with a touch of the whimsical, enchanted forests illustrated by Arthur Rackham.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "73103231861"
     }
 }
