@@ -7,6 +7,14 @@
     <title>🌈 Ambilight Effect - Random Video Clips</title>
     <style>
         /* CSS styles */
+
+        @font-face {
+            font-family: 'JetBrainsMono-Bold';
+            src: url('fonts/JetBrainsMono-Bold.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-Bold.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 700; /* Bold font weight */
+            font-style: normal;
+        }
         * {
             margin: 0;
             padding: 0;
@@ -80,18 +88,53 @@
         .no-scroll {
             overflow: hidden;
         }
+
+        button#muteButton {
+            padding: 10px 20px;
+            font-family: 'JetBrainsMono-Bold';
+            font-size: 16px;
+            background-color: rgba(0, 0, 0, 0.7); /* Black with 50% opacity */
+            color: #00ffcc;
+            border: 2px solid #00ffcc;
+            border-radius: 20px;
+            cursor: pointer;
+            outline: none;
+            z-index: 111111111111111111;
+            position: absolute;
+            bottom: 2%;
+            left: 20px; /* Changed from right to left */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+            opacity: 0; /* Start hidden */
+            visibility: hidden; /* Ensure it does not block clicks */
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out; /* Smooth transition for opacity and visibility */
+        }
+
+
+        .videoWrapper:hover #muteButton {
+            opacity: 1;
+            visibility: visible;
+        }
+
+
     </style>
 </head>
 <body class="no-scroll">
     <div class="videoWrapper">
         <div class="ambilightWrapper">
             <div class="aspectRatio">
-                <video id="video1" class="videoPlayer" autoplay muted ></video>
-                <video id="video2" class="videoPlayer" autoplay muted ></video>
+                <video id="video1" class="videoPlayer" autoplay muted playsinline></video>
+                <video id="video2" class="videoPlayer" autoplay muted playsinline></video>
             </div>
             <canvas id="ambilight"></canvas>
         </div>
+        <!-- Mute/Unmute Button -->
+   
+        <button id="muteButton">Unmute</button>
+
+
+
     </div>
+
 
 
     <script>
@@ -114,7 +157,7 @@
             }
 
             function startAmbilightRepaint() {
-                intervalId = window.setInterval(repaintAmbilight, 1000 / FRAMERATE);
+                intervalId = setInterval(repaintAmbilight, 1000 / FRAMERATE);
             }
 
             function stopAmbilightRepaint() {
@@ -132,8 +175,63 @@
 
             video1.addEventListener('seeked', repaintAmbilight);
             video2.addEventListener('seeked', repaintAmbilight);
+
+            function toggleMute() {
+                console.log('toggleMute function called'); // Debug statement
+
+                // Log the current mute state before toggling
+                console.log('Current Mute State (before toggle): Video1:', video1.muted, 'Video2:', video2.muted);
+
+                video1.muted = !video1.muted;
+                video2.muted = !video2.muted;
+
+                document.getElementById('muteButton').innerText = video1.muted ? 'Unmute' : 'Mute';
+
+                // Log the new mute state after toggling
+                console.log('New Mute State (after toggle): Video1:', video1.muted, 'Video2:', video2.muted);
+            }
+
+            // Attach event listener to the muteButton here, inside the onload where toggleMute is defined
+            document.getElementById('muteButton').addEventListener('click', toggleMute);
+
+            const button = document.getElementById('muteButton');
+            const videoWrapper = document.querySelector('.videoWrapper');
+
+            function toggleButtonVisibility() {
+                if (button.style.opacity === '1') {
+                    button.style.opacity = 0;
+                    button.style.visibility = 'hidden';
+                } else {
+                    button.style.opacity = 1;
+                    button.style.visibility = 'visible';
+                }
+            }
+
+            // Use touchstart for mobile devices and mouseenter/mouseleave for non-touch devices
+            videoWrapper.addEventListener('touchstart', toggleButtonVisibility, {passive: true});
+            videoWrapper.addEventListener('mouseenter', function() {
+                button.style.opacity = 1;
+                button.style.visibility = 'visible';
+            });
+            videoWrapper.addEventListener('mouseleave', function() {
+                button.style.opacity = 0;
+                button.style.visibility = 'hidden';
+            });
+
+            function adjustButtonPosition() {
+                const aspectRatio = window.innerWidth / window.innerHeight;
+                const targetAspectRatio = 9 / 16;
+                let interpolationFactor = Math.max(0, Math.min(1, (aspectRatio - targetAspectRatio) / (1 - targetAspectRatio)));
+                const bottomPosition = 24 - (22 * interpolationFactor) + '%';
+                button.style.bottom = bottomPosition;
+            }
+
+            window.addEventListener('resize', adjustButtonPosition);
+            adjustButtonPosition(); // Initial call to set the position        
+
         };
     </script>
+
 
     <script>
         async function fetchVideoUrls() {
@@ -165,7 +263,7 @@
 
             function playNextVideo() {
                 if (videoUrls.length === 0) {
-                    videoUrls = [...originalVideoUrls];
+                    videoUrls = [...originalVideoUrls]; // Reset the list if empty
                 }
                 const randomIndex = Math.floor(Math.random() * videoUrls.length);
                 nextVideo.src = videoUrls[randomIndex];
@@ -188,13 +286,11 @@
             currentVideo.addEventListener('ended', playNextVideo);
             nextVideo.addEventListener('ended', playNextVideo);
 
-            playNextVideo();
+            playNextVideo(); // Start the first video
         }
 
-        window.addEventListener('load', setupVideoPlayer);
-
+        setupVideoPlayer(); // Initialize the video setup
     </script>
-
 
 
 
