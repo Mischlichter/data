@@ -3214,5 +3214,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "55056368789"
+    },
+    "10486215180.jpg": {
+        "File Name": "10486215180.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (extremely focused white furry HogeAI man navigating a digital maze) walls pulsating with dynamic patterns, floating cybernetic keys hinting at hidden gateways, bob ross painting in color connection, raytracing, hdr, 8k uhd extremely detailed fur puppy, high details, enigmatic symbols leading the way, holographic creatures offering cryptic clues, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, rich palette of emerald greens and ruby reds, shifting patterns challenging perception. In a boundless digital realm, HogeAI man traverses a psychedelic cityscape, where skyscrapers pulsate with neon graffiti and meme-inspired art. Streets are alive with holographic crowds, each HogeAI reveler wearing dazecore fashion that shimmers with vibrant, ever-changing patterns. The air resonates with a blend o...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "10486215180"
     }
 }
