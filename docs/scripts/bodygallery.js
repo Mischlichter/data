@@ -809,6 +809,16 @@ const galleryHTML = `
             document.body.appendChild(linkElement);
         }
 
+        function disposeLinks() {
+            const links = document.querySelectorAll('a');
+            links.forEach(link => {
+                if (link.textContent === 'Access Shared Content') {
+                    link.remove();
+                }
+            });
+        }
+
+
         function updateTextInfo2() {
             const imgSrc = dynamicImages[currentImageIndex];
             const imageElement = document.querySelector(`img[src="${imgSrc}"]`); // Find the img element by its src
@@ -1507,7 +1517,8 @@ const galleryHTML = `
                     centeredContainer.style.backgroundColor = 'rgba(0, 0, 0, 0)'; // Set background to transparent
                     centeredContainer.style.opacity = '1'; // Reset opacity for future use
                     enableScroll(); // Re-enable scrolling
-                    removeHoverEffect() // Remove the hover effect
+                    removeHoverEffect(); // Remove the hover effect
+                    disposeLinks();
                     
               
                 }, 200); // Adjust the delay value (0.3s) to match the transition duration
