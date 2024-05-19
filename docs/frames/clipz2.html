@@ -275,6 +275,11 @@
             const video2 = document.getElementById('video2');
             activeVideo = video1; // Start with video1
 
+            document.addEventListener('touchstart', () => {
+                video1.play();
+                video2.play();
+            }, { once: true });
+
             function repaintAmbilight() {
                 if (activeVideo && activeVideo.readyState >= 2) {
                     context.drawImage(activeVideo, 0, 0, canvas.width, canvas.height);
