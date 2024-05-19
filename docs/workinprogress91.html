@@ -989,7 +989,7 @@
             function checkIndexedDBSupport() {
                 if ('indexedDB' in window) {
                     console.log('This browser supports IndexedDB');
-                    return false;
+                    return true;
                 } else {
                     console.log('This browser does not support IndexedDB');
                     return false;
