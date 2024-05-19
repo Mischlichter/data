@@ -3206,5 +3206,29 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "51512018912"
+    },
+    "55056368789.jpg": {
+        "File Name": "55056368789.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (extremely vibrant white furry HogeAI man dancing amidst a neon-lit rainforest) bioluminescent flora casting ethereal glows, shadowy creatures with LED-lit eyes lurking, bob ross painting in color connection, raytracing, hdr, 8k uhd extremely detailed fur puppy, high details. The jungle is alive with rhythmic pulses, trees with holographic bark, water streams reflecting dynamic spectra, digital toucans chirping encrypted songs, luminescent mushrooms illuminating hidden paths, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, colors radiating vibrant greens and mysterious blues, a technicolor nature's rave.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "55056368789"
+    },
+    "10486215180.jpg": {
+        "File Name": "10486215180.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (extremely focused white furry HogeAI man navigating a digital maze) walls pulsating with dynamic patterns, floating cybernetic keys hinting at hidden gateways, bob ross painting in color connection, raytracing, hdr, 8k uhd extremely detailed fur puppy, high details, enigmatic symbols leading the way, holographic creatures offering cryptic clues, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, rich palette of emerald greens and ruby reds, shifting patterns challenging perception. In a boundless digital realm, HogeAI man traverses a psychedelic cityscape, where skyscrapers pulsate with neon graffiti and meme-inspired art. Streets are alive with holographic crowds, each HogeAI reveler wearing dazecore fashion that shimmers with vibrant, ever-changing patterns. The air resonates with a blend o...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "10486215180"
+    },
+    "65123711327.jpg": {
+        "File Name": "65123711327.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "magine a vast expanse of glowing pixels, alive with the vibrant colors of imagination and possibility. This is the realm of HogeAI, where every brushstroke is infused with the energy of creation. In this boundless digital landscape, users are empowered to unlock their full creative potential, weaving together the tapestry of their dreams with each message they send.At the heart of this cosmic canvas lies a beacon of hope, shining bright with the promise of limitless possibilities. Every interaction here is fueled by the universal language of innovation, where every voice is amplified and every dream takes flight. It's a haven of understanding, where the chaos of the digital world melts away, revealing the beauty of human connection and collaboration.As you explore this wondrous domain, you'll discover an ever-expanding mosaic of ideas, each one a vital piece of the collective puzzle. Embrace the spirit of synergy, where every ...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "65123711327"
     }
 }
