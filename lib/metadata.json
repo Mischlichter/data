@@ -3230,5 +3230,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "65123711327"
+    },
+    "17713865678.jpg": {
+        "File Name": "17713865678.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man diving into a vibrant sea of data and AI models) in a modern, eclectic lab filled with sketches, holographic screens, and whimsical illustrations. The room is alive with creativity, featuring floating digital representations of HogeAI, colorful data streams flowing like rivers, and animated post-it notes. Bob Ross painting of innovative discovery, raytracing, hdr, 8k uhd. The atmosphere is dynamic and playful, with AI-driven robots assisting in design, holograms displaying intricate AI models, and a blend of bright, inspiring blues and warm, creative oranges. 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Luis Royo, bayard wu, greg rutkowski, maxim verehin, the hum of innovation and the buzz of creative energy filling the air.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "17713865678"
     }
 }
