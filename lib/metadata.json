@@ -3414,5 +3414,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "12136421256"
+    },
+    "74484968533.jpg": {
+        "File Name": "74484968533.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man surrounded by numerous HogeAI friends) in a vibrant, playful community hub buzzing with energy and creativity. Beta testers are actively engaged, playing with glowing strings of floating text that shimmer like enchanted spells. Words and sentences float in mid-air, forming luminous streams that testers manipulate with their hands, transforming them into dynamic HogeAI-inspired images. Some testers stand before holographic displays, typing prompts that morph into colorful sketches and memes. Others use digital wands to guide floating text, creating whimsical illustrations. At the center of the room, a grand mystical board covered in glowing text resembling ancient incantations is surrounded by testers chanting and typing, watching the text lift off, float, and burst into vibrant images. Tech-savvy HogeAI characters are immersed in coding, adjusting AI models on floating ho...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "74484968533"
     }
 }
