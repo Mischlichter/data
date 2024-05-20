@@ -3382,5 +3382,13 @@
         "Model": "HOGExDELI",
         "Creator": "@Mischlichter",
         "Seed": "86045014995"
+    },
+    "79610040353.jpg": {
+        "File Name": "79610040353.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Full classroom scene, Hasselblad photo, chibi hogeai, (white furry HogeAI man as a teacher) in a bright, whimsical classroom, teaching a group of robots. The classroom is filled with vibrant sketches, digital easels, and playful decorations. On a large digital board behind HogeAI, concept art and abstract blueprints of hogeai man characters are displayed, with annotations and diagrams that a teacher would use. The robots, varying from cute, boxy designs to sleek, futuristic models, are attentively learning to paint, each with their own easel and canvas. Some robots have paintbrushes for hands, while others have extendable arms holding palettes and brushes. They are creating whimsical hogeai man-inspired artworks, with some robots meticulously detailing their paintings while others make humorous mistakes, causing everyone to laugh. One robot is painting a quirky, abstract hogeai man, while another is trying to mix colors and en...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "79610040353"
     }
 }
