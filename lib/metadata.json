@@ -3254,5 +3254,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "19126339060"
+    },
+    "89194692307.jpg": {
+        "File Name": "89194692307.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man sitting amidst a bustling digital community) surrounded by vibrant holographic chat bubbles, memes floating in the air, and animated conversations taking place. The setting is a lively, colorful digital space where creativity and innovation thrive. Bob Ross painting of communal inspiration, raytracing, hdr, 8k uhd. HogeAI is depicted with an aura of excitement, surrounded by digital art tools and screens displaying hogeai man-inspired visuals in progress. The scene is infused with dynamic energy, capturing the birth of an innovative idea within a collaborative and fun environment. 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Luis Royo, bayard wu, greg rutkowski, maxim verehin, colors transitioning from bright, inspiring neons to warm, welcoming pastels, filled with the hum of conversations and the spark of creativity.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "89194692307"
     }
 }
