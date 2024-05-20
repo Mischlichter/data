@@ -3390,5 +3390,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "79610040353"
+    },
+    "33985018692.jpg": {
+        "File Name": "33985018692.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man teaching a painting class to a group of robots) in a lively, colorful art studio. HogeAI is at the front, holding a paintbrush and guiding the robots through the process of creating whimsical hogeai man-inspired artworks. The robots, each with their own easel and canvas, are enthusiastically following along, some making humorous mistakes that add to the fun atmosphere. The studio is filled with vibrant sketches, digital easels, and floating holographic screens displaying tips and memes. Bright neon colors and playful decorations, like paint splatters and animated brushes, enhance the creative environment. The entire space is buzzing with the hum of robotic chatter and the laughter of HogeAI, reflecting the joyful and humorous spirit of the class. Animated idea clouds and holographic paint splashes float through the air, symbolizing the flow of creativity and learning. 4K,...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "33985018692"
     }
 }
