@@ -3326,5 +3326,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "27009326704"
+    },
+    "89861264691.jpg": {
+        "File Name": "89861264691.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man surrounded by numerous HogeAI friends) in a vibrant, playful community hub buzzing with energy and creativity. HogeAI characters are actively celebrating, all standing, dancing, and jumping with excitement. Characters are gathered around a large holographic display, pointing at colorful hogeai man-inspired sketches and memes, animatedly discussing and gesturing with enthusiasm. Others are busy at digital easels, painting and drawing whimsical hogeai man illustrations, collaborating on a large, shared digital mural. Tech-savvy HogeAI characters are immersed in coding and adjusting AI models on floating holographic screens, laughing and high-fiving each other. The entire space is filled with the hum of enthusiastic conversation, animated memes, and playful holographic icons floating through the air. Bright neon colors, graffiti art, and interactive installations create a li...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "89861264691"
     }
 }
