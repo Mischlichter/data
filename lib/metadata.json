@@ -3462,5 +3462,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "9462829766"
+    },
+    "8109109155.jpg": {
+        "File Name": "8109109155.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man surrounded by numerous HogeAI friends) in a vibrant, playful community hub buzzing with energy and creativity. HogeAI characters are actively engaged in creating visuals using magical, glowing strings of floating text that shimmer like enchanted spells. The room features a large, mystical board covered in long, glowing text that appears to be a magical incantation. Characters are standing around this board, chanting text prompts that float into the air and transform into colorful HogeAI-inspired sketches and memes. Some characters are at digital easels, using these magical text streams to draw whimsical HogeAI illustrations, collaborating on a large shared digital mural. Tech-savvy HogeAI characters are immersed in coding, adjusting AI models on floating holographic screens, laughing and high-fiving as their magical text prompts turn into dynamic visuals. The entire space...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "8109109155"
     }
 }
