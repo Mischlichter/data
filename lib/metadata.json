@@ -3470,5 +3470,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "8109109155"
+    },
+    "36553649206.jpg": {
+        "File Name": "36553649206.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man surrounded by numerous HogeAI friends) in a vibrant, neon-lit gallery buzzing with energy and creativity. HogeAI characters are actively celebrating, all standing and gazing in awe at a massive, infinite wall of colorful, digital HogeAI-inspired artworks. The artworks are arranged in a mesmerizing grid that stretches endlessly upward and outward, each piece unique and imaginative. Characters are gathered around the wall, pointing at their favorite pieces and animatedly discussing the art with enthusiasm. The atmosphere is electric, filled with the joyful hum of conversation and the occasional cheer of excitement. Bright neon colors, digital graffiti art, and interactive holographic installations create a lively, festival-like vibe. The entire space is illuminated by vibrant neon lights and sparkling digital effects, enhancing the celebratory and dynamic environment. The s...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "36553649206"
     }
 }
