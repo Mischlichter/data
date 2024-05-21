@@ -31,29 +31,9 @@ https://raw.githubusercontent.com/Mischlichter/data/main/gallerycom/44572385563.
 SCENE02:
 
 I02:
-https://raw.githubusercontent.com/Mischlichter/data/main/gallerycom/89861264691.jpg
-
-I03:
-https://raw.githubusercontent.com/Mischlichter/data/main/gallerycom/9489010510.jpg
-
-I04:
-https://raw.githubusercontent.com/Mischlichter/data/main/gallerycom/60092128360.jpg
-
-I05:
-https://raw.githubusercontent.com/Mischlichter/data/main/gallerycom/44572385563.jpg
+https://raw.githubusercontent.com/Mischlichter/data/main/gallerycom/55275315384.jpg
 
 #i-container02 {
 	
 }
-
-#i-container03 {
 	
-}
-
-#i-container04 {
-	
-}
-
-#i-container05 {
-	
-}

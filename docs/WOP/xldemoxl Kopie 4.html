@@ -753,7 +753,7 @@
 
 
 
-    
+    <div class="below-main"></div>
     <link rel="stylesheet" type="text/css" href="css/bodygallery.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
     <script src="scripts/lenis.js"></script>
@@ -804,17 +804,7 @@
             ];
 
 
-            const background = document.createElement('div');
-            background.style.position = 'absolute';
-            background.style.top = '0';
-            background.style.left = '0';
-            background.style.width = '100%';
-            background.style.height = '50000vh';
-            background.style.zIndex = '-2';
-            background.style.backgroundColor = 'rgba(0, 0, 0, 0)'; // 10% grey
-            // Add more styles or content to the background as needed
 
-            document.body.insertBefore(background, document.body.firstChild);
      
 
          
@@ -925,7 +915,7 @@
 
 
             const loadingInterval = setInterval(function() {
-                if (loadingPercentage >= 95) {
+                if (loadingPercentage >= 85) {
                     // Loading is complete
                     shuffleOnes(); // Start shuffling spans with '1'
                     clearInterval(loadingInterval);
@@ -1558,22 +1548,6 @@
         
 //////// MOUSE SMOOTHING ////////
 
-        function throttleRAF(func) {
-            let scheduled = false;
-            return function(...args) {
-                if (!scheduled) {
-                    scheduled = true;
-                    requestAnimationFrame(() => {
-                        func.apply(this, args);
-                        scheduled = false;
-                    });
-                }
-            };
-        }
-
-
-        
-
         const lenis = new Lenis()
 
         lenis.on('scroll', (e) => {
@@ -1900,6 +1874,19 @@
         }
 
 
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const background = document.createElement('div');
+            background.style.position = 'absolute';
+            background.style.top = '0';
+            background.style.left = '0';
+            background.style.width = '100%';
+            background.style.height = '50000vh';
+            background.style.zIndex = '-2';
+            background.style.backgroundColor = 'rgba(0, 0, 0, 0)'; // 10% grey
+            // Add more styles or content to the background as needed
+
+            document.body.insertBefore(background, document.body.firstChild);
+        });
 
 
 //////// IMAGE LOADING ////////////////////
@@ -2363,8 +2350,7 @@
             fadeInmenu();
 
             // Add scroll event listener after initializing the first scene
-            window.addEventListener('scroll', throttleRAF(checkAndStartAnimationsOnScroll));
-
+            window.addEventListener('scroll', checkAndStartAnimationsOnScroll);
         }
 
 
@@ -2616,16 +2602,15 @@
             });
 
             // Show and hide button with fade effects when scrolling
-            window.addEventListener('scroll', throttleRAF(function() {
-                const button = document.getElementById('scrollToTopButton');
+            window.addEventListener('scroll', function() {
                 if (window.scrollY > 1111) {
                     button.style.display = 'block';
-                    setTimeout(() => button.style.opacity = 1, 1500);
+                    setTimeout(() => button.style.opacity = 1, 1500); // Increased delay to 500ms for showing
                 } else {
                     button.style.opacity = 0;
-                    setTimeout(() => button.style.display = 'none', 100);
+                    setTimeout(() => button.style.display = 'none', 100); // Keep delay at 300ms for hiding
                 }
-            }));
+            });
         }
 
 
@@ -2673,11 +2658,12 @@
 
             footerContainer.innerHTML = `
                 <div style="display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; margin-top: -4900px;">
-                    
-                    <a class="btn btn-outline-light btn-floating m-1" href="https://twitter.com/Funkybrown111" role="button" style="color: white; margin: 0 10px;"><i class="fab fa-twitter"></i></a>
-                    <a class="btn btn-outline-light btn-floating m-1" href="https://t.me/officialhogecommunity" role="button" style="color: white; margin: 0 10px;"><i class="fab fa-telegram"></i></a>
+                    <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button" style="color: white; margin: 0 10px;"><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button" style="color: white; margin: 0 10px;"><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button" style="color: white; margin: 0 10px;"><i class="fab fa-google"></i></a>
                     <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button" style="color: white; margin: 0 10px;"><i class="fab fa-instagram"></i></a>
-         
+                    <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button" style="color: white; margin: 0 10px;"><i class="fab fa-linkedin-in"></i></a>
+                    <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button" style="color: white; margin: 0 10px;"><i class="fab fa-github"></i></a>
                 </div>
                 <div style="margin-top: 5px;">
                     © 2024 Copyright: <a class="text-white" href="https://HogeAI.com/" style="color: white;">HogeAI.com</a>
@@ -2703,8 +2689,7 @@
             preventScrollBeyondFooter();
 
             // Add a 'scroll' event listener to the window to invoke the function whenever the user scrolls
-            window.addEventListener('scroll', throttleRAF(preventScrollBeyondFooter));
-
+            window.addEventListener('scroll', preventScrollBeyondFooter);
         }
 
 
@@ -3365,7 +3350,23 @@
             window.scrollTo(0, savedScrollPosition);
         }
         
-        
+        window.addEventListener('resize', function() {
+            // Check if the device is iOS
+            var iOS = /iPad|iPhone|iPod/.test(navigator.platform) || 
+                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+            // Exclude this code from running on iOS devices
+            if(iOS) {
+                return; // Exit the function if on an iOS device
+            }
+
+            if (isAnimating) {
+                return; // Exit the function if an animation is already happening
+            }
+            updateAllContainersDuringScaling();
+            
+            shuffleMenu();
+        });
 
 
         function checkAndStartAnimationsOnScroll() {
@@ -3540,32 +3541,12 @@
 
         
     
-        // Combined resize event handler
-        function handleResize() {
-            // Check if the device is iOS
-            var iOS = /iPad|iPhone|iPod/.test(navigator.platform) || 
-                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        // Add event listener to resize in case the viewport size changes
+        window.addEventListener('resize', updateVirtualCanvasSize);
 
-            // Exclude this code from running on iOS devices
-            if (iOS) {
-                return; // Exit the function if on an iOS device
-            }
-
-            if (isAnimating) {
-                return; // Exit the function if an animation is already happening
-            }
-
-            // Call the necessary functions
-            updateVirtualCanvasSize();
-            updateLogoVisibility();
-            updateAllContainersDuringScaling();
-            shuffleMenu();
-        }
-
-        // Attach the combined event handler
-        window.addEventListener('resize', throttleRAF(handleResize));
-
-
+        
+        
+        window.addEventListener('resize', updateLogoVisibility);
 
         
 
