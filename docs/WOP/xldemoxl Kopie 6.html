@@ -755,8 +755,7 @@
 
     
     <link rel="stylesheet" type="text/css" href="css/bodygallery.css">
-    <script src="https://kit.fontawesome.com/a258000a2d.js" crossorigin="anonymous"></script>
-
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
     <script src="scripts/lenis.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -2672,47 +2671,13 @@
             footerContainer.style.marginTop = '256px'; // Space before the footer
             footerContainer.style.boxShadow = '0px -50px 30px -20px rgba(0, 0, 0, 0.5)';
 
-            // Create a style block for the icon size
-            const styleBlock = document.createElement('style');
-            styleBlock.innerHTML = `
-                .icon-size {
-                    font-size: 18px; /* Default size */
-                }
-
-                @media (max-width: 768px) {
-                    .icon-size {
-                        font-size: 20px; /* Larger size for small devices */
-                    }
-
-                    .btn-floating {
-                        padding: 10px; /* Larger clickable area */
-                    }
-                }
-            `;
-            document.head.appendChild(styleBlock);
-
             footerContainer.innerHTML = `
                 <div style="display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; margin-top: -4900px;">
                     
-                    <a class="btn btn-outline-light btn-floating m-1" href="https://twitter.com/Funkybrown111" role="button" style="color: white; margin: 0 10px;">
-                        <i class="fa-brands fa-twitter icon-size"></i>
-                    </a>
-                    
-                    <a class="btn btn-outline-light btn-floating m-1" href="https://www.instagram.com/hogeal_bot/" role="button" style="color: white; margin: 0 10px;">
-                        <i class="fa-brands fa-instagram icon-size"></i>
-                    </a>
-
-                    <a class="btn btn-outline-light btn-floating m-1" href="mailto:hogeai@web.de" role="button" style="color: white; margin: 0 15px;">
-                        <i class="fa-solid fa-envelope icon-size"></i>
-                    </a>
-                    
-                    <a class="btn btn-outline-light btn-floating m-1" href="https://t.me/officialhogecommunity" role="button" style="color: white; margin: 0 10px;">
-                        <i class="fa-brands fa-telegram icon-size"></i>
-                    </a>
-
-                    <a class="btn btn-outline-light btn-floating m-1" href="https://www.hoge.gg/" role="button" style="color: white; margin: 0 10px;">
-                        <i class="fa-solid fa-bone icon-size"></i>
-                    </a>
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://twitter.com/Funkybrown111" role="button" style="color: white; margin: 0 10px;"><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://t.me/officialhogecommunity" role="button" style="color: white; margin: 0 10px;"><i class="fab fa-telegram"></i></a>
+                    <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button" style="color: white; margin: 0 10px;"><i class="fab fa-instagram"></i></a>
+         
                 </div>
                 <div style="margin-top: 5px;">
                     © 2024 Copyright: <a class="text-white" href="https://HogeAI.com/" style="color: white;">HogeAI.com</a>
@@ -3048,9 +3013,9 @@
             const sceneFormatted = currentSceneIndex.toString().padStart(2, '0');
             const imageHeight = 2048; // Fixed height for all images
 
-            const backgroundUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/background/b${sceneFormatted}.jpg`;
-            const sideImageUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/side/s${sceneFormatted}.jpg`;
-            const viewerImageUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/v${sceneFormatted}.jpg`;
+            const backgroundUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/background/b${sceneFormatted}.png`;
+            const sideImageUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/side/s${sceneFormatted}.png`;
+            const viewerImageUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/v${sceneFormatted}.png`;
             const viewerMaskUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/vm${sceneFormatted}.png`;
 
             createVerticalTiles_a('interfaceBackground', backgroundUrl, imageHeight);
@@ -3066,12 +3031,10 @@
                 tempImage.onload = function() {
                     // Once the image is fully loaded, apply it to the viewerImageElement
                     viewerImageElement.src = tempImage.src;
-
-                    // Apply the lower resolution mask and scale it up to fit
                     viewerImageElement.style.maskImage = `url('${viewerMaskUrl}')`;
                     viewerImageElement.style.webkitMaskImage = `url('${viewerMaskUrl}')`;
-                    viewerImageElement.style.maskSize = '100% 100%'; // Scale the mask to fit the viewer image
-                    viewerImageElement.style.webkitMaskSize = '100% 100%';
+                    viewerImageElement.style.maskSize = 'cover';
+                    viewerImageElement.style.webkitMaskSize = 'cover';
 
                     // Now that everything is ready and rendered, start the fade-in process
                     setTimeout(() => {
@@ -3403,7 +3366,6 @@
         
         
 
-
         function checkAndStartAnimationsOnScroll() {
             const viewportHeight = window.innerHeight;
             const triggerHeight = viewportHeight / 1.05; // 1/4 of the viewport height
@@ -3575,15 +3537,11 @@
         }, { passive: false });
 
         window.addEventListener('resize', function() {
-            // Always call these functions on resize
-            updateVirtualCanvasSize();
-            updateLogoVisibility();
-
             // Check if the device is iOS
             var iOS = /iPad|iPhone|iPod/.test(navigator.platform) || 
                       (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
-            // Exclude the following code from running on iOS devices
+            // Exclude this code from running on iOS devices
             if(iOS) {
                 return; // Exit the function if on an iOS device
             }
@@ -3591,12 +3549,13 @@
             if (isAnimating) {
                 return; // Exit the function if an animation is already happening
             }
-
-            // Call these functions if not on an iOS device
             updateAllContainersDuringScaling();
+            updateVirtualCanvasSize();
+            updateLogoVisibility();
+
+            
             shuffleMenu();
         });
-
 
 
         
