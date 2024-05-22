@@ -2363,7 +2363,8 @@
             fadeInmenu();
 
             // Add scroll event listener after initializing the first scene
-            window.addEventListener('scroll', checkAndStartAnimationsOnScroll);
+            window.addEventListener('scroll', throttleRAF(checkAndStartAnimationsOnScroll));
+
         }
 
 
@@ -2615,15 +2616,16 @@
             });
 
             // Show and hide button with fade effects when scrolling
-            window.addEventListener('scroll', function() {
+            window.addEventListener('scroll', throttleRAF(function() {
+                const button = document.getElementById('scrollToTopButton');
                 if (window.scrollY > 1111) {
                     button.style.display = 'block';
-                    setTimeout(() => button.style.opacity = 1, 1500); // Increased delay to 500ms for showing
+                    setTimeout(() => button.style.opacity = 1, 1500);
                 } else {
                     button.style.opacity = 0;
-                    setTimeout(() => button.style.display = 'none', 100); // Keep delay at 300ms for hiding
+                    setTimeout(() => button.style.display = 'none', 100);
                 }
-            });
+            }));
         }
 
 
@@ -2674,7 +2676,7 @@
                     
                     <a class="btn btn-outline-light btn-floating m-1" href="https://twitter.com/Funkybrown111" role="button" style="color: white; margin: 0 10px;"><i class="fab fa-twitter"></i></a>
                     <a class="btn btn-outline-light btn-floating m-1" href="https://t.me/officialhogecommunity" role="button" style="color: white; margin: 0 10px;"><i class="fab fa-telegram"></i></a>
-                    <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button" style="color: white; margin: 0 10px;"><i class="fab fa-instagram"></i></a>
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://www.instagram.com/hogeal_bot/" role="button" style="color: white; margin: 0 10px;"><i class="fab fa-instagram"></i></a>
          
                 </div>
                 <div style="margin-top: 5px;">
@@ -2701,7 +2703,8 @@
             preventScrollBeyondFooter();
 
             // Add a 'scroll' event listener to the window to invoke the function whenever the user scrolls
-            window.addEventListener('scroll', preventScrollBeyondFooter);
+            window.addEventListener('scroll', throttleRAF(preventScrollBeyondFooter));
+
         }
 
 
@@ -2936,7 +2939,7 @@
                 
                 // Assuming the container's height is directly based on its content (the images)
                 // We calculate the number of tiles needed to fill the container plus one for overflow
-                const numTiles = 17; // Since you mentioned wanting about 10 tiles
+                const numTiles = 15; // Since you mentioned wanting about 10 tiles
 
                 for (let i = 0; i < numTiles; i++) {
                     const img = document.createElement('img');
@@ -3362,23 +3365,7 @@
             window.scrollTo(0, savedScrollPosition);
         }
         
-        window.addEventListener('resize', function() {
-            // Check if the device is iOS
-            var iOS = /iPad|iPhone|iPod/.test(navigator.platform) || 
-                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-
-            // Exclude this code from running on iOS devices
-            if(iOS) {
-                return; // Exit the function if on an iOS device
-            }
-
-            if (isAnimating) {
-                return; // Exit the function if an animation is already happening
-            }
-            updateAllContainersDuringScaling();
-            
-            shuffleMenu();
-        });
+        
 
 
         function checkAndStartAnimationsOnScroll() {
@@ -3553,12 +3540,32 @@
 
         
     
-        // Add event listener to resize in case the viewport size changes
-        window.addEventListener('resize', updateVirtualCanvasSize);
+        // Combined resize event handler
+        function handleResize() {
+            // Check if the device is iOS
+            var iOS = /iPad|iPhone|iPod/.test(navigator.platform) || 
+                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
-        
-        
-        window.addEventListener('resize', updateLogoVisibility);
+            // Exclude this code from running on iOS devices
+            if (iOS) {
+                return; // Exit the function if on an iOS device
+            }
+
+            if (isAnimating) {
+                return; // Exit the function if an animation is already happening
+            }
+
+            // Call the necessary functions
+            updateVirtualCanvasSize();
+            updateLogoVisibility();
+            updateAllContainersDuringScaling();
+            shuffleMenu();
+        }
+
+        // Attach the combined event handler
+        window.addEventListener('resize', throttleRAF(handleResize));
+
+
 
         
 
