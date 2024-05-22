@@ -755,7 +755,8 @@
 
     
     <link rel="stylesheet" type="text/css" href="css/bodygallery.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/a258000a2d.js" crossorigin="anonymous"></script>
+
     <script src="scripts/lenis.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -2671,13 +2672,47 @@
             footerContainer.style.marginTop = '256px'; // Space before the footer
             footerContainer.style.boxShadow = '0px -50px 30px -20px rgba(0, 0, 0, 0.5)';
 
+            // Create a style block for the icon size
+            const styleBlock = document.createElement('style');
+            styleBlock.innerHTML = `
+                .icon-size {
+                    font-size: 18px; /* Default size */
+                }
+
+                @media (max-width: 768px) {
+                    .icon-size {
+                        font-size: 24px; /* Larger size for small devices */
+                    }
+
+                    .btn-floating {
+                        padding: 20px; /* Larger clickable area */
+                    }
+                }
+            `;
+            document.head.appendChild(styleBlock);
+
             footerContainer.innerHTML = `
                 <div style="display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; margin-top: -4900px;">
                     
-                    <a class="btn btn-outline-light btn-floating m-1" href="https://twitter.com/Funkybrown111" role="button" style="color: white; margin: 0 10px;"><i class="fab fa-twitter"></i></a>
-                    <a class="btn btn-outline-light btn-floating m-1" href="https://t.me/officialhogecommunity" role="button" style="color: white; margin: 0 10px;"><i class="fab fa-telegram"></i></a>
-                    <a class="btn btn-outline-light btn-floating m-1" href="https://www.instagram.com/hogeal_bot/" role="button" style="color: white; margin: 0 10px;"><i class="fab fa-instagram"></i></a>
-         
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://twitter.com/Funkybrown111" role="button" style="color: white; margin: 0 10px;">
+                        <i class="fa-brands fa-twitter icon-size"></i>
+                    </a>
+                    
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://www.instagram.com/hogeal_bot/" role="button" style="color: white; margin: 0 10px;">
+                        <i class="fa-brands fa-instagram icon-size"></i>
+                    </a>
+
+                    <a class="btn btn-outline-light btn-floating m-1" href="mailto:hogeai@web.de" role="button" style="color: white; margin: 0 15px;">
+                        <i class="fa-solid fa-envelope icon-size"></i>
+                    </a>
+                    
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://t.me/officialhogecommunity" role="button" style="color: white; margin: 0 10px;">
+                        <i class="fa-brands fa-telegram icon-size"></i>
+                    </a>
+
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://www.hoge.gg/" role="button" style="color: white; margin: 0 10px;">
+                        <i class="fa-solid fa-bone icon-size"></i>
+                    </a>
                 </div>
                 <div style="margin-top: 5px;">
                     © 2024 Copyright: <a class="text-white" href="https://HogeAI.com/" style="color: white;">HogeAI.com</a>
