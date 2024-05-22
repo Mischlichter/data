@@ -3574,5 +3574,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "76740576758"
+    },
+    "23140258059.jpg": {
+        "File Name": "23140258059.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man as an astronaut, black n white photo on the moon",
+        "Model": "Inpainting",
+        "Creator": "@Mischlichter",
+        "Seed": "23140258059"
     }
 }
