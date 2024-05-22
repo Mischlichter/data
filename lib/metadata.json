@@ -3518,5 +3518,13 @@
         "Model": "IMG2IMG",
         "Creator": "@Mischlichter",
         "Seed": "92485504963"
+    },
+    "77943192304.jpg": {
+        "File Name": "77943192304.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man surrounded by robots in a vibrant, playful community hub buzzing with energy and creativity). The scene captures the moment when the HogeAI bot awakens, with vibrant neon lights illuminating its features. The HogeAI bot stands on a colorful, whimsical platform, surrounded by various robots eagerly watching. Holographic screens display colorful HogeAI man-inspired sketches, digital color palettes, gradient scales, and creative tools. The atmosphere is dynamic and filled with anticipation, as bright holographic paint splashes and floating color palettes with gradients hover in the air, symbolizing the flow of creativity. Robots are seen celebrating, standing, dancing, and jumping with excitement, while others are busy at digital easels, painting whimsical HogeAI illustrations. The entire space is filled with the hum of enthusiastic conversation, animated memes, and playful ...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "77943192304"
     }
 }
