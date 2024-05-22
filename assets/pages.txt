@@ -190,28 +190,7 @@ P13:
 The HogeAI Promise - We're all in for wild imaginations, but we've got a filter to keep things PG. After all, HogeAI is a family fiesta.
 
 P14:
-Sharing, Not Selling - Enjoy the freedom to share your HogeAI-created visuals with the world. Our licensing allows for free sharing while prohibiting commercial use, maintaining the spirit of community and creativity.
-
-P16:
-PROMPT GUIDE - Crafting Your Hoge Tale
-
-P17:
-Setting the Stage - Alright, adventurer! Before you unleash your creativity, let's lay down some ground rules. Crafting the perfect prompt is like whipping up a magical potion: a dash of description, a sprinkle of specifics, and a big ol' dollop of imagination.
-
-P18:
-The Basics - Be descriptive: The more you tell, the more we show. Instead of "Hoge with a hat", try "Hoge rocking a neon-green cowboy hat under a disco ball". See the difference? Set the mood and setting: Is it a sunny day at the beach or a mysterious moonlit forest? Your choice, your story.
-
-P19:
-Dive Deeper - Colors & Textures: Add some flair! "Hoge's silky blue scarf" paints a clearer picture than just "Hoge's scarf". Actions & Emotions: What's Hoge up to? Is he dancing, meditating, or maybe feeling ecstatic or pensive? Let us know!
-
-P20:
-Pro Tips - Keep It Clear: While details are awesome, don't overload. "Hoge having a picnic with unicorns, dragons, and robots on Mars while a meteor shower is happening" might just leave the AI scratching its digital head. Use wildcards for an element of surprise. If you're ever feeling indecisive, let the wildcard decide!
-
-P21:
-Advanced Prompting Tactics - Order Matters: Start with the main idea, then sprinkle in the details. Words at the beginning carry more weight. Ditch "very big". Opt for "gigantic" or "colossal". Aim for a blueprint that outlines the Main Subject, Environment/Setting, and Style/Mood.
-
-P22:
-Experiment & Explore - The beauty of HogeAI? There's no right or wrong. Play around, experiment, and most importantly, have a blast! From serene landscapes to wacky adventures, the Hoge universe is yours to explore.
+Sharing, Not Selling - Enjoy the freedom to share your HogeAI-created visuals with the world. Our licensing allows for free sharing while prohibiting commercial use, maintaining the spirit of community and creativity. 
 
 
 #container01 {
@@ -285,46 +264,6 @@ Experiment & Explore - The beauty of HogeAI? There's no right or wrong. Play aro
     pointer-events: none;
 }
 
-#container15 {
-    text-transform: none;
-    pointer-events: none;
-}
-
-#container16 {
-    text-transform: none;
-    pointer-events: none;
-}
-
-#container17 {
-    text-transform: none;
-    pointer-events: none;
-}
-
-#container18 {
-    text-transform: none;
-    pointer-events: none;
-}
-
-#container19 {
-    text-transform: none;
-    pointer-events: none;
-}
-
-#container20 {
-    text-transform: none;
-    pointer-events: none;
-}
-
-#container21 {
-    text-transform: none;
-    pointer-events: none;
-}
-
-#container22 {
-    text-transform: none;
-    pointer-events: none;
-}
-
 
 SCENE04:
 
@@ -350,20 +289,62 @@ P01: THEATRE
 
 SCENE06:
 
-P01: 
-CONNECT
+P01:
+PROMPT GUIDE - Crafting Your Hoge Tale
 
-P02: 
-GET IN TOUCH
- 
+P02:
+Setting the Stage - Alright, adventurer! Before you unleash your creativity, let's lay down some ground rules. Crafting the perfect prompt is like whipping up a magical potion: a dash of description, a sprinkle of specifics, and a big ol' dollop of imagination.
+
+P03:
+The Basics - Be descriptive: The more you tell, the more we show. Instead of "Hoge with a hat", try "Hoge rocking a neon-green cowboy hat under a disco ball". See the difference? Set the mood and setting: Is it a sunny day at the beach or a mysterious moonlit forest? Your choice, your story.
+
+P04:
+Dive Deeper - Colors & Textures: Add some flair! "Hoge's silky blue scarf" paints a clearer picture than just "Hoge's scarf". Actions & Emotions: What's Hoge up to? Is he dancing, meditating, or maybe feeling ecstatic or pensive? Let us know!
+
+P05:
+Pro Tips - Keep It Clear: While details are awesome, don't overload. "Hoge having a picnic with unicorns, dragons, and robots on Mars while a meteor shower is happening" might just leave the AI scratching its digital head. Use wildcards for an element of surprise. If you're ever feeling indecisive, let the wildcard decide!
+
+P06:
+Advanced Prompting Tactics - Order Matters: Start with the main idea, then sprinkle in the details. Words at the beginning carry more weight. Ditch "very big". Opt for "gigantic" or "colossal". Aim for a blueprint that outlines the Main Subject, Environment/Setting, and Style/Mood.
+
+P07:
+Experiment & Explore - The beauty of HogeAI? There's no right or wrong. Play around, experiment, and most importantly, have a blast! From serene landscapes to wacky adventures, the Hoge universe is yours to explore.
+
 
 #container01 {
-	display: none;
     font-family: 'JetBrainsMono-ExtraBold', sans-serif;
+    margin-top: 25%;
+    pointer-events: none;
 }
 
 #container02 {
     text-transform: none;
     pointer-events: none;
 }
+
+#container03 {
+    text-transform: none;
+    pointer-events: none;
+}
+
+#container04 {
+    text-transform: none;
+    pointer-events: none;
+}
+
+#container05 {
+    text-transform: none;
+    pointer-events: none;
+}
+
+#container06 {
+    text-transform: none;
+    pointer-events: none;
+}
+
+#container07 {
+    text-transform: none;
+    pointer-events: none;
+}
+
 
