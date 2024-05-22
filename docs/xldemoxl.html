@@ -2938,7 +2938,7 @@
                 
                 // Assuming the container's height is directly based on its content (the images)
                 // We calculate the number of tiles needed to fill the container plus one for overflow
-                const numTiles = 17; // Since you mentioned wanting about 10 tiles
+                const numTiles = 18; // Since you mentioned wanting about 10 tiles
 
                 for (let i = 0; i < numTiles; i++) {
                     const img = document.createElement('img');
@@ -3364,24 +3364,7 @@
             window.scrollTo(0, savedScrollPosition);
         }
         
-        window.addEventListener('resize', function() {
-            // Check if the device is iOS
-            var iOS = /iPad|iPhone|iPod/.test(navigator.platform) || 
-                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-
-            // Exclude this code from running on iOS devices
-            if(iOS) {
-                return; // Exit the function if on an iOS device
-            }
-
-            if (isAnimating) {
-                return; // Exit the function if an animation is already happening
-            }
-            updateAllContainersDuringScaling();
-            
-            shuffleMenu();
-        });
-
+        
 
         function checkAndStartAnimationsOnScroll() {
             const viewportHeight = window.innerHeight;
@@ -3553,14 +3536,27 @@
           }
         }, { passive: false });
 
-        
-    
-        // Add event listener to resize in case the viewport size changes
-        window.addEventListener('resize', updateVirtualCanvasSize);
+        window.addEventListener('resize', function() {
+            // Check if the device is iOS
+            var iOS = /iPad|iPhone|iPod/.test(navigator.platform) || 
+                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
-        
-        
-        window.addEventListener('resize', updateLogoVisibility);
+            // Exclude this code from running on iOS devices
+            if(iOS) {
+                return; // Exit the function if on an iOS device
+            }
+
+            if (isAnimating) {
+                return; // Exit the function if an animation is already happening
+            }
+            updateAllContainersDuringScaling();
+            updateVirtualCanvasSize();
+            updateLogoVisibility();
+
+            
+            shuffleMenu();
+        });
+
 
         
 
