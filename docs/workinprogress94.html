@@ -3048,9 +3048,9 @@
             const sceneFormatted = currentSceneIndex.toString().padStart(2, '0');
             const imageHeight = 2048; // Fixed height for all images
 
-            const backgroundUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/background/b${sceneFormatted}.png`;
-            const sideImageUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/side/s${sceneFormatted}.png`;
-            const viewerImageUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/v${sceneFormatted}.png`;
+            const backgroundUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/background/b${sceneFormatted}.jpg`;
+            const sideImageUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/side/s${sceneFormatted}.jpg`;
+            const viewerImageUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/v${sceneFormatted}.jpg`;
             const viewerMaskUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/vm${sceneFormatted}.png`;
 
             createVerticalTiles_a('interfaceBackground', backgroundUrl, imageHeight);
@@ -3066,10 +3066,12 @@
                 tempImage.onload = function() {
                     // Once the image is fully loaded, apply it to the viewerImageElement
                     viewerImageElement.src = tempImage.src;
+
+                    // Apply the lower resolution mask and scale it up to fit
                     viewerImageElement.style.maskImage = `url('${viewerMaskUrl}')`;
                     viewerImageElement.style.webkitMaskImage = `url('${viewerMaskUrl}')`;
-                    viewerImageElement.style.maskSize = 'cover';
-                    viewerImageElement.style.webkitMaskSize = 'cover';
+                    viewerImageElement.style.maskSize = '100% 100%'; // Scale the mask to fit the viewer image
+                    viewerImageElement.style.webkitMaskSize = '100% 100%';
 
                     // Now that everything is ready and rendered, start the fade-in process
                     setTimeout(() => {
