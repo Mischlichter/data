@@ -157,13 +157,13 @@ P02:
 Kickstart your HogeAI journey by joining the @OfficialHogeCommunity on Telegram. Click here to dive into all the Hoge magic!
 
 P03:
-To awaken the HogeAI Bot from its digital slumber, simply type /start. Quick tip: Make sure you're whispering (or, well, typing) to the right bot – our very own 'HogeAI bot'. A Little Lost? Hey, Hoge woods can be dense! If you ever need a guiding star, /help has got your back, laying out all the commands you'll need.
+To awaken the HogeAI Bot from its digital slumber, simply type /start. Quick tip: Make sure you're whispering (or, well, typing) to the right bot. If you ever need a guiding star, /help has got your back, laying out all the commands you'll need.
 
 P04:
 From Words to Hoge-tastic Visuals - With the hai: command, your words are the paint, and HogeAI is the canvas. And if you want our star, Hoge, in the scene, just drop his name in your tale.
 
 P05:
-Example - hai: Hoge basking in the golden glow of twilight.
+Example - hai: Hoge is drinking a coffee in the golden glow of twilight.
 
 P06:
 Unleashing The Wild(side) With Wildcards - Dive into the fun of HogeAI's wildcard feature, which acts like a roll of the dice in your storytelling. Wildcards are dynamic placeholders that can vary from simple elements, styles, to  fully fleshed-out prompts. By using the /wildcard command, you can access our curated list. When you include a wildcard in your prompt, HogeAI randomly selects from the specified category, adding a unique and unpredictable twist to your creation. This feature enriches your narratives, allowing for spontaneous and creative results that surprise and delight.
