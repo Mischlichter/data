@@ -163,13 +163,13 @@ P04:
 From Words to Hoge-tastic Visuals - With the hai: command, your words are the paint, and HogeAI is the canvas. And if you want our star, Hoge, in the scene, just drop his name in your tale.
 
 P05:
-Example - hai: Hoge is drinking a cocktail in a tropical garden
+Example - hai: Hoge is walking in a tropical garden with colorful flowers
 
 P06:
 Unleashing The Wild(side) With Wildcards - Dive into the fun of HogeAI's wildcard feature, which acts like a roll of the dice in your storytelling. Wildcards are dynamic placeholders that can vary from simple elements, styles, to  fully fleshed-out prompts. By using the /wildcard command, you can access our curated list. When you include a wildcard in your prompt, HogeAI randomly selects from the specified category, adding a unique and unpredictable twist to your creation. This feature enriches your narratives, allowing for spontaneous and creative results that surprise and delight.
 
 P07:
-Example - hai: Hoge just discovered a !object! at the heart of !place!. System might surprise you with what Hoge discovers and where!
+Example - hai: !emoji! Hoge in a !art! style from !nations!
 
 P08:
 Models - The Artistic Arsenal of HogeAI - Select Your Style! Every story deserves its unique brush. From the trusty stable diffusion 1.5 to the snazzy SDXL model, the choice is yours. Inpainting: It's like giving you superpowers to reshape images. Whether you're into memes or modern art, this tool's your best pal. Img2Img: Ever dreamt of turning sketches into vibrant art or black & white snaps into colorful memories? Say no more!
