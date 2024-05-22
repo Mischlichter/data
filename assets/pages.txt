@@ -178,7 +178,7 @@ P09:
 Inpainting: It's like giving you superpowers to reshape images. Whether you're into memes or modern art, this tool's your best pal. Img2Img: Ever dreamt of turning sketches into vibrant art or black & white snaps into colorful memories? Say no more!
 
 P10:
-Free for All - Jump into HogeAI with a handful of free credits and start crafting your masterpieces. Run out? No sweat—you can still play around with the basics while you wait out the cooldown. Ready to ditch the wait and dive deep? Snag some credits, flip to premium, and unlock the entire creative arsenal with no limits!
+Free for All - Jump into HogeAI with a handful of free credits and start crafting your masterpieces. Run out? No sweat—you can still play around with the basics while you wait out the cooldown. Ready to ditch the wait and dive deep? Flip to premium, and unlock the entire creative arsenal with no limits!
 
 P11:
 Credit Where Credit's Due - Why Credits? These essential contributions cover our operational costs, ensuring your HogeAI experience is nothing short of fabulous. AI image generation requires significant computational resources, and your support keeps everything running smoothly.
