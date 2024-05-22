@@ -3502,5 +3502,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "52433417538"
+    },
+    "36623638617.jpg": {
+        "File Name": "36623638617.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man is making art with his mobile phone ) in a vibrant, playful community hub buzzing with energy and creativity. HogeAI characters are actively celebrating, standing, dancing, and jumping with excitement. HogeAI man is interacting with the smartphone, creating art on it, with holographic displays and neon lights illuminating the screen. Characters are gathered around a large holographic display, pointing at colorful HogeAI man-inspired sketches and memes, animatedly discussing and gesturing with enthusiasm. Others are busy at digital easels, painting and drawing whimsical HogeAI man illustrations, collaborating on a large, shared digital mural. Tech-savvy HogeAI characters are immersed in coding and adjusting AI models on floating holographic screens, laughing and high-fiving each other. The entire space is filled with the hum of enthusiastic conversation, animated memes, an...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "36623638617"
     }
 }
