@@ -3558,5 +3558,21 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "7689047804"
+    },
+    "96219477354.jpg": {
+        "File Name": "96219477354.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man surrounded by numerous robots in a vibrant, playful community hub buzzing with energy and creativity). The scene captures the moment when the HogeAI bot awakens, with vibrant neon lights highlighting its features. The HogeAI bot stands on a cheerful, colorful platform, with various robots eagerly watching. Holographic screens around the room display colorful HogeAI man-inspired sketches, digital color palettes, gradient scales, and creative tools. The atmosphere is charged with anticipation and creativity, as bright holographic paint splashes and floating color palettes with gradients hover in the air, symbolizing the flow of artistic inspiration. The environment is lively and dynamic, with bright neon colors, graffiti art, and interactive installations. Digital fireworks and colorful light displays overhead add to the festive mood, with glowing particles rising, capturin...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "96219477354"
+    },
+    "76740576758.jpg": {
+        "File Name": "76740576758.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man surrounded by robots in a high-tech lab). The scene shows the moment when the HogeAI bot awakens, with vibrant neon lights illuminating its features. The HogeAI bot stands on a futuristic platform, surrounded by various robots eagerly watching. Holographic screens display colorful HogeAI man-inspired sketches and creative tools. The room is filled with a dynamic atmosphere of anticipation and energy. Bright holographic paint splashes and floating color paletts with gradients hover around, indicating the flow of creativity. The environment is lively and futuristic, with a blend of bright neon colors and intricate technological details. Digital fireworks and glowing particles add to the celebratory mood. The scene captures the moment of the HogeAI bot coming to life, ready to transform instructions into stunning artworks. 4K, next gen, ultra detailed, 3d octane rendering, u...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "76740576758"
     }
 }
