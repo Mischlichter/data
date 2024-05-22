@@ -2676,7 +2676,7 @@
                     
                     <a class="btn btn-outline-light btn-floating m-1" href="https://twitter.com/Funkybrown111" role="button" style="color: white; margin: 0 10px;"><i class="fab fa-twitter"></i></a>
                     <a class="btn btn-outline-light btn-floating m-1" href="https://t.me/officialhogecommunity" role="button" style="color: white; margin: 0 10px;"><i class="fab fa-telegram"></i></a>
-                    <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button" style="color: white; margin: 0 10px;"><i class="fab fa-instagram"></i></a>
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://www.instagram.com/hogeal_bot/" role="button" style="color: white; margin: 0 10px;"><i class="fab fa-instagram"></i></a>
          
                 </div>
                 <div style="margin-top: 5px;">
@@ -3366,6 +3366,7 @@
         
         
 
+
         function checkAndStartAnimationsOnScroll() {
             const viewportHeight = window.innerHeight;
             const triggerHeight = viewportHeight / 1.05; // 1/4 of the viewport height
@@ -3537,11 +3538,15 @@
         }, { passive: false });
 
         window.addEventListener('resize', function() {
+            // Always call these functions on resize
+            updateVirtualCanvasSize();
+            updateLogoVisibility();
+
             // Check if the device is iOS
             var iOS = /iPad|iPhone|iPod/.test(navigator.platform) || 
                       (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
-            // Exclude this code from running on iOS devices
+            // Exclude the following code from running on iOS devices
             if(iOS) {
                 return; // Exit the function if on an iOS device
             }
@@ -3549,13 +3554,12 @@
             if (isAnimating) {
                 return; // Exit the function if an animation is already happening
             }
-            updateAllContainersDuringScaling();
-            updateVirtualCanvasSize();
-            updateLogoVisibility();
 
-            
+            // Call these functions if not on an iOS device
+            updateAllContainersDuringScaling();
             shuffleMenu();
         });
+
 
 
         
