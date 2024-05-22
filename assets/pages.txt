@@ -181,42 +181,39 @@ P10:
 Free for All - Jump into HogeAI with a handful of free credits and start crafting your masterpieces. Run out? No sweat—you can still play around with the basics while you wait out the cooldown. Ready to ditch the wait and dive deep? Snag some credits, flip to premium, and unlock the entire creative arsenal with no limits!
 
 P11:
-Credit Where Credit's Due - Why Credits? The HogeAI experience thrives on credits. These tiny tokens cover our operational gears, ensuring your experience is nothing short of fabulous.
+Credit Where Credit's Due - Why Credits? These essential contributions cover our operational costs, ensuring your HogeAI experience is nothing short of fabulous. AI image generation requires significant computational resources, and your support keeps everything running smoothly.
 
 P12:
-Hoge Generosity - Spread the Hoge love! Gift credits to a buddy with /credits [amount] @Username or rain it on a bunch with /credits [amount] rain [number of users].
-
-P13:
 The Premium Perks - Ever wanted a magic wand for your digital art? HogeAI’s premium features are it! With four fantastical models to choose from, craft your art your way—pinpoint precision with inpainting or a total makeover with img2img. All you need to do is select your magic tool, upload an image, and voilà, watch as your creation transforms right before your eyes. Dive in and let your imagination run wild, no holds barred!
 
-P14:
+P13:
 The HogeAI Promise - We're all in for wild imaginations, but we've got a filter to keep things PG. After all, HogeAI is a family fiesta.
 
-P15:
+P14:
 Your Secrets Are Safe - Crafted a Hoge masterpiece? Relish it, share it, but don't worry about storage. Once your session wraps up, it vanishes—privacy with a Hoge guarantee.
 
-P16:
+P15:
 Sharing, Not Selling - Enjoy the freedom to share your HogeAI-created visuals with the world. Our licensing allows for free sharing while prohibiting commercial use, maintaining the spirit of community and creativity.
 
-P17:
+P16:
 PROMPT GUIDE - Crafting Your Hoge Tale
 
-P18:
+P17:
 Setting the Stage - Alright, adventurer! Before you unleash your creativity, let's lay down some ground rules. Crafting the perfect prompt is like whipping up a magical potion: a dash of description, a sprinkle of specifics, and a big ol' dollop of imagination.
 
-P19:
+P18:
 The Basics - Be descriptive: The more you tell, the more we show. Instead of "Hoge with a hat", try "Hoge rocking a neon-green cowboy hat under a disco ball". See the difference? Set the mood and setting: Is it a sunny day at the beach or a mysterious moonlit forest? Your choice, your story.
 
-P20:
+P19:
 Dive Deeper - Colors & Textures: Add some flair! "Hoge's silky blue scarf" paints a clearer picture than just "Hoge's scarf". Actions & Emotions: What's Hoge up to? Is he dancing, meditating, or maybe feeling ecstatic or pensive? Let us know!
 
-P21:
+P20:
 Pro Tips - Keep It Clear: While details are awesome, don't overload. "Hoge having a picnic with unicorns, dragons, and robots on Mars while a meteor shower is happening" might just leave the AI scratching its digital head. Use wildcards for an element of surprise. If you're ever feeling indecisive, let the wildcard decide!
 
-P22:
+P21:
 Advanced Prompting Tactics - Order Matters: Start with the main idea, then sprinkle in the details. Words at the beginning carry more weight. Ditch "very big". Opt for "gigantic" or "colossal". Aim for a blueprint that outlines the Main Subject, Environment/Setting, and Style/Mood.
 
-P23:
+P22:
 Experiment & Explore - The beauty of HogeAI? There's no right or wrong. Play around, experiment, and most importantly, have a blast! From serene landscapes to wacky adventures, the Hoge universe is yours to explore.
 
 
@@ -327,11 +324,6 @@ Experiment & Explore - The beauty of HogeAI? There's no right or wrong. Play aro
 }
 
 #container22 {
-    text-transform: none;
-    pointer-events: none;
-}
-
-#container23 {
     text-transform: none;
     pointer-events: none;
 }
