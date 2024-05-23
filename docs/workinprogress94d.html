@@ -3229,7 +3229,6 @@
 
             function registerAnimation(stepFunction) {
                 animations.push(stepFunction);
-                console.log('Animation registered:', stepFunction);
             }
 
             function runAnimations(timestamp) {
@@ -3248,8 +3247,6 @@
             };
         })();
 
-
-        // Function to generate a random string
         function generateRandomString(length) {
             var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()[]{}|';
             var randomString = '';
@@ -3259,9 +3256,7 @@
             return randomString;
         }
 
-        // Function to animate text with color transitions
         function animateText(element, finalText, duration, delay, finalColor = { r: 0, g: 255, b: 204 }) {
-            console.log('Starting animateText:', element, finalText, duration, delay);
             var frameCount = 0; // Tracks frames
             var totalFrames = 180; // Adjust for speed of color transitions
             var startTime = performance.now(); // Track start time
@@ -3272,7 +3267,6 @@
             var randomPhaseB = Math.random() * 2 * Math.PI;
 
             setTimeout(function () {
-                console.log('Timeout triggered for animateText');
                 var currentText = generateRandomString(finalText.length);
                 element.textContent = currentText;
                 element.style.opacity = '0';
@@ -3320,7 +3314,6 @@
                             element.textContent = finalText;
                             element.style.opacity = '1';
                             element.style.color = `rgb(${finalColor.r}, ${finalColor.g}, ${finalColor.b})`;
-                            console.log('Animation complete:', element);
                             return false; // Indicate the animation is complete
                         }
                     }
