@@ -3314,7 +3314,7 @@
                             element.textContent = finalText;
                             element.style.opacity = '1';
                             element.style.color = `rgb(${finalColor.r}, ${finalColor.g}, ${finalColor.b})`;
-                            console.log('Animation complete for:', element);
+                            //console.log('Animation complete for:', element);
                             return false; // Indicate the animation is complete
                         }
                     }
@@ -3327,7 +3327,7 @@
         }
 
         function createSpansForContainer(containerId, text) {
-            console.log('Creating spans for container:', containerId, 'with text:', text);
+            //console.log('Creating spans for container:', containerId, 'with text:', text);
             const container = document.getElementById(containerId);
             container.innerHTML = '';
 
