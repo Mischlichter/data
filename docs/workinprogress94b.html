@@ -2501,39 +2501,7 @@
           dynamicStyles.length = 0; // Clear the array
         }
 
-        function loadImageFromIndexedDB(dbName, storeName, key) {
-            return new Promise((resolve, reject) => {
-                const request = indexedDB.open(dbName);
-
-                request.onerror = (event) => {
-                    reject(new Error(`Error opening IndexedDB: ${event.target.errorCode}`));
-                };
-
-                request.onsuccess = (event) => {
-                    const db = event.target.result;
-                    const transaction = db.transaction(storeName, 'readonly');
-                    const store = transaction.objectStore(storeName);
-                    const getRequest = store.get(key);
-
-                    getRequest.onerror = (event) => {
-                        reject(new Error(`Error getting image from IndexedDB: ${event.target.errorCode}`));
-                    };
-
-                    getRequest.onsuccess = (event) => {
-                        const imgData = event.target.result;
-                        if (imgData) {
-                            const img = new Image();
-                            img.src = URL.createObjectURL(imgData.blob);
-                            resolve(img);
-                        } else {
-                            reject(new Error('Image not found in IndexedDB'));
-                        }
-                    };
-                };
-            });
-        }
-
-        async function loadScene(index) {
+        function loadScene(index) {
             const scene = scenesData[index];
             const sceneImages = scenesiData[index]; // Assuming scenesiData is structured similarly
 
@@ -2552,7 +2520,7 @@
 
             // Update the iframe with the new scene
             updateIframe(formattedSceneKey);
-
+            //console.log('Formatted Scene Key:', formattedSceneKey);
             // Merge and sort text and image containers
             let combinedData = [];
             Object.keys(scene.containers).forEach(key => {
@@ -2560,14 +2528,9 @@
             });
 
             if (sceneImages && sceneImages.images) {
-                await Promise.all(Object.keys(sceneImages.images).map(async key => {
-                    try {
-                        const image = await loadImageFromIndexedDB('MyDatabase', 'assets', sceneImages.images[key].src);
-                        combinedData.push({ type: 'image', key: key, content: { src: image.src, style: sceneImages.images[key].style } });
-                    } catch (error) {
-                        combinedData.push({ type: 'image', key: key, content: sceneImages.images[key] });
-                    }
-                }));
+                Object.keys(sceneImages.images).forEach(key => {
+                    combinedData.push({ type: 'image', key: key, content: sceneImages.images[key] });
+                });
             }
 
             combinedData.sort((a, b) => {
@@ -2611,7 +2574,6 @@
             observeImagesForAnimation();
             createScrollToTopButton();
         }
-
 
         function createScrollToTopButton() {
             const button = document.createElement('button');
@@ -3221,33 +3183,6 @@
 
 /////////// ANIMATION TEXT /////
 
-        // Frame Manager to handle global frame rate
-        const FrameManager = (function () {
-            let frameCap = 60; // Hardcoded frame cap
-            let lastRender = performance.now();
-            let animations = [];
-
-            function registerAnimation(stepFunction) {
-                animations.push(stepFunction);
-            }
-
-            function runAnimations(timestamp) {
-                let progress = timestamp - lastRender;
-                if (progress > 1000 / frameCap) {
-                    lastRender = timestamp - (progress % (1000 / frameCap));
-                    animations.forEach(step => step(timestamp));
-                }
-                requestAnimationFrame(runAnimations);
-            }
-
-            requestAnimationFrame(runAnimations);
-
-            return {
-                registerAnimation
-            };
-        })();
-
-        // Function to generate a random string
         function generateRandomString(length) {
             var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()[]{}|';
             var randomString = '';
@@ -3257,35 +3192,38 @@
             return randomString;
         }
 
-        // Function to animate text with color transitions
         function animateText(element, finalText, duration, delay, finalColor = { r: 0, g: 255, b: 204 }) {
-            var frameCount = 0; // Tracks frames
-            var totalFrames = 180; // Adjust for speed of color transitions
-            var startTime = performance.now(); // Track start time
+            let frameCount = 0; // Tracks frames
+            const totalFrames = 180; // Adjust for speed of color transitions
 
             // Assign a unique random phase for each color component
-            var randomPhaseR = Math.random() * 2 * Math.PI;
-            var randomPhaseG = Math.random() * 2 * Math.PI;
-            var randomPhaseB = Math.random() * 2 * Math.PI;
+            const randomPhaseR = Math.random() * 2 * Math.PI;
+            const randomPhaseG = Math.random() * 2 * Math.PI;
+            const randomPhaseB = Math.random() * 2 * Math.PI;
 
-            setTimeout(function () {
-                var currentText = generateRandomString(finalText.length);
+            setTimeout(function() {
+                let currentText = generateRandomString(finalText.length);
                 element.textContent = currentText;
                 element.style.opacity = '0';
 
-                var shuffleFrequency = 10;
-                var intervalTime = duration / (finalText.length * shuffleFrequency);
-                var index = 0;
-                var shuffleCount = 0;
-                var lastRender = performance.now();
+                const shuffleFrequency = 10;
+                const intervalTime = duration / (finalText.length * shuffleFrequency);
+                let index = 0;
+                let shuffleCount = 0;
+                let lastRender = performance.now();
 
+                // Adjusted to use specific random phases for each color component
                 function getColorComponent(phaseShift, randomPhase) {
                     return Math.floor(127.5 * (1 + Math.sin(2 * Math.PI * frameCount / totalFrames + phaseShift + randomPhase)));
                 }
 
                 function step(timestamp) {
-                    var progress = timestamp - lastRender;
-                    var elapsedTime = timestamp - startTime;
+                    const progress = timestamp - lastRender;
+
+                    // Frame dropping logic
+                    if (progress > intervalTime * 2) {
+                        lastRender = timestamp - intervalTime; // Drop frame by adjusting lastRender time
+                    }
 
                     if (progress > intervalTime) {
                         lastRender = timestamp - (progress % intervalTime);
@@ -3300,7 +3238,7 @@
                         shuffleCount++;
                         element.style.opacity = Math.min(1, parseFloat(element.style.opacity) + 0.05);
 
-                        let colorTransitionFactor = index / finalText.length;
+                        const colorTransitionFactor = index / finalText.length;
                         let r = getColorComponent(0, randomPhaseR);
                         let g = getColorComponent(2 * Math.PI / 3, randomPhaseG);
                         let b = getColorComponent(4 * Math.PI / 3, randomPhaseB);
@@ -3319,13 +3257,16 @@
                             return;
                         }
                     }
+                    requestAnimationFrame(step);
                 }
 
-                FrameManager.registerAnimation(step);
+                requestAnimationFrame(step);
             }, delay);
         }
 
-        // Function to create spans for container
+
+
+
         function createSpansForContainer(containerId, text) {
             const container = document.getElementById(containerId);
             container.innerHTML = '';
@@ -3337,7 +3278,7 @@
 
             let style = window.getComputedStyle(container);
             let paddingAndBorder = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight) +
-                parseFloat(style.borderLeftWidth) + parseFloat(style.borderRightWidth);
+                                   parseFloat(style.borderLeftWidth) + parseFloat(style.borderRightWidth);
             let availableWidth = container.clientWidth - paddingAndBorder - 5;
 
             // Calculate 10% additional width
@@ -3369,7 +3310,6 @@
             return lines;
         }
 
-        // Function to create line container
         function createLineContainer(container, lineText) {
             adjustContainerSizesBasedOnVirtualCanvas();
             let lineContainer = document.createElement('div');
@@ -3390,7 +3330,6 @@
             return lineContainer;
         }
 
-        // Function to start line animation
         function startLineAnimation(lineContainers, defaultFinalColor = { r: 0, g: 255, b: 204 }) {
             let wordDelayIncrement = 100;
             let lineStartDelay = 150;
@@ -3415,6 +3354,7 @@
                 });
             });
         }
+
 
 
 ////////ANIMATION SCALING

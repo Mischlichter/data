@@ -3148,36 +3148,37 @@
         }
 
         function animateText(element, finalText, duration, delay, finalColor = { r: 0, g: 255, b: 204 }) {
-            var frameCount = 0; // Tracks frames
-            var totalFrames = 180; // Adjust for speed of color transitions
+            let frameCount = 0; // Tracks frames
+            const totalFrames = 180; // Adjust for speed of color transitions
 
             // Assign a unique random phase for each color component
-            var randomPhaseR = Math.random() * 2 * Math.PI;
-            var randomPhaseG = Math.random() * 2 * Math.PI;
-            var randomPhaseB = Math.random() * 2 * Math.PI;
+            const randomPhaseR = Math.random() * 2 * Math.PI;
+            const randomPhaseG = Math.random() * 2 * Math.PI;
+            const randomPhaseB = Math.random() * 2 * Math.PI;
 
             setTimeout(function() {
-                var currentText = generateRandomString(finalText.length);
+                let currentText = generateRandomString(finalText.length);
                 element.textContent = currentText;
                 element.style.opacity = '0';
 
-                var shuffleFrequency = 10;
-                var intervalTime = duration / (finalText.length * shuffleFrequency);
-                var index = 0;
-                var shuffleCount = 0;
-                var lastRender = performance.now();
+                const shuffleFrequency = 10;
+                const intervalTime = duration / (finalText.length * shuffleFrequency);
+                let index = 0;
+                let shuffleCount = 0;
+                let lastRender = performance.now();
 
                 // Adjusted to use specific random phases for each color component
                 function getColorComponent(phaseShift, randomPhase) {
                     return Math.floor(127.5 * (1 + Math.sin(2 * Math.PI * frameCount / totalFrames + phaseShift + randomPhase)));
                 }
 
-                var isAnimating = true;
-                var isThrottled = false;
-                var lastTimestamp = performance.now();
-
                 function step(timestamp) {
-                    var progress = timestamp - lastRender;
+                    const progress = timestamp - lastRender;
+
+                    // Frame dropping logic
+                    if (progress > intervalTime * 2) {
+                        lastRender = timestamp - intervalTime; // Drop frame by adjusting lastRender time
+                    }
 
                     if (progress > intervalTime) {
                         lastRender = timestamp - (progress % intervalTime);
@@ -3192,7 +3193,7 @@
                         shuffleCount++;
                         element.style.opacity = Math.min(1, parseFloat(element.style.opacity) + 0.05);
 
-                        let colorTransitionFactor = index / finalText.length;
+                        const colorTransitionFactor = index / finalText.length;
                         let r = getColorComponent(0, randomPhaseR);
                         let g = getColorComponent(2 * Math.PI / 3, randomPhaseG);
                         let b = getColorComponent(4 * Math.PI / 3, randomPhaseB);
@@ -3211,42 +3212,12 @@
                             return;
                         }
                     }
-
-                    if (isAnimating) {
-                        requestAnimationFrame(step);
-                    } else if (isThrottled) {
-                        // Calculate how many frames to drop based on the time difference
-                        var timeDiff = timestamp - lastTimestamp;
-                        var framesToDrop = Math.floor(timeDiff / intervalTime);
-                        frameCount += framesToDrop;
-                        lastTimestamp = timestamp;
-                        setTimeout(() => requestAnimationFrame(step), 16); // Run every ~16ms (60fps)
-                    }
+                    requestAnimationFrame(step);
                 }
 
-                // Intersection Observer to detect if the element is in the viewport
-                var observer = new IntersectionObserver(function(entries) {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            isAnimating = true;
-                            isThrottled = false;
-                            requestAnimationFrame(step);
-                        } else {
-                            isAnimating = false;
-                            isThrottled = true;
-                            lastTimestamp = performance.now();
-                        }
-                    });
-                });
-
-                observer.observe(element);
                 requestAnimationFrame(step);
             }, delay);
         }
-
-
-
-
 
 
 
