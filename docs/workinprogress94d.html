@@ -3245,7 +3245,7 @@
             }
         }
 
-        let frameManager = null; // Initialize to null
+        const frameManager = new FrameManager(30)
 
         function generateRandomString(length) {
             var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()[]{}|';
@@ -3258,7 +3258,7 @@
         }
 
         function animateText(element, finalText, duration, delay, finalColor = { r: 0, g: 255, b: 204 }) {
-            console.log('Starting animation for:', element, 'with finalText:', finalText);
+            //console.log('Starting animation for:', element, 'with finalText:', finalText);
             var frameCount = 0; // Tracks frames
             var totalFrames = 180; // Adjust for speed of color transitions
 
@@ -3388,11 +3388,7 @@
                 }
             });
 
-            if (!frameManager) {
-                frameManager = new FrameManager(30); // Initialize FrameManager with hardcoded frame cap
-                console.log('Initialized FrameManager with frame cap:', frameManager.frameCap);
-            }
-
+        
             return lineContainer;
         }
 
