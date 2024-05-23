@@ -3231,6 +3231,7 @@
             }
 
             registerAnimation(stepFunction) {
+                console.log('Animation registered:', stepFunction);
                 this.animations.push(stepFunction);
             }
 
@@ -3246,17 +3247,18 @@
 
         let frameManager = null; // Initialize to null
 
-
         function generateRandomString(length) {
             var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()[]{}|';
             var randomString = '';
             for (var i = 0; i < length; i++) {
                 randomString += characters.charAt(Math.floor(Math.random() * characters.length));
             }
+            console.log('Generated random string:', randomString);
             return randomString;
         }
 
         function animateText(element, finalText, duration, delay, finalColor = { r: 0, g: 255, b: 204 }) {
+            console.log('Starting animation for:', element, 'with finalText:', finalText);
             var frameCount = 0; // Tracks frames
             var totalFrames = 180; // Adjust for speed of color transitions
 
@@ -3312,6 +3314,7 @@
                             element.textContent = finalText;
                             element.style.opacity = '1';
                             element.style.color = `rgb(${finalColor.r}, ${finalColor.g}, ${finalColor.b})`;
+                            console.log('Animation complete for:', element);
                             return false; // Indicate the animation is complete
                         }
                     }
@@ -3323,16 +3326,8 @@
             }, delay);
         }
 
-
-
-
-
-
-
-
-
-
         function createSpansForContainer(containerId, text) {
+            console.log('Creating spans for container:', containerId, 'with text:', text);
             const container = document.getElementById(containerId);
             container.innerHTML = '';
 
@@ -3372,6 +3367,7 @@
             }
 
             document.body.removeChild(tempSpan);
+            console.log('Created line containers:', lines);
             return lines;
         }
 
@@ -3396,8 +3392,10 @@
         }
 
         function startLineAnimation(lineContainers, defaultFinalColor = { r: 0, g: 255, b: 204 }) {
+            console.log('Starting line animation');
             if (!frameManager) {
                 frameManager = new FrameManager(30); // Initialize FrameManager with hardcoded frame cap
+                console.log('Initialized FrameManager with frame cap:', frameManager.frameCap);
             }
 
             let wordDelayIncrement = 100;
@@ -3423,6 +3421,7 @@
                 });
             });
         }
+
 
 ////////ANIMATION SCALING
 
