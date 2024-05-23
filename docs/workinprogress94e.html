@@ -2476,6 +2476,32 @@
         let scenesData = [];
         let scenesiData = [];
 
+        class FrameManager {
+            constructor(frameCap) {
+                this.frameCap = frameCap; // Frame cap is set during initialization
+                this.lastRender = performance.now();
+                this.animations = [];
+                this.runAnimations = this.runAnimations.bind(this);
+                requestAnimationFrame(this.runAnimations);
+            }
+
+            registerAnimation(stepFunction) {
+                
+                this.animations.push(stepFunction);
+            }
+
+            runAnimations(timestamp) {
+                let progress = timestamp - this.lastRender;
+                if (progress > 1000 / this.frameCap) {
+                    this.lastRender = timestamp - (progress % (1000 / this.frameCap));
+                    this.animations = this.animations.filter(step => step(timestamp) !== false);
+                }
+                requestAnimationFrame(this.runAnimations);
+            }
+        }
+
+        const frameManager = new FrameManager(30)
+
         async function initialize() {
             scenesData = await fetchAndParseData();
             if (scenesData && scenesData.length > 0) {
@@ -3221,31 +3247,7 @@
 
 /////////// ANIMATION TEXT /////
 
-        class FrameManager {
-            constructor(frameCap) {
-                this.frameCap = frameCap; // Frame cap is set during initialization
-                this.lastRender = performance.now();
-                this.animations = [];
-                this.runAnimations = this.runAnimations.bind(this);
-                requestAnimationFrame(this.runAnimations);
-            }
-
-            registerAnimation(stepFunction) {
-                
-                this.animations.push(stepFunction);
-            }
-
-            runAnimations(timestamp) {
-                let progress = timestamp - this.lastRender;
-                if (progress > 1000 / this.frameCap) {
-                    this.lastRender = timestamp - (progress % (1000 / this.frameCap));
-                    this.animations = this.animations.filter(step => step(timestamp) !== false);
-                }
-                requestAnimationFrame(this.runAnimations);
-            }
-        }
-
-        const frameManager = new FrameManager(30)
+        
 
         function generateRandomString(length) {
             var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()[]{}|';
