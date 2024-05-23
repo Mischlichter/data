@@ -3253,7 +3253,7 @@
             for (var i = 0; i < length; i++) {
                 randomString += characters.charAt(Math.floor(Math.random() * characters.length));
             }
-            
+            //console.log('Generated random string:', randomString);
             return randomString;
         }
 
@@ -3367,7 +3367,7 @@
             }
 
             document.body.removeChild(tempSpan);
-            console.log('Created line containers:', lines);
+            //console.log('Created line containers:', lines);
             return lines;
         }
 
@@ -3388,15 +3388,17 @@
                 }
             });
 
+            if (!frameManager) {
+                frameManager = new FrameManager(30); // Initialize FrameManager with hardcoded frame cap
+                //console.log('Initialized FrameManager with frame cap:', frameManager.frameCap);
+            }
+
             return lineContainer;
         }
 
         function startLineAnimation(lineContainers, defaultFinalColor = { r: 0, g: 255, b: 204 }) {
             console.log('Starting line animation');
-            if (!frameManager) {
-                frameManager = new FrameManager(30); // Initialize FrameManager with hardcoded frame cap
-                console.log('Initialized FrameManager with frame cap:', frameManager.frameCap);
-            }
+            
 
             let wordDelayIncrement = 100;
             let lineStartDelay = 150;
