@@ -3235,7 +3235,7 @@
                 let progress = timestamp - lastRender;
                 if (progress > 1000 / frameCap) {
                     lastRender = timestamp - (progress % (1000 / frameCap));
-                    animations.forEach(step => step(timestamp));
+                    animations = animations.filter(step => step(timestamp) !== false); // Keep only ongoing animations
                 }
                 requestAnimationFrame(runAnimations);
             }
@@ -3316,9 +3316,11 @@
                             element.textContent = finalText;
                             element.style.opacity = '1';
                             element.style.color = `rgb(${finalColor.r}, ${finalColor.g}, ${finalColor.b})`;
-                            return;
+                            return false; // Indicate the animation is complete
                         }
                     }
+
+                    return true; // Indicate the animation should continue
                 }
 
                 FrameManager.registerAnimation(step);
