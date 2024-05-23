@@ -3221,32 +3221,30 @@
 
 /////////// ANIMATION TEXT /////
 
-        // Frame Manager to handle global frame rate
-        const FrameManager = (function () {
-            let frameCap = 30; // Hardcoded frame cap
-            let lastRender = performance.now();
-            let animations = [];
-
-            function registerAnimation(stepFunction) {
-                animations.push(stepFunction);
-                console.log('Animation registered:', stepFunction);
+        class FrameManager {
+            constructor(frameCap) {
+                this.frameCap = frameCap; // Frame cap is set during initialization
+                this.lastRender = performance.now();
+                this.animations = [];
+                this.runAnimations = this.runAnimations.bind(this);
+                requestAnimationFrame(this.runAnimations);
             }
 
-            function runAnimations(timestamp) {
-                let progress = timestamp - lastRender;
-                if (progress > 1000 / frameCap) {
-                    lastRender = timestamp - (progress % (1000 / frameCap));
-                    animations = animations.filter(step => step(timestamp) !== false); // Keep only ongoing animations
+            registerAnimation(stepFunction) {
+                this.animations.push(stepFunction);
+            }
+
+            runAnimations(timestamp) {
+                let progress = timestamp - this.lastRender;
+                if (progress > 1000 / this.frameCap) {
+                    this.lastRender = timestamp - (progress % (1000 / this.frameCap));
+                    this.animations = this.animations.filter(step => step(timestamp) !== false);
                 }
-                requestAnimationFrame(runAnimations);
+                requestAnimationFrame(this.runAnimations);
             }
+        }
 
-            requestAnimationFrame(runAnimations);
-
-            return {
-                registerAnimation
-            };
-        })();
+        let frameManager = null; // Initialize to null
 
 
         function generateRandomString(length) {
@@ -3261,14 +3259,13 @@
         function animateText(element, finalText, duration, delay, finalColor = { r: 0, g: 255, b: 204 }) {
             var frameCount = 0; // Tracks frames
             var totalFrames = 180; // Adjust for speed of color transitions
-            var startTime = performance.now(); // Track start time
 
             // Assign a unique random phase for each color component
             var randomPhaseR = Math.random() * 2 * Math.PI;
             var randomPhaseG = Math.random() * 2 * Math.PI;
             var randomPhaseB = Math.random() * 2 * Math.PI;
 
-            setTimeout(function () {
+            setTimeout(function() {
                 var currentText = generateRandomString(finalText.length);
                 element.textContent = currentText;
                 element.style.opacity = '0';
@@ -3279,14 +3276,13 @@
                 var shuffleCount = 0;
                 var lastRender = performance.now();
 
+                // Adjusted to use specific random phases for each color component
                 function getColorComponent(phaseShift, randomPhase) {
                     return Math.floor(127.5 * (1 + Math.sin(2 * Math.PI * frameCount / totalFrames + phaseShift + randomPhase)));
                 }
 
                 function step(timestamp) {
                     var progress = timestamp - lastRender;
-                    var elapsedTime = timestamp - startTime;
-
                     if (progress > intervalTime) {
                         lastRender = timestamp - (progress % intervalTime);
 
@@ -3316,7 +3312,6 @@
                             element.textContent = finalText;
                             element.style.opacity = '1';
                             element.style.color = `rgb(${finalColor.r}, ${finalColor.g}, ${finalColor.b})`;
-                            console.log('Animation complete for:', element);
                             return false; // Indicate the animation is complete
                         }
                     }
@@ -3324,12 +3319,19 @@
                     return true; // Indicate the animation should continue
                 }
 
-                FrameManager.registerAnimation(step);
+                frameManager.registerAnimation(step);
             }, delay);
         }
 
 
-        // Function to create spans for container
+
+
+
+
+
+
+
+
         function createSpansForContainer(containerId, text) {
             const container = document.getElementById(containerId);
             container.innerHTML = '';
@@ -3341,7 +3343,7 @@
 
             let style = window.getComputedStyle(container);
             let paddingAndBorder = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight) +
-                parseFloat(style.borderLeftWidth) + parseFloat(style.borderRightWidth);
+                                   parseFloat(style.borderLeftWidth) + parseFloat(style.borderRightWidth);
             let availableWidth = container.clientWidth - paddingAndBorder - 5;
 
             // Calculate 10% additional width
@@ -3373,7 +3375,6 @@
             return lines;
         }
 
-        // Function to create line container
         function createLineContainer(container, lineText) {
             adjustContainerSizesBasedOnVirtualCanvas();
             let lineContainer = document.createElement('div');
@@ -3394,8 +3395,11 @@
             return lineContainer;
         }
 
-        // Function to start line animation
         function startLineAnimation(lineContainers, defaultFinalColor = { r: 0, g: 255, b: 204 }) {
+            if (!frameManager) {
+                frameManager = new FrameManager(30); // Initialize FrameManager with hardcoded frame cap
+            }
+
             let wordDelayIncrement = 100;
             let lineStartDelay = 150;
 
@@ -3419,7 +3423,6 @@
                 });
             });
         }
-
 
 ////////ANIMATION SCALING
 
