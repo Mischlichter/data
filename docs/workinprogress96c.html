@@ -3139,7 +3139,7 @@
 /////////// ANIMATION TEXT /////
 
         const AnimationManager = {
-            frameCap: 30,
+            frameCap: 60,
             lastRender: performance.now(),
             animations: [],
             running: false,
@@ -3181,7 +3181,7 @@
                 element.textContent = currentText;
                 element.style.opacity = '0';
 
-                const shuffleFrequency = 10;
+                const shuffleFrequency = 8;
                 const intervalTime = duration / (finalText.length * shuffleFrequency);
                 let index = 0;
                 let shuffleCount = 0;
