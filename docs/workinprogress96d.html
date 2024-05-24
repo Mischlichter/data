@@ -3087,7 +3087,6 @@
         
 
         let lastScrollY = 0;
-        let ticking = false;
 
         function updateParallax() {
             // One-time iOS device check to exit the function if on an iOS device
@@ -3105,7 +3104,6 @@
 
             // Exit if no scroll change
             if (scrollY === lastScrollY) {
-                ticking = false;
                 return;
             }
 
@@ -3131,19 +3129,9 @@
                 const offsetViewer = scrollY * speedFactorViewer;
                 viewerContainer.style.transform = `translateY(${offsetViewer}px)`;
             }
-
-            ticking = false;
         }
 
-        function onScroll() {
-            if (!ticking) {
-                window.requestAnimationFrame(updateParallax);
-                ticking = true;
-            }
-        }
-
-
-        window.addEventListener('scroll', updateParallax);
+        window.addEventListener('scroll', throttleRAF(updateParallax));
 
 
 
