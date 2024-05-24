@@ -3638,5 +3638,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "1499203943"
+    },
+    "25022792989.jpg": {
+        "File Name": "25022792989.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man) actively maintaining a massive server. HogeAI man, equipped with a futuristic toolkit, is seen diligently working on a towering server, adjusting glowing wires and inspecting floating holographic screens displaying complex data and system statuses. Surrounding him, other HogeAI characters are also engaged in various maintenance tasks some using tall ladders and scaffolding to reach the highest servers, others carrying massive bundles of cables, and some monitoring the systems from vibrant, neon-lit control panels. The room is a dizzying maze of servers that stretch infinitely in all directions, connected by a dense, chaotic network of glowing, colorful wires and cables. The environment is bathed in pulsating neon lights and adorned with digital graffiti art, creating an electrifying and surreal atmosphere. The scene is filled with the hum of machinery, the glow of digit...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "25022792989"
     }
 }
