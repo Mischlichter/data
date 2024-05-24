@@ -2501,39 +2501,7 @@
           dynamicStyles.length = 0; // Clear the array
         }
 
-        function loadImageFromIndexedDB(dbName, storeName, key) {
-            return new Promise((resolve, reject) => {
-                const request = indexedDB.open(dbName);
-
-                request.onerror = (event) => {
-                    reject(new Error(`Error opening IndexedDB: ${event.target.errorCode}`));
-                };
-
-                request.onsuccess = (event) => {
-                    const db = event.target.result;
-                    const transaction = db.transaction(storeName, 'readonly');
-                    const store = transaction.objectStore(storeName);
-                    const getRequest = store.get(key);
-
-                    getRequest.onerror = (event) => {
-                        reject(new Error(`Error getting image from IndexedDB: ${event.target.errorCode}`));
-                    };
-
-                    getRequest.onsuccess = (event) => {
-                        const imgData = event.target.result;
-                        if (imgData) {
-                            const img = new Image();
-                            img.src = URL.createObjectURL(imgData.blob);
-                            resolve(img);
-                        } else {
-                            reject(new Error('Image not found in IndexedDB'));
-                        }
-                    };
-                };
-            });
-        }
-
-        async function loadScene(index) {
+        function loadScene(index) {
             const scene = scenesData[index];
             const sceneImages = scenesiData[index]; // Assuming scenesiData is structured similarly
 
@@ -2552,7 +2520,7 @@
 
             // Update the iframe with the new scene
             updateIframe(formattedSceneKey);
-
+            //console.log('Formatted Scene Key:', formattedSceneKey);
             // Merge and sort text and image containers
             let combinedData = [];
             Object.keys(scene.containers).forEach(key => {
@@ -2560,14 +2528,9 @@
             });
 
             if (sceneImages && sceneImages.images) {
-                await Promise.all(Object.keys(sceneImages.images).map(async key => {
-                    try {
-                        const image = await loadImageFromIndexedDB('MyDatabase', 'assets', sceneImages.images[key].src);
-                        combinedData.push({ type: 'image', key: key, content: { src: image.src, style: sceneImages.images[key].style } });
-                    } catch (error) {
-                        combinedData.push({ type: 'image', key: key, content: sceneImages.images[key] });
-                    }
-                }));
+                Object.keys(sceneImages.images).forEach(key => {
+                    combinedData.push({ type: 'image', key: key, content: sceneImages.images[key] });
+                });
             }
 
             combinedData.sort((a, b) => {
@@ -2611,7 +2574,6 @@
             observeImagesForAnimation();
             createScrollToTopButton();
         }
-
 
         function createScrollToTopButton() {
             const button = document.createElement('button');
@@ -2849,39 +2811,6 @@
 
         let tiles = { a: false, b: false };
 
-        // Function to load image from IndexedDB
-        function loadImageFromIndexedDB(dbName, storeName, key) {
-            return new Promise((resolve, reject) => {
-                const request = indexedDB.open(dbName);
-
-                request.onerror = (event) => {
-                    reject(new Error(`Error opening IndexedDB: ${event.target.errorCode}`));
-                };
-
-                request.onsuccess = (event) => {
-                    const db = event.target.result;
-                    const transaction = db.transaction(storeName, 'readonly');
-                    const store = transaction.objectStore(storeName);
-                    const getRequest = store.get(key);
-
-                    getRequest.onerror = (event) => {
-                        reject(new Error(`Error getting image from IndexedDB: ${event.target.errorCode}`));
-                    };
-
-                    getRequest.onsuccess = (event) => {
-                        const imgData = event.target.result;
-                        if (imgData) {
-                            const img = new Image();
-                            img.src = URL.createObjectURL(imgData.blob);
-                            resolve(img);
-                        } else {
-                            reject(new Error('Image not found in IndexedDB'));
-                        }
-                    };
-                };
-            });
-        }
-
         function fadeInElements() {
             const waitForTiles = () => {
                 return new Promise((resolve) => {
@@ -2925,6 +2854,8 @@
                 });
             });
         }
+        
+
 
         function fadeInmenu() {
             return new Promise((resolve, reject) => {
@@ -2965,6 +2896,7 @@
             });
         }
 
+
         function fadeOutElements() {
             return new Promise((resolve, reject) => {
                 const selectors = ['#interfaceContainer', '#backgroundContainer', '.flex-icontainer', '#bodyGalleryContainer', '.flex-container', '#iframeContainer'];
@@ -2992,84 +2924,82 @@
             });
         }
 
+
+
+
+
+
+
+
         function createVerticalTiles_a(containerId, imageUrl, imageHeight) {
-            return loadImageFromIndexedDB('MyDatabase', 'assets', imageUrl)
-                .catch(() => {
-                    const img = new Image();
+            return new Promise((resolve, reject) => {
+                const container = document.getElementById(containerId);
+                container.innerHTML = ''; // Clear existing content
+
+                // Assuming the container's height is directly based on its content (the images)
+                // We calculate the number of tiles needed to fill the container plus one for overflow
+                const numTiles = 11; // Since you mentioned wanting about 10 tiles
+
+                for (let i = 0; i < numTiles; i++) {
+                    const img = document.createElement('img');
                     img.src = imageUrl;
-                    return img;
-                })
-                .then(image => {
-                    return new Promise((resolve, reject) => {
-                        const container = document.getElementById(containerId);
-                        container.innerHTML = ''; // Clear existing content
+                    img.style.position = 'absolute';
+                    img.style.top = `${i * imageHeight}px`;
+                    img.style.left = 0;
+                    img.style.width = '100%'; // Stretch the image to fill the container's width
+                    img.style.height = `${imageHeight}px`; // Set a fixed height for direct tiling
+                    container.appendChild(img);
+                    requestAnimationFrame(updateParallax);
+                    
+                    // This function needs to be called to update the virtual canvas size accordingly
+                    delayedVirtualCanvasUpdate();
+                }
 
-                        // Assuming the container's height is directly based on its content (the images)
-                        // We calculate the number of tiles needed to fill the container plus one for overflow
-                        const numTiles = 11; // Since you mentioned wanting about 10 tiles
-
-                        for (let i = 0; i < numTiles; i++) {
-                            const imgClone = image.cloneNode();
-                            imgClone.style.position = 'absolute';
-                            imgClone.style.top = `${i * imageHeight}px`;
-                            imgClone.style.left = 0;
-                            imgClone.style.width = '100%'; // Stretch the image to fill the container's width
-                            imgClone.style.height = `${imageHeight}px`; // Set a fixed height for direct tiling
-                            container.appendChild(imgClone);
-                            requestAnimationFrame(updateParallax);
-
-                            // This function needs to be called to update the virtual canvas size accordingly
-                            delayedVirtualCanvasUpdate();
-                        }
-
-                        // Resolve the promise to indicate that tiles are constructed
-                        resolve();
-                    }).then(() => {
-                        tiles.a = true;
-                        // Set the flag for tiles a to true after the promise is resolved
-                    });
-                });
+                // Resolve the promise to indicate that tiles are constructed
+                resolve();
+            }).then(() => {
+                tiles.a = true;
+                // Set the flag for tiles a to true after the promise is resolved
+                
+                
+            });
         }
 
         function createVerticalTiles_b(containerId, imageUrl, imageHeight) {
-            return loadImageFromIndexedDB('MyDatabase', 'assets', imageUrl)
-                .catch(() => {
-                    const img = new Image();
+            return new Promise((resolve, reject) => {
+                const container = document.getElementById(containerId);
+                container.innerHTML = ''; // Clear existing content
+
+                
+                // Assuming the container's height is directly based on its content (the images)
+                // We calculate the number of tiles needed to fill the container plus one for overflow
+                const numTiles = 18; // Since you mentioned wanting about 10 tiles
+
+                for (let i = 0; i < numTiles; i++) {
+                    const img = document.createElement('img');
                     img.src = imageUrl;
-                    return img;
-                })
-                .then(image => {
-                    return new Promise((resolve, reject) => {
-                        const container = document.getElementById(containerId);
-                        container.innerHTML = ''; // Clear existing content
+                    img.style.position = 'absolute';
+                    img.style.top = `${i * imageHeight}px`;
+                    img.style.left = 0;
+                    img.style.width = '100%'; // Stretch the image to fill the container's width
+                    img.style.height = `${imageHeight}px`; // Set a fixed height for direct tiling
+                    container.appendChild(img);
+                    
+                    
+                    updateVirtualCanvasSize();
+                }
 
-                        // Assuming the container's height is directly based on its content (the images)
-                        // We calculate the number of tiles needed to fill the container plus one for overflow
-                        const numTiles = 18; // Since you mentioned wanting about 10 tiles
-
-                        for (let i = 0; i < numTiles; i++) {
-                            const imgClone = image.cloneNode();
-                            imgClone.style.position = 'absolute';
-                            imgClone.style.top = `${i * imageHeight}px`;
-                            imgClone.style.left = 0;
-                            imgClone.style.width = '100%'; // Stretch the image to fill the container's width
-                            imgClone.style.height = `${imageHeight}px`; // Set a fixed height for direct tiling
-                            container.appendChild(imgClone);
-
-                            updateVirtualCanvasSize();
-                        }
-
-                        // Resolve the promise to indicate that tiles are constructed
-                        resolve();
-                    }).then(() => {
-                        // Set the flag for tiles b to true after the promise is resolved
-                        tiles.b = true;
-                    });
-                });
+                // Resolve the promise to indicate that tiles are constructed
+                resolve();
+            }).then(() => {
+                // Set the flag for tiles b to true after the promise is resolved
+                tiles.b = true;
+            });
         }
 
         function delayedVirtualCanvasUpdate() {
             // Delay the call to updateVirtualCanvasSize
+            
             setTimeout(updateVirtualCanvasSize, 100); // Delay of 100 milliseconds
         }
 
@@ -3132,46 +3062,33 @@
             // Check if the viewer image element exists and is part of the DOM
             if (viewerImageElement && document.body.contains(viewerImageElement)) {
                 // Create a new Image object to preload the viewer image
-                loadImageFromIndexedDB('MyDatabase', 'assets', viewerImageUrl)
-                    .then(image => {
-                        viewerImageElement.src = image.src;
-                        viewerImageElement.style.maskImage = `url('${viewerMaskUrl}')`;
-                        viewerImageElement.style.webkitMaskImage = `url('${viewerMaskUrl}')`;
-                        viewerImageElement.style.maskSize = '100% 100%'; // Scale the mask to fit the viewer image
-                        viewerImageElement.style.webkitMaskSize = '100% 100%';
+                const tempImage = new Image();
+                tempImage.onload = function() {
+                    // Once the image is fully loaded, apply it to the viewerImageElement
+                    viewerImageElement.src = tempImage.src;
 
-                        // Now that everything is ready and rendered, start the fade-in process
-                        setTimeout(() => {
-                            fadeInElements(); // This function should handle fading in the viewer and associated elements
-                        }, 111); // Delay to allow the browser to render the updated image before fading in
-                    })
-                    .catch(() => {
-                        const tempImage = new Image();
-                        tempImage.onload = function() {
-                            viewerImageElement.src = tempImage.src;
-                            viewerImageElement.style.maskImage = `url('${viewerMaskUrl}')`;
-                            viewerImageElement.style.webkitMaskImage = `url('${viewerMaskUrl}')`;
-                            viewerImageElement.style.maskSize = '100% 100%'; // Scale the mask to fit the viewer image
-                            viewerImageElement.style.webkitMaskSize = '100% 100%';
+                    // Apply the lower resolution mask and scale it up to fit
+                    viewerImageElement.style.maskImage = `url('${viewerMaskUrl}')`;
+                    viewerImageElement.style.webkitMaskImage = `url('${viewerMaskUrl}')`;
+                    viewerImageElement.style.maskSize = '100% 100%'; // Scale the mask to fit the viewer image
+                    viewerImageElement.style.webkitMaskSize = '100% 100%';
 
-                            // Now that everything is ready and rendered, start the fade-in process
-                            setTimeout(() => {
-                                fadeInElements(); // This function should handle fading in the viewer and associated elements
-                            }, 111); // Delay to allow the browser to render the updated image before fading in
-                        };
-                        tempImage.onerror = function() {
-                            console.error("Failed to load image at url:", viewerImageUrl);
-                        };
-                        tempImage.src = viewerImageUrl; // Set the image source which starts loading the image
-                    });
+                    // Now that everything is ready and rendered, start the fade-in process
+                    setTimeout(() => {
+                        fadeInElements(); // This function should handle fading in the viewer and associated elements
+                    }, 111); // Delay to allow the browser to render the updated image before fading in
+                };
+                tempImage.onerror = function() {
+                    console.error("Failed to load image at url:", viewerImageUrl);
+                };
+                tempImage.src = viewerImageUrl; // Set the image source which starts loading the image
             } else {
                 console.log("Viewer image element does not exist in the DOM.");
             }
+
         }
 
-
-
-
+        
 
         let lastScrollY = 0;
 
@@ -3391,6 +3308,7 @@
                 });
             });
         }
+
 
 
 ////////ANIMATION SCALING
