@@ -193,9 +193,6 @@ P14:
 The Premium Perks - Ever wanted a magic wand for your digital art? HogeAI’s premium features are it! With four fantastical models to choose from, craft your art your way—pinpoint precision with inpainting or a total makeover with img2img. All you need to do is select your magic tool, upload an image, and voilà, watch as your creation transforms right before your eyes. Dive in and let your imagination run wild, no holds barred!
 
 P15:
-The HogeAI Promise - We're all in for wild imaginations, but we've got a filter to keep things PG. After all, HogeAI is a family fiesta.
-
-P16:
 Unleash Your Creativity - At HogeAI, we believe in the power of community and the boundless potential of creativity. Every masterpiece you create contributes to a vibrant, synergistic ecosystem of artists, storytellers, and dreamers. We're here to celebrate your unique vision, support your artistic journey, and inspire you to explore new horizons. Remember, there's no right or wrong—just endless possibilities. Embrace the experimental nature of art, and let your creativity soar. Thank you for being part of this incredible adventure. Let's create something extraordinary, together!
 
 #container01 {
@@ -274,10 +271,6 @@ Unleash Your Creativity - At HogeAI, we believe in the power of community and th
     pointer-events: none;
 }
 
-#container16 {
-    text-transform: none;
-    pointer-events: none;
-}
 
 SCENE04:
 
