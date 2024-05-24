@@ -3138,6 +3138,37 @@
 
 /////////// ANIMATION TEXT /////
 
+        class FrameManager {
+            constructor(frameCap) {
+                this.frameCap = frameCap;
+                this.lastRender = performance.now();
+                this.animations = [];
+                this.runAnimations = this.runAnimations.bind(this);
+                requestAnimationFrame(this.runAnimations);
+            }
+
+            registerAnimation(stepFunction) {
+                this.animations.push(stepFunction);
+                console.log('Animation registered:', stepFunction);
+            }
+
+            runAnimations(timestamp) {
+                let progress = timestamp - this.lastRender;
+                if (progress > 1000 / this.frameCap) {
+                    this.lastRender = timestamp - (progress % (1000 / this.frameCap));
+                    this.animations = this.animations.filter(step => {
+                        const result = step(timestamp);
+                        console.log('Running step function, result:', result);
+                        return result !== false;
+                    });
+                }
+                requestAnimationFrame(this.runAnimations);
+            }
+        }
+
+        const frameManager = new FrameManager(30);
+
+
         function generateRandomString(length) {
             var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()[]{}|';
             var randomString = '';
@@ -3148,38 +3179,28 @@
         }
 
         function animateText(element, finalText, duration, delay, finalColor = { r: 0, g: 255, b: 204 }) {
-            let frameCount = 0; // Tracks frames
-            const totalFrames = 180; // Adjust for speed of color transitions
-
-            // Assign a unique random phase for each color component
-            const randomPhaseR = Math.random() * 2 * Math.PI;
-            const randomPhaseG = Math.random() * 2 * Math.PI;
-            const randomPhaseB = Math.random() * 2 * Math.PI;
-
             setTimeout(function() {
-                let currentText = generateRandomString(finalText.length);
+                var currentText = generateRandomString(finalText.length);
                 element.textContent = currentText;
                 element.style.opacity = '0';
 
-                const shuffleFrequency = 10;
-                const intervalTime = duration / (finalText.length * shuffleFrequency);
-                let index = 0;
-                let shuffleCount = 0;
-                let lastRender = performance.now();
+                var shuffleFrequency = 10;
+                var intervalTime = duration / (finalText.length * shuffleFrequency);
+                var index = 0;
+                var shuffleCount = 0;
+                var lastRender = performance.now();
+                var frameCount = 0;
+                var totalFrames = 180;
+                var randomPhaseR = Math.random() * 2 * Math.PI;
+                var randomPhaseG = Math.random() * 2 * Math.PI;
+                var randomPhaseB = Math.random() * 2 * Math.PI;
 
-                // Adjusted to use specific random phases for each color component
                 function getColorComponent(phaseShift, randomPhase) {
                     return Math.floor(127.5 * (1 + Math.sin(2 * Math.PI * frameCount / totalFrames + phaseShift + randomPhase)));
                 }
 
                 function step(timestamp) {
-                    const progress = timestamp - lastRender;
-
-                    // Frame dropping logic
-                    if (progress > intervalTime * 2) {
-                        lastRender = timestamp - intervalTime; // Drop frame by adjusting lastRender time
-                    }
-
+                    var progress = timestamp - lastRender;
                     if (progress > intervalTime) {
                         lastRender = timestamp - (progress % intervalTime);
 
@@ -3193,7 +3214,7 @@
                         shuffleCount++;
                         element.style.opacity = Math.min(1, parseFloat(element.style.opacity) + 0.05);
 
-                        const colorTransitionFactor = index / finalText.length;
+                        let colorTransitionFactor = index / finalText.length;
                         let r = getColorComponent(0, randomPhaseR);
                         let g = getColorComponent(2 * Math.PI / 3, randomPhaseG);
                         let b = getColorComponent(4 * Math.PI / 3, randomPhaseB);
@@ -3209,15 +3230,17 @@
                             element.textContent = finalText;
                             element.style.opacity = '1';
                             element.style.color = `rgb(${finalColor.r}, ${finalColor.g}, ${finalColor.b})`;
-                            return;
+                            return false; // Indicate the animation is complete
                         }
                     }
-                    requestAnimationFrame(step);
+                    return true; // Indicate the animation should continue
                 }
 
-                requestAnimationFrame(step);
+                frameManager.registerAnimation(step);
+                console.log(`Registered animation for: ${element}`);
             }, delay);
         }
+
 
 
 
