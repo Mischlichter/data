@@ -3222,7 +3222,7 @@
 /////////// ANIMATION TEXT /////
 
         const AnimationManager = {
-            frameCap: 90,
+            frameCap: 30,
             lastRender: performance.now(),
             animations: [],
             running: false,
@@ -3255,11 +3255,12 @@
             for (var i = 0; i < length; i++) {
                 randomString += characters.charAt(Math.floor(Math.random() * characters.length));
             }
-            //console.log('Generated random string:', randomString);
             return randomString;
         }
 
         function animateText(element, finalText, duration, delay, finalColor = { r: 0, g: 255, b: 204 }) {
+            const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+
             setTimeout(() => {
                 let currentText = generateRandomString(finalText.length);
                 element.textContent = currentText;
@@ -3315,10 +3316,23 @@
                             return false; // Indicate the animation is complete
                         }
                     }
-                    return true; // Indicate the animation should continue
+                    if (!isMobile) {
+                        return true; // Indicate the animation should continue
+                    }
                 }
 
-                AnimationManager.registerAnimation(step);
+                if (isMobile) {
+                    function mobileStep() {
+                        let now = performance.now();
+                        step(now);
+                        if (index < finalText.length || shuffleCount % shuffleFrequency !== 0) {
+                            requestAnimationFrame(mobileStep);
+                        }
+                    }
+                    mobileStep();
+                } else {
+                    AnimationManager.registerAnimation(step);
+                }
             }, delay);
         }
 
