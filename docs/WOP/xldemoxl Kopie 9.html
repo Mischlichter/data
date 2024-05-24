@@ -1559,66 +1559,57 @@
         
 //////// MOUSE SMOOTHING ////////
 
-        const AnimationManager = {
-            frameCap: 60,
-            lastRender: performance.now(),
-            animations: [],
-            running: false,
-
-            registerAnimation(stepFunction) {
-                this.animations.push(stepFunction);
-                if (!this.running) {
-                    this.running = true;
-                    requestAnimationFrame(this.runAnimations.bind(this));
+        function throttleRAF(func) {
+            let scheduled = false;
+            return function(...args) {
+                if (!scheduled) {
+                    scheduled = true;
+                    requestAnimationFrame(() => {
+                        func.apply(this, args);
+                        scheduled = false;
+                    });
                 }
-            },
-
-            runAnimations(timestamp) {
-                let progress = timestamp - this.lastRender;
-                if (progress > 1000 / this.frameCap) {
-                    this.lastRender = timestamp - (progress % (1000 / this.frameCap));
-                    this.animations = this.animations.filter(step => step(timestamp) !== false);
-                }
-                if (this.animations.length > 0) {
-                    requestAnimationFrame(this.runAnimations.bind(this));
-                } else {
-                    this.running = false;
-                }
-            }
-        };
-
-        const lenis = new Lenis();
-
-        lenis.on('scroll', (e) => {
-            AnimationManager.registerAnimation(updateParallax); // Ensure parallax effect updates on Lenis scroll
-            //console.log(e)
-        });
-
-        function raf(time) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
+            };
         }
 
-        requestAnimationFrame(raf);
+
+        
+
+        const lenis = new Lenis()
+
+        lenis.on('scroll', (e) => {
+
+          //console.log(e)
+        })
+
+        function raf(time) {
+          lenis.raf(time)
+          requestAnimationFrame(raf)
+        }
+
+        requestAnimationFrame(raf)
 
         function scrollToTop() {
             // Disable Lenis smooth scrolling
             lenis.stop();
 
+
             // Instantly set the scroll position to the top
             if (typeof window !== 'undefined') {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'instant'
-                });
+                window.scrollTo(0, 0);
+
+                
+
+
             }
 
             // Re-enable Lenis smooth scrolling
             setTimeout(() => {
                 lenis.start();
-                AnimationManager.registerAnimation(updateParallax); // Ensure parallax effect updates after scroll to top
             }, 50); // Using setTimeout ensures this occurs in the next event loop cycle
         }
+
+        
 
 //////// Interface Loadin //////
         
@@ -2803,7 +2794,7 @@
                     }
                 });
             }, {
-                threshold: 0.25 // This means the animation will start when 10% of the item is visible
+                threshold: 0.3 // This means the animation will start when 10% of the item is visible
             });
 
             const images = document.querySelectorAll('.flex-icontainer');
@@ -2814,7 +2805,9 @@
             return /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
         }
 
-      
+        function isIOS() {
+            return /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        }
 
         let tiles = { a: false, b: false };
 
@@ -2956,10 +2949,8 @@
                     img.style.width = '100%'; // Stretch the image to fill the container's width
                     img.style.height = `${imageHeight}px`; // Set a fixed height for direct tiling
                     container.appendChild(img);
-
-                    // Add updateParallax to the AnimationManager
-                    AnimationManager.registerAnimation(updateParallax);
-
+                    requestAnimationFrame(updateParallax);
+                    
                     // This function needs to be called to update the virtual canvas size accordingly
                     delayedVirtualCanvasUpdate();
                 }
@@ -2969,9 +2960,10 @@
             }).then(() => {
                 tiles.a = true;
                 // Set the flag for tiles a to true after the promise is resolved
+                
+                
             });
         }
-
 
         function createVerticalTiles_b(containerId, imageUrl, imageHeight) {
             return new Promise((resolve, reject) => {
@@ -3101,50 +3093,78 @@
         let lastScrollY = 0;
 
         function updateParallax() {
+            // One-time iOS device check to exit the function if on an iOS device
             const isiOS = /iPad|iPhone|iPod/.test(navigator.platform) || 
                           (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
             if (isiOS) {
-                return;
+                return; // Exit the function early if on an iOS device
             }
 
-            const speedFactorBackground = 0.3;
-            const speedFactorSides = -1.2;
-            const speedFactorViewer = -0.3;
+            const speedFactorBackground = 0.3; // Slower background movement
+            const speedFactorSides = -1.2; // Faster side images movement, negative for upward scroll
+            const speedFactorViewer = -0.3; // Viewer image movement speed, matching scroll speed for a floating effect
 
-            const scrollY = window.scrollY;
-
-            if (scrollY === lastScrollY) {
-                return;
-            }
-
-            lastScrollY = scrollY;
-
+            // Parallax effect updates for background, sides, and viewer container
             const background = document.getElementById('interfaceBackground');
             if (background) {
-                const offsetBackground = scrollY * speedFactorBackground;
+                const offsetBackground = window.scrollY * speedFactorBackground;
                 background.style.transform = `translateY(${offsetBackground}px)`;
             }
 
             const sideLeft = document.getElementById('interfaceSideLeft');
             const sideRight = document.getElementById('interfaceSideRight');
             if (sideLeft && sideRight) {
-                const offsetSides = scrollY * speedFactorSides;
+                const offsetSides = window.scrollY * speedFactorSides;
                 sideLeft.style.transform = `translateY(${offsetSides}px)`;
                 sideRight.style.transform = `translateY(${offsetSides}px)`;
             }
 
             const viewerContainer = document.getElementById('interfaceViewerContainer');
             if (viewerContainer) {
-                const offsetViewer = scrollY * speedFactorViewer;
+                const offsetViewer = window.scrollY * speedFactorViewer;
                 viewerContainer.style.transform = `translateY(${offsetViewer}px)`;
+            }
+
+            // Continue the animation only if any of the parallax elements are present
+            if (background || sideLeft || sideRight || viewerContainer) {
+                requestAnimationFrame(updateParallax);
             }
         }
 
 
 
+
+
+
 /////////// ANIMATION TEXT /////
 
-        
+        const AnimationManager = {
+            frameCap: 30,
+            lastRender: performance.now(),
+            animations: [],
+            running: false,
+
+            registerAnimation(stepFunction) {
+                this.animations.push(stepFunction);
+                if (!this.running) {
+                    this.running = true;
+                    requestAnimationFrame(this.runAnimations.bind(this));
+                }
+            },
+
+            runAnimations(timestamp) {
+                let progress = timestamp - this.lastRender;
+                if (progress > 1000 / this.frameCap) {
+                    this.lastRender = timestamp - (progress % (1000 / this.frameCap));
+                    this.animations = this.animations.filter(step => step(timestamp) !== false);
+                }
+                if (this.animations.length > 0) {
+                    requestAnimationFrame(this.runAnimations.bind(this));
+                } else {
+                    this.running = false;
+                }
+            }
+        };
 
         function generateRandomString(length) {
             const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()[]{}|';
@@ -3161,7 +3181,7 @@
                 element.textContent = currentText;
                 element.style.opacity = '0';
 
-                const shuffleFrequency = 8;
+                const shuffleFrequency = 10;
                 const intervalTime = duration / (finalText.length * shuffleFrequency);
                 let index = 0;
                 let shuffleCount = 0;
@@ -3372,15 +3392,14 @@
                 if (progress < stopScramblingDelay) {
                     currentText = generateRandomString(finalText.length);
                     element.textContent = currentText;
-                    return true; // Indicate that the animation should continue
+                    requestAnimationFrame(step);
                 } else {
                     element.textContent = finalText;
-                    return false; // Indicate that the animation is complete
                 }
             }
 
             setTimeout(function() {
-                AnimationManager.registerAnimation(step);
+                requestAnimationFrame(step);
             }, randomStartDelay);
         }
 
@@ -3391,7 +3410,6 @@
                 });
             });
         }
-
  
         function updateAllContainersDuringScaling() {
             if (!currentSceneData) {
