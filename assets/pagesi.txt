@@ -114,7 +114,7 @@ I02:
 https://raw.githubusercontent.com/Mischlichter/data/main/gallerycom/36623638617.jpg
 
 I03:
-https://raw.githubusercontent.com/Mischlichter/data/main/gallerycom/77943192304.jpg
+https://raw.githubusercontent.com/Mischlichter/data/main/gallerycom/1499203943.jpg
 
 I05:
 https://raw.githubusercontent.com/Mischlichter/data/main/gallerycom/66481338991.jpg
