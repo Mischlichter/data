@@ -2394,7 +2394,6 @@
             var randomStartDelay = Math.random() * 200; // Start scrambling with random delay
             var stopScramblingDelay = totalDuration - 200 + Math.random() * 400; // When to stop scrambling
             var startTime = null;
-            var animationRegistered = false;
 
             function step(timestamp) {
                 if (!startTime) startTime = timestamp;
@@ -2404,23 +2403,21 @@
                     var scrambledText = generateRandomString(finalText.length);
                     element.textContent = scrambledText;
                     //console.log("Scrambled text:", scrambledText); // Log scrambled text
-                    return true; // Continue the animation
+                    requestAnimationFrame(step);
                 } else {
                     element.textContent = finalText;
                     element.style.opacity = '1';
                     //console.log("Final text set to:", element.textContent); // Log final text
                     if (progress >= totalDuration) {
                         element.removeAttribute('data-originalText'); // Clean up
-                        return false; // Stop the animation
                     }
                 }
             }
 
             setTimeout(function() {
-                AnimationManager.registerAnimation(step);
+                requestAnimationFrame(step);
             }, randomStartDelay);
         }
-
 
         function animateTextDuringHover(element, finalDuration = 150) {
             // Check if an animation is in progress
