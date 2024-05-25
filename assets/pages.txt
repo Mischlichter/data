@@ -88,7 +88,7 @@ The Journey Unfolds - The saga of HogeAI is an ever-evolving narrative of creati
 
 #container01 {
     font-family: 'JetBrainsMono-ExtraBold', sans-serif;
-    margin-top: 25%;
+    margin-top: 30%;
     pointer-events: none;
 }
 
@@ -198,7 +198,7 @@ Unleash Your Creativity - At HogeAI, we believe in the power of community and li
 
 #container01 {
     font-family: 'JetBrainsMono-ExtraBold', sans-serif;
-    margin-top: 25%;
+    margin-top: 30%;
     pointer-events: none;
 }
 
@@ -321,7 +321,7 @@ Experiment & Explore - The beauty of HogeAI? There's no right or wrong. Play aro
 
 #container01 {
     font-family: 'JetBrainsMono-ExtraBold', sans-serif;
-    margin-top: 25%;
+    margin-top: 30%;
     pointer-events: none;
 }
 
