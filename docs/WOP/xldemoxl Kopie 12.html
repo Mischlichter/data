@@ -2509,7 +2509,7 @@
           dynamicStyles.length = 0; // Clear the array
         }
 
-        async function loadScene(index) {
+        function loadScene(index) {
             const scene = scenesData[index];
             const sceneImages = scenesiData[index]; // Assuming scenesiData is structured similarly
 
@@ -2528,7 +2528,7 @@
 
             // Update the iframe with the new scene
             updateIframe(formattedSceneKey);
-
+            //console.log('Formatted Scene Key:', formattedSceneKey);
             // Merge and sort text and image containers
             let combinedData = [];
             Object.keys(scene.containers).forEach(key => {
@@ -2548,7 +2548,7 @@
             });
 
             // Create containers in sorted order
-            for (let item of combinedData) {
+            combinedData.forEach(item => {
                 const container = document.createElement('div');
                 container.id = item.key;
                 container.className = item.type === 'text' ? 'flex-container' : 'flex-icontainer';
@@ -2565,11 +2565,10 @@
 
                 if (item.type === 'image') {
                     const image = document.createElement('img');
-                    const dbImage = await getImageFromDB(item.content.src);
-                    image.src = dbImage || item.content.src; // Use the DB image if available, otherwise fallback to original URL
+                    image.src = item.content.src;
                     container.appendChild(image);
                 }
-            }
+            });
 
             // Create and style the footer
             createStyledFooter()
@@ -3011,45 +3010,27 @@
             setTimeout(updateVirtualCanvasSize, 100); // Delay of 100 milliseconds
         }
 
-        // Helper function to get image from IndexedDB
-        // Helper function to get image from IndexedDB
-        async function getImageFromDB(url) {
-            try {
-                const db = await idb.openDB('MyDatabase', 1);
-                const tx = db.transaction('assets', 'readonly');
-                const store = tx.objectStore('assets');
-                const asset = await store.get(url);
-                await tx.done;
-                if (asset) {
-                    console.log(`Image loaded from IndexedDB: ${url}`);
-                    return URL.createObjectURL(asset.blob);
-                } else {
-                    return null;
-                }
-            } catch (error) {
-                console.error('Error retrieving image from IndexedDB:', error);
-                return null;
-            }
-        }
-
-        async function loadInterface(currentSceneIndex) {
+        function loadInterface(currentSceneIndex) {
+            // Extend: Function to ensure wrapper existence
             function ensureWrapperExistence(wrapperClass, contentStructure) {
                 let wrapper = document.querySelector(`.${wrapperClass}`);
                 if (!wrapper) {
                     wrapper = document.createElement('div');
                     wrapper.className = wrapperClass;
-                    document.body.appendChild(wrapper);
-                    wrapper.innerHTML = contentStructure;
+                    document.body.appendChild(wrapper); // Append wrapper to the body
+                    wrapper.innerHTML = contentStructure; // Set the inner HTML as per the structure required
                 }
             }
 
+            // For scene index 3, remove the wrappers completely
             if (currentSceneIndex === 3 || currentSceneIndex === 4) {
                 document.querySelectorAll('.scale-wrapper-background, .scale-wrapper-interface').forEach(wrapper => {
                     wrapper.parentNode.removeChild(wrapper);
                 });
-                return;
+                return; // Exit the function after handling the special case for scene index 3
             }
 
+            // Ensure the existence of `.scale-wrapper-background` and `.scale-wrapper-interface` wrappers
             ensureWrapperExistence('scale-wrapper-background', `
                 <div id="backgroundRoot">
                     <div id="backgroundContainer">
@@ -3070,61 +3051,53 @@
                 </div>
             `);
 
+            // Your existing code to tile images and update the viewer image
             const sceneFormatted = currentSceneIndex.toString().padStart(2, '0');
-            const imageHeight = 2048;
+            const imageHeight = 2048; // Fixed height for all images
 
             const backgroundUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/background/b${sceneFormatted}.jpg`;
             const sideImageUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/side/s${sceneFormatted}.jpg`;
             const viewerImageUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/v${sceneFormatted}.jpg`;
             const viewerMaskUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/vm${sceneFormatted}.png`;
 
-            const backgroundPromise = getImageFromDB(backgroundUrl).then(dbImage => {
-                return createVerticalTiles_a('interfaceBackground', dbImage || backgroundUrl, imageHeight);
+            // Create promises for vertical tiles
+            const backgroundPromise = createVerticalTiles_a('interfaceBackground', backgroundUrl, imageHeight);
+            const sideLeftPromise = createVerticalTiles_b('interfaceSideLeft', sideImageUrl, imageHeight);
+            const sideRightPromise = createVerticalTiles_b('interfaceSideRight', sideImageUrl, imageHeight);
+
+            // Create a promise for the viewer image
+            const viewerImagePromise = new Promise((resolve, reject) => {
+                const viewerImageElement = document.getElementById('interfaceViewerImage');
+                if (viewerImageElement && document.body.contains(viewerImageElement)) {
+                    const tempImage = new Image();
+                    tempImage.onload = function() {
+                        viewerImageElement.src = tempImage.src;
+                        viewerImageElement.style.maskImage = `url('${viewerMaskUrl}')`;
+                        viewerImageElement.style.webkitMaskImage = `url('${viewerMaskUrl}')`;
+                        viewerImageElement.style.maskSize = '100% 100%';
+                        viewerImageElement.style.webkitMaskSize = '100% 100%';
+                        resolve(); // Resolve the promise when the image is loaded
+                    };
+                    tempImage.onerror = function() {
+                        console.error("Failed to load image at url:", viewerImageUrl);
+                        reject(); // Reject the promise on error
+                    };
+                    tempImage.src = viewerImageUrl; // Set the image source which starts loading the image
+                } else {
+                    console.log("Viewer image element does not exist in the DOM.");
+                    reject(); // Reject the promise if the element does not exist
+                }
             });
 
-            const sideLeftPromise = getImageFromDB(sideImageUrl).then(dbImage => {
-                return createVerticalTiles_b('interfaceSideLeft', dbImage || sideImageUrl, imageHeight);
-            });
-
-            const sideRightPromise = getImageFromDB(sideImageUrl).then(dbImage => {
-                return createVerticalTiles_b('interfaceSideRight', dbImage || sideImageUrl, imageHeight);
-            });
-
-            const viewerImagePromise = getImageFromDB(viewerImageUrl).then(dbImage => {
-                return new Promise((resolve, reject) => {
-                    const viewerImageElement = document.getElementById('interfaceViewerImage');
-                    if (viewerImageElement && document.body.contains(viewerImageElement)) {
-                        const tempImage = new Image();
-                        tempImage.onload = function() {
-                            viewerImageElement.src = tempImage.src;
-                            viewerImageElement.style.maskImage = `url('${viewerMaskUrl}')`;
-                            viewerImageElement.style.webkitMaskImage = `url('${viewerMaskUrl}')`;
-                            viewerImageElement.style.maskSize = '100% 100%';
-                            viewerImageElement.style.webkitMaskSize = '100% 100%';
-                            resolve();
-                        };
-                        tempImage.onerror = function() {
-                            console.error("Failed to load image at url:", viewerImageUrl);
-                            reject();
-                        };
-                        tempImage.src = dbImage || viewerImageUrl;
-                    } else {
-                        console.log("Viewer image element does not exist in the DOM.");
-                        reject();
-                    }
-                });
-            });
-
+            // Wait for all promises to resolve before triggering fadeInElements
             Promise.all([backgroundPromise, sideLeftPromise, sideRightPromise, viewerImagePromise]).then(() => {
                 setTimeout(() => {
-                    fadeInElements();
-                }, 111);
+                    fadeInElements(); // This function should handle fading in the viewer and associated elements
+                }, 111); // Delay to allow the browser to render the updated image before fading in
             }).catch((error) => {
                 console.error("Error loading elements:", error);
             });
         }
-
-
 
 
         
