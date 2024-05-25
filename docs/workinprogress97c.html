@@ -3011,7 +3011,7 @@
             setTimeout(updateVirtualCanvasSize, 100); // Delay of 100 milliseconds
         }
 
-        // Helper function to get image from IndexedDB
+      
         // Helper function to get image from IndexedDB
         async function getImageFromDB(url) {
             try {
@@ -3021,7 +3021,7 @@
                 const asset = await store.get(url);
                 await tx.done;
                 if (asset) {
-                    console.log(`Image loaded from IndexedDB: ${url}`);
+                    //console.log(`Image loaded from IndexedDB: ${url}`);
                     return URL.createObjectURL(asset.blob);
                 } else {
                     return null;
