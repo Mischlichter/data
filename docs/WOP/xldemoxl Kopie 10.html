@@ -926,7 +926,7 @@
 
 
             const loadingInterval = setInterval(function() {
-                if (loadingPercentage >= 90) {
+                if (loadingPercentage >= 95) {
                     // Loading is complete
                     shuffleOnes(); // Start shuffling spans with '1'
                     clearInterval(loadingInterval);
@@ -1591,11 +1591,15 @@
 
         lenis.on('scroll', (e) => {
             AnimationManager.registerAnimation(updateParallax); // Ensure parallax effect updates on Lenis scroll
+            //console.log(e)
         });
 
-        AnimationManager.registerAnimation((timestamp) => {
-            lenis.raf(timestamp);
-        });
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+
+        requestAnimationFrame(raf);
 
         function scrollToTop() {
             // Disable Lenis smooth scrolling
@@ -3057,45 +3061,40 @@
             const viewerImageUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/v${sceneFormatted}.jpg`;
             const viewerMaskUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/vm${sceneFormatted}.png`;
 
-            // Create promises for vertical tiles
-            const backgroundPromise = createVerticalTiles_a('interfaceBackground', backgroundUrl, imageHeight);
-            const sideLeftPromise = createVerticalTiles_b('interfaceSideLeft', sideImageUrl, imageHeight);
-            const sideRightPromise = createVerticalTiles_b('interfaceSideRight', sideImageUrl, imageHeight);
+            createVerticalTiles_a('interfaceBackground', backgroundUrl, imageHeight);
+            createVerticalTiles_b('interfaceSideLeft', sideImageUrl, imageHeight);
+            createVerticalTiles_b('interfaceSideRight', sideImageUrl, imageHeight);
 
-            // Create a promise for the viewer image
-            const viewerImagePromise = new Promise((resolve, reject) => {
-                const viewerImageElement = document.getElementById('interfaceViewerImage');
-                if (viewerImageElement && document.body.contains(viewerImageElement)) {
-                    const tempImage = new Image();
-                    tempImage.onload = function() {
-                        viewerImageElement.src = tempImage.src;
-                        viewerImageElement.style.maskImage = `url('${viewerMaskUrl}')`;
-                        viewerImageElement.style.webkitMaskImage = `url('${viewerMaskUrl}')`;
-                        viewerImageElement.style.maskSize = '100% 100%';
-                        viewerImageElement.style.webkitMaskSize = '100% 100%';
-                        resolve(); // Resolve the promise when the image is loaded
-                    };
-                    tempImage.onerror = function() {
-                        console.error("Failed to load image at url:", viewerImageUrl);
-                        reject(); // Reject the promise on error
-                    };
-                    tempImage.src = viewerImageUrl; // Set the image source which starts loading the image
-                } else {
-                    console.log("Viewer image element does not exist in the DOM.");
-                    reject(); // Reject the promise if the element does not exist
-                }
-            });
+            const viewerImageElement = document.getElementById('interfaceViewerImage');
 
-            // Wait for all promises to resolve before triggering fadeInElements
-            Promise.all([backgroundPromise, sideLeftPromise, sideRightPromise, viewerImagePromise]).then(() => {
-                setTimeout(() => {
-                    fadeInElements(); // This function should handle fading in the viewer and associated elements
-                }, 111); // Delay to allow the browser to render the updated image before fading in
-            }).catch((error) => {
-                console.error("Error loading elements:", error);
-            });
+            // Check if the viewer image element exists and is part of the DOM
+            if (viewerImageElement && document.body.contains(viewerImageElement)) {
+                // Create a new Image object to preload the viewer image
+                const tempImage = new Image();
+                tempImage.onload = function() {
+                    // Once the image is fully loaded, apply it to the viewerImageElement
+                    viewerImageElement.src = tempImage.src;
+
+                    // Apply the lower resolution mask and scale it up to fit
+                    viewerImageElement.style.maskImage = `url('${viewerMaskUrl}')`;
+                    viewerImageElement.style.webkitMaskImage = `url('${viewerMaskUrl}')`;
+                    viewerImageElement.style.maskSize = '100% 100%'; // Scale the mask to fit the viewer image
+                    viewerImageElement.style.webkitMaskSize = '100% 100%';
+
+                    // Now that everything is ready and rendered, start the fade-in process
+                    setTimeout(() => {
+                        fadeInElements(); // This function should handle fading in the viewer and associated elements
+                    }, 111); // Delay to allow the browser to render the updated image before fading in
+                };
+                tempImage.onerror = function() {
+                    console.error("Failed to load image at url:", viewerImageUrl);
+                };
+                tempImage.src = viewerImageUrl; // Set the image source which starts loading the image
+            } else {
+                console.log("Viewer image element does not exist in the DOM.");
+            }
+
         }
-
 
         
 
