@@ -1300,11 +1300,12 @@
             window.addEventListener('load', async () => {
                 if (!localStorage.getItem(firstLoadCompleteFlag)) {
                     await preloadAssets(); // Preload assets before registering the service worker
-                    setTimeout(() => {
-                        registerServiceWorker();
-                    }, 11); // Adjust this delay if needed
+                    window.location.reload(); // Reload the page after preloading assets
+                } else {
+                    registerServiceWorker(); // Register service worker on subsequent loads
                 }
             });
+
 
 
 
