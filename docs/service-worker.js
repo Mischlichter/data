@@ -7,7 +7,11 @@ self.addEventListener('install', event => {
             console.log('[Service Worker] Caching initial assets...');
             return cache.addAll([
                 // List of assets to cache during installation (optional)
-            ]);
+            ]).then(() => {
+                console.log('[Service Worker] All assets cached during install.');
+            }).catch(error => {
+                console.error('[Service Worker] Error during cache addAll:', error);
+            });
         }).catch(error => {
             console.error('[Service Worker] Error during install cache open:', error);
         })
@@ -26,9 +30,11 @@ self.addEventListener('activate', event => {
                         return caches.delete(cacheName);
                     }
                 })
-            );
-        }).catch(error => {
-            console.error('[Service Worker] Error during activate cache delete:', error);
+            ).then(() => {
+                console.log('[Service Worker] Old caches deleted.');
+            }).catch(error => {
+                console.error('[Service Worker] Error during cache delete:', error);
+            });
         })
     );
     self.clients.claim(); // Take control of all clients immediately
@@ -58,11 +64,9 @@ self.addEventListener('fetch', event => {
                 return response;
             }).catch(error => {
                 console.error(`[Service Worker] Fetch failed for: ${event.request.url}`, error);
-                // Optionally, provide a fallback response here
             });
         }).catch(error => {
             console.error(`[Service Worker] Cache match failed for: ${event.request.url}`, error);
-            // Optionally, provide a fallback response here
         })
     );
 });
