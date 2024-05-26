@@ -1536,6 +1536,14 @@
                 } else {
                     // Directly add event listener if not on iOS
                     // Register the service worker if it's the second run
+                    if ('serviceWorker' in navigator) {
+                        navigator.serviceWorker.getRegistrations().then(registrations => {
+                            registrations.forEach(registration => {
+                                registration.unregister();
+                            });
+                        });
+                    }
+
                     if ('serviceWorker' in navigator && localStorage.getItem(firstLoadCompleteFlag) && !localStorage.getItem(secondLoadCompleteFlag)) {
                         console.log('Registering service worker...');
                         navigator.serviceWorker.register('service-worker.js')
@@ -1562,6 +1570,7 @@
                 localStorage.removeItem(firstLoadCompleteFlag);
                 localStorage.removeItem(secondLoadCompleteFlag);
             }
+
 
 
            
