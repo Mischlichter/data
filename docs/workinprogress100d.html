@@ -2598,9 +2598,6 @@
 
                         container.appendChild(image);
                     }
-
-                    // Add a small delay before resolving the promise
-                    await delay(50);
                     resolve();
                 });
             }
@@ -2616,11 +2613,6 @@
             highlightActiveMenuItem(`menuContainer${index}`);
             observeImagesForAnimation();
             createScrollToTopButton();
-        }
-
-        // Helper function to create a delay
-        function delay(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
         }
 
         async function getCachedImage(db, url) {
@@ -2639,7 +2631,6 @@
             }
             return null;
         }
-
 
 
 
