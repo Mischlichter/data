@@ -1296,16 +1296,7 @@
                 }
             }
 
-            // Ensure the service worker is registered after the page reloads and assets are preloaded
-            window.addEventListener('load', async () => {
-                if (!localStorage.getItem(firstLoadCompleteFlag)) {
-                    await preloadAssets(); // Preload assets before registering the service worker
-                    window.location.reload(); // Reload the page after preloading assets
-                } else {
-                    registerServiceWorker(); // Register service worker on subsequent loads
-                }
-            });
-
+       
 
 
 
@@ -1557,23 +1548,24 @@
 
             // Check and control the load progress visibility based on the phase of loading
             if (!localStorage.getItem(firstLoadCompleteFlag) || !localStorage.getItem(secondLoadCompleteFlag)) {
-                preloadAssets();
+                await preloadAssets();
+                window.location.reload();
             } else {
                 // Removed direct calls to enterSite() here to ensure it's managed within triggerPermissionRequest
                 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                    
-                     // This will handle entering the site after permissions
+                    // This will handle entering the site after permissions
                     showOverlay();
                 } else {
                     // Directly add event listener if not on iOS
-                    
                     enterSite(); // Non-iOS or no permissions needed, proceed to enter the site
-                    fadeOutOverlay()
+                    fadeOutOverlay();
                 }
 
                 localStorage.removeItem(firstLoadCompleteFlag);
                 localStorage.removeItem(secondLoadCompleteFlag);
+                registerServiceWorker(); // Register the Service Worker after entering the site
             }
+
            
         });
 
