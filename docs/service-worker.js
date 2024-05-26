@@ -2,8 +2,8 @@ importScripts('https://www.hogeai.com/scripts/index-min.js');
 
 const CACHE_NAME = 'site-assets';
 const DB_NAME = 'MyDatabase';
-const STORE_NAME = 'assets';
-const IMAGE_STORE_NAME = 'imageData';
+const ASSETS_STORE_NAME = 'assets';
+const IMAGES_STORE_NAME = 'imageData';
 
 console.log('Service Worker: Registered');
 
@@ -14,8 +14,8 @@ self.addEventListener('install', event => {
             const db = await openDB();
             if (!db) return;
 
-            const tx = db.transaction(STORE_NAME, 'readonly');
-            const store = tx.objectStore(STORE_NAME);
+            const tx = db.transaction(ASSETS_STORE_NAME, 'readonly');
+            const store = tx.objectStore(ASSETS_STORE_NAME);
             const allAssets = await store.getAll();
 
             const urlsToCache = allAssets.map(asset => asset.url);
@@ -30,23 +30,24 @@ self.addEventListener('install', event => {
 self.addEventListener('fetch', event => {
     console.log('Service Worker: Fetch event for', event.request.url);
     event.respondWith(
-        caches.match(event.request).then(response => {
+        caches.match(event.request).then(async response => {
             if (response) {
                 console.log('Service Worker: Serving from cache', event.request.url);
                 return response;
             }
-            return fetch(event.request).then(networkResponse => {
+            
+            try {
+                const networkResponse = await fetch(event.request);
                 if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
-                    caches.open(CACHE_NAME).then(cache => {
-                        cache.put(event.request, networkResponse.clone());
-                        console.log('Service Worker: Fetched and cached', event.request.url);
-                    });
+                    const cache = await caches.open(CACHE_NAME);
+                    cache.put(event.request, networkResponse.clone());
+                    console.log('Service Worker: Fetched and cached', event.request.url);
                 }
                 return networkResponse;
-            });
-        }).catch(error => {
-            console.error('Service Worker: Error during fetch event:', error);
-            return caches.match(event.request);
+            } catch (error) {
+                console.error('Service Worker: Error during fetch event:', error);
+                return caches.match(event.request);
+            }
         })
     );
 });
@@ -55,19 +56,20 @@ async function openDB() {
     if (!('indexedDB' in self)) return null;
     console.log('Service Worker: Opening IndexedDB');
 
-    return idb.openDB(DB_NAME, 1, {
-        upgrade(db) {
-            if (!db.objectStoreNames.contains(STORE_NAME)) {
-                db.createObjectStore(STORE_NAME, { keyPath: 'url' });
+    try {
+        const db = await idb.openDB(DB_NAME, 1, {
+            upgrade(db) {
+                if (!db.objectStoreNames.contains(ASSETS_STORE_NAME)) {
+                    db.createObjectStore(ASSETS_STORE_NAME, { keyPath: 'url' });
+                }
+                if (!db.objectStoreNames.contains(IMAGES_STORE_NAME)) {
+                    db.createObjectStore(IMAGES_STORE_NAME, { keyPath: 'filename' });
+                }
             }
-            if (!db.objectStoreNames.contains(IMAGE_STORE_NAME)) {
-                db.createObjectStore(IMAGE_STORE_NAME, { keyPath: 'filename' });
-            }
-        }
-    }).then(db => {
+        });
         console.log('Service Worker: IndexedDB opened');
         return db;
-    }).catch(error => {
+    } catch (error) {
         console.error('Service Worker: Error opening IndexedDB:', error);
-    });
+    }
 }
