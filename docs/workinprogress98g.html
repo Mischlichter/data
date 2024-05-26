@@ -1277,27 +1277,6 @@
 
 
 
-            function registerServiceWorker() {
-                if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.hostname === 'localhost')) {
-                    navigator.serviceWorker.register('/service-worker.js').then(registration => {
-                        console.log('Service Worker registered with scope:', registration.scope);
-                        if (registration.installing) {
-                            console.log('Service worker installing');
-                        } else if (registration.waiting) {
-                            console.log('Service worker installed');
-                        } else if (registration.active) {
-                            console.log('Service worker active');
-                        }
-                    }).catch(error => {
-                        console.error('Service Worker registration failed:', error);
-                    });
-                } else {
-                    console.warn('Service Worker not registered. Page is not served over HTTPS or localhost.');
-                }
-            }
-
-       
-
 
 
             function fadeOutAsciiLinesXL() {
@@ -1317,20 +1296,45 @@
 
 
             function enterSite() {
-                
-                initialize();
-
-                const centerContainer = document.querySelector('.center-container-XL');
-                if (centerContainer) {
-                    centerContainer.style.opacity = '0';
-                    setTimeout(() => {
-                        centerContainer.style.display = 'none';
-                    }, 500); // Adjust the time as needed for the fade out transition
-                } else {
-                    console.error("Center container not found.");
+                async function registerServiceWorker() {
+                    if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.hostname === 'localhost')) {
+                        try {
+                            const registration = await navigator.serviceWorker.register('/service-worker.js');
+                            console.log('Service Worker registered with scope:', registration.scope);
+                            if (registration.installing) {
+                                console.log('Service worker installing');
+                            } else if (registration.waiting) {
+                                console.log('Service worker installed');
+                            } else if (registration.active) {
+                                console.log('Service worker active');
+                            }
+                        } catch (error) {
+                            console.error('Service Worker registration failed:', error);
+                        }
+                    } else {
+                        console.warn('Service Worker not registered. Page is not served over HTTPS or localhost.');
+                    }
                 }
-                initializeMenu();
+
+                // Register the service worker and wait for it to complete
+                registerServiceWorker().then(() => {
+                    // Proceed with the rest of the enterSite logic after service worker registration
+                    initialize();
+
+                    const centerContainer = document.querySelector('.center-container-XL');
+                    if (centerContainer) {
+                        centerContainer.style.opacity = '0';
+                        setTimeout(() => {
+                            centerContainer.style.display = 'none';
+                        }, 500); // Adjust the time as needed for the fade out transition
+                    } else {
+                        console.error("Center container not found.");
+                    }
+                    initializeMenu();
+                });
             }
+
+
 
 
 
@@ -1563,7 +1567,7 @@
 
                 localStorage.removeItem(firstLoadCompleteFlag);
                 localStorage.removeItem(secondLoadCompleteFlag);
-                registerServiceWorker(); // Register the Service Worker after entering the site
+                
             }
 
            
