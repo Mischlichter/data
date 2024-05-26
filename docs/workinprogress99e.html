@@ -799,7 +799,7 @@
                     .catch(function(error) {
                         console.log('Service Worker registration failed:', error);
                     });
-            }    
+            }
 
             // Check the flags immediately and adjust the loadingPercentage if it's the second load
             if (localStorage.getItem(firstLoadCompleteFlag) && !localStorage.getItem(secondLoadCompleteFlag)) {
@@ -1046,8 +1046,8 @@
             }
 
             async function preloadAssets() {
+                console.log('Starting to preload assets...');
                 const supportsIndexedDB = checkIndexedDBSupport();
-                console.log('Starting to preload assets');
 
                 let db;
                 if (supportsIndexedDB) {
@@ -1057,29 +1057,22 @@
 
                     for (let attempt = 1; attempt <= maxRetries; attempt++) {
                         try {
-                            //console.log(`Attempt ${attempt} to open database`);
                             db = await timeoutPromise(
                                 idb.openDB('MyDatabase', 1, {
-                                    upgrade(db, oldVersion, newVersion, transaction) {
-                                      
+                                    upgrade(db) {
                                         if (!db.objectStoreNames.contains('assets')) {
-                                         
                                             db.createObjectStore('assets', { keyPath: 'url' });
                                         }
                                     }
                                 }),
                                 openDBTimeout
                             );
-                            //console.log('Database opened successfully on attempt', attempt);
-                            break; // Exit the loop if successful
+                            break;
                         } catch (error) {
                             console.error(`Error opening database on attempt ${attempt}:`, error);
                             if (attempt < maxRetries) {
-                                //console.log(`Retrying to open database in ${retryDelay} ms...`);
                                 await new Promise(resolve => setTimeout(resolve, retryDelay));
                             } else {
-                                //console.error('Maximum retries reached. Could not open database.');
-                                // Fallback to caching without IndexedDB
                                 db = null;
                                 break;
                             }
@@ -1098,23 +1091,19 @@
 
                 let assetsJson, extraText;
                 try {
-                    //console.log('Fetching assets and extra assets');
                     [assetsJson, extraText] = await Promise.all([
                         fetch(ASSETS_MANIFEST_URL).then(res => res.json()),
                         fetch(EXTRA_ASSETS_URL).then(res => res.text()),
                     ]);
-                    //console.log('Assets and extra assets fetched successfully');
                 } catch (error) {
                     console.error('Error fetching assets or extra assets:', error);
                     return;
                 }
 
-                //console.log('Assets JSON:', assetsJson);
-
                 const urlsToCache = [];
                 parseAssets(assetsJson, urlsToCache);
-                const extraAssetsUrls = parseExtraAssets(extraText, assetsJson); // Pass manifest to parseExtraAssets
-                urlsToCache.push(...extraAssetsUrls); // Add extra assets to urlsToCache
+                const extraAssetsUrls = parseExtraAssets(extraText, assetsJson);
+                urlsToCache.push(...extraAssetsUrls);
 
                 console.log(`Total URLs to cache: ${urlsToCache.length}`);
                 let loaded = 0;
@@ -1126,31 +1115,26 @@
 
                     if (supportsIndexedDB && db) {
                         try {
-                            //console.log(`Checking IndexedDB for ${url}`);
                             const idbResponse = await db.transaction('assets').objectStore('assets').get(url);
                             if (idbResponse && new Date(idbResponse.lastModified) >= new Date(lastModified)) {
-                                //console.log(`Loaded from IndexedDB: ${url}`);
                                 shouldFetch = false;
                             }
                         } catch (error) {
                             console.error('Error checking IndexedDB for url:', url, error);
-                            shouldFetch = true; // Proceed to fetch and cache
+                            shouldFetch = true;
                         }
                     }
 
                     if (shouldFetch) {
                         let response;
                         try {
-                            //console.log(`Fetching ${url}`);
                             response = await fetch(url);
                             if (response.ok) {
                                 const cloneForCache = response.clone();
                                 await cache.put(url, cloneForCache);
-                                //console.log(`Fetched and cached: ${url}`);
                                 if (supportsIndexedDB && db) {
                                     const blob = await response.blob();
                                     const lastModifiedHeader = response.headers.get('last-modified') || new Date(lastModified).toISOString();
-                                    //console.log(`Preparing to store in DB: ${url}, Last Modified: ${lastModifiedHeader}`);
                                     assetsToStore.push({ url, blob, lastModified: lastModifiedHeader });
                                 }
                             } else {
@@ -1164,16 +1148,13 @@
                     loaded++;
                     requestAnimationFrame(() => {
                         loadingPercentage = Math.floor((loaded / urlsToCache.length) * 100);
-                        //console.log(`Loading: ${loadingPercentage}% complete`);
                     });
                     await new Promise(resolve => setTimeout(resolve, delay));
                 }
 
                 if (supportsIndexedDB && db) {
                     try {
-                        //console.log('Storing assets in IndexedDB');
                         await storeAssetsInDB(assetsToStore);
-                        
                     } catch (error) {
                         console.error('Error storing assets in IndexedDB:', error);
                     }
@@ -1186,8 +1167,10 @@
                     localStorage.setItem(secondLoadCompleteFlag, 'true');
                 }
 
-                fadeOutAsciiLinesXL(); // Assuming this is a function for UI effects
+                fadeOutAsciiLinesXL();
+                window.location.reload();
             }
+
 
             
 
