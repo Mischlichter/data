@@ -275,28 +275,6 @@ Unleash Your Creativity - At HogeAI, we believe in the power of community and li
 
 SCENE04:
 
-P01: GALLERY
- 
-
-#container01 {
-	display: none;
-    font-family: 'JetBrainsMono-ExtraBold', sans-serif;
-}
-
-
-SCENE05:
-
-P01: THEATRE
- 
-
-#container01 {
-	display: none;
-    font-family: 'JetBrainsMono-ExtraBold', sans-serif;
-}
-
-
-SCENE06:
-
 P01:
 PROMPT GUIDE - Crafting Your Hoge Tale
 
@@ -355,4 +333,25 @@ Experiment & Explore - The beauty of HogeAI? There's no right or wrong. Play aro
     pointer-events: none;
 }
 
+
+SCENE05:
+
+P01: GALLERY
+ 
+
+#container01 {
+	display: none;
+    font-family: 'JetBrainsMono-ExtraBold', sans-serif;
+}
+
+
+SCENE06:
+
+P01: THEATRE
+ 
+
+#container01 {
+	display: none;
+    font-family: 'JetBrainsMono-ExtraBold', sans-serif;
+}
 
