@@ -1277,22 +1277,40 @@
 
 
 
-            if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.hostname === 'localhost')) {
-                navigator.serviceWorker.register('/service-worker.js').then(registration => {
-                    console.log('Service Worker registered with scope:', registration.scope);
-                    if (registration.installing) {
-                        console.log('Service worker installing');
-                    } else if (registration.waiting) {
-                        console.log('Service worker installed');
-                    } else if (registration.active) {
-                        console.log('Service worker active');
-                    }
-                }).catch(error => {
-                    console.error('Service Worker registration failed:', error);
-                });
-            } else {
-                console.warn('Service Worker not registered. Page is not served over HTTPS or localhost.');
+            async function preloadAndRegisterServiceWorker() {
+                let cache;
+                try {
+                    cache = await caches.open('site-assets');
+                    console.log('Cache opened successfully');
+                } catch (error) {
+                    console.error('Error opening cache:', error);
+                    return;
+                }
+
+                const supportsIndexedDB = checkIndexedDBSupport();
+                await preloadAssets();
+
+                if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.hostname === 'localhost')) {
+                    navigator.serviceWorker.register('/service-worker.js').then(registration => {
+                        console.log('Service Worker registered with scope:', registration.scope);
+                        if (registration.installing) {
+                            console.log('Service worker installing');
+                        } else if (registration.waiting) {
+                            console.log('Service worker installed');
+                        } else if (registration.active) {
+                            console.log('Service worker active');
+                        }
+                    }).catch(error => {
+                        console.error('Service Worker registration failed:', error);
+                    });
+                } else {
+                    console.warn('Service Worker not registered. Page is not served over HTTPS or localhost.');
+                }
             }
+
+            // Call the function to preload assets and register the service worker
+            preloadAndRegisterServiceWorker();
+
 
 
 

@@ -1,22 +1,7 @@
-const CACHE_NAME = 'site-assets-v1';
-const urlsToCache = [
-    '/',
-    '/index.html',
-    '/style.css',
-    '/app.js'
-    // Add other URLs you want to cache initially
-];
+const CACHE_NAME = 'site-assets';
 
 self.addEventListener('install', event => {
     console.log('[Service Worker] Installing...');
-    event.waitUntil(
-        caches.open(CACHE_NAME).then(cache => {
-            console.log('[Service Worker] Caching initial assets...');
-            return cache.addAll(urlsToCache);
-        }).catch(error => {
-            console.error('[Service Worker] Error during cache open:', error);
-        })
-    );
     self.skipWaiting(); // Activate the service worker immediately after installation
 });
 
@@ -39,6 +24,22 @@ self.addEventListener('activate', event => {
     self.clients.claim(); // Take control of all clients immediately
 });
 
+async function getFromIndexedDB(url) {
+    try {
+        const db = await idb.openDB('MyDatabase', 1);
+        const tx = db.transaction('assets', 'readonly');
+        const store = tx.objectStore('assets');
+        const asset = await store.get(url);
+        if (asset) {
+            console.log(`[Service Worker] Serving from IndexedDB: ${url}`);
+            return new Response(asset.blob);
+        }
+    } catch (error) {
+        console.error(`[Service Worker] Error retrieving from IndexedDB: ${url}`, error);
+    }
+    return null;
+}
+
 self.addEventListener('fetch', event => {
     console.log(`[Service Worker] Fetching: ${event.request.url}`);
     event.respondWith(
@@ -47,22 +48,27 @@ self.addEventListener('fetch', event => {
                 console.log(`[Service Worker] Serving from cache: ${event.request.url}`);
                 return cachedResponse;
             }
-            console.log(`[Service Worker] Fetching from network: ${event.request.url}`);
-            return fetch(event.request).then(response => {
-                if (!response || response.status !== 200 || response.type !== 'basic') {
-                    console.log(`[Service Worker] Network request failed or non-basic request for: ${event.request.url}`);
-                    return response;
+            return getFromIndexedDB(event.request.url).then(idbResponse => {
+                if (idbResponse) {
+                    return idbResponse;
                 }
-                const responseClone = response.clone();
-                caches.open(CACHE_NAME).then(cache => {
-                    console.log(`[Service Worker] Caching new resource: ${event.request.url}`);
-                    cache.put(event.request, responseClone).catch(error => {
-                        console.error(`[Service Worker] Error during cache put: ${event.request.url}`, error);
+                console.log(`[Service Worker] Fetching from network: ${event.request.url}`);
+                return fetch(event.request).then(response => {
+                    if (!response || response.status !== 200 || response.type !== 'basic') {
+                        console.log(`[Service Worker] Network request failed or non-basic request for: ${event.request.url}`);
+                        return response;
+                    }
+                    const responseClone = response.clone();
+                    caches.open(CACHE_NAME).then(cache => {
+                        console.log(`[Service Worker] Caching new resource: ${event.request.url}`);
+                        cache.put(event.request, responseClone).catch(error => {
+                            console.error(`[Service Worker] Error during cache put: ${event.request.url}`, error);
+                        });
                     });
+                    return response;
+                }).catch(error => {
+                    console.error(`[Service Worker] Fetch failed for: ${event.request.url}`, error);
                 });
-                return response;
-            }).catch(error => {
-                console.error(`[Service Worker] Fetch failed for: ${event.request.url}`, error);
             });
         }).catch(error => {
             console.error(`[Service Worker] Cache match failed for: ${event.request.url}`, error);
