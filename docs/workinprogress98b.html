@@ -1277,7 +1277,16 @@
 
 
 
-            
+            if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.hostname === 'localhost')) {
+                navigator.serviceWorker.register('/scripts/service-worker.js').then(registration => {
+                    console.log('Service Worker registered with scope:', registration.scope);
+                }).catch(error => {
+                    console.error('Service Worker registration failed:', error);
+                });
+            } else {
+                console.warn('Service Worker not registered. Page is not served over HTTPS or localhost.');
+            }
+
 
 
 
@@ -1297,46 +1306,8 @@
                 }, 1111); // Delay should match the duration of the fade-out effect
             }
 
-            async function registerServiceWorker() {
-                if ('serviceWorker' in navigator) {
-                    try {
-                        const registration = await navigator.serviceWorker.register('/scripts/service-worker.js');
-                        console.log('Service Worker registered with scope:', registration.scope);
-                        
-                        // Ensure the service worker is active
-                        if (navigator.serviceWorker.controller) {
-                            return registration;
-                        }
-
-                        // Wait for the service worker to be active
-                        await new Promise((resolve, reject) => {
-                            const sw = registration.installing || registration.waiting;
-                            if (sw) {
-                                sw.addEventListener('statechange', function() {
-                                    if (sw.state === 'activated') {
-                                        resolve(registration);
-                                    }
-                                });
-                            } else {
-                                resolve(registration);
-                            }
-                        });
-                    } catch (error) {
-                        console.error('Service Worker registration failed:', error);
-                    }
-                }
-                return null;
-            }
-
-            async function enterSite() {
-                const swRegistration = await registerServiceWorker();
-                if (!swRegistration) {
-                    console.error('Service Worker not ready. Site may not function as expected.');
-                }
-
-                // Ensure preloading assets only happens after the Service Worker is ready
-                await preloadAssets();
-
+            function enterSite() {
+                
                 initialize();
 
                 const centerContainer = document.querySelector('.center-container-XL');
@@ -1350,7 +1321,6 @@
                 }
                 initializeMenu();
             }
-
 
 
 
