@@ -1277,19 +1277,7 @@
 
 
 
-            async function preloadAndRegisterServiceWorker() {
-                let cache;
-                try {
-                    cache = await caches.open('site-assets');
-                    console.log('Cache opened successfully');
-                } catch (error) {
-                    console.error('Error opening cache:', error);
-                    return;
-                }
-
-                const supportsIndexedDB = checkIndexedDBSupport();
-                await preloadAssets();
-
+            function registerServiceWorker() {
                 if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.hostname === 'localhost')) {
                     navigator.serviceWorker.register('/service-worker.js').then(registration => {
                         console.log('Service Worker registered with scope:', registration.scope);
@@ -1308,15 +1296,6 @@
                 }
             }
 
-            // Call the function to preload assets and register the service worker
-            preloadAndRegisterServiceWorker();
-
-
-
-
-
-
-
 
 
             function fadeOutAsciiLinesXL() {
@@ -1329,6 +1308,9 @@
                 // Optional: Callback function to perform actions after the fade out completes
                 setTimeout(() => {
                     window.location.reload();
+                    setTimeout(() => {
+                        registerServiceWorker();
+                    }, 2000);
                     //console.log('Fade out completed.');
                     // Here you can add any action that should occur after the fade-out
                 }, 1111); // Delay should match the duration of the fade-out effect
