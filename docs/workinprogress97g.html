@@ -2817,6 +2817,43 @@
 
         let tiles = { a: false, b: false };
 
+        // Function to check IndexedDB support
+        function checkIndexedDBSupport() {
+            return 'indexedDB' in window;
+        }
+
+        // Function to fetch image from IndexedDB or network
+        function fetchFromCacheOrNetwork(url) {
+            return new Promise((resolve, reject) => {
+                const supportsIndexedDB = checkIndexedDBSupport();
+                if (supportsIndexedDB) {
+                    idb.openDB('MyDatabase', 1).then(db => {
+                        const tx = db.transaction('assets', 'readonly');
+                        const store = tx.objectStore('assets');
+                        store.get(url).then(cachedAsset => {
+                            if (cachedAsset) {
+                                resolve(URL.createObjectURL(cachedAsset.blob));
+                            } else {
+                                fetchFromNetwork();
+                            }
+                        }).catch(fetchFromNetwork);
+                    }).catch(fetchFromNetwork);
+                } else {
+                    fetchFromNetwork();
+                }
+
+                function fetchFromNetwork() {
+                    fetch(url).then(response => {
+                        if (response.ok) {
+                            resolve(response.url);
+                        } else {
+                            reject(new Error('Network response was not ok'));
+                        }
+                    }).catch(reject);
+                }
+            });
+        }
+
         function fadeInElements() {
             const waitForTiles = () => {
                 return new Promise((resolve) => {
@@ -2860,11 +2897,9 @@
                 });
             });
         }
-        
-
 
         function fadeInmenu() {
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve) => {
                 const selectors = ['.menu-bar', '.menu-container'];
                 let animationCount = 0;
 
@@ -2894,7 +2929,7 @@
                         }
                     });
                 });
-                
+
                 // If no animations are found, resolve the promise immediately
                 if (animationCount === 0) {
                     resolve();
@@ -2902,9 +2937,8 @@
             });
         }
 
-
         function fadeOutElements() {
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve) => {
                 const selectors = ['#interfaceContainer', '#backgroundContainer', '.flex-icontainer', '#bodyGalleryContainer', '.flex-container', '#iframeContainer'];
                 const elementsToFadeOut = [];
                 selectors.forEach(selector => {
@@ -2930,21 +2964,12 @@
             });
         }
 
-
-
-
-
-
-
-
         function createVerticalTiles_a(containerId, imageUrl, imageHeight) {
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve) => {
                 const container = document.getElementById(containerId);
                 container.innerHTML = ''; // Clear existing content
 
-                // Assuming the container's height is directly based on its content (the images)
-                // We calculate the number of tiles needed to fill the container plus one for overflow
-                const numTiles = 20; // Since you mentioned wanting about 10 tiles
+                const numTiles = 20; // Number of tiles
 
                 for (let i = 0; i < numTiles; i++) {
                     const img = document.createElement('img');
@@ -2967,20 +2992,15 @@
                 resolve();
             }).then(() => {
                 tiles.a = true;
-                // Set the flag for tiles a to true after the promise is resolved
             });
         }
 
-
         function createVerticalTiles_b(containerId, imageUrl, imageHeight) {
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve) => {
                 const container = document.getElementById(containerId);
                 container.innerHTML = ''; // Clear existing content
 
-                
-                // Assuming the container's height is directly based on its content (the images)
-                // We calculate the number of tiles needed to fill the container plus one for overflow
-                const numTiles = 20; // Since you mentioned wanting about 10 tiles
+                const numTiles = 20; // Number of tiles
 
                 for (let i = 0; i < numTiles; i++) {
                     const img = document.createElement('img');
@@ -2991,71 +3011,24 @@
                     img.style.width = '100%'; // Stretch the image to fill the container's width
                     img.style.height = `${imageHeight}px`; // Set a fixed height for direct tiling
                     container.appendChild(img);
-                    
-                    
+
                     updateVirtualCanvasSize();
                 }
 
                 // Resolve the promise to indicate that tiles are constructed
                 resolve();
             }).then(() => {
-                // Set the flag for tiles b to true after the promise is resolved
                 tiles.b = true;
             });
         }
 
         function delayedVirtualCanvasUpdate() {
             // Delay the call to updateVirtualCanvasSize
-            
             setTimeout(updateVirtualCanvasSize, 100); // Delay of 100 milliseconds
         }
 
-        // Function to check IndexedDB support
-        function checkIndexedDBSupport() {
-            if ('indexedDB' in window) {
-                console.log('This browser supports IndexedDB');
-                return true;
-            } else {
-                console.log('This browser does not support IndexedDB');
-                return false;
-            }
-        }
-
-        // Function to fetch image from IndexedDB or network
-        function fetchFromCacheOrNetwork(url) {
-            const supportsIndexedDB = checkIndexedDBSupport();
-            return new Promise(async (resolve, reject) => {
-                if (supportsIndexedDB) {
-                    try {
-                        const db = await idb.openDB('MyDatabase', 1);
-                        const tx = db.transaction('assets', 'readonly');
-                        const store = tx.objectStore('assets');
-                        const cachedAsset = await store.get(url);
-                        if (cachedAsset) {
-                            return resolve(URL.createObjectURL(cachedAsset.blob));
-                        }
-                    } catch (error) {
-                        console.error('Error accessing IndexedDB:', error);
-                    }
-                }
-
-                // Fallback to network fetch if not found in IndexedDB or any error occurs
-                try {
-                    const response = await fetch(url);
-                    if (response.ok) {
-                        return resolve(response.url);
-                    } else {
-                        throw new Error('Network response was not ok');
-                    }
-                } catch (error) {
-                    console.error('Error fetching from network:', error);
-                    reject(error);
-                }
-            });
-        }
-
         function loadInterface(currentSceneIndex) {
-            // Function to ensure wrapper existence
+            // Extend: Function to ensure wrapper existence
             function ensureWrapperExistence(wrapperClass, contentStructure) {
                 let wrapper = document.querySelector(`.${wrapperClass}`);
                 if (!wrapper) {
@@ -3104,47 +3077,53 @@
             const viewerImageUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/v${sceneFormatted}.jpg`;
             const viewerMaskUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/vm${sceneFormatted}.png`;
 
-            // Create promises for vertical tiles
-            const backgroundPromise = fetchFromCacheOrNetwork(backgroundUrl).then(url => createVerticalTiles_a('interfaceBackground', url, imageHeight));
-            const sideLeftPromise = fetchFromCacheOrNetwork(sideImageUrl).then(url => createVerticalTiles_b('interfaceSideLeft', url, imageHeight));
-            const sideRightPromise = fetchFromCacheOrNetwork(sideImageUrl).then(url => createVerticalTiles_b('interfaceSideRight', url, imageHeight));
+            // Fetch URLs from cache or network
+            Promise.all([
+                fetchFromCacheOrNetwork(backgroundUrl),
+                fetchFromCacheOrNetwork(sideImageUrl),
+                fetchFromCacheOrNetwork(viewerImageUrl)
+            ]).then(([backgroundSrc, sideSrc, viewerSrc]) => {
+                // Create promises for vertical tiles
+                const backgroundPromise = createVerticalTiles_a('interfaceBackground', backgroundSrc, imageHeight);
+                const sideLeftPromise = createVerticalTiles_b('interfaceSideLeft', sideSrc, imageHeight);
+                const sideRightPromise = createVerticalTiles_b('interfaceSideRight', sideSrc, imageHeight);
 
-            // Create a promise for the viewer image
-            const viewerImagePromise = new Promise((resolve, reject) => {
-                const viewerImageElement = document.getElementById('interfaceViewerImage');
-                if (viewerImageElement && document.body.contains(viewerImageElement)) {
-                    const tempImage = new Image();
-                    tempImage.onload = function() {
-                        viewerImageElement.src = tempImage.src;
-                        viewerImageElement.style.maskImage = `url('${viewerMaskUrl}')`;
-                        viewerImageElement.style.webkitMaskImage = `url('${viewerMaskUrl}')`;
-                        viewerImageElement.style.maskSize = '100% 100%';
-                        viewerImageElement.style.webkitMaskSize = '100% 100%';
-                        resolve(); // Resolve the promise when the image is loaded
-                    };
-                    tempImage.onerror = function() {
-                        console.error("Failed to load image at url:", viewerImageUrl);
-                        reject(); // Reject the promise on error
-                    };
-                    fetchFromCacheOrNetwork(viewerImageUrl).then(url => {
-                        tempImage.src = url; // Set the image source which starts loading the image
-                    }).catch(reject);
-                } else {
-                    console.log("Viewer image element does not exist in the DOM.");
-                    reject(); // Reject the promise if the element does not exist
-                }
-            });
+                // Create a promise for the viewer image
+                const viewerImagePromise = new Promise((resolve, reject) => {
+                    const viewerImageElement = document.getElementById('interfaceViewerImage');
+                    if (viewerImageElement && document.body.contains(viewerImageElement)) {
+                        const tempImage = new Image();
+                        tempImage.onload = function() {
+                            viewerImageElement.src = tempImage.src;
+                            viewerImageElement.style.maskImage = `url('${viewerMaskUrl}')`;
+                            viewerImageElement.style.webkitMaskImage = `url('${viewerMaskUrl}')`;
+                            viewerImageElement.style.maskSize = '100% 100%';
+                            viewerImageElement.style.webkitMaskSize = '100% 100%';
+                            resolve(); // Resolve the promise when the image is loaded
+                        };
+                        tempImage.onerror = function() {
+                            console.error("Failed to load image at url:", viewerSrc);
+                            reject(); // Reject the promise on error
+                        };
+                        tempImage.src = viewerSrc; // Set the image source which starts loading the image
+                    } else {
+                        console.log("Viewer image element does not exist in the DOM.");
+                        reject(); // Reject the promise if the element does not exist
+                    }
+                });
 
-            // Wait for all promises to resolve before triggering fadeInElements
-            Promise.all([backgroundPromise, sideLeftPromise, sideRightPromise, viewerImagePromise]).then(() => {
-                setTimeout(() => {
-                    fadeInElements(); // This function should handle fading in the viewer and associated elements
-                }, 111); // Delay to allow the browser to render the updated image before fading in
+                // Wait for all promises to resolve before triggering fadeInElements
+                Promise.all([backgroundPromise, sideLeftPromise, sideRightPromise, viewerImagePromise]).then(() => {
+                    setTimeout(() => {
+                        fadeInElements(); // This function should handle fading in the viewer and associated elements
+                    }, 111); // Delay to allow the browser to render the updated image before fading in
+                }).catch((error) => {
+                    console.error("Error loading elements:", error);
+                });
             }).catch((error) => {
-                console.error("Error loading elements:", error);
+                console.error("Error fetching resources:", error);
             });
         }
-
 
 
         
