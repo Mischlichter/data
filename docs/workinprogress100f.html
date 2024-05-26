@@ -2525,7 +2525,7 @@
           dynamicStyles.length = 0; // Clear the array
         }
 
-        async function loadScene(index) {
+        function loadScene(index) {
             const scene = scenesData[index];
             const sceneImages = scenesiData[index]; // Assuming scenesiData is structured similarly
 
@@ -2564,15 +2564,24 @@
                 return numA - numB || (a.type === 'text' ? -1 : 1);
             });
 
-            // Open the database
-            const db = await openDB();
-            if (!db) {
-                console.error('Failed to open database');
-                return;
+            // Function to get the image from the cache
+            async function getCachedImage(url) {
+                try {
+                    const cache = await caches.open('site-assets');
+                    const response = await cache.match(url);
+                    if (response) {
+                        const blob = await response.blob();
+                        const objectURL = URL.createObjectURL(blob);
+                        return objectURL;
+                    }
+                } catch (error) {
+                    console.error(`Error fetching cached image for URL ${url}:`, error);
+                }
+                return url; // Fallback to the original URL if not found in cache
             }
 
-            // Create containers in sorted order with Promises to handle synchronous-like behavior
-            const containerPromises = combinedData.map(async (item) => {
+            // Create containers in sorted order
+            combinedData.forEach(async (item) => {
                 const container = document.createElement('div');
                 container.id = item.key;
                 container.className = item.type === 'text' ? 'flex-container' : 'flex-icontainer';
@@ -2589,21 +2598,14 @@
 
                 if (item.type === 'image') {
                     const image = document.createElement('img');
-                    const cachedImage = await getCachedImage(db, item.content.src);
+                    const cachedImage = await getCachedImage(item.content.src);
 
-                    if (cachedImage) {
-                        image.src = cachedImage;
-                        console.log(`Loaded image from cache: ${item.content.src}`);
-                    } else {
-                        image.src = item.content.src;
-                        console.log(`Loaded image from network: ${item.content.src}`);
-                    }
+                    image.src = cachedImage;
+                    console.log(`Loaded image from cache or network: ${item.content.src}`);
 
                     container.appendChild(image);
                 }
             });
-
-            await Promise.all(containerPromises); // Wait for all containers to be created
 
             // Create and style the footer
             createStyledFooter();
@@ -2617,6 +2619,7 @@
             observeImagesForAnimation();
             createScrollToTopButton();
         }
+
 
 
 
