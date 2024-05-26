@@ -1319,13 +1319,7 @@
                 }, 1111); // Delay should match the duration of the fade-out effect
             }
 
-            // Ensure the service worker is registered after the page reloads
-            window.addEventListener('load', () => {
-                setTimeout(() => {
-                    registerServiceWorker();
-                }, 2000); // Adjust this delay if needed
-            });
-
+      
 
 
             function enterSite() {
