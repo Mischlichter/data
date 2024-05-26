@@ -1,7 +1,22 @@
-const CACHE_NAME = 'site-assets';
+const CACHE_NAME = 'site-assets-v1';
+const urlsToCache = [
+    '/',
+    '/index.html',
+    '/style.css',
+    '/app.js'
+    // Add other URLs you want to cache initially
+];
 
 self.addEventListener('install', event => {
     console.log('[Service Worker] Installing...');
+    event.waitUntil(
+        caches.open(CACHE_NAME).then(cache => {
+            console.log('[Service Worker] Caching initial assets...');
+            return cache.addAll(urlsToCache);
+        }).catch(error => {
+            console.error('[Service Worker] Error during cache open:', error);
+        })
+    );
     self.skipWaiting(); // Activate the service worker immediately after installation
 });
 
@@ -18,7 +33,7 @@ self.addEventListener('activate', event => {
                 })
             );
         }).catch(error => {
-            console.error('[Service Worker] Error during activate cache delete:', error);
+            console.error('[Service Worker] Error during cache delete:', error);
         })
     );
     self.clients.claim(); // Take control of all clients immediately
