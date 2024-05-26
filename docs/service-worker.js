@@ -1,4 +1,4 @@
-importScripts('https://cdn.jsdelivr.net/npm/idb@7.0.0/build/umd.js');
+importScripts('https://www.hogeai.com/scripts/index-min.js');
 
 const CACHE_NAME = 'site-assets';
 const DB_NAME = 'MyDatabase';
