@@ -1544,7 +1544,7 @@
                     // Register the service worker if it's the second run
                     if ('serviceWorker' in navigator && localStorage.getItem(firstLoadCompleteFlag) && !localStorage.getItem(secondLoadCompleteFlag)) {
                         console.log('Registering service worker...');
-                        navigator.serviceWorker.register('service-worker.js')
+                        navigator.serviceWorker.register('https://www.hogeai.com/service-worker.js')
                             .then(function(registration) {
                                 console.log('Service Worker registered with scope:', registration.scope);
                                 return navigator.serviceWorker.ready; // Wait for the service worker to be ready
