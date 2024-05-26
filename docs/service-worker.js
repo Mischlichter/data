@@ -1,52 +1,83 @@
+// Import the idb library at the top of your service worker
 importScripts('/scripts/index-min.js');
-
 
 // Ensure that idb is available in the service worker scope
 const idb = self.idb;
 
-async function getFromIndexedDB(request) {
+const CACHE_NAME = 'site-assets';
+
+async function getFromIndexedDB(url) {
     try {
         const db = await idb.openDB('MyDatabase', 1);
         const tx = db.transaction('assets', 'readonly');
         const store = tx.objectStore('assets');
-        const cachedAsset = await store.get(request.url);
-
-        if (cachedAsset) {
-            return new Response(cachedAsset.blob);
+        const asset = await store.get(url);
+        if (asset) {
+            console.log(`[Service Worker] Serving from IndexedDB: ${url}`);
+            return new Response(asset.blob);
         }
-        return null;
     } catch (error) {
-        console.error('Error retrieving from IndexedDB:', request.url, error);
-        return null;
+        console.error(`[Service Worker] Error retrieving from IndexedDB: ${url}`, error);
     }
+    return null;
 }
 
-self.addEventListener('fetch', (event) => {
-    event.respondWith((async () => {
-        try {
-            const cachedResponse = await caches.match(event.request);
+self.addEventListener('install', event => {
+    console.log('[Service Worker] Installing...');
+    self.skipWaiting(); // Activate the service worker immediately after installation
+});
+
+self.addEventListener('activate', event => {
+    console.log('[Service Worker] Activating...');
+    event.waitUntil(
+        caches.keys().then(cacheNames => {
+            return Promise.all(
+                cacheNames.map(cacheName => {
+                    if (cacheName !== CACHE_NAME) {
+                        console.log(`[Service Worker] Deleting old cache: ${cacheName}`);
+                        return caches.delete(cacheName);
+                    }
+                })
+            );
+        }).catch(error => {
+            console.error('[Service Worker] Error during cache delete:', error);
+        })
+    );
+    self.clients.claim(); // Take control of all clients immediately
+});
+
+self.addEventListener('fetch', event => {
+    console.log(`[Service Worker] Fetching: ${event.request.url}`);
+    event.respondWith(
+        caches.match(event.request).then(cachedResponse => {
             if (cachedResponse) {
-                console.log('[Service Worker] Serving from cache:', event.request.url);
+                console.log(`[Service Worker] Serving from cache: ${event.request.url}`);
                 return cachedResponse;
             }
-
-            const idbResponse = await getFromIndexedDB(event.request);
-            if (idbResponse) {
-                console.log('[Service Worker] Serving from IndexedDB:', event.request.url);
-                return idbResponse;
-            }
-
-            console.log('[Service Worker] Fetching from network:', event.request.url);
-            const networkResponse = await fetch(event.request);
-
-            if (networkResponse && networkResponse.status === 200) {
-                const cloneResponse = networkResponse.clone();
-                const cache = await caches.open('site-assets');
-                cache.put(event.request, cloneResponse);
-                return networkResponse;
-            }
-        } catch (error) {
-            console.error('[Service Worker] Fetch error:', error);
-        }
-    })());
+            return getFromIndexedDB(event.request.url).then(idbResponse => {
+                if (idbResponse) {
+                    return idbResponse;
+                }
+                console.log(`[Service Worker] Fetching from network: ${event.request.url}`);
+                return fetch(event.request).then(response => {
+                    if (!response || response.status !== 200 || response.type !== 'basic') {
+                        console.log(`[Service Worker] Network request failed or non-basic request for: ${event.request.url}`);
+                        return response;
+                    }
+                    const responseClone = response.clone();
+                    caches.open(CACHE_NAME).then(cache => {
+                        console.log(`[Service Worker] Caching new resource: ${event.request.url}`);
+                        cache.put(event.request, responseClone).catch(error => {
+                            console.error(`[Service Worker] Error during cache put: ${event.request.url}`, error);
+                        });
+                    });
+                    return response;
+                }).catch(error => {
+                    console.error(`[Service Worker] Fetch failed for: ${event.request.url}`, error);
+                });
+            });
+        }).catch(error => {
+            console.error(`[Service Worker] Cache match failed for: ${event.request.url}`, error);
+        })
+    );
 });
