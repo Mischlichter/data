@@ -1296,14 +1296,7 @@
                 }
             }
 
-            // Ensure the service worker is registered after the page reloads
-            window.addEventListener('load', () => {
-                if (!localStorage.getItem(firstLoadCompleteFlag)) {
-                    setTimeout(() => {
-                        registerServiceWorker();
-                    }, 2000); // Adjust this delay if needed
-                }
-            });
+
 
 
             function fadeOutAsciiLinesXL() {
