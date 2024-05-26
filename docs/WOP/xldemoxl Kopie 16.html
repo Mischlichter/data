@@ -2498,22 +2498,6 @@
 
         }
 
-        async function getCachedImage(db, url) {
-            try {
-                const tx = db.transaction('assets', 'readonly');
-                const store = tx.objectStore('assets');
-                const cachedAsset = await store.get(url);
-
-                if (cachedAsset) {
-                    const blob = cachedAsset.blob;
-                    const objectURL = URL.createObjectURL(blob);
-                    return objectURL;
-                }
-            } catch (error) {
-                console.error(`Error fetching cached image for URL ${url}:`, error);
-            }
-            return null;
-        }
 
 
 
@@ -2525,7 +2509,7 @@
           dynamicStyles.length = 0; // Clear the array
         }
 
-        function loadScene(index) {
+        async function loadScene(index) {
             const scene = scenesData[index];
             const sceneImages = scenesiData[index]; // Assuming scenesiData is structured similarly
 
@@ -2545,7 +2529,7 @@
             // Update the iframe with the new scene
             updateIframe(formattedSceneKey);
             //console.log('Formatted Scene Key:', formattedSceneKey);
-            
+
             // Merge and sort text and image containers
             let combinedData = [];
             Object.keys(scene.containers).forEach(key => {
@@ -2564,24 +2548,8 @@
                 return numA - numB || (a.type === 'text' ? -1 : 1);
             });
 
-            // Function to get the image from the cache
-            async function getCachedImage(url) {
-                try {
-                    const cache = await caches.open('site-assets');
-                    const response = await cache.match(url);
-                    if (response) {
-                        const blob = await response.blob();
-                        const objectURL = URL.createObjectURL(blob);
-                        return objectURL;
-                    }
-                } catch (error) {
-                    console.error(`Error fetching cached image for URL ${url}:`, error);
-                }
-                return url; // Fallback to the original URL if not found in cache
-            }
-
             // Create containers in sorted order
-            combinedData.forEach(async (item) => {
+            for (const item of combinedData) {
                 const container = document.createElement('div');
                 container.id = item.key;
                 container.className = item.type === 'text' ? 'flex-container' : 'flex-icontainer';
@@ -2598,14 +2566,18 @@
 
                 if (item.type === 'image') {
                     const image = document.createElement('img');
-                    const cachedImage = await getCachedImage(item.content.src);
-
-                    image.src = cachedImage;
-                    console.log(`Loaded image from cache or network: ${item.content.src}`);
-
+                    try {
+                        const response = await fetchFromCacheOrNetwork(item.content.src);
+                        const blob = await response.blob();
+                        const imageUrl = URL.createObjectURL(blob);
+                        image.src = imageUrl;
+                    } catch (error) {
+                        console.error('Error fetching image:', item.content.src, error);
+                        image.src = item.content.src; // Fallback to the original source if fetching fails
+                    }
                     container.appendChild(image);
                 }
-            });
+            }
 
             // Create and style the footer
             createStyledFooter();
@@ -2619,8 +2591,6 @@
             observeImagesForAnimation();
             createScrollToTopButton();
         }
-
-
 
 
         function createScrollToTopButton() {
