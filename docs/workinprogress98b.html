@@ -3068,26 +3068,10 @@
             const viewerImageUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/v${sceneFormatted}.jpg`;
             const viewerMaskUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/vm${sceneFormatted}.png`;
 
-            // Check for cached image and fetch if not cached
-            function getCachedImage(url) {
-                return caches.open('image-cache').then(cache => {
-                    return cache.match(url).then(response => {
-                        if (response) {
-                            return response.blob();
-                        } else {
-                            return fetch(url).then(networkResponse => {
-                                cache.put(url, networkResponse.clone());
-                                return networkResponse.blob();
-                            });
-                        }
-                    });
-                });
-            }
-
-            // Create promises for vertical tiles using cached images
-            const backgroundPromise = getCachedImage(backgroundUrl).then(blob => createVerticalTiles_a('interfaceBackground', URL.createObjectURL(blob), imageHeight));
-            const sideLeftPromise = getCachedImage(sideImageUrl).then(blob => createVerticalTiles_b('interfaceSideLeft', URL.createObjectURL(blob), imageHeight));
-            const sideRightPromise = getCachedImage(sideImageUrl).then(blob => createVerticalTiles_b('interfaceSideRight', URL.createObjectURL(blob), imageHeight));
+            // Create promises for vertical tiles
+            const backgroundPromise = createVerticalTiles_a('interfaceBackground', backgroundUrl, imageHeight);
+            const sideLeftPromise = createVerticalTiles_b('interfaceSideLeft', sideImageUrl, imageHeight);
+            const sideRightPromise = createVerticalTiles_b('interfaceSideRight', sideImageUrl, imageHeight);
 
             // Create a promise for the viewer image
             const viewerImagePromise = new Promise((resolve, reject) => {
