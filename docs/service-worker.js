@@ -8,6 +8,8 @@ self.addEventListener('install', event => {
             return cache.addAll([
                 // List of assets to cache during installation (optional)
             ]);
+        }).catch(error => {
+            console.error('[Service Worker] Error during cache open in install:', error);
         })
     );
     self.skipWaiting(); // Activate the service worker immediately after installation
@@ -25,6 +27,8 @@ self.addEventListener('activate', event => {
                     }
                 })
             );
+        }).catch(error => {
+            console.error('[Service Worker] Error during cache deletion in activate:', error);
         })
     );
     self.clients.claim(); // Take control of all clients immediately
@@ -41,18 +45,24 @@ self.addEventListener('fetch', event => {
             console.log(`[Service Worker] Fetching from network: ${event.request.url}`);
             return fetch(event.request).then(response => {
                 if (!response || response.status !== 200 || response.type !== 'basic') {
-                    console.log(`[Service Worker] Network request failed for: ${event.request.url}`);
+                    console.log(`[Service Worker] Network request failed or non-basic request for: ${event.request.url}`);
                     return response;
                 }
                 const responseClone = response.clone();
                 caches.open(CACHE_NAME).then(cache => {
                     console.log(`[Service Worker] Caching new resource: ${event.request.url}`);
-                    cache.put(event.request, responseClone);
+                    cache.put(event.request, responseClone).catch(error => {
+                        console.error(`[Service Worker] Error during cache put: ${event.request.url}`, error);
+                    });
                 });
                 return response;
             }).catch(error => {
-                console.error(`[Service Worker] Fetch failed for: ${event.request.url}, Error: ${error}`);
+                console.error(`[Service Worker] Fetch failed for: ${event.request.url}`, error);
+                // Optionally, provide a fallback response here
             });
+        }).catch(error => {
+            console.error(`[Service Worker] Cache match failed for: ${event.request.url}`, error);
+            // Optionally, provide a fallback response here
         })
     );
 });
