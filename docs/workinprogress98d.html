@@ -1296,8 +1296,6 @@
                 }
             }
 
-
-
             function fadeOutAsciiLinesXL() {
                 const elements = document.querySelectorAll('.ascii-line-XL');
                 elements.forEach(function(element) {
@@ -1308,51 +1306,17 @@
                 // Optional: Callback function to perform actions after the fade out completes
                 setTimeout(() => {
                     window.location.reload();
-                    setTimeout(() => {
-                        registerServiceWorker();
-                    }, 2000);
-                    //console.log('Fade out completed.');
-                    // Here you can add any action that should occur after the fade-out
                 }, 1111); // Delay should match the duration of the fade-out effect
             }
- function registerServiceWorker() {
-                if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.hostname === 'localhost')) {
-                    navigator.serviceWorker.register('/service-worker.js').then(registration => {
-                        console.log('Service Worker registered with scope:', registration.scope);
-                        if (registration.installing) {
-                            console.log('Service worker installing');
-                        } else if (registration.waiting) {
-                            console.log('Service worker installed');
-                        } else if (registration.active) {
-                            console.log('Service worker active');
-                        }
-                    }).catch(error => {
-                        console.error('Service Worker registration failed:', error);
-                    });
-                } else {
-                    console.warn('Service Worker not registered. Page is not served over HTTPS or localhost.');
-                }
-            }
 
-
-
-            function fadeOutAsciiLinesXL() {
-                const elements = document.querySelectorAll('.ascii-line-XL');
-                elements.forEach(function(element) {
-                    element.style.transition = 'opacity 1s ease-out'; // Ensure the transition is smooth
-                    element.style.opacity = '0'; // Set opacity to 0 to fade out
-                });
-
-                // Optional: Callback function to perform actions after the fade out completes
+            // Ensure the service worker is registered after the page reloads
+            window.addEventListener('load', () => {
                 setTimeout(() => {
-                    window.location.reload();
-                    setTimeout(() => {
-                        registerServiceWorker();
-                    }, 2000);
-                    //console.log('Fade out completed.');
-                    // Here you can add any action that should occur after the fade-out
-                }, 1111); // Delay should match the duration of the fade-out effect
-            }
+                    registerServiceWorker();
+                }, 2000); // Adjust this delay if needed
+            });
+
+
 
             function enterSite() {
                 
