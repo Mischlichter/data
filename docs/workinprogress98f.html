@@ -1296,14 +1296,16 @@
                 }
             }
 
-            // Ensure the service worker is registered after the page reloads
-            window.addEventListener('load', () => {
+            // Ensure the service worker is registered after the page reloads and assets are preloaded
+            window.addEventListener('load', async () => {
                 if (!localStorage.getItem(firstLoadCompleteFlag)) {
+                    await preloadAssets(); // Preload assets before registering the service worker
                     setTimeout(() => {
                         registerServiceWorker();
                     }, 2000); // Adjust this delay if needed
                 }
             });
+
 
 
             function fadeOutAsciiLinesXL() {
