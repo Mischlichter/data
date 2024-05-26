@@ -3010,49 +3010,19 @@
             setTimeout(updateVirtualCanvasSize, 100); // Delay of 100 milliseconds
         }
 
-        // Function to check IndexedDB support
-        function checkIndexedDBSupport() {
-            if ('indexedDB' in window) {
-                console.log('This browser supports IndexedDB');
-                return true;
-            } else {
-                console.log('This browser does not support IndexedDB');
-                return false;
-            }
-        }
-
-        // Function to fetch from IndexedDB or network
-        async function fetchFromCacheOrNetwork(url) {
-            const supportsIndexedDB = checkIndexedDBSupport();
-            let db;
-            if (supportsIndexedDB) {
-                try {
-                    db = await idb.openDB('MyDatabase', 1);
-                    const tx = db.transaction('assets', 'readonly');
-                    const store = tx.objectStore('assets');
-                    const cachedAsset = await store.get(url);
-                    if (cachedAsset) {
-                        return URL.createObjectURL(cachedAsset.blob);
-                    }
-                } catch (error) {
-                    console.error('Error accessing IndexedDB:', error);
-                }
-            }
-
-            try {
-                const response = await fetch(url);
-                if (response.ok) {
-                    return response.url;
-                }
-                throw new Error('Network response was not ok');
-            } catch (error) {
-                console.error('Error fetching from network:', error);
-                throw error;
-            }
-        }
-
         async function loadInterface(currentSceneIndex) {
-            // Extend: Function to ensure wrapper existence
+            // Function to check IndexedDB support
+            function checkIndexedDBSupport() {
+                if ('indexedDB' in window) {
+                    console.log('This browser supports IndexedDB');
+                    return true;
+                } else {
+                    console.log('This browser does not support IndexedDB');
+                    return false;
+                }
+            }
+
+            // Function to ensure wrapper existence
             function ensureWrapperExistence(wrapperClass, contentStructure) {
                 let wrapper = document.querySelector(`.${wrapperClass}`);
                 if (!wrapper) {
@@ -3092,7 +3062,6 @@
                 </div>
             `);
 
-            // Your existing code to tile images and update the viewer image
             const sceneFormatted = currentSceneIndex.toString().padStart(2, '0');
             const imageHeight = 2048; // Fixed height for all images
 
@@ -3101,10 +3070,39 @@
             const viewerImageUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/v${sceneFormatted}.jpg`;
             const viewerMaskUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/vm${sceneFormatted}.png`;
 
+            async function fetchFromCacheOrNetwork(url) {
+                const supportsIndexedDB = checkIndexedDBSupport();
+                let db;
+                if (supportsIndexedDB) {
+                    try {
+                        db = await idb.openDB('MyDatabase', 1);
+                        const tx = db.transaction('assets', 'readonly');
+                        const store = tx.objectStore('assets');
+                        const cachedAsset = await store.get(url);
+                        if (cachedAsset) {
+                            return URL.createObjectURL(cachedAsset.blob);
+                        }
+                    } catch (error) {
+                        console.error('Error accessing IndexedDB:', error);
+                    }
+                }
+
+                try {
+                    const response = await fetch(url);
+                    if (response.ok) {
+                        return response.url;
+                    }
+                    throw new Error('Network response was not ok');
+                } catch (error) {
+                    console.error('Error fetching from network:', error);
+                    throw error;
+                }
+            }
+
             // Create promises for vertical tiles
-            const backgroundPromise = createVerticalTiles_a('interfaceBackground', await fetchFromCacheOrNetwork(backgroundUrl), imageHeight);
-            const sideLeftPromise = createVerticalTiles_b('interfaceSideLeft', await fetchFromCacheOrNetwork(sideImageUrl), imageHeight);
-            const sideRightPromise = createVerticalTiles_b('interfaceSideRight', await fetchFromCacheOrNetwork(sideImageUrl), imageHeight);
+            const backgroundPromise = fetchFromCacheOrNetwork(backgroundUrl).then(url => createVerticalTiles_a('interfaceBackground', url, imageHeight));
+            const sideLeftPromise = fetchFromCacheOrNetwork(sideImageUrl).then(url => createVerticalTiles_b('interfaceSideLeft', url, imageHeight));
+            const sideRightPromise = fetchFromCacheOrNetwork(sideImageUrl).then(url => createVerticalTiles_b('interfaceSideRight', url, imageHeight));
 
             // Create a promise for the viewer image
             const viewerImagePromise = new Promise(async (resolve, reject) => {
