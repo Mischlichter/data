@@ -3010,18 +3010,49 @@
             setTimeout(updateVirtualCanvasSize, 100); // Delay of 100 milliseconds
         }
 
-        async function loadInterface(currentSceneIndex) {
-            // Function to check IndexedDB support
-            function checkIndexedDBSupport() {
-                if ('indexedDB' in window) {
-                    console.log('This browser supports IndexedDB');
-                    return true;
-                } else {
-                    console.log('This browser does not support IndexedDB');
-                    return false;
+        // Function to check IndexedDB support
+        function checkIndexedDBSupport() {
+            if ('indexedDB' in window) {
+                console.log('This browser supports IndexedDB');
+                return true;
+            } else {
+                console.log('This browser does not support IndexedDB');
+                return false;
+            }
+        }
+
+        // Function to fetch image from IndexedDB or network
+        async function fetchFromCacheOrNetwork(url) {
+            const supportsIndexedDB = checkIndexedDBSupport();
+            if (supportsIndexedDB) {
+                try {
+                    const db = await idb.openDB('MyDatabase', 1);
+                    const tx = db.transaction('assets', 'readonly');
+                    const store = tx.objectStore('assets');
+                    const cachedAsset = await store.get(url);
+                    if (cachedAsset) {
+                        return URL.createObjectURL(cachedAsset.blob);
+                    }
+                } catch (error) {
+                    console.error('Error accessing IndexedDB:', error);
                 }
             }
 
+            // Fallback to network fetch if not found in IndexedDB or any error occurs
+            try {
+                const response = await fetch(url);
+                if (response.ok) {
+                    return response.url;
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+            } catch (error) {
+                console.error('Error fetching from network:', error);
+                throw error;
+            }
+        }
+
+        async function loadInterface(currentSceneIndex) {
             // Function to ensure wrapper existence
             function ensureWrapperExistence(wrapperClass, contentStructure) {
                 let wrapper = document.querySelector(`.${wrapperClass}`);
@@ -3062,6 +3093,7 @@
                 </div>
             `);
 
+            // Your existing code to tile images and update the viewer image
             const sceneFormatted = currentSceneIndex.toString().padStart(2, '0');
             const imageHeight = 2048; // Fixed height for all images
 
@@ -3070,52 +3102,13 @@
             const viewerImageUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/v${sceneFormatted}.jpg`;
             const viewerMaskUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/vm${sceneFormatted}.png`;
 
-            async function fetchFromCacheOrNetwork(url) {
-                const supportsIndexedDB = checkIndexedDBSupport();
-                let db;
-                if (supportsIndexedDB) {
-                    try {
-                        db = await idb.openDB('MyDatabase', 1);
-                        const tx = db.transaction('assets', 'readonly');
-                        const store = tx.objectStore('assets');
-                        const cachedAsset = await store.get(url);
-                        if (cachedAsset) {
-                            return URL.createObjectURL(cachedAsset.blob);
-                        }
-                    } catch (error) {
-                        console.error('Error accessing IndexedDB:', error);
-                    }
-                }
-
-                try {
-                    const response = await fetch(url);
-                    if (response.ok) {
-                        return response.url;
-                    }
-                    throw new Error('Network response was not ok');
-                } catch (error) {
-                    console.error('Error fetching from network:', error);
-                    throw error;
-                }
-            }
-
-            // Helper function to create and load images
-            async function loadImage(url) {
-                return new Promise((resolve, reject) => {
-                    const img = new Image();
-                    img.onload = () => resolve(img.src);
-                    img.onerror = () => reject(new Error(`Failed to load image at url: ${url}`));
-                    img.src = url;
-                });
-            }
-
             // Create promises for vertical tiles
-            const backgroundPromise = fetchFromCacheOrNetwork(backgroundUrl).then(loadImage).then(url => createVerticalTiles_a('interfaceBackground', url, imageHeight));
-            const sideLeftPromise = fetchFromCacheOrNetwork(sideImageUrl).then(loadImage).then(url => createVerticalTiles_b('interfaceSideLeft', url, imageHeight));
-            const sideRightPromise = fetchFromCacheOrNetwork(sideImageUrl).then(loadImage).then(url => createVerticalTiles_b('interfaceSideRight', url, imageHeight));
+            const backgroundPromise = fetchFromCacheOrNetwork(backgroundUrl).then(url => createVerticalTiles_a('interfaceBackground', url, imageHeight));
+            const sideLeftPromise = fetchFromCacheOrNetwork(sideImageUrl).then(url => createVerticalTiles_b('interfaceSideLeft', url, imageHeight));
+            const sideRightPromise = fetchFromCacheOrNetwork(sideImageUrl).then(url => createVerticalTiles_b('interfaceSideRight', url, imageHeight));
 
             // Create a promise for the viewer image
-            const viewerImagePromise = new Promise(async (resolve, reject) => {
+            const viewerImagePromise = new Promise((resolve, reject) => {
                 const viewerImageElement = document.getElementById('interfaceViewerImage');
                 if (viewerImageElement && document.body.contains(viewerImageElement)) {
                     const tempImage = new Image();
@@ -3131,7 +3124,9 @@
                         console.error("Failed to load image at url:", viewerImageUrl);
                         reject(); // Reject the promise on error
                     };
-                    tempImage.src = await fetchFromCacheOrNetwork(viewerImageUrl).then(loadImage); // Set the image source which starts loading the image
+                    fetchFromCacheOrNetwork(viewerImageUrl).then(url => {
+                        tempImage.src = url; // Set the image source which starts loading the image
+                    }).catch(reject);
                 } else {
                     console.log("Viewer image element does not exist in the DOM.");
                     reject(); // Reject the promise if the element does not exist
