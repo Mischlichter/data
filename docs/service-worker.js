@@ -2,8 +2,7 @@ importScripts('https://www.hogeai.com/scripts/index-min.js');
 
 const CACHE_NAME = 'site-assets';
 const DB_NAME = 'MyDatabase';
-const ASSETS_STORE_NAME = 'assets';
-const IMAGES_STORE_NAME = 'imageData';
+const STORE_NAME = 'assets';
 
 console.log('Service Worker: Registered');
 
@@ -14,8 +13,8 @@ self.addEventListener('install', event => {
             const db = await openDB();
             if (!db) return;
 
-            const tx = db.transaction(ASSETS_STORE_NAME, 'readonly');
-            const store = tx.objectStore(ASSETS_STORE_NAME);
+            const tx = db.transaction(STORE_NAME, 'readonly');
+            const store = tx.objectStore(STORE_NAME);
             const allAssets = await store.getAll();
 
             const urlsToCache = allAssets.map(asset => asset.url);
@@ -29,28 +28,41 @@ self.addEventListener('install', event => {
 
 self.addEventListener('fetch', event => {
     console.log('Service Worker: Fetch event for', event.request.url);
-    event.respondWith(
-        caches.match(event.request).then(async response => {
-            if (response) {
-                console.log('Service Worker: Serving from cache', event.request.url);
-                return response;
-            }
-            
-            try {
-                const networkResponse = await fetch(event.request);
-                if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
-                    const cache = await caches.open(CACHE_NAME);
-                    cache.put(event.request, networkResponse.clone());
-                    console.log('Service Worker: Fetched and cached', event.request.url);
+
+    // Check if the request URL is in the site-assets cache
+    if (shouldHandleFetch(event.request)) {
+        event.respondWith(
+            caches.match(event.request).then(response => {
+                if (response) {
+                    console.log('Service Worker: Serving from cache', event.request.url);
+                    return response;
                 }
-                return networkResponse;
-            } catch (error) {
+                return fetch(event.request).then(networkResponse => {
+                    if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
+                        caches.open(CACHE_NAME).then(cache => {
+                            cache.put(event.request, networkResponse.clone());
+                            console.log('Service Worker: Fetched and cached', event.request.url);
+                        });
+                    }
+                    return networkResponse;
+                });
+            }).catch(error => {
                 console.error('Service Worker: Error during fetch event:', error);
                 return caches.match(event.request);
-            }
-        })
-    );
+            })
+        );
+    } else {
+        // Skip non site-assets requests
+        console.log('Service Worker: Ignoring fetch for', event.request.url);
+    }
 });
+
+function shouldHandleFetch(request) {
+    const url = new URL(request.url);
+    // Add any specific logic here to filter requests you want to handle.
+    // Example: Only handle requests from a specific domain or path
+    return url.hostname === 'raw.githubusercontent.com' && url.pathname.includes('/Mischlichter/data/');
+}
 
 async function openDB() {
     if (!('indexedDB' in self)) return null;
@@ -59,11 +71,11 @@ async function openDB() {
     try {
         const db = await idb.openDB(DB_NAME, 1, {
             upgrade(db) {
-                if (!db.objectStoreNames.contains(ASSETS_STORE_NAME)) {
-                    db.createObjectStore(ASSETS_STORE_NAME, { keyPath: 'url' });
+                if (!db.objectStoreNames.contains(STORE_NAME)) {
+                    db.createObjectStore(STORE_NAME, { keyPath: 'url' });
                 }
-                if (!db.objectStoreNames.contains(IMAGES_STORE_NAME)) {
-                    db.createObjectStore(IMAGES_STORE_NAME, { keyPath: 'filename' });
+                if (!db.objectStoreNames.contains('imageData')) {
+                    db.createObjectStore('imageData', { keyPath: 'filename' });
                 }
             }
         });
