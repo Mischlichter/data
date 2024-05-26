@@ -1635,8 +1635,6 @@
             const mouseOverlay = document.getElementById('mouseOverlay');
             const bodyGalleryContainer = document.getElementById('bodyGalleryContainer');
 
-            enableServiceWorker();
-
             unhideElementsByClass("foreground-image-container");
 
             // Remove existing iframe and clear body gallery content
@@ -1651,7 +1649,6 @@
 
             if (sceneKey === 'scene05') {
                 // Logic for scene04 (Gallery)
-                disableServiceWorker();
                 toggleRemoveFooterActivation();
                 resetRemoveStyledFooterCounter();
                 iframeContainer.style.display = 'none';
@@ -1742,42 +1739,6 @@
                 observer.observe(iframe);
             }
         }
-
-        function setServiceWorkerState(enabled) {
-            if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-                navigator.serviceWorker.controller.postMessage({ action: 'setState', enabled: enabled });
-                localStorage.setItem('serviceWorkerEnabled', enabled);
-            }
-        }
-
-        function enableServiceWorker() {
-            setServiceWorkerState(true);
-            console.log('Service Worker enabled');
-        }
-
-        function disableServiceWorker() {
-            setServiceWorkerState(false);
-            console.log('Service Worker disabled');
-        }
-
-        
-
-        document.getElementById('toggle-sw').addEventListener('click', () => {
-            const isEnabled = localStorage.getItem('serviceWorkerEnabled') === 'true';
-            setServiceWorkerState(!isEnabled);
-            localStorage.setItem('serviceWorkerEnabled', !isEnabled);
-        });
-
-        window.addEventListener('load', () => {
-            const isEnabled = localStorage.getItem('serviceWorkerEnabled') === 'true';
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/service-worker.js').then(registration => {
-                    registration.active.postMessage({ action: 'setState', enabled: isEnabled });
-                });
-            }
-        });
-
-
 
         function resetPageStyles() {
             // Re-enable scrolling on the body and html
