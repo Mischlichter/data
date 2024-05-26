@@ -2555,44 +2555,39 @@
                 return;
             }
 
-            // Helper function to add a delay
-            const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-            // Create containers in sorted order with a delay after each image retrieval
+            // Create containers in sorted order using promises
             for (const item of combinedData) {
-                const container = document.createElement('div');
-                container.id = item.key;
-                container.className = item.type === 'text' ? 'flex-container' : 'flex-icontainer';
-                document.body.appendChild(container);
+                await new Promise(async (resolve) => {
+                    const container = document.createElement('div');
+                    container.id = item.key;
+                    container.className = item.type === 'text' ? 'flex-container' : 'flex-icontainer';
+                    document.body.appendChild(container);
 
-                if (item.type === 'text') {
-                    attachLinkToContainer(container, item.content.style);
-                }
-
-                const style = document.createElement('style');
-                style.innerHTML = item.content.style;
-                document.head.appendChild(style);
-                dynamicStyles.push(style);
-                console.log(`Applied style for container: ${container.id}`);
-
-                if (item.type === 'image') {
-                    const image = document.createElement('img');
-                    const cachedImage = await getCachedImage(db, item.content.src);
-
-                    if (cachedImage) {
-                        image.src = cachedImage;
-                        console.log(`Loaded image from cache: ${item.content.src}`);
-                    } else {
-                        image.src = item.content.src;
-                        console.log(`Loaded image from network: ${item.content.src}`);
+                    if (item.type === 'text') {
+                        attachLinkToContainer(container, item.content.style);
                     }
 
-                    container.appendChild(image);
-                    console.log(`Appended image to container: ${container.id}`);
+                    const style = document.createElement('style');
+                    style.innerHTML = item.content.style;
+                    document.head.appendChild(style);
+                    dynamicStyles.push(style);
 
-                    // Introduce a small delay after each image retrieval
-                    await delay(50); // Adjust the delay as needed (in milliseconds)
-                }
+                    if (item.type === 'image') {
+                        const image = document.createElement('img');
+                        const cachedImage = await getCachedImage(db, item.content.src);
+
+                        if (cachedImage) {
+                            image.src = cachedImage;
+                            console.log(`Loaded image from cache: ${item.content.src}`);
+                        } else {
+                            image.src = item.content.src;
+                            console.log(`Loaded image from network: ${item.content.src}`);
+                        }
+
+                        container.appendChild(image);
+                    }
+                    resolve();
+                });
             }
 
             // Create and style the footer
@@ -2606,7 +2601,6 @@
             highlightActiveMenuItem(`menuContainer${index}`);
             observeImagesForAnimation();
             createScrollToTopButton();
-            console.log('Scene loaded successfully');
         }
 
         async function getCachedImage(db, url) {
