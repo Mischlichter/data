@@ -2541,7 +2541,8 @@
 
             // Update the iframe with the new scene
             updateIframe(formattedSceneKey);
-            //console.log('Formatted Scene Key:', formattedSceneKey);
+            console.log('Formatted Scene Key:', formattedSceneKey);
+
             // Merge and sort text and image containers
             let combinedData = [];
             Object.keys(scene.containers).forEach(key => {
@@ -2589,10 +2590,10 @@
 
                     if (cachedImage) {
                         image.src = cachedImage;
-                        //console.log(`Loaded image from cache: ${item.content.src}`);
+                        console.log(`Loaded image from cache: ${item.content.src}`);
                     } else {
                         image.src = item.content.src;
-                        //console.log(`Loaded image from network: ${item.content.src}`);
+                        console.log(`Loaded image from network: ${item.content.src}`);
                     }
 
                     container.appendChild(image);
