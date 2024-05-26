@@ -1644,7 +1644,7 @@
                 bodyGalleryContainer.innerHTML = ''; // Clear body gallery content
             }
 
-            if (sceneKey === 'scene04') {
+            if (sceneKey === 'scene05') {
                 // Logic for scene04 (Gallery)
                 toggleRemoveFooterActivation();
                 resetRemoveStyledFooterCounter();
@@ -1663,7 +1663,7 @@
                 loadGallery(); // Load the gallery for scene04
                 unhideBackground();
                 scrollToTop();
-            } else if (sceneKey === 'scene05') {
+            } else if (sceneKey === 'scene06') {
                 // Logic for scene05 (Clipz)
                 hideElementsByClass("foreground-image-container");
 
@@ -3033,7 +3033,7 @@
             }
 
             // For scene index 3, remove the wrappers completely
-            if (currentSceneIndex === 3 || currentSceneIndex === 4) {
+            if (currentSceneIndex === 4 || currentSceneIndex === 5) {
                 document.querySelectorAll('.scale-wrapper-background, .scale-wrapper-interface').forEach(wrapper => {
                     wrapper.parentNode.removeChild(wrapper);
                 });

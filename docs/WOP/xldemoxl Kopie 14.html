@@ -2509,7 +2509,7 @@
           dynamicStyles.length = 0; // Clear the array
         }
 
-        async function loadScene(index) {
+        function loadScene(index) {
             const scene = scenesData[index];
             const sceneImages = scenesiData[index]; // Assuming scenesiData is structured similarly
 
@@ -2529,7 +2529,6 @@
             // Update the iframe with the new scene
             updateIframe(formattedSceneKey);
             //console.log('Formatted Scene Key:', formattedSceneKey);
-
             // Merge and sort text and image containers
             let combinedData = [];
             Object.keys(scene.containers).forEach(key => {
@@ -2549,7 +2548,7 @@
             });
 
             // Create containers in sorted order
-            for (const item of combinedData) {
+            combinedData.forEach(item => {
                 const container = document.createElement('div');
                 container.id = item.key;
                 container.className = item.type === 'text' ? 'flex-container' : 'flex-icontainer';
@@ -2566,21 +2565,13 @@
 
                 if (item.type === 'image') {
                     const image = document.createElement('img');
-                    try {
-                        const response = await fetchFromCacheOrNetwork(item.content.src);
-                        const blob = await response.blob();
-                        const imageUrl = URL.createObjectURL(blob);
-                        image.src = imageUrl;
-                    } catch (error) {
-                        console.error('Error fetching image:', item.content.src, error);
-                        image.src = item.content.src; // Fallback to the original source if fetching fails
-                    }
+                    image.src = item.content.src;
                     container.appendChild(image);
                 }
-            }
+            });
 
             // Create and style the footer
-            createStyledFooter();
+            createStyledFooter()
 
             currentSceneData = scene;
 
@@ -2591,7 +2582,6 @@
             observeImagesForAnimation();
             createScrollToTopButton();
         }
-
 
         function createScrollToTopButton() {
             const button = document.createElement('button');

@@ -1,6 +1,7 @@
 WELCOME:scene01
 JOURNEY:scene02
 HANDBOOK:scene03
-GALLERY:scene04
-THEATRE:scene05
-PROMPTS:scene06
+PROMPTS:scene04
+GALLERY:scene05
+THEATRE:scene06
+
