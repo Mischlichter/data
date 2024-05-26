@@ -3,6 +3,7 @@ importScripts('https://www.hogeai.com/scripts/index-min.js');
 const CACHE_NAME = 'site-assets';
 const DB_NAME = 'MyDatabase';
 const STORE_NAME = 'assets';
+const IMAGE_STORE_NAME = 'imageData';
 
 console.log('Service Worker: Registered');
 
@@ -50,7 +51,6 @@ self.addEventListener('fetch', event => {
     );
 });
 
-
 async function openDB() {
     if (!('indexedDB' in self)) return null;
     console.log('Service Worker: Opening IndexedDB');
@@ -59,6 +59,9 @@ async function openDB() {
         upgrade(db) {
             if (!db.objectStoreNames.contains(STORE_NAME)) {
                 db.createObjectStore(STORE_NAME, { keyPath: 'url' });
+            }
+            if (!db.objectStoreNames.contains(IMAGE_STORE_NAME)) {
+                db.createObjectStore(IMAGE_STORE_NAME, { keyPath: 'filename' });
             }
         }
     }).then(db => {
