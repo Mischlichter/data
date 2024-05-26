@@ -1532,20 +1532,37 @@
             } else {
                 // Removed direct calls to enterSite() here to ensure it's managed within triggerPermissionRequest
                 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                    
-                     // This will handle entering the site after permissions
+                    // This will handle entering the site after permissions
                     showOverlay();
                 } else {
                     // Directly add event listener if not on iOS
-                    
-                    
-                    enterSite(); // Non-iOS or no permissions needed, proceed to enter the site
-                    fadeOutOverlay()
+                    // Register the service worker if it's the second run
+                    if ('serviceWorker' in navigator && localStorage.getItem(firstLoadCompleteFlag) && !localStorage.getItem(secondLoadCompleteFlag)) {
+                        navigator.serviceWorker.register('service-worker.js')
+                            .then(function(registration) {
+                                console.log('Service Worker registered with scope:', registration.scope);
+                                return navigator.serviceWorker.ready; // Wait for the service worker to be ready
+                            })
+                            .then(function() {
+                                console.log('Service Worker is active.');
+                                enterSite(); // Proceed to enter the site after the service worker is active
+                                fadeOutOverlay();
+                            })
+                            .catch(function(error) {
+                                console.log('Service Worker registration failed:', error);
+                                enterSite(); // Proceed to enter the site even if the service worker fails to register
+                                fadeOutOverlay();
+                            });
+                    } else {
+                        enterSite(); // Non-iOS or no permissions needed, proceed to enter the site
+                        fadeOutOverlay();
+                    }
                 }
 
                 localStorage.removeItem(firstLoadCompleteFlag);
                 localStorage.removeItem(secondLoadCompleteFlag);
             }
+
            
         });
 

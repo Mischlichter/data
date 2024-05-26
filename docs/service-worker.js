@@ -1,3 +1,5 @@
+importScripts('https://cdn.jsdelivr.net/npm/idb@7.0.0/build/umd.js');
+
 const CACHE_NAME = 'site-assets';
 const DB_NAME = 'MyDatabase';
 const STORE_NAME = 'assets';
@@ -23,7 +25,16 @@ self.addEventListener('install', event => {
 self.addEventListener('fetch', event => {
     event.respondWith(
         caches.match(event.request).then(response => {
-            return response || fetch(event.request);
+            return response || fetch(event.request).then(networkResponse => {
+                if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
+                    caches.open(CACHE_NAME).then(cache => {
+                        cache.put(event.request, networkResponse.clone());
+                    });
+                }
+                return networkResponse;
+            });
+        }).catch(() => {
+            return caches.match(event.request);
         })
     );
 });
