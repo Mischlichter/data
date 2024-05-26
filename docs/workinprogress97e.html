@@ -3099,10 +3099,20 @@
                 }
             }
 
+            // Helper function to create and load images
+            async function loadImage(url) {
+                return new Promise((resolve, reject) => {
+                    const img = new Image();
+                    img.onload = () => resolve(img.src);
+                    img.onerror = () => reject(new Error(`Failed to load image at url: ${url}`));
+                    img.src = url;
+                });
+            }
+
             // Create promises for vertical tiles
-            const backgroundPromise = fetchFromCacheOrNetwork(backgroundUrl).then(url => createVerticalTiles_a('interfaceBackground', url, imageHeight));
-            const sideLeftPromise = fetchFromCacheOrNetwork(sideImageUrl).then(url => createVerticalTiles_b('interfaceSideLeft', url, imageHeight));
-            const sideRightPromise = fetchFromCacheOrNetwork(sideImageUrl).then(url => createVerticalTiles_b('interfaceSideRight', url, imageHeight));
+            const backgroundPromise = fetchFromCacheOrNetwork(backgroundUrl).then(loadImage).then(url => createVerticalTiles_a('interfaceBackground', url, imageHeight));
+            const sideLeftPromise = fetchFromCacheOrNetwork(sideImageUrl).then(loadImage).then(url => createVerticalTiles_b('interfaceSideLeft', url, imageHeight));
+            const sideRightPromise = fetchFromCacheOrNetwork(sideImageUrl).then(loadImage).then(url => createVerticalTiles_b('interfaceSideRight', url, imageHeight));
 
             // Create a promise for the viewer image
             const viewerImagePromise = new Promise(async (resolve, reject) => {
@@ -3121,7 +3131,7 @@
                         console.error("Failed to load image at url:", viewerImageUrl);
                         reject(); // Reject the promise on error
                     };
-                    tempImage.src = await fetchFromCacheOrNetwork(viewerImageUrl); // Set the image source which starts loading the image
+                    tempImage.src = await fetchFromCacheOrNetwork(viewerImageUrl).then(loadImage); // Set the image source which starts loading the image
                 } else {
                     console.log("Viewer image element does not exist in the DOM.");
                     reject(); // Reject the promise if the element does not exist
