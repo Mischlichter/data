@@ -2602,7 +2602,7 @@
             }
 
             // Update the iframe with the new scene
-            updateIframe(formattedSceneKey);
+            
 
             // Create and style the footer
             createStyledFooter();
@@ -2611,6 +2611,7 @@
 
             // Update containers when loading a new scene
             updateAllContainers(scene);
+            updateIframe(formattedSceneKey);
 
             highlightActiveMenuItem(`menuContainer${index}`);
             observeImagesForAnimation();
