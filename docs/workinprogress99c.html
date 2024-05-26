@@ -1,0 +1,3640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/Mischlichter/data/main/gallerycom/65411740980.jpg">
+    <meta http-equiv="Cache-Control" content="public, max-age=31536000">
+
+    <title>HOGE AI</title>
+    <style>
+        @font-face {
+            font-family: 'JetBrainsMono-Regular';
+            src: url('fonts/JetBrainsMono-Regular.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-Regular.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 400; /* Regular font weight */
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-Bold';
+            src: url('fonts/JetBrainsMono-Bold.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-Bold.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 700; /* Bold font weight */
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-BoldItalic';
+            src: url('fonts/JetBrainsMono-BoldItalic.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-BoldItalic.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 700; /* Bold font weight */
+            font-style: italic;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-ExtraBold';
+            src: url('fonts/JetBrainsMono-ExtraBold.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-ExtraBold.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 800; /* Extra-bold font weight */
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-ExtraBoldItalic';
+            src: url('fonts/JetBrainsMono-ExtraBoldItalic.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-ExtraBoldItalic.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 800; /* Extra-bold font weight */
+            font-style: italic;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-ExtraLight';
+            src: url('fonts/JetBrainsMono-ExtraLight.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-ExtraLight.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 200; /* Extra-light font weight */
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-ExtraLightItalic';
+            src: url('fonts/JetBrainsMono-ExtraLightItalic.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-ExtraLightItalic.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 200; /* Extra-light font weight */
+            font-style: italic;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-Italic';
+            src: url('fonts/JetBrainsMono-Italic.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-Italic.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 400; /* Regular font weight */
+            font-style: italic;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-Light';
+            src: url('fonts/JetBrainsMono-Light.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-Light.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 300; /* Light font weight */
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-LightItalic';
+            src: url('fonts/JetBrainsMono-LightItalic.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-LightItalic.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 300; /* Light font weight */
+            font-style: italic;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-Medium';
+            src: url('fonts/JetBrainsMono-Medium.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-Medium.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 500; /* Medium font weight */
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-MediumItalic';
+            src: url('fonts/JetBrainsMono-MediumItalic.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-MediumItalic.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 500; /* Medium font weight */
+            font-style: italic;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-SemiBold';
+            src: url('fonts/JetBrainsMono-SemiBold.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-SemiBold.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 600; /* Semi-bold font weight */
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-SemiBoldItalic';
+            src: url('fonts/JetBrainsMono-SemiBoldItalic.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-SemiBoldItalic.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 600; /* Semi-bold font weight */
+            font-style: italic;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-Thin';
+            src: url('fonts/JetBrainsMono-Thin.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-Thin.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 100; /* Thin font weight */
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-ThinItalic';
+            src: url('fonts/JetBrainsMono-ThinItalic.woff2') format('woff2'), /* Modern Browsers */
+                 url('fonts/JetBrainsMono-ThinItalic.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 100; /* Thin font weight */
+            font-style: italic;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            -webkit-font-smoothing: antialiased;
+            
+            -moz-osx-font-smoothing: grayscale;
+            font-family: 'JetBrainsMono-Regular', sans-serif;
+            background-color: black;
+            color: #00ffcc;
+            margin: 0;
+            padding: 0;
+            transition: color 0.3s ease;
+            max-width: 100vw;
+            overflow-x: hidden;
+            touch-action: pan-y;
+            
+        }
+
+
+        html {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            
+            
+        }
+
+        html, body {
+            /*background-color: black;*/
+            color: #00ffcc; /* Green color */
+            /*height: 100vh;*/
+            margin: 0;
+            padding: 0;
+    
+    
+            scrollbar-width: none;
+            scrollbar-color: transparent transparent;
+        }
+
+        body::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        body::-webkit-scrollbar-track {
+            background: transparent;
+            border-left: 6px solid transparent; /* Adjust the border width to match the thumb's width */
+        }
+
+        body::-webkit-scrollbar-thumb {
+            background: transparent;
+            pointer-events: none; /* Disable interactivity */
+        }
+
+        #iframeContainer {
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            position: relative;
+
+            
+        }
+        #mouseOverlay {
+            pointer-events: auto;
+            z-index: 1;
+
+        }
+
+        #iframeContainer iframe {
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index:1;
+        }
+
+        @media (orientation: portrait) {
+            #iframeContainer iframe {
+                transform: scale(0.9);
+            }
+        }
+
+        /* Ensure the iframe is at normal size when in landscape mode */
+        @media (orientation: landscape) {
+            #iframeContainer iframe {
+                transform: scale(1.0);
+            }
+        }
+
+
+        
+
+        
+        
+        /* Individual image containers */
+        .flex-icontainer {
+            opacity: 0;
+            transition: opacity 1s ease-out;
+            position: relative; /* Essential for absolute child positioning */
+       
+            padding-top: 38%; /* Same as width for a 1:1 aspect ratio */
+            margin: 50px auto; /* Center horizontally */
+            border: 2px solid #00ffcc; /* Green border */
+            border-radius: 20px; /* Rounded corners */
+            overflow: hidden; /* Ensures nothing spills outside the rounded corners */
+            box-sizing: border-box;
+            background-color: black;
+            
+            /* Removed flexbox styles since we're using absolute positioning for the image */
+        }
+
+        .flex-icontainer img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%; /* Slightly larger than the container */
+            height: 100%; /* Keep the image square and slightly larger */
+            transform: translate(-50%, -50%); /* Center the image */
+            object-fit: cover; /* Ensures the image covers the available area */
+            
+        }
+
+
+
+
+
+        .flex-container {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 50px auto; /* Center horizontally */
+            /*position: relative;
+            bottom: 800px; */
+            border: none;
+            box-sizing: border-box;
+            font-family: 'JetBrainsMono-Bold', sans-serif;
+            text-transform: uppercase;
+           
+            z-index: 2;
+        
+            
+            border: 2px solid #00ffcc; /* Green border */
+            border-radius: 20px; /* Rounded corners */
+            padding: 8px 15px; /* Adjust padding as needed */
+            background-color: black;
+            
+            
+        }
+
+
+        
+        .flex-container span {
+            white-space: nowrap;
+            display: inline-block;
+            margin: 0 5px 5px 0;
+            
+        }
+
+
+
+
+
+        #mainpage .dynamic-text { 
+            opacity: 0;
+
+        }
+        
+        #bodygallery .dynamic-text {
+            z-index: 2;
+        }
+            
+        
+    
+
+        .menu-bar {
+            display: flex;
+            justify-content: space-evenly; /* Evenly spaces the menu items */
+            align-items: center;
+            background-color: black; /* 20% grey color */
+            border: 2px solid #00ffcc;
+            border-radius: 20px;
+            position: fixed; /* Fixed to the top */
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px 30px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000; /* Ensures it stays on top of other content */
+
+        }
+        
+        .menu-container {
+            font-family: 'JetBrainsMono-Bold';
+            font-size: 16px;
+            margin: 0; /* Adjust as needed */
+            /* Additional styles for your menu items */
+        }
+        .menu-container {
+            margin: 0; /* Adjust as needed */
+            cursor: default; /* Or 'pointer' if you want a hand cursor */
+            user-select: none;
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none;
+
+        }
+        
+        @media screen and (max-width: 768px), screen and (orientation: portrait) {
+            .menu-bar {
+                display: flex; /* Enable flexbox */
+                flex-wrap: wrap; /* Allow wrapping into new lines */
+                padding: 5px; /* Adjust padding for mobile */
+                justify-content: space-evenly; /* Space items evenly */
+            }
+
+            .menu-container {
+                flex: 1 1 25%; /* Each item takes up to 25% of the width */
+                box-sizing: border-box; /* Include padding and border in the width */
+                text-align: left; /* Center text in each container */
+                padding: 5px; /* Adjust padding for items */
+                
+            }
+            
+            .logo-small {
+                position: absolute;
+                left: 13.5%; /* 25% of the container's width is the first quarter */
+                top: 50%;
+                transform: translate(-50%, -50%); /* Center horizontally and vertically */
+            }
+        }
+
+        @media screen and (min-width: 769px) and (orientation: landscape) {
+            .menu-bar {
+                display: flex;
+                justify-content: space-evenly; /* Evenly spaces the menu items */
+                align-items: center;
+                background-color: black; /* 20% grey color */
+                border: 2px solid #00ffcc;
+                border-radius: 20px;
+                position: fixed; /* Fixed to the top */
+                top: 0;
+                left: 0;
+                width: 100%;
+                padding: 10px 30px;
+                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+                z-index: 1000; /* Ensures it stays on top of other content */
+            }
+            
+            .menu-container {
+                font-family: 'JetBrainsMono-Bold';
+                font-size: 16px;
+                margin: 0; /* Adjust as needed                 cursor: default; /* Or 'pointer' if you want a hand cursor */
+                user-select: none; /* Prevent text selection */
+                -webkit-user-select: none; /* Safari */
+                -moz-user-select: none; /* Firefox */
+                -ms-user-select: none; /* Internet Explorer/Edge */
+            }
+        }
+
+
+
+
+        .active-menu-item {
+            font-family: 'JetBrainsMono-Bold'; /* Bold font */
+            color: #fff; /* Change color if needed */
+            /* Other styles to highlight the active item */
+        }
+        .menu-container {
+            transition: transform 0.3s ease;
+        }
+        .menu-container:hover {
+            transform: scale(1.1); /* Slightly enlarges the hovered item */
+        }
+        .content-above-iframe {
+            padding: 20px;
+        }
+        .content-below-iframe {
+            padding: 20px;
+        }
+
+
+        .foreground-image-container {
+            position: absolute; /* or absolute, depending on your layout needs */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Ensures it is above all other content */
+            pointer-events: none; /* Allows clicks to pass through to elements below */
+        }
+
+        .foreground-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Adjust this as necessary to fit your design */
+        }
+
+
+
+
+
+
+
+        :root {
+          --viewer-width: 1024px;
+          --viewer-height: 2048px;
+          --total-width: 3072px; /* New variable for total width */
+
+        }
+
+        #interfaceContainer {
+          position: absolute; /* or 'fixed' depending on use case */
+          top: 50%;
+          left: 50%;
+          z-index: 15;
+          transform: translate(-50%, -50%);
+          width: var(--total-width); /* Assuming this is set to 3072px or as needed */
+          height: var(--viewer-height); /* Assuming this is set to 2048px */
+          margin: 0 auto; /* Center the container */
+          
+          pointer-events: none;
+        }
+
+        .sideImageContainer {
+          background-size: cover;
+          background-repeat: no-repeat;
+          z-index: 15;
+
+        }
+
+   
+
+        #interfaceSideLeft, #interfaceSideRight {
+          position: absolute;
+          top: 0;
+          width: calc((var(--total-width) - var(--viewer-width)) / 2); /* Adjust width for side containers */
+          height: 100%;
+          
+
+        }
+
+        #interfaceSideLeft {
+          left: 0;
+
+        }
+
+        #interfaceSideRight {
+          right: 0;
+
+        }
+
+        #interfaceViewerContainer {
+          position: absolute;
+          top: 0;
+          left: calc((100% - var(--viewer-width)) / 2); /* Center the viewer */
+          width: var(--viewer-width);
+          height: 100%;
+          z-index: 15;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          pointer-events: none;
+
+        }
+   
+
+
+        #interfaceViewerImage {
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+
+        }
+
+
+        :root {
+            --background-total-width: 4096px;
+            --background-total-height: 3072px;
+        }
+
+        #backgroundRoot {
+            --viewer-width: 1024px;
+            --viewer-height: 2048px;
+            --total-width: 3072px; /* New variable for total width */
+        }
+
+        #backgroundContainer {
+            position: absolute; /* or 'fixed' depending on use case */
+            top: 50%;
+            left: 50%;
+            z-index: -2;
+            transform: translate(-50%, -50%);
+            width: var(--total-width); /* Assuming this is set to 3072px or as needed */
+            height: var(--viewer-height); /* Assuming this is set to 2048px */
+            margin: 0 auto; /* Center the container */
+        }
+
+        #backgroundInterfaceContainer {
+            position: absolute;
+            top: 0;
+            left: calc((100% - var(--viewer-width)) / 2); /* Center the viewer */
+            width: var(--viewer-width);
+            height: 100%;
+            z-index: -2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #interfaceBackground {
+            width: 100%;
+            height: auto;
+
+          
+        }
+
+        .scale-wrapper-background, .scale-wrapper-interface {
+            position: absolute; /* Or 'fixed' if they should stay in place during scroll */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%; /* Or an explicit height if necessary */
+            pointer-events: none; /* To allow interaction with elements below */
+        }
+
+        .scale-wrapper-background {
+            pointer-events: none;
+            position: absolute; /* Switched to absolute for stronger positioning control */
+            top: -15%;
+            left: 50%;
+            transform-origin: center center; /* Ensures scaling occurs from the element's center */
+            width: fit-content; /* Ensures the wrapper fits the scaled content */
+            height: fit-content; /* Ensures the wrapper fits the scaled content */
+            transform: translate(-50%, -50%) scale(0.8); /* Centers and then scales the content */
+        }
+
+        .scale-wrapper-interface {
+            pointer-events: none;
+            position: absolute; /* Switched to absolute for stronger positioning control */
+            top: 50%;
+            left: 50%;
+            transform-origin: center center; /* Ensures scaling occurs from the element's center */
+            width: fit-content; /* Ensures the wrapper fits the scaled content */
+            height: fit-content; /* Ensures the wrapper fits the scaled content */
+            transform: translate(-50%, -50%) scale(0.8); /* Centers and then scales the content */
+        }
+
+        .scale-wrapper-background {
+            z-index: -2; /* Ensures the background is placed behind other content */
+        }
+
+        .scale-wrapper-interface {
+            z-index: 15; /* Ensures the interface is placed above the background */
+        }
+
+        
+
+        #interfaceContainer, #backgroundContainer, #iframeContainer, #bodyGalleryContainer, .flex-icontainer, .flex-container {
+            transition: opacity 1s ease-in-out;
+            opacity: 0;  /* Initially hidden, ensure this is your intent */
+        }
+
+        .menu-bar, .menu-container {
+            transition: opacity 0.5s ease-in-out;
+            opacity: 0;  /* Initially hidden, ensure this is your intent */
+        }
+
+
+
+
+
+
+
+        .center-container-XL {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1000vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 70;
+            background-color: rgba(0, 0, 0, 0);
+            transition: opacity 1.5s ease-out; /* Smooth transition for opacity */
+        }
+
+        #ascii-art-container-XL {
+            width: 370px;
+            height: 170px;
+            overflow: hidden;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 3;
+            font-size: 16px;
+        }
+
+        .ascii-line-XL {
+            white-space: pre;
+            font-family: monospace;
+            color: #00ffcc;
+            transition: opacity 1s ease-out;
+
+        }
+
+        .hidden-char-XL {
+            visibility: hidden;
+        }
+
+
+        #permissionOverlay {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            opacity: 0; 
+            visibility: hidden;
+            transition: opacity 0.5s ease-in-out; 
+            z-index: 1111111;
+        }
+
+
+
+
+        #enableButton {
+            padding: 10px 20px;
+            font-family: 'JetBrainsMono-Bold';  /* Consistent with the menu */
+            font-size: 16px;                    /* Size from the menu */
+            background-color: black;            /* Background color like the menu */
+            color: #00ffcc;                     /* Highlight color for the text, matching the menu border */
+            border: 2px solid #00ffcc;          /* Border color to match the menu */
+            border-radius: 20px;                /* Rounded corners like the menu */
+            cursor: pointer;
+            outline: none;
+            z-index: 1111111;
+            position: relative;                 /* Ensure positioning context is correct */
+            top: auto;
+            left: auto;
+            width: auto;                        /* Auto width to fit content */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0); /* Slight shadow for depth */
+            opacity: 0;
+            visibility: hidden;
+        }
+
+
+
+
+
+    </style>
+
+    
+
+</head>
+<body>
+    
+    <div class="center-container-XL"> <!-- Updated class name -->
+        <div id="ascii-art-container-XL"> <!-- Updated ID -->
+            <!-- ASCII art loading message goes here -->
+        </div>
+    </div>
+
+
+
+
+
+    <div class="mainpage">
+        
+    <div id="permissionOverlay">
+        <button id="enableButton">ENTER HOGEAI</button>
+    </div>    
+
+    </div>
+        <div id="iframeContainer" style="position: relative; width: 100%; height: 100%;;z-index: 1;">
+        <div id="mouseOverlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;z-index: 1;"></div>
+ 
+    </div>
+
+    <div id="bodyGalleryContainer">
+
+    </div>
+    
+    <div class="scale-wrapper-background">
+        <div id="backgroundRoot">
+            <div id="backgroundContainer">
+                <div id="backgroundInterfaceContainer">
+                    <div id="interfaceBackground"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="scale-wrapper-interface">
+        <div id="interfaceContainer">
+            <div id="interfaceSideLeft" class="sideImageContainer"></div>
+            <div id="interfaceViewerContainer">
+                <img id="interfaceViewerImage" alt="Viewer Image">
+            </div>
+            <div id="interfaceSideRight" class="sideImageContainer"></div>
+        </div>
+    </div>
+
+    
+      
+    </div>
+
+
+
+    
+    <link rel="stylesheet" type="text/css" href="css/bodygallery.css">
+    <script src="https://kit.fontawesome.com/a258000a2d.js" crossorigin="anonymous"></script>
+
+    <script src="scripts/lenis.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
+    <script src="./scripts/index-min.js"></script>
+
+
+    <script src="./scripts/fastclick.js"></script>
+    <script>
+        window.addEventListener('load', function() {
+            FastClick.attach(document.body);
+        }, false);
+    </script>
+
+    <script src="scripts/bodygallery.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            //console.log('DOMContentLoaded event triggered');
+            const ASSETS_MANIFEST_URL = 'https://raw.githubusercontent.com/Mischlichter/data/main/index.json';
+            const EXTRA_ASSETS_URL = 'https://raw.githubusercontent.com/Mischlichter/data/main/assets/pagesi.txt';
+            const cacheName = 'site-assets';
+            const firstLoadCompleteFlag = 'firstLoadComplete';
+            const secondLoadCompleteFlag = 'secondLoadComplete';
+            let loadingPercentage = 0; // Variable to store loading percentage
+
+            // Check the flags immediately and adjust the loadingPercentage if it's the second load
+            if (localStorage.getItem(firstLoadCompleteFlag) && !localStorage.getItem(secondLoadCompleteFlag)) {
+                loadingPercentage = 111; // Pre-set loading percentage for the second load
+                
+                //console.log('Second load detected, setting loading percentage to 100%');
+
+
+            }
+
+            const asciiArt = [
+                "                 /^ ^\\                ", 
+                "                / 111 \\               ", 
+                "                V\\ Y /V               ", 
+                "                 / - \\                ", 
+                "                /    |                ", 
+                "               V__) ||                ",
+                "**************************************",
+                "**** LOADING HOGEAI WEBSITE FILES ****",
+                "**************************************"
+            ];
+
+
+            const background = document.createElement('div');
+            background.style.position = 'absolute';
+            background.style.top = '0';
+            background.style.left = '0';
+            background.style.width = '100%';
+            background.style.height = '50000vh';
+            background.style.zIndex = '-2';
+            background.style.backgroundColor = 'rgba(0, 0, 0, 0)'; // 10% grey
+            // Add more styles or content to the background as needed
+
+            document.body.insertBefore(background, document.body.firstChild);
+     
+
+         
+
+            //console.log(asciiArt.join('\n')); // Log ASCII art loading message to console
+
+            const container = document.getElementById('ascii-art-container-XL');
+            const numberOfCharacters = asciiArt[0].length;
+
+            asciiArt.forEach((line, lineIndex) => {
+                const lineDiv = document.createElement('div');
+                lineDiv.className = 'ascii-line-XL'; // Updated class name
+                line.split('').forEach((char, charIndex) => {
+                    const span = document.createElement('span');
+                    span.setAttribute('data-original-char', char);
+                    if (char === ' ' || char === '') {
+                        span.classList.add('hidden-char-XL'); // Updated class name
+                    }
+                    lineDiv.appendChild(span);
+                });
+                container.appendChild(lineDiv);
+                hideAllAsciiLinesXL();
+                
+            });
+
+            function preventDefault(e) {
+                e.preventDefault();
+            }
+
+            function disableScroll() {
+                // Add event listeners to prevent scrolling
+                window.addEventListener('wheel', preventDefault, { passive: false });
+                window.addEventListener('touchmove', preventDefault, { passive: false });
+            }
+
+            function enableScroll() {
+                // Remove event listeners to re-enable scrolling
+                window.removeEventListener('wheel', preventDefault);
+                window.removeEventListener('touchmove', preventDefault);
+            }
+            
+            function hideAllAsciiLinesXL() {
+                const firstLoadCompleteFlag = 'firstLoadComplete';
+
+                // Check if the first load flag is set in localStorage
+                if (localStorage.getItem(firstLoadCompleteFlag)) {
+                    // If the first load flag is set, hide all elements with the class .ascii-line-XL
+                    var elements = document.querySelectorAll('.ascii-line-XL');
+                    elements.forEach(function(element) {
+                        element.style.visibility = 'hidden';
+                    });
+                }
+            }
+
+
+
+            function generateRandomCharacter() {
+                const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()[]{}|';
+               
+                return characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+
+            function generateRandomColor() {
+                const hue = Math.floor(Math.random() * 360); // Hue: 0-359
+                const saturation = 100; // Saturation: percentage
+                const lightness = 50; // Lightness: percentage (50% is a balanced brightness)
+
+                return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+            }
+            
+            let lastIntervalValue = 0;
+            const shuffleWidth = 7;
+
+
+            
+
+            const shuffleInterval = setInterval(function() {
+                document.querySelectorAll('.ascii-line-XL').forEach(line => {
+                    for (let charIndex = 0; charIndex < numberOfCharacters; charIndex++) {
+                        const span = line.childNodes[charIndex];
+                        if (span) {
+                            if (loadingPercentage === 100) {
+                                // If it's the second run and loading is at 100%, show all characters as original
+                                span.textContent = span.getAttribute('data-original-char');
+                                span.style.color = ""; // Reset to original color
+                                span.classList.remove('hidden-char-XL'); // Ensure visibility
+                            } else {
+                                // Normal behavior for the first run or loading less than 100%
+                                if (charIndex >= loadingPercentage && charIndex < loadingPercentage + shuffleWidth) {
+                                    span.textContent = generateRandomCharacter();
+                                    span.style.color = generateRandomColor(); // Apply random color
+                                } else if (charIndex >= loadingPercentage - shuffleWidth && charIndex < loadingPercentage) {
+                                    span.textContent = span.getAttribute('data-original-char');
+                                    span.style.color = ""; // Reset to original color
+                                }
+                            }
+                        }
+                    }
+                });
+            }, 30);
+
+            const shortInterval = setInterval(function() {
+                if (lastIntervalValue < loadingPercentage) {
+                    lastIntervalValue = loadingPercentage;
+                }
+                loadingPercentage++; // Increment loadingPercentage
+            }, 100000);
+
+
+            const loadingInterval = setInterval(function() {
+                if (loadingPercentage >= 90) {
+                    // Loading is complete
+                    shuffleOnes(); // Start shuffling spans with '1'
+                    clearInterval(loadingInterval);
+                    clearInterval(shuffleInterval); // Optionally clear the shuffle interval too
+                }
+            }, 10);
+
+        // Function to shuffle spans with '1'
+            function shuffleOnes() {
+                const spansWithOne = Array.from(document.querySelectorAll('span')).filter(span => span.getAttribute('data-original-char') === '1');
+                const shuffleDuration = 150; // Duration for each span to shuffle
+                const delayBetweenSpans = 50; // Delay between spans
+
+                spansWithOne.forEach((span, index) => {
+                    setTimeout(() => {
+                        shuffleSpan(span, index === spansWithOne.length - 1);
+                    }, delayBetweenSpans * index);
+                });
+
+                function shuffleSpan(span, isLastSpan) {
+                    let timeElapsed = 0;
+                    const shuffleFrequency = 420;
+
+                    const shuffle = setInterval(() => {
+                        if (timeElapsed >= shuffleDuration) {
+                            clearInterval(shuffle);
+                            span.textContent = '1'; // Reset to original character
+                            span.style.color = ""; // Reset to original color
+                            if (isLastSpan) {
+                               
+                            }
+                            return;
+                        }
+
+                        span.textContent = generateRandomCharacter();
+                        span.style.color = generateRandomColor(); // Apply random color
+                        timeElapsed += 1000 / shuffleFrequency;
+                    }, 1000 / shuffleFrequency);
+                }
+
+            }
+
+            ///INDEX AND PRELOAD openDB
+
+
+                
+            async function storeAssetsInDB(assets) {
+                try {
+                    const db = await idb.openDB('MyDatabase', 1, {
+                        upgrade(db, oldVersion, newVersion, transaction) {
+                            if (!db.objectStoreNames.contains('assets')) {
+                                db.createObjectStore('assets', { keyPath: 'url' });
+                            }
+                        }
+                    });
+
+                    const tx = db.transaction('assets', 'readwrite');
+                    const store = tx.objectStore('assets');
+
+                    for (let asset of assets) {
+                        await store.put({ url: asset.url, blob: asset.blob, lastModified: asset.lastModified });
+                    }
+
+                    await tx.done;
+                    console.log('All assets are stored in IndexedDB');
+                } catch (error) {
+                    console.error('Error storing assets in IndexedDB:', error);
+                }
+            }
+
+            function checkIndexedDBSupport() {
+                if ('indexedDB' in window) {
+                    console.log('This browser supports IndexedDB');
+                    return true;
+                } else {
+                    console.log('This browser does not support IndexedDB');
+                    return false;
+                }
+            }
+
+            function timeoutPromise(promise, ms) {
+                return new Promise((resolve, reject) => {
+                    const timer = setTimeout(() => {
+                        reject(new Error('Timeout'));
+                    }, ms);
+
+                    promise
+                        .then((value) => {
+                            clearTimeout(timer);
+                            resolve(value);
+                        })
+                        .catch((err) => {
+                            clearTimeout(timer);
+                            reject(err);
+                        });
+                });
+            }
+
+            async function preloadAssets() {
+                const supportsIndexedDB = checkIndexedDBSupport();
+                console.log('Starting to preload assets');
+
+                let db;
+                if (supportsIndexedDB) {
+                    const maxRetries = 5;
+                    const retryDelay = 1000;
+                    const openDBTimeout = 3000;
+
+                    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+                        try {
+                            //console.log(`Attempt ${attempt} to open database`);
+                            db = await timeoutPromise(
+                                idb.openDB('MyDatabase', 1, {
+                                    upgrade(db, oldVersion, newVersion, transaction) {
+                                      
+                                        if (!db.objectStoreNames.contains('assets')) {
+                                         
+                                            db.createObjectStore('assets', { keyPath: 'url' });
+                                        }
+                                    }
+                                }),
+                                openDBTimeout
+                            );
+                            //console.log('Database opened successfully on attempt', attempt);
+                            break; // Exit the loop if successful
+                        } catch (error) {
+                            console.error(`Error opening database on attempt ${attempt}:`, error);
+                            if (attempt < maxRetries) {
+                                //console.log(`Retrying to open database in ${retryDelay} ms...`);
+                                await new Promise(resolve => setTimeout(resolve, retryDelay));
+                            } else {
+                                //console.error('Maximum retries reached. Could not open database.');
+                                // Fallback to caching without IndexedDB
+                                db = null;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                let cache;
+                try {
+                    cache = await caches.open(cacheName);
+                    console.log('Cache opened successfully');
+                } catch (error) {
+                    console.error('Error opening cache:', error);
+                    return;
+                }
+
+                let assetsJson, extraText;
+                try {
+                    //console.log('Fetching assets and extra assets');
+                    [assetsJson, extraText] = await Promise.all([
+                        fetch(ASSETS_MANIFEST_URL).then(res => res.json()),
+                        fetch(EXTRA_ASSETS_URL).then(res => res.text()),
+                    ]);
+                    //console.log('Assets and extra assets fetched successfully');
+                } catch (error) {
+                    console.error('Error fetching assets or extra assets:', error);
+                    return;
+                }
+
+                //console.log('Assets JSON:', assetsJson);
+
+                const urlsToCache = [];
+                parseAssets(assetsJson, urlsToCache);
+                const extraAssetsUrls = parseExtraAssets(extraText, assetsJson); // Pass manifest to parseExtraAssets
+                urlsToCache.push(...extraAssetsUrls); // Add extra assets to urlsToCache
+
+                console.log(`Total URLs to cache: ${urlsToCache.length}`);
+                let loaded = 0;
+                const delay = 111;
+                let assetsToStore = [];
+
+                for (let { url, lastModified } of urlsToCache) {
+                    let shouldFetch = true;
+
+                    if (supportsIndexedDB && db) {
+                        try {
+                            //console.log(`Checking IndexedDB for ${url}`);
+                            const idbResponse = await db.transaction('assets').objectStore('assets').get(url);
+                            if (idbResponse && new Date(idbResponse.lastModified) >= new Date(lastModified)) {
+                                //console.log(`Loaded from IndexedDB: ${url}`);
+                                shouldFetch = false;
+                            }
+                        } catch (error) {
+                            console.error('Error checking IndexedDB for url:', url, error);
+                            shouldFetch = true; // Proceed to fetch and cache
+                        }
+                    }
+
+                    if (shouldFetch) {
+                        let response;
+                        try {
+                            //console.log(`Fetching ${url}`);
+                            response = await fetch(url);
+                            if (response.ok) {
+                                const cloneForCache = response.clone();
+                                await cache.put(url, cloneForCache);
+                                //console.log(`Fetched and cached: ${url}`);
+                                if (supportsIndexedDB && db) {
+                                    const blob = await response.blob();
+                                    const lastModifiedHeader = response.headers.get('last-modified') || new Date(lastModified).toISOString();
+                                    //console.log(`Preparing to store in DB: ${url}, Last Modified: ${lastModifiedHeader}`);
+                                    assetsToStore.push({ url, blob, lastModified: lastModifiedHeader });
+                                }
+                            } else {
+                                console.error(`HTTP error! Status: ${response.status}`);
+                            }
+                        } catch (error) {
+                            console.error('Error fetching url:', url, error);
+                        }
+                    }
+
+                    loaded++;
+                    requestAnimationFrame(() => {
+                        loadingPercentage = Math.floor((loaded / urlsToCache.length) * 100);
+                        //console.log(`Loading: ${loadingPercentage}% complete`);
+                    });
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                }
+
+                if (supportsIndexedDB && db) {
+                    try {
+                        //console.log('Storing assets in IndexedDB');
+                        await storeAssetsInDB(assetsToStore);
+                        
+                    } catch (error) {
+                        console.error('Error storing assets in IndexedDB:', error);
+                    }
+                }
+
+                if (!localStorage.getItem(firstLoadCompleteFlag)) {
+                    localStorage.setItem(firstLoadCompleteFlag, 'true');
+                }
+                if (!localStorage.getItem(secondLoadCompleteFlag)) {
+                    localStorage.setItem(secondLoadCompleteFlag, 'true');
+                }
+
+                fadeOutAsciiLinesXL(); // Assuming this is a function for UI effects
+            }
+
+            
+
+
+
+            function parseAssets(manifest, urls) {
+                for (let key in manifest) {
+                    if (manifest.hasOwnProperty(key)) {
+                        if (key.startsWith('Viewer') || key.startsWith('interface')) {
+                            const value = manifest[key];
+                            if (typeof value !== 'object') {
+                                let standardizedDate = standardizeDate(value);
+                                if (standardizedDate) {
+                                    let asset = {
+                                        url: `https://raw.githubusercontent.com/Mischlichter/data/main/${key}`,
+                                        lastModified: standardizedDate.toISOString() // Convert the date to ISO format
+                                    };
+                                    //console.log('Parsed Asset:', asset);  // Log the extracted data
+                                    urls.push(asset);
+                                } else {
+                                    console.error('Failed to standardize date for key:', key, 'value:', value);
+                                }
+                            } else {
+                                // If the value is an object, possibly containing nested assets, recurse into it
+                                parseAssets(value, urls);
+                            }
+                        }
+                    }
+                }
+            }
+
+            function parseExtraAssets(text, manifest) {
+                const urls = [];
+                const lines = text.split('\n');
+                for (let line of lines) {
+                    let trimmedLine = line.trim();
+                    if (trimmedLine.startsWith('https://')) {  // Checks if the line is a URL
+                        const url = trimmedLine;
+                        // Extract just the filename from the URL
+                        const filename = new URL(url).pathname.split('/').pop();  // Get only the file name
+
+                        // Find the corresponding manifest entry by filename, searching across all keys
+                        const manifestEntry = Object.keys(manifest).find(key => key.endsWith(filename));
+                        if (manifestEntry) {
+                            let lastModified = manifest[manifestEntry];
+                            let standardizedDate = standardizeDate(lastModified);
+                            if (standardizedDate) {
+                                let asset = {
+                                    url: url,
+                                    lastModified: standardizedDate.toISOString()  // Convert the date to ISO format
+                                };
+                                //console.log('Parsed Extra Asset:', asset);  // Log the extracted data
+                                urls.push(asset);
+                            } else {
+                                console.error('Invalid date for filename:', filename, 'value:', lastModified);
+                            }
+                        } else {
+                            console.log(`No manifest entry found for filename: ${filename}`);  // Handle or log filenames not found in the manifest
+                        }
+                    }
+                }
+                return urls;  // Return the list of parsed URLs with their last modified dates from the manifest
+            }
+
+            function standardizeDate(dateStr) {
+                // Adjust date string to an ISO 8601 format expected by iOS Safari
+                let adjustedDateStr = dateStr.replace(' ', 'T') + 'Z';
+                let date = new Date(adjustedDateStr);
+
+                if (!isNaN(date.getTime())) {
+                    return date;
+                } else {
+                    // If the date is still invalid, attempt to parse it manually
+                    let parts = dateStr.match(/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/);
+                    if (parts) {
+                        date = new Date(`${parts[1]}-${parts[2]}-${parts[3]}T${parts[4]}:${parts[5]}:${parts[6]}Z`);
+                        if (!isNaN(date.getTime())) {
+                            return date;
+                        }
+                    }
+                    console.error('Unable to parse date:', dateStr);
+                    return null; // Return null if date cannot be parsed
+                }
+            }
+
+
+
+
+
+
+            async function verifyCache(cache, urls) {
+                //console.log('Verifying cached assets');
+                const cacheKeys = await cache.keys();
+                let verifiedCount = 0;
+
+                for (let url of urls) {
+                    if (cacheKeys.some(request => request.url === url)) {
+                        verifiedCount++;
+                        //console.log(`Verified: ${url}`);
+                    } else {
+                        console.error(`Verification failed for: ${url}`);
+                    }
+                }
+
+                //console.log(`Total verified URLs: ${verifiedCount}`);
+            }
+
+
+
+
+
+
+
+            function fadeOutAsciiLinesXL() {
+                const elements = document.querySelectorAll('.ascii-line-XL');
+                elements.forEach(function(element) {
+                    element.style.transition = 'opacity 1s ease-out'; // Ensure the transition is smooth
+                    element.style.opacity = '0'; // Set opacity to 0 to fade out
+                });
+
+                // Optional: Callback function to perform actions after the fade out completes
+                setTimeout(() => {
+                    window.location.reload();
+                    //console.log('Fade out completed.');
+                    // Here you can add any action that should occur after the fade-out
+                }, 1111); // Delay should match the duration of the fade-out effect
+            }
+
+            function enterSite() {
+                
+                initialize();
+
+                const centerContainer = document.querySelector('.center-container-XL');
+                if (centerContainer) {
+                    centerContainer.style.opacity = '0';
+                    setTimeout(() => {
+                        centerContainer.style.display = 'none';
+                    }, 500); // Adjust the time as needed for the fade out transition
+                } else {
+                    console.error("Center container not found.");
+                }
+                initializeMenu();
+            }
+
+
+
+
+            function setupMotionListener() {
+                  // Your existing function to map motion to mouse (if applicable)
+                
+                fadeOutOverlay();
+                enterSite();
+                // Check for DeviceOrientationEvent support
+                if ('DeviceOrientationEvent' in window) {
+                    // Request permission for iOS 13+ devices
+                    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                        DeviceOrientationEvent.requestPermission().then(permissionState => {
+                            if (permissionState === 'granted') {
+                                window.addEventListener('deviceorientation', handleOrientation, true);
+                            } else {
+                                console.error('Permission denied by user.'); // Log for debugging
+                            }
+                        }).catch(error => {
+                            console.error('Error requesting permission: ' + error); // Log for debugging
+                        });
+                    } else {
+                        // Automatically grant access if not iOS or no permission needed
+                        window.addEventListener('deviceorientation', handleOrientation, true);
+                    }
+                } else {
+                    console.error("Your device does not support gyroscope.");
+                }
+
+                
+            }
+
+            var lastExecution = 0;
+            var throttleInterval = 36; // Throttle interval in milliseconds
+            var gyroMouseX = 0;
+            var gyroMouseY = 0;
+            var initialGamma = 0;
+            var initialBeta = 0;
+            var isCalibrated = false;
+            var gyroSensitivityMultiplier = 36.0; // Default multiplier
+            var lastAngle = window.orientation || 0; // Initial device angle
+
+            function handleOrientation(event) {
+                var now = Date.now();
+                if (now - lastExecution > throttleInterval) {
+                    // Update last execution time
+                    lastExecution = now;
+
+                    // Determine the orientation of the device
+                    var landscape = window.innerWidth > window.innerHeight;
+                    var angle = window.orientation || 0; // Fallback to window.orientation if available
+
+                    // Check if the orientation has been calibrated
+                    if (!isCalibrated) {
+                        // Set initial orientation values
+                        initialGamma = event.gamma;
+                        initialBeta = event.beta;
+                        isCalibrated = true; // Ensure calibration happens only once
+                        //console.log('Calibration set: Gamma = ' + initialGamma + ', Beta = ' + initialBeta);
+                    }
+
+                    // Determine how to adjust the x and y coordinates based on orientation and rotation
+                    var adjustedGamma = event.gamma - initialGamma;
+                    var adjustedBeta = event.beta - initialBeta;
+
+                    // Adjust the multiplier to the adjusted raw beta and gamma values
+                    if (landscape) {
+                        // Check rotation direction in landscape mode
+                        if (angle === 90) {
+                            // Device is rotated to the left
+                            gyroMouseX = adjustedBeta * gyroSensitivityMultiplier;
+                            gyroMouseY = -adjustedGamma * gyroSensitivityMultiplier;
+
+                        } else if (angle === -90 || angle === 270) {
+                            // Device is rotated to the right
+                            gyroMouseX = -adjustedBeta * gyroSensitivityMultiplier;
+                            gyroMouseY = adjustedGamma * gyroSensitivityMultiplier;
+                        }
+                    } else {
+                        // Standard portrait mode
+                        gyroMouseX = adjustedGamma * gyroSensitivityMultiplier;
+                        gyroMouseY = adjustedBeta * gyroSensitivityMultiplier;
+                    }
+
+  
+
+                    // Send the updated gyro mouse coordinates directly to the iframe
+                    sendMouseEventToIframe('mousemove', {clientX: gyroMouseX, clientY: gyroMouseY});
+                }
+            }
+
+            function triggerOrientationWithoutCalibration() {
+                isCalibrated = false; // Reset calibration flag
+                //console.log('Calibration triggered.'); // Optional: Log calibration trigger for debugging
+            }
+
+
+            // Make it globally accessible
+            window.triggerOrientationWithoutCalibration = triggerOrientationWithoutCalibration;
+
+  
+
+
+            function simulateTap() {
+                // Create the touch point at the center of the screen
+                var touchPoint = { clientX: window.innerWidth / 2, clientY: window.innerHeight / 2 };
+
+                // Create a touchstart event
+                var touchStartEvent = new TouchEvent('touchstart', {
+                    bubbles: true,
+                    cancelable: true,
+                    changedTouches: [new Touch({ identifier: Date.now(), target: document.body, ...touchPoint })],
+                    targetTouches: [],
+                    touches: [new Touch({ identifier: Date.now(), target: document.body, ...touchPoint })]
+                });
+
+                // Create a touchend event
+                var touchEndEvent = new TouchEvent('touchend', {
+                    bubbles: true,
+                    cancelable: true,
+                    changedTouches: [new Touch({ identifier: Date.now(), target: document.body, ...touchPoint })],
+                    targetTouches: [],
+                    touches: []
+                });
+
+                // Dispatch the touchstart event
+                document.body.dispatchEvent(touchStartEvent);
+
+                // Dispatch the touchend event shortly after to mimic a tap
+                setTimeout(() => document.body.dispatchEvent(touchEndEvent), 100);
+            }
+
+            function checkOrientationChange() {
+                var currentAngle = window.orientation || 0;
+
+                if (currentAngle !== lastAngle) {
+                    isCalibrated = false;
+                    //console.log("Orientation change detected. Recalibration required.");
+
+                    // Update the last known angle
+                    lastAngle = currentAngle;
+
+                    // Adjust the scroll position to re-center the content after the layout changes
+                    setTimeout(simulateTap, 100); // Delay to allow the browser to reflow layout
+                }
+            }
+
+            window.addEventListener('orientationchange', checkOrientationChange);
+
+
+            // Inside orientationHandler.js or wherever the function is defined
+            
+
+
+
+            function fadeOutOverlay() {
+                var overlay = document.getElementById('permissionOverlay');
+                if (overlay) {
+                    overlay.style.opacity = '0';
+                    setTimeout(() => {
+                        overlay.style.visibility = 'hidden';
+                         // Remove the overlay from the DOM.
+                        //enterSite(); // Transition to the main functionality of the site.
+                        //console.log('Overlay should be faded out and removed.'); // Debug output
+                    }, 500);
+                } else {
+                    console.log('Overlay not found.'); // Check if the overlay exists
+                }
+            }
+
+            function showOverlay() {
+                var overlay = document.getElementById('permissionOverlay');
+                var enableButton = document.getElementById('enableButton');
+
+                // Show and fade in the overlay and button
+                if (overlay) {
+                    overlay.style.visibility = 'visible';
+                    overlay.style.opacity = '0'; // Start from transparent
+                    setTimeout(() => overlay.style.opacity = '1', 10); // Fade to fully visible
+                }
+
+                if (enableButton) {
+                    enableButton.style.visibility = 'visible';
+                    enableButton.style.opacity = '0'; // Start from transparent
+                    setTimeout(() => {
+                        enableButton.style.opacity = '1'; // Fade to fully visible
+                        setupButtonEventListeners();
+                    }, 10);
+                }
+            }
+
+            function setupButtonEventListeners() {
+                var enableButton = document.getElementById('enableButton');
+                if (enableButton) {
+                    enableButton.addEventListener('touchstart', function(e) {
+                        e.preventDefault(); // Prevent default touch behavior
+                        //console.log('Touch start on button');
+                        enableButton.style.backgroundColor = 'lightblue'; // Visual feedback
+                    });
+
+                    enableButton.addEventListener('touchend', function(e) {
+                        e.preventDefault(); // Prevent any default behavior
+                        enableButton.style.backgroundColor = ''; // Reset button color
+                        setupMotionListener(); // Request motion access on touch end
+                        //console.log('Touch end on button');
+                    });
+                } else {
+                    console.log('Enable button not found.');
+                }
+            }
+
+
+
+
+            if (!localStorage.getItem(firstLoadCompleteFlag) || !localStorage.getItem(secondLoadCompleteFlag)) {
+                preloadAssets();
+            } else {
+                // Removed direct calls to enterSite() here to ensure it's managed within triggerPermissionRequest
+                if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                    // This will handle entering the site after permissions
+                    showOverlay();
+                } else {
+                    // Directly add event listener if not on iOS
+                    // Register the service worker if it's the second run
+                    if ('serviceWorker' in navigator && localStorage.getItem(firstLoadCompleteFlag) && !localStorage.getItem(secondLoadCompleteFlag)) {
+                        console.log('Registering service worker...');
+                        navigator.serviceWorker.register('service-worker.js')
+                            .then(function(registration) {
+                                console.log('Service Worker registered with scope:', registration.scope);
+                                return navigator.serviceWorker.ready; // Wait for the service worker to be ready
+                            })
+                            .then(function() {
+                                console.log('Service Worker is active.');
+                                enterSite(); // Proceed to enter the site after the service worker is active
+                                fadeOutOverlay();
+                            })
+                            .catch(function(error) {
+                                console.log('Service Worker registration failed:', error);
+                                enterSite(); // Proceed to enter the site even if the service worker fails to register
+                                fadeOutOverlay();
+                            });
+                    } else {
+                        enterSite(); // Non-iOS or no permissions needed, proceed to enter the site
+                        fadeOutOverlay();
+                    }
+                }
+
+                localStorage.removeItem(firstLoadCompleteFlag);
+                localStorage.removeItem(secondLoadCompleteFlag);
+            }
+
+
+           
+        });
+
+    </script>
+
+
+
+
+
+
+    <script>
+        
+//////// MOUSE SMOOTHING ////////
+
+        const AnimationManager = {
+            frameCap: 60,
+            lastRender: performance.now(),
+            animations: [],
+            running: false,
+
+            registerAnimation(stepFunction) {
+                this.animations.push(stepFunction);
+                if (!this.running) {
+                    this.running = true;
+                    requestAnimationFrame(this.runAnimations.bind(this));
+                }
+            },
+
+            runAnimations(timestamp) {
+                let progress = timestamp - this.lastRender;
+                if (progress > 1000 / this.frameCap) {
+                    this.lastRender = timestamp - (progress % (1000 / this.frameCap));
+                    this.animations = this.animations.filter(step => step(timestamp) !== false);
+                }
+                if (this.animations.length > 0) {
+                    requestAnimationFrame(this.runAnimations.bind(this));
+                } else {
+                    this.running = false;
+                }
+            }
+        };
+
+        const lenis = new Lenis();
+
+        lenis.on('scroll', (e) => {
+            AnimationManager.registerAnimation(updateParallax); // Ensure parallax effect updates on Lenis scroll
+        });
+
+        AnimationManager.registerAnimation((timestamp) => {
+            lenis.raf(timestamp);
+        });
+
+        function scrollToTop() {
+            // Disable Lenis smooth scrolling
+            lenis.stop();
+
+            // Instantly set the scroll position to the top
+            if (typeof window !== 'undefined') {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'instant'
+                });
+            }
+
+            // Re-enable Lenis smooth scrolling
+            setTimeout(() => {
+                lenis.start();
+                AnimationManager.registerAnimation(updateParallax); // Ensure parallax effect updates after scroll to top
+            }, 50); // Using setTimeout ensures this occurs in the next event loop cycle
+        }
+
+//////// Interface Loadin //////
+        
+
+        
+
+
+
+//////// IFRAME LOADING ////////
+        
+        var iframeIsVisible = false;
+
+        function updateIframe(sceneKey) {
+            const iframeContainer = document.getElementById('iframeContainer');
+            const mouseOverlay = document.getElementById('mouseOverlay');
+            const bodyGalleryContainer = document.getElementById('bodyGalleryContainer');
+
+            unhideElementsByClass("foreground-image-container");
+
+            // Remove existing iframe and clear body gallery content
+            let existingIframe = document.getElementById('sceneIframe');
+            if (existingIframe) {
+                existingIframe.src = 'about:blank';
+                existingIframe.remove(); // Remove the old iframe
+            }
+            if (bodyGalleryContainer) {
+                bodyGalleryContainer.innerHTML = ''; // Clear body gallery content
+            }
+
+            if (sceneKey === 'scene05') {
+                // Logic for scene04 (Gallery)
+                toggleRemoveFooterActivation();
+                resetRemoveStyledFooterCounter();
+                iframeContainer.style.display = 'none';
+                if (mouseOverlay) {
+                    mouseOverlay.style.display = 'none';
+                }
+                const bodyGallery = document.getElementById('bodyGalleryContainer');
+                if (bodyGallery) {
+                    bodyGallery.style.opacity = '1'; // Set opacity to fully visible
+                } else {
+                    console.error('bodyGalleryContainer not found in the DOM');
+                }
+                bodyGalleryContainer.style.display = 'block';
+                hideElementsByClass("foreground-image-container,");
+                loadGallery(); // Load the gallery for scene04
+                unhideBackground();
+                scrollToTop();
+            } else if (sceneKey === 'scene06') {
+                // Logic for scene05 (Clipz)
+                hideElementsByClass("foreground-image-container");
+
+                setupDirectIframe('frames/clipz2.html'); // Load clipz2.html for scene05 directly into the body
+                fadeInElements();
+            } else {
+                // Logic for other scenes
+                setupIframe(`VIEWER.html?scene=${sceneKey}`);
+            }
+
+            function setupIframe(src) {
+                iframeContainer.style.display = 'block';
+                if (mouseOverlay) {
+                    mouseOverlay.style.display = 'block';
+                    mouseOverlay.style.zIndex = '1';
+                }
+                bodyGalleryContainer.style.display = 'none';
+
+                let newIframe = document.createElement('iframe');
+                newIframe.id = 'sceneIframe';
+                newIframe.style.width = '100%';
+                newIframe.style.height = '100vh';
+                newIframe.style.border = 'none';
+                newIframe.src = src;
+
+                iframeContainer.appendChild(newIframe);
+                hideBackground();
+                scrollToTop();
+                iframeLoaded(newIframe);
+            }
+
+            function setupDirectIframe(src) {
+                const newIframe = document.createElement('iframe');
+                newIframe.id = 'sceneIframe';
+                newIframe.style.width = '100%';
+                newIframe.style.height = '100vh';
+                newIframe.style.border = 'none';
+                newIframe.src = src;
+
+                document.body.appendChild(newIframe); // Directly append to the body
+                hideBackground();
+                scrollToTop();
+                iframeLoaded(newIframe);
+            }
+
+            function iframeLoaded(iframe) {
+                // Wait for the iframe to load completely before setting up the observer
+                iframe.onload = function() {
+                    if (iframe.contentWindow) {
+                        setupObserver(iframe);
+                    } else {
+                        console.error('Iframe contentWindow is not available after load!');
+                    }
+                };
+            }
+
+            function setupObserver(iframe) {
+                let observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && iframe.contentWindow) {
+                            iframe.contentWindow.postMessage({ type: 'visibilityChange', isVisible: true }, '*');
+                        } else if (!entry.isIntersecting && iframe.contentWindow) {
+                            iframe.contentWindow.postMessage({ type: 'visibilityChange', isVisible: false }, '*');
+                        }
+                    });
+                }, {
+                    root: null,
+                    threshold: 0.1
+                });
+                observer.observe(iframe);
+            }
+        }
+
+        function resetPageStyles() {
+            // Re-enable scrolling on the body and html
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
+
+            // Reset any fixed or absolute positioning that might be applied to body elements
+            document.body.style.position = '';
+
+            // Remove event listeners that may have been added during the gallery view
+            // Example: assuming a function disableScroll() added event listeners
+            enableScroll();
+
+            // Reset any additional styles or modifications
+            // This depends on what else might be manipulated during your gallery's runtime
+        }
+
+
+        function hideElementsByClass(className) {
+          // Get all elements with the specified class name
+          var elements = document.getElementsByClassName(className);
+          
+          // Loop through each element
+          for (var i = 0; i < elements.length; i++) {
+            // Hide the current element by setting its display property to 'none'
+            elements[i].style.display = 'none';
+          }
+        }
+
+        function unhideElementsByClass(className) {
+          // Get all elements with the specified class name
+          var elements = document.getElementsByClassName(className);
+          
+          // Loop through each element
+          for (var i = 0; i < elements.length; i++) {
+            // Unhide the current element by setting its display property to its default value
+            elements[i].style.display = '';
+          }
+        }
+
+
+
+        function hideBackground() {
+            setTimeout(() => {
+                const background = document.querySelector('div[style*="background-color"]');
+                if (background) {
+                    background.remove(); // Remove the background element from the DOM
+                }
+                
+                
+            }, 111); // Delay of 500 milliseconds (adjust as needed)
+        }
+
+
+
+        function unhideBackground() {
+            setTimeout(() => {
+                const existingBackground = document.querySelector('div[style*="background-color"]');
+                if (!existingBackground) {
+                    const background = document.createElement('div');
+                    background.style.position = 'absolute';
+                    background.style.top = '0';
+                    background.style.left = '0';
+                    background.style.width = '100%';
+                    background.style.height = '1vh';
+                    background.style.zIndex = '-2';
+                    background.style.backgroundColor = 'rgba(0, 0, 0, 0)'; // 10% grey
+                    // Add more styles or content to the background as needed
+
+                    document.body.insertBefore(background, document.body.firstChild);
+                }
+            }, 111); // Delay of 500 milliseconds
+        }
+
+ 
+
+        
+
+
+//////// MOUSE HANDLING ///////////        
+
+        var targetMouseX = window.innerWidth / 2, targetMouseY = window.innerHeight / 2;
+        
+        var maxSmoothingFactor = 0.111; // Maximum smoothing factor
+        var isMouseInArea = false;
+        var applySmoothing = false;
+
+        var mouseOverlay = document.getElementById('mouseOverlay');
+
+        // Event Handlers
+        function handleMouseEnter(e) {
+            isMouseInArea = true;
+            applySmoothing = true; // Enable smoothing on entering
+            targetMouseX = e.clientX - mouseOverlay.offsetLeft - mouseOverlay.offsetWidth / 2;
+            targetMouseY = e.clientY - mouseOverlay.offsetTop - mouseOverlay.offsetHeight / 2;
+            
+        }
+
+        function handleMouseLeave(e) {
+            isMouseInArea = false;
+        }
+
+        function handleMouseMove(e) {
+            targetMouseX = e.clientX - mouseOverlay.offsetLeft - mouseOverlay.offsetWidth / 2;
+            targetMouseY = e.clientY - mouseOverlay.offsetTop - mouseOverlay.offsetHeight / 2;
+        }
+
+        // Attach Event Listeners
+        mouseOverlay.addEventListener('mouseenter', handleMouseEnter);
+        mouseOverlay.addEventListener('mouseleave', handleMouseLeave);
+        mouseOverlay.addEventListener('mousemove', handleMouseMove);
+
+
+        // Animation Frame Function
+        function animate() {
+            // Perform the exclusion check at the start of the animation function
+            if (!shouldExcludeAnimation()) {
+                if (applySmoothing) {
+                    var dx = targetMouseX - mouseX;
+                    var dy = targetMouseY - mouseY;
+                    var distance = Math.sqrt(dx * dx + dy * dy);
+                    var smoothingFactor = Math.min(distance / 100, maxSmoothingFactor);
+
+                    mouseX += dx * smoothingFactor;
+                    mouseY += dy * smoothingFactor;
+
+                    // Disable smoothing when close enough
+                    if (distance < 1) {
+                        applySmoothing = false;
+                        mouseX = targetMouseX;
+                        mouseY = targetMouseY;
+                    }
+                } else {
+                    mouseX = targetMouseX;
+                    mouseY = targetMouseY;
+                }
+
+                sendMouseEventToIframe('mousemove', { clientX: mouseX, clientY: mouseY });
+                requestAnimationFrame(animate);  // Only request a new frame if animation isn't excluded
+            } else {
+                console.log('Animation is disabled on this device.');
+                // Optionally handle any cleanup here if necessary when stopping the animation
+            }
+        }
+
+
+        // Start the animation loop
+        requestAnimationFrame(animate);
+
+
+        function shouldExcludeAnimation() {
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+            return isMobile || hasTouch;
+        }
+
+
+        // Update sendMouseEventToIframe to use coordinates
+        function sendMouseEventToIframe(eventType, coordinates) {
+            const iframe = document.getElementById('sceneIframe');
+            if (iframe && iframe.contentWindow) {
+                iframe.contentWindow.postMessage({
+                    type: eventType,
+                    mouseX: coordinates.clientX,
+                    mouseY: coordinates.clientY
+                }, '*');
+            }
+        }
+
+
+
+
+//////// IMAGE LOADING ////////////////////
+
+        let currentSceneData = null;
+
+        async function fetchAndParseData() {
+            try {
+                const response = await fetch('https://raw.githubusercontent.com/Mischlichter/data/main/assets/pages.txt');
+                const text = await response.text();
+                return parseText(text);
+            } catch (error) {
+                return null;
+            }
+        }
+
+        
+
+
+        function parseText(text) {
+            //console.log("Original text:", text); // Print the original text
+
+            // Split the text into scenes
+            let scenes = text.split(/SCENE\d+:/);
+            //console.log("Scenes after initial split:", scenes); // Print scenes after initial split
+
+            // Remove the first empty element if it exists
+            if (scenes[0].trim() === '') {
+                scenes.shift();
+            }
+
+            let parsedData = [];
+
+            scenes.forEach((scene, index) => {
+                //console.log(`Processing scene ${index + 1}:`, scene); // Print the current scene being processed
+
+                let sceneData = {
+                    sceneKey: `scene${index + 1}`,
+                    containers: {},
+                    numberOfContainers: 0
+                };
+
+                // Split the scene into paragraphs and CSS
+                let parts = scene.split(/#container\d+ \{/);
+                //console.log(`Parts for scene ${index + 1}:`, parts); // Print the parts after splitting by container
+
+                // First part is always paragraphs. Exclude the paragraph numbers.
+                let paragraphs = parts[0].trim()
+                    .split(/\n+\s*P\d+:?\s*/) // Split at paragraph markers, optional colon
+                    .filter(p => p) // Remove empty strings from the array
+                    .map((paragraph, index) => 
+                        index === 0 ? paragraph.replace(/^P\d+:?\s*/, '').trim() : paragraph.trim()
+                    );
+
+
+
+                //console.log(`Paragraphs for scene ${index + 1}:`, paragraphs); // Print the paragraphs for the current scene
+
+                // Calculate the number of containers
+                sceneData.numberOfContainers = paragraphs.length;
+
+                // Process CSS and associate with paragraphs
+                for (let i = 1; i <= sceneData.numberOfContainers; i++) {
+                    let css = parts[i] ? `#container${i.toString().padStart(2, '0')} {` + parts[i].split('}')[0].trim() + '}' : '';
+                    let containerKey = `container${i.toString().padStart(2, '0')}`;
+                    sceneData.containers[containerKey] = {
+                        text: paragraphs[i - 1],
+                        style: css
+                    };
+                    //console.log(`Container ${containerKey} for scene ${index + 1}:`, sceneData.containers[containerKey]); // Print each container's data
+                }
+
+                parsedData.push(sceneData);
+            });
+
+            //console.log("Parsed data:", parsedData); // Print the final parsed data
+            return parsedData;
+        }
+
+
+
+        async function fetchImage() {
+            try {
+                const response = await fetch('https://raw.githubusercontent.com/Mischlichter/data/main/assets/pagesi.txt');
+                const text = await response.text();
+                return parseImage(text);
+            } catch (error) {
+                return null;
+            }
+        }
+
+        
+        function parseImage(text) {
+            //console.log("Starting image parsing...");
+
+            // Split the text into scenes
+            let scenes = text.split(/SCENE\d+:/);
+            //console.log("Scenes identified:", scenes.length);
+
+            // Remove the first empty element if it exists
+            if (scenes[0].trim() === '') {
+                scenes.shift();
+                //console.log("Removed empty first element.");
+            }
+
+            let parsedImageData = [];
+
+            scenes.forEach((scene, index) => {
+                //console.log(`Processing scene ${index + 1}`);
+
+                let sceneImageData = {
+                    sceneKey: `scene${index + 1}`,
+                    images: {}
+                };
+
+                // Extract image URLs and their CSS
+                let imageMatches = scene.matchAll(/\n\nI\d+:\n(https?:\/\/\S+)/g);
+                let cssMatches = scene.matchAll(/#i-container\d+ \{([\s\S]*?)\}/g);
+
+                let cssStyles = {};
+                for (const cssMatch of cssMatches) {
+                    let cssKey = cssMatch[0].match(/#i-container(\d+)/)[1];
+                    cssStyles[`i-container${cssKey.padStart(2, '0')}`] = cssMatch[1].trim();
+                }
+
+                for (const imageMatch of imageMatches) {
+                    let imageNumber = imageMatch[0].match(/I(\d+)/)[1];
+                    let imageKey = `i-container${imageNumber.padStart(2, '0')}`;
+                    let imageCSS = cssStyles[imageKey] || '';
+
+                    sceneImageData.images[imageKey] = {
+                        src: imageMatch[1].trim(),
+                        style: imageCSS
+                    };
+                    //console.log(`Found image: ${imageKey} -> ${imageMatch[1].trim()}, CSS: ${imageCSS}`);
+                }
+
+                parsedImageData.push(sceneImageData);
+            });
+
+            //console.log("Image parsing complete:", parsedImageData);
+            return parsedImageData;
+        }
+
+
+
+
+
+//////// MENU LOADING //////////
+
+
+        let isAnimating = false;
+
+        function initializeMenu() {
+            fetchAndParseMenuData().then(menuData => {
+                if (menuData && menuData.length > 0) {
+                    loadMenu(menuData);
+                }
+            });
+        }
+
+
+
+        async function fetchAndParseMenuData() {
+            try {
+                //console.log("Fetching menu data...");
+                const response = await fetch('https://raw.githubusercontent.com/Mischlichter/data/main/assets/menu.txt');
+                const text = await response.text();
+                return parseMenuText(text);
+            } catch (error) {
+                //console.error("Error fetching menu data:", error);
+                return [];
+            }
+        }
+
+        function parseMenuText(text) {
+            //console.log("Parsing menu text...");
+            let menuItems = text.split('\n').filter(line => line.trim() !== '');
+            return menuItems.map(item => {
+                let [label, scene] = item.split(':');
+                return { label, scene };
+            });
+        }
+
+        let menuContainerIds = [];
+        let isMenuLoaded = false;
+        let blockMenuInteractions = false;  // This will control whether interactions are allowed
+        var menufade = false;
+
+        function blockInteractions() {
+                blockMenuInteractions = true;
+        }
+
+        function unblockInteractions() {
+            blockMenuInteractions = false;
+        }
+
+        function isInteractionBlocked() {
+        return blockMenuInteractions;
+        }
+
+        function loadMenu(menuData) {
+            return new Promise((resolve, reject) => {
+                isAnimating = true;
+
+                setTimeout(() => {
+                    isAnimating = false;
+                }, 4000);
+
+                let menuBar = document.querySelector('.menu-bar');
+                if (!menuBar) {
+                    menuBar = document.createElement('div');
+                    menuBar.className = 'menu-bar';
+                    document.body.appendChild(menuBar);
+                } else {
+                    menuBar.innerHTML = '';
+                }
+
+                const logoImg = document.createElement('img');
+                logoImg.src = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logo5.png';
+                logoImg.style.marginRight = '20px';
+                logoImg.id = 'menuLogo';
+                menuBar.appendChild(logoImg);
+
+                menuContainerIds = [];
+                let currentlyActiveMenuItemId = 'menuContainer0';
+
+                const handleInteraction = async (itemId, index) => {
+                    if (blockMenuInteractions) return;
+                    if ((currentlyActiveMenuItemId === 'menuLogo' && itemId === 'menuContainer0') ||
+                        (currentlyActiveMenuItemId === 'menuContainer0' && itemId === 'menuLogo')) {
+                        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+                        return;
+                    }
+
+                    if (currentlyActiveMenuItemId === itemId) {
+                        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+                        return;
+                    }
+
+                    currentlyActiveMenuItemId = itemId;
+                    await fadeOutElements();
+                    currentSceneIndex = (itemId === 'menuLogo') ? 0 : index;
+
+                    // Load the selected scene
+                    loadScene(currentSceneIndex);
+
+                    // Always highlight the first menu item when the logo is clicked
+                    if (itemId === 'menuLogo') {
+                        highlightActiveMenuItem('menuContainer0'); // Highlight the first menu item when the logo is clicked
+                    } else {
+                        highlightActiveMenuItem(itemId); // Otherwise, highlight the current menu item
+                    }
+
+                    triggerOrientationWithoutCalibration();
+
+                    
+                };
+
+
+                logoImg.addEventListener('click', () => handleInteraction('menuLogo', 0));
+                logoImg.addEventListener('touchend', () => handleInteraction('menuLogo', 0));
+
+                menuData.forEach((menuItem, index) => {
+                    const menuContainer = document.createElement('div');
+                    menuContainer.id = `menuContainer${index}`;
+                    menuContainer.className = 'menu-container';
+                    menuContainer.innerText = menuItem.label;
+                    menuBar.appendChild(menuContainer);
+
+                    let isTouch = false;
+
+                    const handleMenuInteraction = async (event) => {
+                        if (isTouch && event.type === 'click') return;
+                        isTouch = event.type === 'touchend';
+                        handleInteraction(menuContainer.id, index);
+                    };
+
+                    menuContainer.addEventListener('click', handleMenuInteraction);
+                    menuContainer.addEventListener('touchend', handleMenuInteraction);
+                    menuContainer.addEventListener('mouseover', () => animateTextDuringHover(menuContainer));
+
+                    if (index === 0) {
+                        setTimeout(() => animateTextDuringHover(menuContainer), 5000);
+                    }
+
+                    menuContainerIds.push(menuContainer.id);
+                });
+
+                const fakeMenuItem1 = document.createElement('div');
+                fakeMenuItem1.className = 'menu-container';
+                fakeMenuItem1.setAttribute('data-fake', 'true');
+                menuBar.insertBefore(fakeMenuItem1, menuBar.children[1]);
+
+                const fakeMenuItem2 = document.createElement('div');
+                fakeMenuItem2.className = 'menu-container';
+                fakeMenuItem2.setAttribute('data-fake', 'true');
+                menuBar.insertBefore(fakeMenuItem2, menuBar.children[5]);
+
+               
+                resolve();
+
+            }).then(() => {
+                updateLogoVisibility();
+                updateMenu(menuData);
+                triggerOrientationWithoutCalibration();
+                isMenuLoaded = true;
+            });    
+        }
+
+
+
+        function updateLogoVisibility() {
+            const logoImg = document.getElementById('menuLogo');
+            // Select only fake menu items using the data-fake attribute
+            const fakeMenuItems = document.querySelectorAll('.menu-container[data-fake="true"]');
+
+            if (!logoImg) return; // Exit the function early if the logo image does not exist
+
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const isPortrait = width - 1 < height; // Add a buffer to ensure width is definitely less than height
+
+            // Check if screen width is <= 768 or if the device is in portrait orientation
+            if (width <= 768 || isPortrait) {
+                logoImg.src = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logoS.png'; 
+                logoImg.classList.add('logo-small');
+                fakeMenuItems.forEach(item => item.style.display = '');
+            } else {
+                logoImg.src = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logo5.png'; 
+                logoImg.classList.remove('logo-small');
+                fakeMenuItems.forEach(item => item.style.display = 'none');
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+//////// ANIMATION MENU ///////
+
+        function updateMenu(menuData) {
+            //console.log("Updating menu...");
+            preparedMenuItems = {}; // Resetting for the new menu
+
+            
+            menuData.forEach((menuItem, index) => {
+                let containerId = `menuContainer${index}`;
+                let textLines = menuItem.label.split('\n'); // Changed from menuItem.title to menuItem.label
+                //console.log("Preparing menu item:", menuItem.label);
+                let lineSpans = createSpansForMenu(containerId, textLines.join(' '));
+                preparedMenuItems[containerId] = lineSpans;
+            });
+
+            // Resetting the current animation index for menu
+            currentContainerIndex = 0;
+            containerIds = Object.keys(preparedMenuItems);
+
+
+
+            startAllMenuAnimations();
+
+
+        }
+
+
+        function createSpansForMenu(containerId, text) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+
+            //console.log("Creating spans for menu:", containerId);
+
+            let tempSpan = document.createElement('span');
+            tempSpan.style.display = 'inline-block';
+            tempSpan.style.visibility = 'hidden';
+            document.body.appendChild(tempSpan);
+
+            let style = window.getComputedStyle(container);
+            let paddingAndBorder = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight) +
+                                   parseFloat(style.borderLeftWidth) + parseFloat(style.borderRightWidth);
+            let availableWidth = container.clientWidth - paddingAndBorder - 5;
+
+            let lines = [];
+            let currentLine = '';
+            text.split(' ').forEach(word => {
+                let testLine = currentLine + word + ' ';
+                tempSpan.innerText = testLine;
+
+                if (tempSpan.offsetWidth > availableWidth && currentLine !== '') {
+                    let lineContainer = createLineContainerForMenu(container, currentLine.trim());
+                    lines.push(lineContainer);
+                    currentLine = word + ' ';
+                } else {
+                    currentLine = testLine;
+                }
+            });
+
+            if (currentLine.trim() !== '') {
+                let lineContainer = createLineContainerForMenu(container, currentLine.trim());
+                lines.push(lineContainer);
+            }
+
+            document.body.removeChild(tempSpan);
+            return lines;
+        }
+
+        function createLineContainerForMenu(container, lineText) {
+            let lineContainer = document.createElement('div');
+            lineContainer.style.display = 'inline-block';
+            lineContainer.style.width = '100%';
+            container.appendChild(lineContainer);
+
+            //console.log("Creating line container for:", lineText);
+
+            lineText.split(' ').forEach(word => {
+                if (word.trim() !== '') {
+                    var wordSpan = document.createElement('span');
+                    wordSpan.className = 'dynamic-text';
+                    wordSpan.setAttribute('data-final-text', word);
+                    wordSpan.style.opacity = '0';
+                    lineContainer.appendChild(wordSpan);
+                }
+            });
+
+            return lineContainer;
+
+        }
+
+        function startAnimationForMenuContainer(containerId) {
+            ///console.log("Starting animation for container:", containerId);
+            if (preparedMenuItems[containerId]) {
+                startLineAnimation(preparedMenuItems[containerId]);
+            } else {
+                //console.log("No prepared data for container:", containerId);
+            }
+        }
+
+
+        function startAllMenuAnimations() {
+            if (!isMenuLoaded) {
+                //console.log("Menu is not loaded yet. Retrying...");
+                setTimeout(startAllMenuAnimations, 100); // Retry after 500 milliseconds
+                return;
+            }
+
+            menuContainerIds.forEach(containerId => {
+                startAnimationForMenuContainer(containerId);
+                if (containerId === 'menuContainer0') {
+                    initializeFirstScene();
+                }
+            });
+        }
+
+        function initializeFirstScene() {
+            currentSceneIndex = 0; // Set to the first scene
+            //loadScene(currentSceneIndex); // Load the first scene
+            fadeInmenu();
+
+            // Add scroll event listener after initializing the first scene
+            window.addEventListener('scroll', checkAndStartAnimationsOnScroll);
+        }
+
+
+
+        function shuffleMenu() {
+            let menuItems = document.querySelectorAll('.menu-container');
+            
+            menuItems.forEach(menuItem => {
+                if (!menuItem.dataset.originalText) {
+                    menuItem.dataset.originalText = menuItem.textContent;
+                }
+                //console.log("Original text:", menuItem.dataset.originalText); // Log original text
+                animateMenuDuringScaling(menuItem, menuItem.dataset.originalText);
+            });
+        }
+
+
+        function animateMenuDuringScaling(element, finalText) {
+            var totalDuration = 300; // Total duration of the scrambling
+            var randomStartDelay = Math.random() * 200; // Start scrambling with random delay
+            var stopScramblingDelay = totalDuration - 200 + Math.random() * 400; // When to stop scrambling
+            var startTime = null;
+            var animationRegistered = false;
+
+            function step(timestamp) {
+                if (!startTime) startTime = timestamp;
+                var progress = timestamp - startTime;
+
+                if (progress < stopScramblingDelay) {
+                    var scrambledText = generateRandomString(finalText.length);
+                    element.textContent = scrambledText;
+                    //console.log("Scrambled text:", scrambledText); // Log scrambled text
+                    return true; // Continue the animation
+                } else {
+                    element.textContent = finalText;
+                    element.style.opacity = '1';
+                    //console.log("Final text set to:", element.textContent); // Log final text
+                    if (progress >= totalDuration) {
+                        element.removeAttribute('data-originalText'); // Clean up
+                        return false; // Stop the animation
+                    }
+                }
+            }
+
+            setTimeout(function() {
+                AnimationManager.registerAnimation(step);
+            }, randomStartDelay);
+        }
+
+
+        function animateTextDuringHover(element, finalDuration = 150) {
+            // Check if an animation is in progress
+            if (isAnimating) {
+                ///console.log("Animation already in progress. Hover animation blocked.");
+                return; // Exit the function if an animation is already happening
+            }
+
+            // Capture the original text only if it has not been stored yet
+            if (!element.dataset.originalText) {
+                element.dataset.originalText = element.textContent;
+            }
+
+            var originalText = element.dataset.originalText; // Use the stored original text
+
+            var startTime = null;
+
+            function step(timestamp) {
+                if (!startTime) startTime = timestamp;
+                var progress = timestamp - startTime;
+
+                if (progress < finalDuration) {
+                    // Scramble text
+                    var scrambledText = generateRandomString(originalText.length);
+                    element.textContent = scrambledText;
+                    requestAnimationFrame(step);
+                } else {
+                    // Revert back to the original text
+                    element.textContent = originalText;
+                }
+            }
+
+            requestAnimationFrame(step);
+        }
+
+        // Attach the event listener to each menu item for hover animation
+        document.querySelectorAll('.menu-container').forEach(item => {
+            item.addEventListener('mouseover', () => animateTextDuringHover(item));
+        });
+
+
+
+
+        function highlightActiveMenuItem(activeMenuItemId) {
+            // Remove active class from all menu items
+            document.querySelectorAll('.menu-container').forEach(item => {
+                item.classList.remove('active-menu-item');
+            });
+
+            // Add active class to the current menu item
+            const activeItem = document.getElementById(activeMenuItemId);
+            if (activeItem) {
+                activeItem.classList.add('active-menu-item');
+            }
+        }
+
+//////// SZENE LOADER /////////////////////////////////////////////////////////////////////////
+
+
+        let currentSceneIndex = 0;
+        let scenesData = [];
+        let scenesiData = [];
+
+        async function initialize() {
+            scenesData = await fetchAndParseData();
+            if (scenesData && scenesData.length > 0) {
+                loadScene(currentSceneIndex);
+            
+            }
+            scenesiData = await fetchImage();
+            if (scenesiData && scenesiData.length > 0) {
+                loadScene(currentSceneIndex);
+            
+            }
+
+        }
+
+
+
+
+        // Keep track of dynamically added style elements
+        const dynamicStyles = [];
+
+        function clearDynamicStyles() {
+          dynamicStyles.forEach(style => style.remove());
+          dynamicStyles.length = 0; // Clear the array
+        }
+
+        function loadScene(index) {
+            const scene = scenesData[index];
+            const sceneImages = scenesiData[index]; // Assuming scenesiData is structured similarly
+
+            if (!scene) return;
+
+            // Remove all existing containers and dynamic styles
+            const existingContainers = document.querySelectorAll('.flex-container, .flex-icontainer');
+            existingContainers.forEach(container => container.remove());
+
+            // Clear dynamic styles
+            clearDynamicStyles();
+
+            loadInterface(index);
+
+            let formattedSceneKey = scene.sceneKey.length === 6 ? `scene0${scene.sceneKey.charAt(5)}` : scene.sceneKey;
+
+            // Update the iframe with the new scene
+            updateIframe(formattedSceneKey);
+            //console.log('Formatted Scene Key:', formattedSceneKey);
+            // Merge and sort text and image containers
+            let combinedData = [];
+            Object.keys(scene.containers).forEach(key => {
+                combinedData.push({ type: 'text', key: key, content: scene.containers[key] });
+            });
+
+            if (sceneImages && sceneImages.images) {
+                Object.keys(sceneImages.images).forEach(key => {
+                    combinedData.push({ type: 'image', key: key, content: sceneImages.images[key] });
+                });
+            }
+
+            combinedData.sort((a, b) => {
+                let numA = parseInt(a.key.match(/\d+/)[0], 10);
+                let numB = parseInt(b.key.match(/\d+/)[0], 10);
+                return numA - numB || (a.type === 'text' ? -1 : 1);
+            });
+
+            // Create containers in sorted order
+            combinedData.forEach(item => {
+                const container = document.createElement('div');
+                container.id = item.key;
+                container.className = item.type === 'text' ? 'flex-container' : 'flex-icontainer';
+                document.body.appendChild(container);
+
+                if (item.type === 'text') {
+                    attachLinkToContainer(container, item.content.style);
+                }
+
+                const style = document.createElement('style');
+                style.innerHTML = item.content.style;
+                document.head.appendChild(style);
+                dynamicStyles.push(style);
+
+                if (item.type === 'image') {
+                    const image = document.createElement('img');
+                    image.src = item.content.src;
+                    container.appendChild(image);
+                }
+            });
+
+            // Create and style the footer
+            createStyledFooter()
+
+            currentSceneData = scene;
+
+            // Update containers when loading a new scene
+            updateAllContainers(scene);
+
+            highlightActiveMenuItem(`menuContainer${index}`);
+            observeImagesForAnimation();
+            createScrollToTopButton();
+        }
+
+
+        function createScrollToTopButton() {
+            const button = document.createElement('button');
+            button.id = 'scrollToTopButton';
+            button.innerHTML = '<span style="position: relative; top: -5px;">▲</span>'; // Triangle symbol adjusted
+            button.style.cssText = `
+                position: fixed; 
+                bottom: 30px; 
+                right: 30px; 
+                width: 48px;  /* Increased width for a wider appearance */
+                height: 48px; /* Same as width to maintain circular shape */
+                line-height: 50px; /* Center the triangle vertically */
+                text-align: center; /* Center the triangle horizontally */
+                padding: 0;
+                font-size: 24px; /* Larger font size for the triangle */
+                background-color: transparent; /* Background made transparent */
+                box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+                color: #00ffcc;
+                border: 2px solid #00ffcc;
+                border-radius: 50%;
+                cursor: pointer;
+                z-index: 17;
+                display: none;
+                opacity: 0;
+                transition: opacity 1.5s ease; /* Smooth transition for opacity */
+            `;
+            document.body.appendChild(button);
+
+            // Function to scroll to the top smoothly
+            function scrollToTop() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
+
+            // Listen to both click and touchend events
+            button.addEventListener('click', scrollToTop);
+            button.addEventListener('touchend', function(event) {
+                event.preventDefault();  // Prevent the mouse event from firing
+                scrollToTop();
+            });
+
+            // Show and hide button with fade effects when scrolling
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 1111) {
+                    button.style.display = 'block';
+                    setTimeout(() => button.style.opacity = 1, 1500); // Increased delay to 500ms for showing
+                } else {
+                    button.style.opacity = 0;
+                    setTimeout(() => button.style.display = 'none', 100); // Keep delay at 300ms for hiding
+                }
+            });
+        }
+
+
+
+        function extractLinkFromCSS(css) {
+            const linkPattern = /\/\* link: (.*) \*\//; // Pattern to extract URL from comment
+            const match = css.match(linkPattern);
+            if (match) {
+                //console.log("Extracted link:", match[1].trim());
+                return match[1].trim();
+            } else {
+                //console.log("No link found in CSS.");
+                return null;
+            }
+        }
+
+        function attachLinkToContainer(container, css) {
+            const link = extractLinkFromCSS(css);
+            if (link) {
+                //console.log("Attaching link", link, "to container", container.id);
+                container.style.cursor = 'pointer'; // Changes the cursor to pointer to indicate it's clickable
+                container.onclick = () => window.open(link, '_blank'); // Opens the link in a new tab when clicked
+            }
+        }
+
+
+
+
+        function createStyledFooter() {
+            removeStyledFooter();
+            const footerContainer = document.createElement('div');
+            footerContainer.id = 'customStyledFooter';
+            footerContainer.style.width = '100vw'; // Width of the viewport
+            footerContainer.style.height = '5000px'; // Footer height
+            footerContainer.style.backgroundColor = 'black'; // Footer background color
+            footerContainer.style.color = 'white'; // Text color
+            footerContainer.style.display = 'flex'; // Use flexbox for layout
+            footerContainer.style.flexDirection = 'column'; // Stack items vertically
+            footerContainer.style.alignItems = 'center'; // Center items horizontally
+            footerContainer.style.justifyContent = 'center'; // Center items vertically
+            footerContainer.style.position = 'relative'; // To apply z-index
+            footerContainer.style.zIndex = '16'; // Ensure it's on top
+            footerContainer.style.marginTop = '256px'; // Space before the footer
+            footerContainer.style.boxShadow = '0px -50px 30px -20px rgba(0, 0, 0, 0.5)';
+
+            // Create a style block for the icon size
+            const styleBlock = document.createElement('style');
+            styleBlock.innerHTML = `
+                .icon-size {
+                    font-size: 18px; /* Default size */
+                }
+
+                @media (max-width: 768px) {
+                    .icon-size {
+                        font-size: 20px; /* Larger size for small devices */
+                    }
+
+                    .btn-floating {
+                        padding: 10px; /* Larger clickable area */
+                    }
+                }
+            `;
+            document.head.appendChild(styleBlock);
+
+            footerContainer.innerHTML = `
+                <div style="display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; margin-top: -4900px;">
+                    
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://twitter.com/Funkybrown111" role="button" style="color: white; margin: 0 10px;">
+                        <i class="fa-brands fa-twitter icon-size"></i>
+                    </a>
+                    
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://www.instagram.com/hogeal_bot/" role="button" style="color: white; margin: 0 10px;">
+                        <i class="fa-brands fa-instagram icon-size"></i>
+                    </a>
+
+                    <a class="btn btn-outline-light btn-floating m-1" href="mailto:hogeai@web.de" role="button" style="color: white; margin: 0 15px;">
+                        <i class="fa-solid fa-envelope icon-size"></i>
+                    </a>
+                    
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://t.me/officialhogecommunity" role="button" style="color: white; margin: 0 10px;">
+                        <i class="fa-brands fa-telegram icon-size"></i>
+                    </a>
+
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://www.hoge.gg/" role="button" style="color: white; margin: 0 10px;">
+                        <i class="fa-solid fa-bone icon-size"></i>
+                    </a>
+                </div>
+                <div style="margin-top: 5px;">
+                    © 2024 Copyright: <a class="text-white" href="https://HogeAI.com/" style="color: white;">HogeAI.com</a>
+                </div>
+            `;
+            document.body.appendChild(footerContainer);
+
+            function preventScrollBeyondFooter() {
+                // Calculate the maximum Y position users should be able to scroll to
+                // This is the document's height minus the viewport's height and the footer's height
+                const maxScrollY = document.body.offsetHeight - window.innerHeight - footerContainer.offsetHeight + 111; // 256px is the margin top of the footer
+
+                if (window.scrollY > maxScrollY) {
+                    // If the user scrolls beyond the max Y position, smoothly scroll them back to the max Y position
+                    window.scrollTo({
+                        top: maxScrollY,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+
+            // Call the function right away in case the page is already scrolled beyond the footer
+            preventScrollBeyondFooter();
+
+            // Add a 'scroll' event listener to the window to invoke the function whenever the user scrolls
+            window.addEventListener('scroll', preventScrollBeyondFooter);
+        }
+
+
+        // Flag to control the activation of footer removal
+        let isRemoveFooterActive = false;
+
+        // Function to toggle the removal activation
+        function toggleRemoveFooterActivation() {
+            isRemoveFooterActive = !isRemoveFooterActive;
+            //console.log(`RemoveStyledFooter is now ${isRemoveFooterActive ? 'active' : 'inactive'}.`);
+        }
+
+        // Modified removeStyledFooter function
+        let removeStyledFooterCounter = 0; // Initialize a counter for the function calls
+
+        function removeStyledFooter() {
+            // Check if the action is active
+            if (!isRemoveFooterActive) {
+                //console.log('RemoveStyledFooter is inactive. Exiting function.');
+                return; // Exit the function if not active
+            }
+            
+            const footerContainer = document.getElementById('customStyledFooter');
+            if (footerContainer) {
+                document.body.removeChild(footerContainer);
+                //console.log('Styled footer removed.');
+                removeStyledFooterCounter++; // Increment the counter after a successful removal
+                
+                // Check if the function has run 2 times
+                if (removeStyledFooterCounter >= 2) {
+                    isRemoveFooterActive = false; // Deactivate the function
+                    //console.log('RemoveStyledFooter has been set to inactive after running 2 times.');
+                }
+                
+            } else {
+                //console.log('No styled footer found to remove.');
+            }
+        }
+
+
+        function resetRemoveStyledFooterCounter() {
+            removeStyledFooterCounter = 0;
+            //console.log('The counter for removeStyledFooter has been reset.');
+        }
+
+
+
+        function observeImagesForAnimation() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1; // Trigger the fade-in animation
+                    }
+                });
+            }, {
+                threshold: 0.25 // This means the animation will start when 10% of the item is visible
+            });
+
+            const images = document.querySelectorAll('.flex-icontainer');
+            images.forEach(image => observer.observe(image));
+        }
+
+        function isIOS() {
+            return /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        }
+
+      
+
+        let tiles = { a: false, b: false };
+
+        function fadeInElements() {
+            const waitForTiles = () => {
+                return new Promise((resolve) => {
+                    const checkTiles = () => {
+                        if (tiles.a && tiles.b) {
+                            resolve(); // Resolve the promise when both tiles.a and tiles.b are true
+                        } else {
+                            setTimeout(checkTiles, 100); // Check every 100 milliseconds
+                        }
+                    };
+                    checkTiles(); // Start checking tiles
+                });
+            };
+
+            // Wait for both tiles.a and tiles.b to become true
+            waitForTiles().then(() => {
+                const selectors = ['#interfaceContainer', '#backgroundContainer', '#iframeContainer', '#bodyGalleryContainer', '.flex-container'];
+                let animationCount = 0;
+
+                const animationEndHandler = () => {
+                    animationCount--;
+                    if (animationCount === 0) {
+                        shouldFadeIn = true; // Set the flag after all animations have ended
+                    }
+                };
+
+                selectors.forEach(selector => {
+                    const elements = document.querySelectorAll(selector);
+                    elements.forEach(element => {
+                        if (element) {
+                            animationCount++;
+                            element.style.opacity = 1; // Set opacity to 1
+                            if (isIOS()) {
+                                element.style.transition = 'none'; // Remove transitions for iOS
+                            } else {
+                                element.style.transition = 'opacity 1s ease-in-out'; // Apply transitions for non-iOS
+                            }
+                            element.addEventListener('transitionend', animationEndHandler);
+                        }
+                    });
+                });
+            });
+        }
+        
+
+
+        function fadeInmenu() {
+            return new Promise((resolve, reject) => {
+                const selectors = ['.menu-bar', '.menu-container'];
+                let animationCount = 0;
+
+                const animationEndHandler = () => {
+                    animationCount--;
+                    if (animationCount === 0) {
+                        // Set the flag after all animations have ended
+                        menufade = true;
+                        resolve(); // Resolve the promise to indicate that animations have completed
+                    }
+                };
+
+                selectors.forEach(selector => {
+                    const elements = document.querySelectorAll(selector);
+                    elements.forEach(element => {
+                        if (element) {
+                            animationCount++;
+                            element.style.opacity = 1; // Set opacity to 1
+                            if (!isIOS()) {
+                                element.style.transition = 'opacity 0.5s ease-in-out'; // Apply a half-second transition for non-iOS
+                                element.addEventListener('transitionend', animationEndHandler);
+                            } else {
+                                // If it's iOS, immediately set the flag and resolve the promise
+                                menufade = true;
+                                resolve();
+                            }
+                        }
+                    });
+                });
+                
+                // If no animations are found, resolve the promise immediately
+                if (animationCount === 0) {
+                    resolve();
+                }
+            });
+        }
+
+
+        function fadeOutElements() {
+            return new Promise((resolve, reject) => {
+                const selectors = ['#interfaceContainer', '#backgroundContainer', '.flex-icontainer', '#bodyGalleryContainer', '.flex-container', '#iframeContainer'];
+                const elementsToFadeOut = [];
+                selectors.forEach(selector => {
+                    const elements = document.querySelectorAll(selector);
+                    elements.forEach(element => {
+                        if (element) {
+                            elementsToFadeOut.push(element);
+                        }
+                    });
+                });
+
+                elementsToFadeOut.forEach(element => {
+                    element.style.opacity = 0; // Set opacity to 0
+                    if (isIOS()) {
+                        element.style.transition = 'none'; // Remove transitions for iOS
+                    } else {
+                        element.style.transition = 'opacity 1s ease-in-out'; // Apply transitions for non-iOS
+                    }
+                });
+
+                // Assuming the transition duration is 1 second as set in CSS for non-iOS devices
+                setTimeout(resolve, isIOS() ? 0 : 1000); // Resolve immediately for iOS
+            });
+        }
+
+
+
+
+
+
+
+
+        function createVerticalTiles_a(containerId, imageUrl, imageHeight) {
+            return new Promise((resolve, reject) => {
+                const container = document.getElementById(containerId);
+                container.innerHTML = ''; // Clear existing content
+
+                // Assuming the container's height is directly based on its content (the images)
+                // We calculate the number of tiles needed to fill the container plus one for overflow
+                const numTiles = 20; // Since you mentioned wanting about 10 tiles
+
+                for (let i = 0; i < numTiles; i++) {
+                    const img = document.createElement('img');
+                    img.src = imageUrl;
+                    img.style.position = 'absolute';
+                    img.style.top = `${i * imageHeight}px`;
+                    img.style.left = 0;
+                    img.style.width = '100%'; // Stretch the image to fill the container's width
+                    img.style.height = `${imageHeight}px`; // Set a fixed height for direct tiling
+                    container.appendChild(img);
+
+                    // Add updateParallax to the AnimationManager
+                    AnimationManager.registerAnimation(updateParallax);
+
+                    // This function needs to be called to update the virtual canvas size accordingly
+                    delayedVirtualCanvasUpdate();
+                }
+
+                // Resolve the promise to indicate that tiles are constructed
+                resolve();
+            }).then(() => {
+                tiles.a = true;
+                // Set the flag for tiles a to true after the promise is resolved
+            });
+        }
+
+
+        function createVerticalTiles_b(containerId, imageUrl, imageHeight) {
+            return new Promise((resolve, reject) => {
+                const container = document.getElementById(containerId);
+                container.innerHTML = ''; // Clear existing content
+
+                
+                // Assuming the container's height is directly based on its content (the images)
+                // We calculate the number of tiles needed to fill the container plus one for overflow
+                const numTiles = 20; // Since you mentioned wanting about 10 tiles
+
+                for (let i = 0; i < numTiles; i++) {
+                    const img = document.createElement('img');
+                    img.src = imageUrl;
+                    img.style.position = 'absolute';
+                    img.style.top = `${i * imageHeight}px`;
+                    img.style.left = 0;
+                    img.style.width = '100%'; // Stretch the image to fill the container's width
+                    img.style.height = `${imageHeight}px`; // Set a fixed height for direct tiling
+                    container.appendChild(img);
+                    
+                    
+                    updateVirtualCanvasSize();
+                }
+
+                // Resolve the promise to indicate that tiles are constructed
+                resolve();
+            }).then(() => {
+                // Set the flag for tiles b to true after the promise is resolved
+                tiles.b = true;
+            });
+        }
+
+        function delayedVirtualCanvasUpdate() {
+            // Delay the call to updateVirtualCanvasSize
+            
+            setTimeout(updateVirtualCanvasSize, 100); // Delay of 100 milliseconds
+        }
+
+        function loadInterface(currentSceneIndex) {
+            // Extend: Function to ensure wrapper existence
+            function ensureWrapperExistence(wrapperClass, contentStructure) {
+                let wrapper = document.querySelector(`.${wrapperClass}`);
+                if (!wrapper) {
+                    wrapper = document.createElement('div');
+                    wrapper.className = wrapperClass;
+                    document.body.appendChild(wrapper); // Append wrapper to the body
+                    wrapper.innerHTML = contentStructure; // Set the inner HTML as per the structure required
+                }
+            }
+
+            // For scene index 3, remove the wrappers completely
+            if (currentSceneIndex === 4 || currentSceneIndex === 5) {
+                document.querySelectorAll('.scale-wrapper-background, .scale-wrapper-interface').forEach(wrapper => {
+                    wrapper.parentNode.removeChild(wrapper);
+                });
+                return; // Exit the function after handling the special case for scene index 3
+            }
+
+            // Ensure the existence of `.scale-wrapper-background` and `.scale-wrapper-interface` wrappers
+            ensureWrapperExistence('scale-wrapper-background', `
+                <div id="backgroundRoot">
+                    <div id="backgroundContainer">
+                        <div id="backgroundInterfaceContainer">
+                            <div id="interfaceBackground"></div>
+                        </div>
+                    </div>
+                </div>
+            `);
+
+            ensureWrapperExistence('scale-wrapper-interface', `
+                <div id="interfaceContainer">
+                    <div id="interfaceSideLeft" class="sideImageContainer"></div>
+                    <div id="interfaceViewerContainer">
+                        <img id="interfaceViewerImage" alt="Viewer Image">
+                    </div>
+                    <div id="interfaceSideRight" class="sideImageContainer"></div>
+                </div>
+            `);
+
+            // Your existing code to tile images and update the viewer image
+            const sceneFormatted = currentSceneIndex.toString().padStart(2, '0');
+            const imageHeight = 2048; // Fixed height for all images
+
+            const backgroundUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/background/b${sceneFormatted}.jpg`;
+            const sideImageUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/side/s${sceneFormatted}.jpg`;
+            const viewerImageUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/v${sceneFormatted}.jpg`;
+            const viewerMaskUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/vm${sceneFormatted}.png`;
+
+            // Create promises for vertical tiles
+            const backgroundPromise = createVerticalTiles_a('interfaceBackground', backgroundUrl, imageHeight);
+            const sideLeftPromise = createVerticalTiles_b('interfaceSideLeft', sideImageUrl, imageHeight);
+            const sideRightPromise = createVerticalTiles_b('interfaceSideRight', sideImageUrl, imageHeight);
+
+            // Create a promise for the viewer image
+            const viewerImagePromise = new Promise((resolve, reject) => {
+                const viewerImageElement = document.getElementById('interfaceViewerImage');
+                if (viewerImageElement && document.body.contains(viewerImageElement)) {
+                    const tempImage = new Image();
+                    tempImage.onload = function() {
+                        viewerImageElement.src = tempImage.src;
+                        viewerImageElement.style.maskImage = `url('${viewerMaskUrl}')`;
+                        viewerImageElement.style.webkitMaskImage = `url('${viewerMaskUrl}')`;
+                        viewerImageElement.style.maskSize = '100% 100%';
+                        viewerImageElement.style.webkitMaskSize = '100% 100%';
+                        resolve(); // Resolve the promise when the image is loaded
+                    };
+                    tempImage.onerror = function() {
+                        console.error("Failed to load image at url:", viewerImageUrl);
+                        reject(); // Reject the promise on error
+                    };
+                    tempImage.src = viewerImageUrl; // Set the image source which starts loading the image
+                } else {
+                    console.log("Viewer image element does not exist in the DOM.");
+                    reject(); // Reject the promise if the element does not exist
+                }
+            });
+
+            // Wait for all promises to resolve before triggering fadeInElements
+            Promise.all([backgroundPromise, sideLeftPromise, sideRightPromise, viewerImagePromise]).then(() => {
+                setTimeout(() => {
+                    fadeInElements(); // This function should handle fading in the viewer and associated elements
+                }, 111); // Delay to allow the browser to render the updated image before fading in
+            }).catch((error) => {
+                console.error("Error loading elements:", error);
+            });
+        }
+
+
+        
+
+        let lastScrollY = 0;
+
+        function updateParallax() {
+            const isiOS = /iPad|iPhone|iPod/.test(navigator.platform) || 
+                          (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+            if (isiOS) {
+                return;
+            }
+
+            const speedFactorBackground = 0.3;
+            const speedFactorSides = -1.2;
+            const speedFactorViewer = -0.3;
+
+            const scrollY = window.scrollY;
+
+            if (scrollY === lastScrollY) {
+                return;
+            }
+
+            lastScrollY = scrollY;
+
+            const background = document.getElementById('interfaceBackground');
+            if (background) {
+                const offsetBackground = scrollY * speedFactorBackground;
+                background.style.transform = `translateY(${offsetBackground}px)`;
+            }
+
+            const sideLeft = document.getElementById('interfaceSideLeft');
+            const sideRight = document.getElementById('interfaceSideRight');
+            if (sideLeft && sideRight) {
+                const offsetSides = scrollY * speedFactorSides;
+                sideLeft.style.transform = `translateY(${offsetSides}px)`;
+                sideRight.style.transform = `translateY(${offsetSides}px)`;
+            }
+
+            const viewerContainer = document.getElementById('interfaceViewerContainer');
+            if (viewerContainer) {
+                const offsetViewer = scrollY * speedFactorViewer;
+                viewerContainer.style.transform = `translateY(${offsetViewer}px)`;
+            }
+        }
+
+
+
+/////////// ANIMATION TEXT /////
+
+        
+
+        function generateRandomString(length) {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()[]{}|';
+            let randomString = '';
+            for (let i = 0; i < length; i++) {
+                randomString += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            return randomString;
+        }
+
+        function animateText(element, finalText, duration, delay, finalColor = { r: 0, g: 255, b: 204 }) {
+            setTimeout(() => {
+                let currentText = generateRandomString(finalText.length);
+                element.textContent = currentText;
+                element.style.opacity = '0';
+
+                const shuffleFrequency = 8;
+                const intervalTime = duration / (finalText.length * shuffleFrequency);
+                let index = 0;
+                let shuffleCount = 0;
+                let lastRender = performance.now();
+                let frameCount = 0;
+                const totalFrames = 180;
+                const randomPhaseR = Math.random() * 2 * Math.PI;
+                const randomPhaseG = Math.random() * 2 * Math.PI;
+                const randomPhaseB = Math.random() * 2 * Math.PI;
+
+                function getColorComponent(phaseShift, randomPhase) {
+                    return Math.floor(127.5 * (1 + Math.sin(2 * Math.PI * frameCount / totalFrames + phaseShift + randomPhase)));
+                }
+
+                function step(timestamp) {
+                    let progress = timestamp - lastRender;
+                    if (progress > intervalTime) {
+                        lastRender = timestamp - (progress % intervalTime);
+
+                        if (shuffleCount % shuffleFrequency === 0 && index < finalText.length) {
+                            currentText = currentText.substring(0, index) + finalText.charAt(index) + generateRandomString(finalText.length - index - 1);
+                            index++;
+                        } else {
+                            currentText = currentText.substring(0, index) + generateRandomString(finalText.length - index);
+                        }
+                        element.textContent = currentText;
+                        shuffleCount++;
+                        element.style.opacity = Math.min(1, parseFloat(element.style.opacity) + 0.05);
+
+                        let colorTransitionFactor = index / finalText.length;
+                        let r = getColorComponent(0, randomPhaseR);
+                        let g = getColorComponent(2 * Math.PI / 3, randomPhaseG);
+                        let b = getColorComponent(4 * Math.PI / 3, randomPhaseB);
+
+                        r = Math.floor(r + (finalColor.r - r) * colorTransitionFactor);
+                        g = Math.floor(g + (finalColor.g - g) * colorTransitionFactor);
+                        b = Math.floor(b + (finalColor.b - b) * colorTransitionFactor);
+
+                        element.style.color = `rgb(${r}, ${g}, ${b})`;
+                        frameCount++;
+
+                        if (index === finalText.length && shuffleCount % shuffleFrequency === 0) {
+                            element.textContent = finalText;
+                            element.style.opacity = '1';
+                            element.style.color = `rgb(${finalColor.r}, ${finalColor.g}, ${finalColor.b})`;
+                            //console.log('Animation complete for:', element);
+                            return false; // Indicate the animation is complete
+                        }
+                    }
+                    return true; // Indicate the animation should continue
+                }
+
+                AnimationManager.registerAnimation(step);
+            }, delay);
+        }
+
+
+
+
+
+
+
+
+
+        function createSpansForContainer(containerId, text) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+
+            let tempSpan = document.createElement('span');
+            tempSpan.style.display = 'inline-block';
+            tempSpan.style.visibility = 'hidden';
+            document.body.appendChild(tempSpan);
+
+            let style = window.getComputedStyle(container);
+            let paddingAndBorder = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight) +
+                                   parseFloat(style.borderLeftWidth) + parseFloat(style.borderRightWidth);
+            let availableWidth = container.clientWidth - paddingAndBorder - 5;
+
+            // Calculate 10% additional width
+            let additionalWidth = availableWidth * 0.095;
+            let extendedWidth = availableWidth + additionalWidth;
+
+            let lines = [];
+            let currentLine = '';
+            text.split(' ').forEach(word => {
+                let testLine = currentLine + word + ' ';
+                tempSpan.innerText = testLine;
+
+                // Use extendedWidth for the condition
+                if (tempSpan.offsetWidth > extendedWidth && currentLine !== '') {
+                    let lineContainer = createLineContainer(container, currentLine.trim());
+                    lines.push(lineContainer);
+                    currentLine = word + ' ';
+                } else {
+                    currentLine = testLine;
+                }
+            });
+
+            if (currentLine.trim() !== '') {
+                let lineContainer = createLineContainer(container, currentLine.trim());
+                lines.push(lineContainer);
+            }
+
+            document.body.removeChild(tempSpan);
+            return lines;
+        }
+
+        function createLineContainer(container, lineText) {
+            adjustContainerSizesBasedOnVirtualCanvas();
+            let lineContainer = document.createElement('div');
+            lineContainer.style.display = 'inline-block';
+            lineContainer.style.width = '1000%';
+            container.appendChild(lineContainer);
+            lineContainer.style.whiteSpace = 'nowrap';
+            lineText.split(' ').forEach(word => {
+                if (word.trim() !== '') {
+                    var wordSpan = document.createElement('span');
+                    wordSpan.className = 'dynamic-text';
+                    wordSpan.setAttribute('data-final-text', word);
+                    wordSpan.style.opacity = '0';
+                    lineContainer.appendChild(wordSpan);
+                }
+            });
+
+            return lineContainer;
+        }
+
+        function startLineAnimation(lineContainers, defaultFinalColor = { r: 0, g: 255, b: 204 }) {
+            let wordDelayIncrement = 100;
+            let lineStartDelay = 150;
+
+            // Pre-populate line containers with blank spaces or invisible characters
+            lineContainers.forEach(lineContainer => {
+                Array.from(lineContainer.children).forEach(wordSpan => {
+                    wordSpan.textContent = '\u00A0'; // Non-breaking space
+                });
+            });
+
+            // Start the animation by replacing the placeholders with actual text
+            lineContainers.forEach((lineContainer, lineIndex) => {
+                Array.from(lineContainer.children).forEach((wordSpan, wordIndex) => {
+                    let totalDelay = (lineIndex * lineStartDelay) + (wordIndex * wordDelayIncrement);
+                    let colorData = wordSpan.getAttribute('data-color');
+                    let finalColor = colorData ? JSON.parse(colorData) : defaultFinalColor; // Use default if no specific color is provided
+
+                    setTimeout(() => {
+                        animateText(wordSpan, wordSpan.getAttribute('data-final-text'), 1000, totalDelay, finalColor);
+                    }, totalDelay);
+                });
+            });
+        }
+
+
+
+////////ANIMATION SCALING
+
+        let preparedContainers = {};
+
+        function updateAllContainers(Scene) {
+
+            preparedContainers = {}; // Resetting for the new Scene
+            Object.keys(Scene.containers).forEach(containerId => {
+
+                let containerData = Scene.containers[containerId];
+                let textLines = containerData.text.split('\n');
+                let lineSpans = createSpansForContainer(containerId, textLines.join(' '));
+                preparedContainers[containerId] = lineSpans;
+            });
+
+            // Resetting the current animation index
+            currentContainerIndex = 0;
+            containerIds = Object.keys(Scene.containers);
+
+        }
+
+        function startAnimationForContainer(containerId) {
+            //console.log("Starting animation for container:", containerId);
+            if (preparedContainers[containerId]) {
+                startLineAnimation(preparedContainers[containerId], { r: 0, g: 255, b: 204 });
+            } else {
+                //console.log("No prepared data for container:", containerId);
+            }
+        }
+      
+        function checkAndInitialize() {
+            const container01 = document.getElementById('container01');
+            if (container01.clientWidth > 0) {
+                updateAllContainers();
+            } else {
+                setTimeout(checkAndInitialize, 50);
+            }
+        }
+
+        function animateTextDuringScaling(element, finalText) {
+            var currentText = generateRandomString(finalText.length);
+            element.textContent = currentText;
+            element.style.opacity = '1';
+
+            var totalDuration = 300;  // Total duration of the scrambling
+            var randomStartDelay = Math.random() * 200;  // Start scrambling with random delay
+            var stopScramblingDelay = totalDuration - 200 + Math.random() * 400;  // Stop scrambling with random delay
+            var startTime = null;
+
+            function step(timestamp) {
+                if (!startTime) startTime = timestamp;
+                var progress = timestamp - startTime;
+
+                if (progress < stopScramblingDelay) {
+                    currentText = generateRandomString(finalText.length);
+                    element.textContent = currentText;
+                    return true; // Indicate that the animation should continue
+                } else {
+                    element.textContent = finalText;
+                    return false; // Indicate that the animation is complete
+                }
+            }
+
+            setTimeout(function() {
+                AnimationManager.registerAnimation(step);
+            }, randomStartDelay);
+        }
+
+        function startScalingAnimation(lineContainers) {
+            lineContainers.forEach(lineContainer => {
+                Array.from(lineContainer.children).forEach(wordSpan => {
+                    animateTextDuringScaling(wordSpan, wordSpan.getAttribute('data-final-text'));
+                });
+            });
+        }
+
+ 
+        function updateAllContainersDuringScaling() {
+            if (!currentSceneData) {
+                return; // Exit if not set
+            }
+            const savedScrollPosition = window.scrollY;
+            // Use currentSceneData for scaling animation
+            Object.keys(currentSceneData.containers).forEach(containerId => {
+                let containerData = currentSceneData.containers[containerId];
+                let textLines = containerData.text.split('\n');
+                let lineSpans = createSpansForContainer(containerId, textLines.join(' '));
+                startScalingAnimation(lineSpans);
+            });
+            window.scrollTo(0, savedScrollPosition);
+        }
+        
+        
+
+
+        function checkAndStartAnimationsOnScroll() {
+            const viewportHeight = window.innerHeight;
+            const triggerHeight = viewportHeight / 1.05; // 1/4 of the viewport height
+
+            containerIds.forEach(containerId => {
+                const container = document.getElementById(containerId);
+                if (container) {
+                    const rect = container.getBoundingClientRect();
+                    if (rect.top <= triggerHeight && !container.dataset.animationStarted) {
+                        startAnimationForContainer(containerId);
+                        container.dataset.animationStarted = 'true'; // Mark as animated
+                    }
+                }
+            });
+        }
+
+        
+
+        function getSmoothAspectRatio(viewportWidth, viewportHeight) {
+            const portraitAspectRatio = 1.6; 
+            const landscapeAspectRatio = 1.9; 
+
+            const currentAspectRatio = viewportWidth / viewportHeight;
+
+            if (currentAspectRatio < 1) {
+                return portraitAspectRatio;
+            } else if (currentAspectRatio >= 1 && currentAspectRatio < 4 / 3) {
+                let t = (currentAspectRatio - 1) / (4 / 3 - 1);
+                return portraitAspectRatio + t * (landscapeAspectRatio - portraitAspectRatio);
+            } else {
+                return landscapeAspectRatio;
+            }
+        }
+
+        var lastScaleFactor = null; // Tracks the last scale factor for portrait mode
+        var cumulativeScaleChange = 0; // Accumulates scale changes for portrait mode
+
+        function updateVirtualCanvasSize() {
+            var virtualcanvas = document.getElementById('virtualcanvas');
+            if (!virtualcanvas) {
+                virtualcanvas = document.createElement('div');
+                virtualcanvas.id = 'virtualcanvas';
+                document.body.appendChild(virtualcanvas);
+                virtualcanvas.style.transition = 'transform 0.5s ease';
+                virtualcanvas.style.position = 'absolute';
+                virtualcanvas.style.left = '50%';
+                virtualcanvas.style.transform = 'translate(-50%, -50%)';
+                virtualcanvas.style.zIndex = '-100';
+            }
+
+            var viewportWidth = window.innerWidth;
+            var viewportHeight = window.innerHeight;
+            var isPortrait = viewportWidth -1 < viewportHeight;
+            var smoothAspectRatio = getSmoothAspectRatio(viewportWidth, viewportHeight);
+            var fixedAspectRatio = 1536 / 1024;
+
+            var canvasWidth, canvasHeight;
+            var offset = 20;  // Offset to adjust the starting point of the grid step calculation
+            if (isPortrait) {
+                var newHeight = viewportHeight / smoothAspectRatio;
+                var stepSize = 80;  // Define the step size
+                var baseHeight = newHeight + offset;  // Add the offset before adjusting to step
+                var adjustedHeight = Math.round(baseHeight / stepSize) * stepSize;  // Adjust to the nearest step
+                canvasHeight = adjustedHeight - offset;  // Subtract the offset after adjustment to maintain original canvas size
+                canvasWidth = canvasHeight * fixedAspectRatio;
+            } else {
+                canvasWidth = viewportWidth;
+                canvasHeight = canvasWidth / smoothAspectRatio;
+            }
+
+            var size = { width: canvasWidth, height: canvasHeight };
+            var scaleFactor = Math.min(size.width / 1536, size.height / 1024);
+
+            // Detecting iOS devices
+            var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+            // Apply the scale factor for all modes without checking for changes
+            document.querySelectorAll('.scale-wrapper-interface').forEach(element => {
+                var verticalOffset = isIOS ? '45px' : '-50%'; // Adjusting Y-offset for iOS devices
+                element.style.transform = `translate(-50%, ${verticalOffset}) scale(${scaleFactor})`;
+            });
+
+            // For .scale-wrapper-background and others, keep the original transformation
+            document.querySelectorAll('.scale-wrapper-background').forEach(element => {
+                element.style.transform = `translate(-50%, -50%) scale(${scaleFactor})`;
+            });
+
+            // Update the virtual canvas size
+            virtualcanvas.style.width = size.width + 'px';
+            virtualcanvas.style.height = size.height + 'px';
+            virtualcanvas.style.top = '50%';
+        }
+
+
+
+
+        function adjustContainerSizesBasedOnVirtualCanvas() {
+            var virtualCanvas = document.getElementById('virtualcanvas');
+            if (!virtualCanvas) {
+                //console.error('Virtual canvas not found.');
+                return;
+            }
+
+            var virtualCanvasWidth = virtualCanvas.offsetWidth;
+
+            // Determine if we are likely on a mobile device based on viewport width
+            var isMobile = window.innerWidth <= 768; // Includes devices at 768px as mobile
+
+            // Detect orientation for mobile devices
+            var isPortrait = window.innerHeight > window.innerWidth;
+
+            // Default to base width percentage for design
+            var baseWidthPercent = 39;
+
+            // Define mobile adjustments: Adjust these values as needed for your design
+            var portraitAdjustment = 1.3; // 45% wider on mobile in portrait
+            var landscapeAdjustment = 1; // 20% wider on mobile in landscape
+
+            // Select the appropriate adjustment factor based on mobile status and orientation
+            var adjustmentFactor = 1; // Default for non-mobile or desktop
+            if (isMobile || isPortrait) { // Apply portrait adjustment when the device is in portrait orientation or is mobile at 768px
+                adjustmentFactor = isPortrait ? portraitAdjustment : landscapeAdjustment;
+            }
+
+            var container01 = document.getElementById('container01');
+            if (container01) {
+                container01.style.marginTop = isPortrait ? '30%' : '25%'; // Adjust margin top based on orientation
+            }
+
+            var scaledWidthPx = (virtualCanvasWidth * baseWidthPercent / 100) * adjustmentFactor; // Apply selected adjustment
+
+            var flexContainers = document.querySelectorAll('.flex-container, .flex-icontainer');
+            flexContainers.forEach(function(container) {
+                // Set width adjusted for mobile orientation or use default for desktop
+                container.style.width = scaledWidthPx + 'px';
+
+                // For .flex-icontainer, adjust padding-top to maintain aspect ratio
+                if (container.classList.contains('flex-icontainer')) {
+                    container.style.paddingTop = scaledWidthPx + 'px';
+                }
+            });
+        }
+
+
+        document.addEventListener('touchend', function() {
+            setTimeout(() => {
+                // Only reset horizontal scroll if it's greater than a certain threshold
+                if (window.scrollX > 0) {
+                    window.scrollTo(0, window.scrollY);
+                }
+            }, 100); // Delay in milliseconds
+        }, { passive: true });
+
+
+        // Prevent pinch-zoom in mobile browsers
+        document.addEventListener('touchmove', function(event) {
+          if (event.scale !== 1) { event.preventDefault(); }
+        }, { passive: false });
+
+        // Prevent scroll-zoom in desktop browsers
+        document.addEventListener('wheel', function(event) {
+          if (event.ctrlKey) { event.preventDefault(); }
+        }, { passive: false });
+
+        document.addEventListener('touchstart', function(event) {
+          if (event.touches.length > 1) {
+            event.preventDefault();
+          }
+        }, { passive: false });
+
+        window.addEventListener('resize', function() {
+            // Always call these functions on resize
+            updateVirtualCanvasSize();
+            updateLogoVisibility();
+
+            // Check if the device is iOS
+            var iOS = /iPad|iPhone|iPod/.test(navigator.platform) || 
+                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+            // Exclude the following code from running on iOS devices
+            if(iOS) {
+                return; // Exit the function if on an iOS device
+            }
+
+            if (isAnimating) {
+                return; // Exit the function if an animation is already happening
+            }
+
+            // Call these functions if not on an iOS device
+            updateAllContainersDuringScaling();
+            shuffleMenu();
+        });
+
+
+
+        
+
+
+        //initialize();
+    </script>
+</body>
+</html>
+
