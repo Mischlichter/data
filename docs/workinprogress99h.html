@@ -1634,7 +1634,8 @@
             const iframeContainer = document.getElementById('iframeContainer');
             const mouseOverlay = document.getElementById('mouseOverlay');
             const bodyGalleryContainer = document.getElementById('bodyGalleryContainer');
-            registerServiceWorker();
+
+            enableServiceWorker();
 
             unhideElementsByClass("foreground-image-container");
 
@@ -1643,17 +1644,14 @@
             if (existingIframe) {
                 existingIframe.src = 'about:blank';
                 existingIframe.remove(); // Remove the old iframe
-
             }
             if (bodyGalleryContainer) {
                 bodyGalleryContainer.innerHTML = ''; // Clear body gallery content
             }
 
-
-
             if (sceneKey === 'scene05') {
                 // Logic for scene04 (Gallery)
-                unregisterServiceWorker();
+                disableServiceWorker();
                 toggleRemoveFooterActivation();
                 resetRemoveStyledFooterCounter();
                 iframeContainer.style.display = 'none';
@@ -1745,38 +1743,39 @@
             }
         }
 
-        function unregisterServiceWorker() {
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.getRegistrations().then(registrations => {
-                    for (let registration of registrations) {
-                        registration.unregister().then(success => {
-                            if (success) {
-                                console.log('Service Worker: Unregistered');
-                            } else {
-                                console.error('Service Worker: Unregistration failed');
-                            }
-                        });
-                    }
-                });
+        function setServiceWorkerState(enabled) {
+            if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+                navigator.serviceWorker.controller.postMessage({ action: 'setState', enabled: enabled });
+                localStorage.setItem('serviceWorkerEnabled', enabled);
             }
         }
 
-        function registerServiceWorker() {
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('service-worker.js')
-                    .then(function(registration) {
-                        console.log('Service Worker: Registered with scope:', registration.scope);
-                        return navigator.serviceWorker.ready;
-                    })
-                    .then(function() {
-                        console.log('Service Worker: Active');
-                        localStorage.setItem('serviceWorkerRegistered', 'true');
-                    })
-                    .catch(function(error) {
-                        console.error('Service Worker: Registration failed:', error);
-                    });
-            }
+        function enableServiceWorker() {
+            setServiceWorkerState(true);
+            console.log('Service Worker enabled');
         }
+
+        function disableServiceWorker() {
+            setServiceWorkerState(false);
+            console.log('Service Worker disabled');
+        }
+
+        
+
+        document.getElementById('toggle-sw').addEventListener('click', () => {
+            const isEnabled = localStorage.getItem('serviceWorkerEnabled') === 'true';
+            setServiceWorkerState(!isEnabled);
+            localStorage.setItem('serviceWorkerEnabled', !isEnabled);
+        });
+
+        window.addEventListener('load', () => {
+            const isEnabled = localStorage.getItem('serviceWorkerEnabled') === 'true';
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/service-worker.js').then(registration => {
+                    registration.active.postMessage({ action: 'setState', enabled: isEnabled });
+                });
+            }
+        });
 
 
 
