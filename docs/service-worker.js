@@ -4,8 +4,10 @@ const CACHE_NAME = 'site-assets';
 const DB_NAME = 'MyDatabase';
 const STORE_NAME = 'assets';
 
-// On install, cache the files from IndexedDB
+console.log('Service Worker: Registered');
+
 self.addEventListener('install', event => {
+    console.log('Service Worker: Install event');
     event.waitUntil(
         caches.open(CACHE_NAME).then(async cache => {
             const db = await openDB();
@@ -17,12 +19,15 @@ self.addEventListener('install', event => {
 
             const urlsToCache = allAssets.map(asset => asset.url);
             await cache.addAll(urlsToCache);
+            console.log('Service Worker: Cached all assets');
+        }).catch(error => {
+            console.error('Service Worker: Error during install event:', error);
         })
     );
 });
 
-// Fetch from cache first, then network fallback
 self.addEventListener('fetch', event => {
+    console.log('Service Worker: Fetch event for', event.request.url);
     event.respondWith(
         caches.match(event.request).then(response => {
             return response || fetch(event.request).then(networkResponse => {
@@ -33,7 +38,8 @@ self.addEventListener('fetch', event => {
                 }
                 return networkResponse;
             });
-        }).catch(() => {
+        }).catch(error => {
+            console.error('Service Worker: Error during fetch event:', error);
             return caches.match(event.request);
         })
     );
@@ -41,6 +47,7 @@ self.addEventListener('fetch', event => {
 
 async function openDB() {
     if (!('indexedDB' in self)) return null;
+    console.log('Service Worker: Opening IndexedDB');
 
     return idb.openDB(DB_NAME, 1, {
         upgrade(db) {
@@ -48,5 +55,10 @@ async function openDB() {
                 db.createObjectStore(STORE_NAME, { keyPath: 'url' });
             }
         }
+    }).then(db => {
+        console.log('Service Worker: IndexedDB opened');
+        return db;
+    }).catch(error => {
+        console.error('Service Worker: Error opening IndexedDB:', error);
     });
 }
