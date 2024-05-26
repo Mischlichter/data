@@ -1,26 +1,8 @@
-// Import the idb library at the top of your service worker
-importScripts('/scripts/index-min.js');
 
-// Ensure that idb is available in the service worker scope
-const idb = self.idb;
+
 
 const CACHE_NAME = 'site-assets';
 
-async function getFromIndexedDB(url) {
-    try {
-        const db = await idb.openDB('MyDatabase', 1);
-        const tx = db.transaction('assets', 'readonly');
-        const store = tx.objectStore('assets');
-        const asset = await store.get(url);
-        if (asset) {
-            console.log(`[Service Worker] Serving from IndexedDB: ${url}`);
-            return new Response(asset.blob);
-        }
-    } catch (error) {
-        console.error(`[Service Worker] Error retrieving from IndexedDB: ${url}`, error);
-    }
-    return null;
-}
 
 self.addEventListener('install', event => {
     console.log('[Service Worker] Installing...');
@@ -45,6 +27,22 @@ self.addEventListener('activate', event => {
     );
     self.clients.claim(); // Take control of all clients immediately
 });
+
+async function getFromIndexedDB(url) {
+    try {
+        const db = await idb.openDB('MyDatabase', 1);
+        const tx = db.transaction('assets', 'readonly');
+        const store = tx.objectStore('assets');
+        const asset = await store.get(url);
+        if (asset) {
+            console.log(`[Service Worker] Serving from IndexedDB: ${url}`);
+            return new Response(asset.blob);
+        }
+    } catch (error) {
+        console.error(`[Service Worker] Error retrieving from IndexedDB: ${url}`, error);
+    }
+    return null;
+}
 
 self.addEventListener('fetch', event => {
     console.log(`[Service Worker] Fetching: ${event.request.url}`);
