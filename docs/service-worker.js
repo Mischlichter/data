@@ -30,10 +30,15 @@ self.addEventListener('fetch', event => {
     console.log('Service Worker: Fetch event for', event.request.url);
     event.respondWith(
         caches.match(event.request).then(response => {
-            return response || fetch(event.request).then(networkResponse => {
+            if (response) {
+                console.log('Service Worker: Serving from cache', event.request.url);
+                return response;
+            }
+            return fetch(event.request).then(networkResponse => {
                 if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
                     caches.open(CACHE_NAME).then(cache => {
                         cache.put(event.request, networkResponse.clone());
+                        console.log('Service Worker: Fetched and cached', event.request.url);
                     });
                 }
                 return networkResponse;
@@ -44,6 +49,7 @@ self.addEventListener('fetch', event => {
         })
     );
 });
+
 
 async function openDB() {
     if (!('indexedDB' in self)) return null;
