@@ -1,7 +1,7 @@
 const CACHE_NAME = 'site-assets';
 
 self.addEventListener('install', event => {
-    console.log('[Service Worker] Installing Service Worker...');
+    console.log('[Service Worker] Installing...');
     event.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
             console.log('[Service Worker] Caching initial assets...');
@@ -9,14 +9,14 @@ self.addEventListener('install', event => {
                 // List of assets to cache during installation (optional)
             ]);
         }).catch(error => {
-            console.error('[Service Worker] Error during cache open in install:', error);
+            console.error('[Service Worker] Error during install cache open:', error);
         })
     );
     self.skipWaiting(); // Activate the service worker immediately after installation
 });
 
 self.addEventListener('activate', event => {
-    console.log('[Service Worker] Activating Service Worker...');
+    console.log('[Service Worker] Activating...');
     event.waitUntil(
         caches.keys().then(cacheNames => {
             return Promise.all(
@@ -28,14 +28,14 @@ self.addEventListener('activate', event => {
                 })
             );
         }).catch(error => {
-            console.error('[Service Worker] Error during cache deletion in activate:', error);
+            console.error('[Service Worker] Error during activate cache delete:', error);
         })
     );
     self.clients.claim(); // Take control of all clients immediately
 });
 
 self.addEventListener('fetch', event => {
-    console.log(`[Service Worker] Fetching resource: ${event.request.url}`);
+    console.log(`[Service Worker] Fetching: ${event.request.url}`);
     event.respondWith(
         caches.match(event.request).then(cachedResponse => {
             if (cachedResponse) {
