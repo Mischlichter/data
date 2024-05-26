@@ -2586,6 +2586,8 @@
 
                 if (item.type === 'image') {
                     const image = document.createElement('img');
+                    container.appendChild(image); // Append image to container first
+
                     const cachedImage = await getCachedImage(db, item.content.src);
 
                     if (cachedImage) {
@@ -2595,8 +2597,6 @@
                         image.src = item.content.src;
                         console.log(`Loaded image from network: ${item.content.src}`);
                     }
-
-                    container.appendChild(image);
                 }
             }
 
@@ -2612,6 +2612,7 @@
             observeImagesForAnimation();
             createScrollToTopButton();
         }
+
 
         async function getCachedImage(db, url) {
             try {
