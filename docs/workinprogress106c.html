@@ -2625,7 +2625,7 @@
 
             // Update containers when loading a new scene
             updateAllContainers(scene);
-            
+
             
             observeImagesForAnimation();
             createScrollToTopButton();
@@ -3063,14 +3063,82 @@
         }
 
 
+        // Initialize cache status in localStorage
+        async function initializeCacheStatus(urls) {
+            const cacheName = 'site-assets';
+            const cache = await caches.open(cacheName);
+
+            for (const url of urls) {
+                const response = await cache.match(url);
+                const cacheKey = `cache_${url}`;
+                if (response) {
+                    localStorage.setItem(cacheKey, 'cached');
+                } else {
+                    localStorage.setItem(cacheKey, 'not_cached');
+                }
+            }
+        }
+
+        // This function should be called with all the URLs you plan to use
+        function initializeCacheForDynamicUrls(sceneIndices) {
+            const baseUrls = [
+                'https://raw.githubusercontent.com/Mischlichter/data/main/interface/background/b',
+                'https://raw.githubusercontent.com/Mischlichter/data/main/interface/side/s',
+                'https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/v',
+                'https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/vm'
+            ];
+            
+            const urls = [];
+            for (const baseUrl of baseUrls) {
+                for (const index of sceneIndices) {
+                    const formattedIndex = index.toString().padStart(2, '0');
+                    urls.push(`${baseUrl}${formattedIndex}.jpg`);
+                    if (baseUrl.includes('vm')) {
+                        urls.push(`${baseUrl}${formattedIndex}.png`);
+                    }
+                }
+            }
+
+            initializeCacheStatus(urls);
+        }
+
+        // Call this function at the beginning with all possible scene indices
+        initializeCacheForDynamicUrls([00, 01, 02, 03, 04]);
+
+        function getCachedOrFetchImageSync(url) {
+            const cacheKey = `cache_${url}`;
+            const cacheStatus = localStorage.getItem(cacheKey);
+
+            if (cacheStatus === 'cached') {
+                console.log(`Loaded from cache: ${url}`);
+                return url;
+            } else {
+                console.log(`Fetching from network: ${url}`);
+                let xhr = new XMLHttpRequest();
+                xhr.open('GET', url, false); // synchronous request
+                try {
+                    xhr.send();
+                    if (xhr.status === 200) {
+                        return url;
+                    } else {
+                        console.error(`Failed to fetch image at ${url}`);
+                        return url;
+                    }
+                } catch (error) {
+                    console.error(`Error fetching image for URL ${url}:`, error);
+                    return url;
+                }
+            }
+        }
+
         function loadInterface(currentSceneIndex) {
             function ensureWrapperExistence(wrapperClass, contentStructure) {
                 let wrapper = document.querySelector(`.${wrapperClass}`);
                 if (!wrapper) {
                     wrapper = document.createElement('div');
                     wrapper.className = wrapperClass;
-                    document.body.appendChild(wrapper); 
-                    wrapper.innerHTML = contentStructure; 
+                    document.body.appendChild(wrapper);
+                    wrapper.innerHTML = contentStructure;
                 }
             }
 
@@ -3078,7 +3146,7 @@
                 document.querySelectorAll('.scale-wrapper-background, .scale-wrapper-interface').forEach(wrapper => {
                     wrapper.parentNode.removeChild(wrapper);
                 });
-                return; 
+                return;
             }
 
             ensureWrapperExistence('scale-wrapper-background', `
@@ -3109,25 +3177,6 @@
             const viewerImageUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/v${sceneFormatted}.jpg`;
             const viewerMaskUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/vm${sceneFormatted}.png`;
 
-            function getCachedOrFetchImageSync(url) {
-                const cacheName = 'site-assets';
-                const cache = window.caches.open(cacheName);
-                let xhr = new XMLHttpRequest();
-                xhr.open('GET', url, false); // synchronous request
-                try {
-                    xhr.send();
-                    if (xhr.status === 200) {
-                        return url;
-                    } else {
-                        console.error(`Failed to fetch image at ${url}`);
-                        return url;
-                    }
-                } catch (error) {
-                    console.error(`Error fetching image for URL ${url}:`, error);
-                    return url;
-                }
-            }
-
             const backgroundPromise = createVerticalTiles_a('interfaceBackground', getCachedOrFetchImageSync(backgroundUrl), imageHeight);
             const sideLeftPromise = createVerticalTiles_b('interfaceSideLeft', getCachedOrFetchImageSync(sideImageUrl), imageHeight);
             const sideRightPromise = createVerticalTiles_b('interfaceSideRight', getCachedOrFetchImageSync(sideImageUrl), imageHeight);
@@ -3136,28 +3185,28 @@
                 const viewerImageElement = document.getElementById('interfaceViewerImage');
                 if (viewerImageElement && document.body.contains(viewerImageElement)) {
                     const tempImage = new Image();
-                    tempImage.onload = function() {
+                    tempImage.onload = function () {
                         viewerImageElement.src = tempImage.src;
                         viewerImageElement.style.maskImage = `url('${viewerMaskUrl}')`;
                         viewerImageElement.style.webkitMaskImage = `url('${viewerMaskUrl}')`;
                         viewerImageElement.style.maskSize = '100% 100%';
                         viewerImageElement.style.webkitMaskSize = '100% 100%';
-                        resolve(); 
+                        resolve();
                     };
-                    tempImage.onerror = function() {
+                    tempImage.onerror = function () {
                         console.error("Failed to load image at url:", viewerImageUrl);
-                        reject(); 
+                        reject();
                     };
-                    tempImage.src = getCachedOrFetchImageSync(viewerImageUrl); 
+                    tempImage.src = getCachedOrFetchImageSync(viewerImageUrl);
                 } else {
                     console.log("Viewer image element does not exist in the DOM.");
-                    reject(); 
+                    reject();
                 }
             });
 
             Promise.all([backgroundPromise, sideLeftPromise, sideRightPromise, viewerImagePromise]).then(() => {
                 setTimeout(() => {
-                    fadeInElements(); 
+                    fadeInElements();
                 }, 111);
             }).catch((error) => {
                 console.error("Error loading elements:", error);
