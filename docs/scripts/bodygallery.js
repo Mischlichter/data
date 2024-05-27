@@ -684,7 +684,7 @@ const galleryHTML = `
             // Update the pre-loading percentage based on the load call count
             loadCallCount++;
             loadingprePercentage = Math.min((loadCallCount / TOTAL_IMAGES_FOR_PRE_PERCENTAGE) * 100, 100);
-            console.log(`Pre-loading Percentage: ${loadingprePercentage}%`); // Print the pre-loading percentage
+            //console.log(`Pre-loading Percentage: ${loadingprePercentage}%`); // Print the pre-loading percentage
 
             // Select the SVG circle path element
             var loadingProgress = document.getElementById('loading-progress');

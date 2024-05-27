@@ -2508,7 +2508,7 @@
           dynamicStyles.length = 0; // Clear the array
         }
 
-        async function loadScene(index) {
+        function loadScene(index) {
             const scene = scenesData[index];
             const sceneImages = scenesiData[index]; // Assuming scenesiData is structured similarly
 
@@ -2527,8 +2527,8 @@
 
             // Update the iframe with the new scene
             updateIframe(formattedSceneKey);
-            console.log('Formatted Scene Key:', formattedSceneKey);
-
+            //console.log('Formatted Scene Key:', formattedSceneKey);
+            
             // Merge and sort text and image containers
             let combinedData = [];
             Object.keys(scene.containers).forEach(key => {
@@ -2547,15 +2547,24 @@
                 return numA - numB || (a.type === 'text' ? -1 : 1);
             });
 
-            // Open the database
-            const db = await openDB();
-            if (!db) {
-                console.error('Failed to open database');
-                return;
+            // Function to get the image from the cache
+            async function getCachedImage(url) {
+                try {
+                    const cache = await caches.open('site-assets');
+                    const response = await cache.match(url);
+                    if (response) {
+                        const blob = await response.blob();
+                        const objectURL = URL.createObjectURL(blob);
+                        return objectURL;
+                    }
+                } catch (error) {
+                    console.error(`Error fetching cached image for URL ${url}:`, error);
+                }
+                return url; // Fallback to the original URL if not found in cache
             }
 
             // Create containers in sorted order
-            for (const item of combinedData) {
+            combinedData.forEach(async (item) => {
                 const container = document.createElement('div');
                 container.id = item.key;
                 container.className = item.type === 'text' ? 'flex-container' : 'flex-icontainer';
@@ -2572,19 +2581,14 @@
 
                 if (item.type === 'image') {
                     const image = document.createElement('img');
-                    container.appendChild(image); // Append image to container first
+                    const cachedImage = await getCachedImage(item.content.src);
 
-                    const cachedImage = await getCachedImage(db, item.content.src);
+                    image.src = cachedImage;
+                    console.log(`Loaded image from cache or network: ${item.content.src}`);
 
-                    if (cachedImage) {
-                        image.src = cachedImage;
-                        console.log(`Loaded image from cache: ${item.content.src}`);
-                    } else {
-                        image.src = item.content.src;
-                        console.log(`Loaded image from network: ${item.content.src}`);
-                    }
+                    container.appendChild(image);
                 }
-            }
+            });
 
             // Create and style the footer
             createStyledFooter();
@@ -2599,23 +2603,6 @@
             createScrollToTopButton();
         }
 
-
-        async function getCachedImage(db, url) {
-            try {
-                const tx = db.transaction('assets', 'readonly');
-                const store = tx.objectStore('assets');
-                const cachedAsset = await store.get(url);
-
-                if (cachedAsset) {
-                    const blob = cachedAsset.blob;
-                    const objectURL = URL.createObjectURL(blob);
-                    return objectURL;
-                }
-            } catch (error) {
-                console.error(`Error fetching cached image for URL ${url}:`, error);
-            }
-            return null;
-        }
 
 
 
@@ -3046,12 +3033,26 @@
             setTimeout(updateVirtualCanvasSize, 100); // Delay of 100 milliseconds
         }
 
-        async function loadInterface(currentSceneIndex) {
+        async function getCachedImage(url) {
+            try {
+                const cache = await caches.open('site-assets');
+                const response = await cache.match(url);
+                if (response) {
+                    const blob = await response.blob();
+                    const objectURL = URL.createObjectURL(blob);
+                    return objectURL;
+                }
+            } catch (error) {
+                console.error(`Error fetching cached image for URL ${url}:`, error);
+            }
+            return url; // Fallback to the original URL if not found in cache
+        }
+
+        function loadInterface(currentSceneIndex) {
             // Extend: Function to ensure wrapper existence
             function ensureWrapperExistence(wrapperClass, contentStructure) {
                 let wrapper = document.querySelector(`.${wrapperClass}`);
                 if (!wrapper) {
-                    console.log(`Creating wrapper for ${wrapperClass}`);
                     wrapper = document.createElement('div');
                     wrapper.className = wrapperClass;
                     document.body.appendChild(wrapper); // Append wrapper to the body
@@ -3061,7 +3062,6 @@
 
             // For scene index 4 or 5, remove the wrappers completely
             if (currentSceneIndex === 4 || currentSceneIndex === 5) {
-                console.log(`Removing wrappers for scene index ${currentSceneIndex}`);
                 document.querySelectorAll('.scale-wrapper-background, .scale-wrapper-interface').forEach(wrapper => {
                     wrapper.parentNode.removeChild(wrapper);
                 });
@@ -3098,46 +3098,30 @@
             const viewerImageUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/v${sceneFormatted}.jpg`;
             const viewerMaskUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/vm${sceneFormatted}.png`;
 
-            // Open the database
-            const db = await openDB();
-            if (!db) {
-                console.error('Failed to open database');
-                return;
-            }
-
             // Create promises for vertical tiles
-            const backgroundPromise = getCachedImage(db, backgroundUrl).then(cachedImage => {
-                //console.log(cachedImage ? `Loaded background image from cache: ${backgroundUrl}` : `Loaded background image from network: ${backgroundUrl}`);
-                return createVerticalTiles_a('interfaceBackground', cachedImage || backgroundUrl, imageHeight);
-            });
-
-            const sideLeftPromise = getCachedImage(db, sideImageUrl).then(cachedImage => {
-                //console.log(cachedImage ? `Loaded side left image from cache: ${sideImageUrl}` : `Loaded side left image from network: ${sideImageUrl}`);
-                return createVerticalTiles_b('interfaceSideLeft', cachedImage || sideImageUrl, imageHeight);
-            });
-
-            const sideRightPromise = getCachedImage(db, sideImageUrl).then(cachedImage => {
-                //console.log(cachedImage ? `Loaded side right image from cache: ${sideImageUrl}` : `Loaded side right image from network: ${sideImageUrl}`);
-                return createVerticalTiles_b('interfaceSideRight', cachedImage || sideImageUrl, imageHeight);
-            });
+            const backgroundPromise = getCachedImage(backgroundUrl).then(url => createVerticalTiles_a('interfaceBackground', url, imageHeight));
+            const sideLeftPromise = getCachedImage(sideImageUrl).then(url => createVerticalTiles_b('interfaceSideLeft', url, imageHeight));
+            const sideRightPromise = getCachedImage(sideImageUrl).then(url => createVerticalTiles_b('interfaceSideRight', url, imageHeight));
 
             // Create a promise for the viewer image
             const viewerImagePromise = new Promise(async (resolve, reject) => {
                 const viewerImageElement = document.getElementById('interfaceViewerImage');
                 if (viewerImageElement && document.body.contains(viewerImageElement)) {
-                    const cachedImageUrl = await getCachedImage(db, viewerImageUrl);
-                    if (cachedImageUrl) {
-                        viewerImageElement.src = cachedImageUrl;
+                    const cachedViewerImageUrl = await getCachedImage(viewerImageUrl);
+                    const tempImage = new Image();
+                    tempImage.onload = function() {
+                        viewerImageElement.src = tempImage.src;
                         viewerImageElement.style.maskImage = `url('${viewerMaskUrl}')`;
                         viewerImageElement.style.webkitMaskImage = `url('${viewerMaskUrl}')`;
                         viewerImageElement.style.maskSize = '100% 100%';
                         viewerImageElement.style.webkitMaskSize = '100% 100%';
-                        //console.log(`Loaded viewer image from cache: ${viewerImageUrl}`);
                         resolve(); // Resolve the promise when the image is loaded
-                    } else {
-                        console.error("Failed to load cached image at url:", viewerImageUrl);
+                    };
+                    tempImage.onerror = function() {
+                        console.error("Failed to load image at url:", viewerImageUrl);
                         reject(); // Reject the promise on error
-                    }
+                    };
+                    tempImage.src = cachedViewerImageUrl; // Set the image source which starts loading the image
                 } else {
                     console.log("Viewer image element does not exist in the DOM.");
                     reject(); // Reject the promise if the element does not exist
@@ -3148,27 +3132,11 @@
             Promise.all([backgroundPromise, sideLeftPromise, sideRightPromise, viewerImagePromise]).then(() => {
                 setTimeout(() => {
                     fadeInElements(); // This function should handle fading in the viewer and associated elements
+                    updateAllContainersinit();
                 }, 111); // Delay to allow the browser to render the updated image before fading in
             }).catch((error) => {
                 console.error("Error loading elements:", error);
             });
-        }
-
-        async function getCachedImage(db, url) {
-            try {
-                const tx = db.transaction('assets', 'readonly');
-                const store = tx.objectStore('assets');
-                const cachedAsset = await store.get(url);
-
-                if (cachedAsset) {
-                    const blob = cachedAsset.blob;
-                    const objectURL = URL.createObjectURL(blob);
-                    return objectURL;
-                }
-            } catch (error) {
-                console.error(`Error fetching cached image for URL ${url}:`, error);
-            }
-            return null;
         }
 
 
@@ -3484,6 +3452,25 @@
             });
             window.scrollTo(0, savedScrollPosition);
         }
+
+        function updateAllContainersinit() {
+            if (!currentSceneData) {
+                return; // Exit if not set
+            }
+
+            // Use currentSceneData to reset the layout of containers
+            Object.keys(currentSceneData.containers).forEach(containerId => {
+                const container = document.getElementById(containerId);
+                if (container) {
+                    // Trigger reflow by forcing a refresh of computed styles
+                    const computedStyle = window.getComputedStyle(container);
+                    // Force reflow by reading and writing properties
+                    container.style.width = computedStyle.width;
+                    container.style.height = computedStyle.height;
+                }
+            });
+        }
+
         
         
 
