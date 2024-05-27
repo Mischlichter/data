@@ -2550,18 +2550,37 @@
             // Function to get the image from the cache
             async function getCachedImage(url) {
                 try {
+                    // Open the specified cache
                     const cache = await caches.open('site-assets');
+                    
+                    // Try to find a match for the URL in the cache
                     const response = await cache.match(url);
+                    
                     if (response) {
+                        // If a match is found, convert the response to a Blob
                         const blob = await response.blob();
+                        
+                        // Create a local URL for the Blob object
                         const objectURL = URL.createObjectURL(blob);
+                        
+                        // Log that the cached file is being used
+                        //console.log(`Using cached file for URL: ${url}`);
+                        
+                        // Return the local URL for use in your application
                         return objectURL;
+                    } else {
+                        // Log that the cached file was not found
+                        console.log(`Cached file not found for URL: ${url}, downloading...`);
                     }
                 } catch (error) {
                     console.error(`Error fetching cached image for URL ${url}:`, error);
                 }
-                return url; // Fallback to the original URL if not found in cache
+                
+                // Log that the original URL is being used as fallback
+                console.log(`Falling back to original URL: ${url}`);
+                return url;
             }
+
 
             // Create containers in sorted order
             combinedData.forEach(async (item) => {
@@ -2584,7 +2603,7 @@
                     const cachedImage = await getCachedImage(item.content.src);
 
                     image.src = cachedImage;
-                    console.log(`Loaded image from cache or network: ${item.content.src}`);
+                    //console.log(`Loaded image from cache or network: ${item.content.src}`);
 
                     container.appendChild(image);
                 }
@@ -3099,32 +3118,51 @@
             const viewerMaskUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/vm${sceneFormatted}.png`;
 
             // Function to get cached image or fetch it if not in cache
-            async function getCachedOrFetchImage(url) {
-                const cacheName = 'asset-cache';
-                const cache = await caches.open(cacheName);
-                let response = await cache.match(url);
-                if (!response) {
-                    response = await fetch(url);
-                    if (response.ok) {
-                        await cache.put(url, response.clone());
+            async function getCachedImage(url) {
+                try {
+                    // Open the specified cache
+                    const cache = await caches.open('site-assets');
+                    
+                    // Try to find a match for the URL in the cache
+                    const response = await cache.match(url);
+                    
+                    if (response) {
+                        // If a match is found, convert the response to a Blob
+                        const blob = await response.blob();
+                        
+                        // Create a local URL for the Blob object
+                        const objectURL = URL.createObjectURL(blob);
+                        
+                        // Log that the cached file is being used
+                        console.log(`Using cached file for URL: ${url}`);
+                        
+                        // Return the local URL for use in your application
+                        return objectURL;
                     } else {
-                        throw new Error(`Failed to fetch image at ${url}`);
+                        // Log that the cached file was not found
+                        console.log(`Cached file not found for URL: ${url}, downloading...`);
                     }
+                } catch (error) {
+                    console.error(`Error fetching cached image for URL ${url}:`, error);
                 }
-                return response.url;
+                
+                // Log that the original URL is being used as fallback
+                console.log(`Falling back to original URL: ${url}`);
+                return url;
             }
 
+
             // Create promises for vertical tiles
-            const backgroundPromise = getCachedOrFetchImage(backgroundUrl).then(url => createVerticalTiles_a('interfaceBackground', url, imageHeight));
-            const sideLeftPromise = getCachedOrFetchImage(sideImageUrl).then(url => createVerticalTiles_b('interfaceSideLeft', url, imageHeight));
-            const sideRightPromise = getCachedOrFetchImage(sideImageUrl).then(url => createVerticalTiles_b('interfaceSideRight', url, imageHeight));
+            const backgroundPromise = getCachedImage(backgroundUrl).then(url => createVerticalTiles_a('interfaceBackground', url, imageHeight));
+            const sideLeftPromise = getCachedImage(sideImageUrl).then(url => createVerticalTiles_b('interfaceSideLeft', url, imageHeight));
+            const sideRightPromise = getCachedImage(sideImageUrl).then(url => createVerticalTiles_b('interfaceSideRight', url, imageHeight));
 
             // Create a promise for the viewer image
             const viewerImagePromise = new Promise(async (resolve, reject) => {
                 const viewerImageElement = document.getElementById('interfaceViewerImage');
                 if (viewerImageElement && document.body.contains(viewerImageElement)) {
                     try {
-                        const cachedViewerImageUrl = await getCachedOrFetchImage(viewerImageUrl);
+                        const cachedViewerImageUrl = await getCachedImage(viewerImageUrl);
                         const tempImage = new Image();
                         tempImage.onload = function() {
                             viewerImageElement.src = tempImage.src;

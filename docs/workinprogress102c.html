@@ -2550,37 +2550,18 @@
             // Function to get the image from the cache
             async function getCachedImage(url) {
                 try {
-                    // Open the specified cache
                     const cache = await caches.open('site-assets');
-                    
-                    // Try to find a match for the URL in the cache
                     const response = await cache.match(url);
-                    
                     if (response) {
-                        // If a match is found, convert the response to a Blob
                         const blob = await response.blob();
-                        
-                        // Create a local URL for the Blob object
                         const objectURL = URL.createObjectURL(blob);
-                        
-                        // Log that the cached file is being used
-                        //console.log(`Using cached file for URL: ${url}`);
-                        
-                        // Return the local URL for use in your application
                         return objectURL;
-                    } else {
-                        // Log that the cached file was not found
-                        console.log(`Cached file not found for URL: ${url}, downloading...`);
                     }
                 } catch (error) {
                     console.error(`Error fetching cached image for URL ${url}:`, error);
                 }
-                
-                // Log that the original URL is being used as fallback
-                console.log(`Falling back to original URL: ${url}`);
-                return url;
+                return url; // Fallback to the original URL if not found in cache
             }
-
 
             // Create containers in sorted order
             combinedData.forEach(async (item) => {
@@ -2603,7 +2584,7 @@
                     const cachedImage = await getCachedImage(item.content.src);
 
                     image.src = cachedImage;
-                    //console.log(`Loaded image from cache or network: ${item.content.src}`);
+                    console.log(`Loaded image from cache or network: ${item.content.src}`);
 
                     container.appendChild(image);
                 }
@@ -3053,8 +3034,39 @@
         }
 
 
+        async function getCachedOrFetchImage(url) {
+            try {
+                const cacheName = 'asset-cache';
+                const cache = await caches.open(cacheName);
+                let response = await cache.match(url);
+                if (response) {
+                    console.log(`Loaded from cache: ${url}`);
+                    const blob = await response.blob();
+                    const objectURL = URL.createObjectURL(blob);
+                    return objectURL;
+                } else {
+                    console.log(`Fetching from network: ${url}`);
+                    response = await fetch(url);
+                    if (response.ok) {
+                        await cache.put(url, response.clone());
+                        const blob = await response.blob();
+                        const objectURL = URL.createObjectURL(blob);
+                        console.log(`Fetched and cached: ${url}`);
+                        return objectURL;
+                    } else {
+                        throw new Error(`Failed to fetch image at ${url}`);
+                    }
+                }
+            } catch (error) {
+                console.error(`Error fetching cached image for URL ${url}:`, error);
+                return url; // Fallback to the original URL if not found in cache
+            }
+        }
+
         async function loadInterface(currentSceneIndex) {
-            // Extend: Function to ensure wrapper existence
+            console.log(`loadInterface called with currentSceneIndex: ${currentSceneIndex}`);
+
+            // Function to ensure wrapper existence
             function ensureWrapperExistence(wrapperClass, contentStructure) {
                 let wrapper = document.querySelector(`.${wrapperClass}`);
                 if (!wrapper) {
@@ -3067,6 +3079,7 @@
 
             // For scene index 4 or 5, remove the wrappers completely
             if (currentSceneIndex === 4 || currentSceneIndex === 5) {
+                console.log(`Removing wrappers for scene index: ${currentSceneIndex}`);
                 document.querySelectorAll('.scale-wrapper-background, .scale-wrapper-interface').forEach(wrapper => {
                     wrapper.parentNode.removeChild(wrapper);
                 });
@@ -3094,7 +3107,7 @@
                 </div>
             `);
 
-            // Your existing code to tile images and update the viewer image
+            // URLs and fixed height for images
             const sceneFormatted = currentSceneIndex.toString().padStart(2, '0');
             const imageHeight = 2048; // Fixed height for all images
 
@@ -3103,38 +3116,21 @@
             const viewerImageUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/v${sceneFormatted}.jpg`;
             const viewerMaskUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/vm${sceneFormatted}.png`;
 
-            // Function to get cached image or fetch it if not in cache
-            async function getCachedOrFetchImage(url) {
-                try {
-                    const cacheName = 'site-assets';
-                    const cache = await caches.open(cacheName);
-                    let response = await cache.match(url);
-                    
-                    if (response) {
-                        console.log(`Loaded from cache: ${url}`);
-                        return response.url; // Return cached URL
-                    } else {
-                        console.log(`Fetching from network: ${url}`);
-                        response = await fetch(url);
-                        if (response.ok) {
-                            await cache.put(url, response.clone());
-                            console.log(`Fetched and cached: ${url}`);
-                            return response.url; // Return network URL
-                        } else {
-                            throw new Error(`Failed to fetch image at ${url}`);
-                        }
-                    }
-                } catch (error) {
-                    console.error(`Error fetching cached image for URL ${url}:`, error);
-                    return url; // Fallback to the original URL if not found in cache
-                }
-            }
-
+            console.log(`Fetching images for sceneFormatted: ${sceneFormatted}`);
 
             // Create promises for vertical tiles
-            const backgroundPromise = getCachedOrFetchImage(backgroundUrl).then(url => createVerticalTiles_a('interfaceBackground', url, imageHeight));
-            const sideLeftPromise = getCachedOrFetchImage(sideImageUrl).then(url => createVerticalTiles_b('interfaceSideLeft', url, imageHeight));
-            const sideRightPromise = getCachedOrFetchImage(sideImageUrl).then(url => createVerticalTiles_b('interfaceSideRight', url, imageHeight));
+            const backgroundPromise = getCachedOrFetchImage(backgroundUrl).then(url => {
+                console.log(`Background image processed: ${url}`);
+                return createVerticalTiles_a('interfaceBackground', url, imageHeight);
+            });
+            const sideLeftPromise = getCachedOrFetchImage(sideImageUrl).then(url => {
+                console.log(`Side left image processed: ${url}`);
+                return createVerticalTiles_b('interfaceSideLeft', url, imageHeight);
+            });
+            const sideRightPromise = getCachedOrFetchImage(sideImageUrl).then(url => {
+                console.log(`Side right image processed: ${url}`);
+                return createVerticalTiles_b('interfaceSideRight', url, imageHeight);
+            });
 
             // Create a promise for the viewer image
             const viewerImagePromise = new Promise(async (resolve, reject) => {
@@ -3149,6 +3145,7 @@
                             viewerImageElement.style.webkitMaskImage = `url('${viewerMaskUrl}')`;
                             viewerImageElement.style.maskSize = '100% 100%';
                             viewerImageElement.style.webkitMaskSize = '100% 100%';
+                            console.log(`Viewer image processed: ${cachedViewerImageUrl}`);
                             resolve(); // Resolve the promise when the image is loaded
                         };
                         tempImage.onerror = function() {
@@ -3167,10 +3164,7 @@
 
             // Wait for all promises to resolve before triggering fadeInElements
             Promise.all([backgroundPromise, sideLeftPromise, sideRightPromise, viewerImagePromise]).then(() => {
-                // Force layout update to prevent initial load issues
-                document.body.style.width = 'auto';
-                document.body.style.overflow = 'hidden'; // Prevent scroll bars during layout calculation
-
+                console.log("All images loaded and cached");
                 setTimeout(() => {
                     fadeInElements(); // This function should handle fading in the viewer and associated elements
                     document.body.style.overflow = ''; // Restore scroll behavior

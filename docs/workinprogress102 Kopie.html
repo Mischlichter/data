@@ -2564,7 +2564,7 @@
                         const objectURL = URL.createObjectURL(blob);
                         
                         // Log that the cached file is being used
-                        //console.log(`Using cached file for URL: ${url}`);
+                        console.log(`Using cached file for URL: ${url}`);
                         
                         // Return the local URL for use in your application
                         return objectURL;
@@ -2603,7 +2603,7 @@
                     const cachedImage = await getCachedImage(item.content.src);
 
                     image.src = cachedImage;
-                    //console.log(`Loaded image from cache or network: ${item.content.src}`);
+                    console.log(`Loaded image from cache or network: ${item.content.src}`);
 
                     container.appendChild(image);
                 }
@@ -3052,6 +3052,20 @@
             setTimeout(updateVirtualCanvasSize, 100); // Delay of 100 milliseconds
         }
 
+        async function getCachedImage(url) {
+            try {
+                const cache = await caches.open('asset-cache');
+                const response = await cache.match(url);
+                if (response) {
+                    const blob = await response.blob();
+                    const objectURL = URL.createObjectURL(blob);
+                    return objectURL;
+                }
+            } catch (error) {
+                console.error(`Error fetching cached image for URL ${url}:`, error);
+            }
+            return url; // Fallback to the original URL if not found in cache
+        }
 
         async function loadInterface(currentSceneIndex) {
             // Extend: Function to ensure wrapper existence
@@ -3105,31 +3119,19 @@
 
             // Function to get cached image or fetch it if not in cache
             async function getCachedOrFetchImage(url) {
-                try {
-                    const cacheName = 'site-assets';
-                    const cache = await caches.open(cacheName);
-                    let response = await cache.match(url);
-                    
-                    if (response) {
-                        console.log(`Loaded from cache: ${url}`);
-                        return response.url; // Return cached URL
+                const cacheName = 'asset-cache';
+                const cache = await caches.open(cacheName);
+                let response = await cache.match(url);
+                if (!response) {
+                    response = await fetch(url);
+                    if (response.ok) {
+                        await cache.put(url, response.clone());
                     } else {
-                        console.log(`Fetching from network: ${url}`);
-                        response = await fetch(url);
-                        if (response.ok) {
-                            await cache.put(url, response.clone());
-                            console.log(`Fetched and cached: ${url}`);
-                            return response.url; // Return network URL
-                        } else {
-                            throw new Error(`Failed to fetch image at ${url}`);
-                        }
+                        throw new Error(`Failed to fetch image at ${url}`);
                     }
-                } catch (error) {
-                    console.error(`Error fetching cached image for URL ${url}:`, error);
-                    return url; // Fallback to the original URL if not found in cache
                 }
+                return response.url;
             }
-
 
             // Create promises for vertical tiles
             const backgroundPromise = getCachedOrFetchImage(backgroundUrl).then(url => createVerticalTiles_a('interfaceBackground', url, imageHeight));
@@ -3179,8 +3181,6 @@
                 console.error("Error loading elements:", error);
             });
         }
-
-
 
 
 
