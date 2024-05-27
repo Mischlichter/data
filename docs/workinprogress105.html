@@ -2509,6 +2509,7 @@
             const sceneImages = scenesiData[index]; // Assuming scenesiData is structured similarly
 
             if (!scene) return;
+            highlightActiveMenuItem(`menuContainer${index}`);
 
             // Remove all existing containers and dynamic styles
             const existingContainers = document.querySelectorAll('.flex-container, .flex-icontainer');
@@ -2618,7 +2619,7 @@
             
             observeImagesForAnimation();
             createScrollToTopButton();
-            highlightActiveMenuItem(`menuContainer${index}`);
+            
         }
 
 
