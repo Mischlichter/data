@@ -76,12 +76,9 @@ const galleryHTML = `
 
         let globalLinkUrl = "";
         let loadingPercentage = 0;
-        let loadingprePercentage = 0;
         var dynamicImages = [];
         var currentImageIndex = 0;
         var hoverEffectInstance;
-        const TOTAL_IMAGES_FOR_PRE_PERCENTAGE = 72;
-        let loadCallCount = 0;
 
 
 
@@ -355,10 +352,10 @@ const galleryHTML = `
                     for (let charIndex = 0; charIndex < numberOfCharacters; charIndex++) {
                         const span = line.childNodes[charIndex];
                         if (span) {
-                            if (charIndex >= loadingprePercentage && charIndex < loadingprePercentage + shuffleWidth) {
+                            if (charIndex >= loadingPercentage && charIndex < loadingPercentage + shuffleWidth) {
                                 span.textContent = generateRandomCharacter();
                                 span.style.color = generateRandomColor(); // Apply random color
-                            } else if (charIndex >= loadingprePercentage - shuffleWidth && charIndex < loadingprePercentage) {
+                            } else if (charIndex >= loadingPercentage - shuffleWidth && charIndex < loadingPercentage) {
                                 span.textContent = span.getAttribute('data-original-char');
                                 span.style.color = ""; // Reset to original color
                             }
@@ -368,15 +365,15 @@ const galleryHTML = `
             }, 30);
 
             const shortInterval = setInterval(function() {
-                if (lastIntervalValue < loadingprePercentage) {
-                    lastIntervalValue = loadingprePercentage;
+                if (lastIntervalValue < loadingPercentage) {
+                    lastIntervalValue = loadingPercentage;
                 }
                 loadingPercentage++; // Increment loadingPercentage
             }, 100000);
 
 
             const loadingInterval = setInterval(function() {
-                if (loadingprePercentage >= 40) {
+                if (loadingPercentage >= 40) {
                     // Loading is complete
                     shuffleOnes(); // Start shuffling spans with '1'
                     clearInterval(loadingInterval);
@@ -681,11 +678,6 @@ const galleryHTML = `
             loadingPercentage = Math.min(Math.max(percentage, 0), 100);
             sendHeightToParent();
 
-            // Update the pre-loading percentage based on the load call count
-            loadCallCount++;
-            loadingprePercentage = Math.min((loadCallCount / TOTAL_IMAGES_FOR_PRE_PERCENTAGE) * 100, 100);
-            console.log(`Pre-loading Percentage: ${loadingprePercentage}%`); // Print the pre-loading percentage
-
             // Select the SVG circle path element
             var loadingProgress = document.getElementById('loading-progress');
 
@@ -693,31 +685,30 @@ const galleryHTML = `
                 // Calculate the length of the path
                 const pathLength = loadingProgress.getTotalLength();
 
-                // Calculate the stroke dash offset for loading percentage
+                // Calculate the stroke dash offset
                 const offset = pathLength - (pathLength * loadingPercentage / 100);
 
                 // Update the stroke-dasharray and stroke-dashoffset
                 loadingProgress.style.strokeDasharray = pathLength;
                 loadingProgress.style.strokeDashoffset = offset;
-
                 if (loadingPercentage >= 100) {
-                    const searchBar = document.getElementById('search-bar');
+                        const searchBar = document.getElementById('search-bar');
 
-                    // Step 1: Fade out
-                    searchBar.style.opacity = 0;
+                                // Step 1: Fade out
+                        searchBar.style.opacity = 0;
 
-                    // Step 2: Wait for fade out to complete, change placeholder, and fade in
-                    setTimeout(() => {
-                        searchBar.placeholder = "Search...";
-                        searchBar.disabled = false; // Enable the search bar
-                        searchBar.style.opacity = 1; // Fade in
+                                // Step 2: Wait for fade out to complete, change placeholder, and fade in
+                        setTimeout(() => {
+                            searchBar.placeholder = "Search...";
+                            searchBar.disabled = false; // Enable the search bar
+                            searchBar.style.opacity = 1; // Fade in
 
-                        // Optional: Focus on the search bar after loading is complete and it's visible
-                        //searchBar.focus();
+                                    // Optional: Focus on the search bar after loading is complete and it's visible
+                            //searchBar.focus();
 
-                    }, 150); // Match the timeout with your CSS transition time
+                        }, 150); // Match the timeout with your CSS transition time
 
-                    hideLoadingProgress(); // Hide the loading indicator, if applicable
+                        hideLoadingProgress(); // Hide the loading indicator, if applicable
                 }
             }
         }
