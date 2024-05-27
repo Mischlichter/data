@@ -2508,18 +2508,31 @@
           dynamicStyles.length = 0; // Clear the array
         }
 
-        function loadScene(index) {
+        function clearDynamicStyles() {
+            return new Promise((resolve) => {
+                dynamicStyles.forEach(style => style.remove());
+                dynamicStyles.length = 0; // Clear the array
+                resolve();
+            });
+        }
+
+        function removeContainers() {
+            return new Promise((resolve) => {
+                const existingContainers = document.querySelectorAll('.flex-container, .flex-icontainer');
+                existingContainers.forEach(container => container.remove());
+                resolve();
+            });
+        }
+
+        async function loadScene(index) {
             const scene = scenesData[index];
             const sceneImages = scenesiData[index]; // Assuming scenesiData is structured similarly
 
             if (!scene) return;
 
             // Remove all existing containers and dynamic styles
-            const existingContainers = document.querySelectorAll('.flex-container, .flex-icontainer');
-            existingContainers.forEach(container => container.remove());
-
-            // Clear dynamic styles
-            clearDynamicStyles();
+            await removeContainers();
+            await clearDynamicStyles();
 
             loadInterface(index);
 
@@ -2528,7 +2541,7 @@
             // Update the iframe with the new scene
             updateIframe(formattedSceneKey);
             //console.log('Formatted Scene Key:', formattedSceneKey);
-            
+
             // Merge and sort text and image containers
             let combinedData = [];
             Object.keys(scene.containers).forEach(key => {
@@ -2581,9 +2594,8 @@
                 return url;
             }
 
-
             // Create containers in sorted order
-            combinedData.forEach(async (item) => {
+            for (const item of combinedData) {
                 const container = document.createElement('div');
                 container.id = item.key;
                 container.className = item.type === 'text' ? 'flex-container' : 'flex-icontainer';
@@ -2607,7 +2619,7 @@
 
                     container.appendChild(image);
                 }
-            });
+            }
 
             // Create and style the footer
             createStyledFooter();
@@ -2621,6 +2633,7 @@
             observeImagesForAnimation();
             createScrollToTopButton();
         }
+
 
 
 
@@ -3174,7 +3187,7 @@
                 setTimeout(() => {
                     fadeInElements(); // This function should handle fading in the viewer and associated elements
                     document.body.style.overflow = ''; // Restore scroll behavior
-                }, 1111); // Delay to allow the browser to render the updated image before fading in
+                }, 111); // Delay to allow the browser to render the updated image before fading in
             }).catch((error) => {
                 console.error("Error loading elements:", error);
             });
