@@ -89,6 +89,8 @@ const galleryHTML = `
         
         function loadGallery() {
             loadingPercentage = 0;
+            loadingprePercentage = 0;
+
             const bodyGalleryContainer = document.getElementById('bodyGalleryContainer');
 
             if (bodyGalleryContainer) {
