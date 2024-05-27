@@ -2162,18 +2162,13 @@
                     }
 
                     //triggerOrientationWithoutCalibration();
+
+                    
                 };
 
-                // New function to handle touch interactions
-                const handleTouchInteraction = (event, itemId, index) => {
-                    event.preventDefault();
-                    handleInteraction(itemId, index);
-                };
 
                 logoImg.addEventListener('click', () => handleInteraction('menuLogo', 0));
-                
-                // Updated event listener for touch interactions
-                logoImg.addEventListener('touchend', (event) => handleTouchInteraction(event, 'menuLogo', 0));
+                logoImg.addEventListener('touchend', () => handleInteraction('menuLogo', 0));
 
                 menuData.forEach((menuItem, index) => {
                     const menuContainer = document.createElement('div');
@@ -2191,10 +2186,8 @@
                     };
 
                     menuContainer.addEventListener('click', handleMenuInteraction);
-                    
-                    // Updated event listener for touch interactions
                     menuContainer.addEventListener('touchend', handleMenuInteraction);
-                    menuContainer.addEventListener('mouseover', () => animateTextDuringHover(menuContainer));
+                    //menuContainer.addEventListener('mouseover', () => animateTextDuringHover(menuContainer));
 
                     if (index === 0) {
                         setTimeout(() => animateTextDuringHover(menuContainer), 5000);
@@ -2213,6 +2206,7 @@
                 fakeMenuItem2.setAttribute('data-fake', 'true');
                 menuBar.insertBefore(fakeMenuItem2, menuBar.children[5]);
 
+               
                 resolve();
 
             }).then(() => {
@@ -2220,9 +2214,8 @@
                 updateMenu(menuData);
                 triggerOrientationWithoutCalibration();
                 isMenuLoaded = true;
-            });
+            });    
         }
-
 
 
 
