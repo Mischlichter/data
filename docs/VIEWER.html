@@ -26,7 +26,6 @@
     <!-- Dependencies -->
     <script src="scripts/pixi.4.8.9.js"></script>
     <script src="scripts/DepthyViewerlarge.js"></script>
-    <script src="./scripts/index-min.js"></script>
 
     <script>
         var isVisible = false;
@@ -127,35 +126,26 @@
 
         smoothMouseMovement();
 
-
-        const dbPromise = idb.openDB('assets-db', 1, {
-            upgrade(db) {
-                db.createObjectStore('assets');
-            }
-        });
-
         const imageCache = {};
 
-        async function preloadAndCacheImage(url) {
-            const db = await dbPromise;
-            if (imageCache[url]) {
-                return imageCache[url];
-            }
-
-            const cachedBlobURL = await db.get('assets', url);
-            if (cachedBlobURL) {
-                imageCache[url] = cachedBlobURL;
-                return cachedBlobURL;
-            }
-
-            const response = await fetch(url);
-            const blob = await response.blob();
-            const blobURL = URL.createObjectURL(blob);
-            imageCache[url] = blobURL;
-            await db.put('assets', blobURL, url);
-            return blobURL;
+        function preloadAndCacheImage(url) {
+            return new Promise(async (resolve, reject) => {
+                if (imageCache[url]) {
+                    resolve(imageCache[url]);
+                    return;
+                }
+                
+                try {
+                    const response = await fetch(url);
+                    const blob = await response.blob();
+                    const blobURL = URL.createObjectURL(blob);
+                    imageCache[url] = blobURL;
+                    resolve(blobURL);
+                } catch (error) {
+                    reject(error);
+                }
+            });
         }
-
 
         async function preloadAllAssets() {
             const preloadPromises = [];
@@ -172,7 +162,6 @@
             await Promise.all(preloadPromises);
         }
 
-
         let assets;
         let currentSceneKey = 'scene01';
         let viewerContainers = [];
@@ -182,14 +171,14 @@
             const response = await fetch('https://raw.githubusercontent.com/Mischlichter/data/main/assets/assets.txt');
             const text = await response.text();
             const scenes = text.trim().split('\n\n');
-
+            
             const preloadPromises = [];
 
             scenes.forEach(sceneText => {
                 const lines = sceneText.trim().split('\n');
                 const sceneKey = lines[0].slice(0, -1);
                 assets[sceneKey] = {};
-
+                
                 for (let i = 1; i < lines.length; i++) {
                     const [key, urlPart] = lines[i].split('=');
                     if (key && urlPart) {
@@ -209,7 +198,7 @@
                         }
 
                         preloadPromises.push(preloadAndCacheImage(url));
-
+                        
                         const type = key.slice(0, 3);
                         const number = key.slice(3);
                         if (!assets[sceneKey][number]) {
@@ -229,9 +218,9 @@
                     }
                 }
             });
+            //console.log("Loaded assets:", assets);
             await Promise.all(preloadPromises);
         }
-
 
         function changeScene(sceneKey) {
             //console.log(sceneKey);
