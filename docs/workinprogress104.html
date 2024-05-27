@@ -2508,31 +2508,18 @@
           dynamicStyles.length = 0; // Clear the array
         }
 
-        function clearDynamicStyles() {
-            return new Promise((resolve) => {
-                dynamicStyles.forEach(style => style.remove());
-                dynamicStyles.length = 0; // Clear the array
-                resolve();
-            });
-        }
-
-        function removeContainers() {
-            return new Promise((resolve) => {
-                const existingContainers = document.querySelectorAll('.flex-container, .flex-icontainer');
-                existingContainers.forEach(container => container.remove());
-                resolve();
-            });
-        }
-
-        async function loadScene(index) {
+        function loadScene(index) {
             const scene = scenesData[index];
             const sceneImages = scenesiData[index]; // Assuming scenesiData is structured similarly
 
             if (!scene) return;
 
             // Remove all existing containers and dynamic styles
-            await removeContainers();
-            await clearDynamicStyles();
+            const existingContainers = document.querySelectorAll('.flex-container, .flex-icontainer');
+            existingContainers.forEach(container => container.remove());
+
+            // Clear dynamic styles
+            clearDynamicStyles();
 
             loadInterface(index);
 
@@ -2541,7 +2528,7 @@
             // Update the iframe with the new scene
             updateIframe(formattedSceneKey);
             //console.log('Formatted Scene Key:', formattedSceneKey);
-
+            
             // Merge and sort text and image containers
             let combinedData = [];
             Object.keys(scene.containers).forEach(key => {
@@ -2594,8 +2581,9 @@
                 return url;
             }
 
+
             // Create containers in sorted order
-            for (const item of combinedData) {
+            combinedData.forEach(async (item) => {
                 const container = document.createElement('div');
                 container.id = item.key;
                 container.className = item.type === 'text' ? 'flex-container' : 'flex-icontainer';
@@ -2619,7 +2607,7 @@
 
                     container.appendChild(image);
                 }
-            }
+            });
 
             // Create and style the footer
             createStyledFooter();
@@ -2633,7 +2621,6 @@
             observeImagesForAnimation();
             createScrollToTopButton();
         }
-
 
 
 
@@ -3118,31 +3105,19 @@
 
             // Function to get cached image or fetch it if not in cache
             async function getCachedOrFetchImage(url) {
-                try {
-                    const cacheName = 'site-assets';
-                    const cache = await caches.open(cacheName);
-                    let response = await cache.match(url);
-                    
-                    if (response) {
-                        console.log(`Loaded from cache: ${url}`);
-                        return response.url; // Return cached URL
+                const cache = await caches.open('site-assets');
+            
+                let response = await cache.match(url);
+                if (!response) {
+                    response = await fetch(url);
+                    if (response.ok) {
+                        await cache.put(url, response.clone());
                     } else {
-                        console.log(`Fetching from network: ${url}`);
-                        response = await fetch(url);
-                        if (response.ok) {
-                            await cache.put(url, response.clone());
-                            console.log(`Fetched and cached: ${url}`);
-                            return response.url; // Return network URL
-                        } else {
-                            throw new Error(`Failed to fetch image at ${url}`);
-                        }
+                        throw new Error(`Failed to fetch image at ${url}`);
                     }
-                } catch (error) {
-                    console.error(`Error fetching cached image for URL ${url}:`, error);
-                    return url; // Fallback to the original URL if not found in cache
                 }
+                return response.url;
             }
-
 
             // Create promises for vertical tiles
             const backgroundPromise = getCachedOrFetchImage(backgroundUrl).then(url => createVerticalTiles_a('interfaceBackground', url, imageHeight));
