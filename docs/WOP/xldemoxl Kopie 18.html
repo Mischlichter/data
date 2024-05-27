@@ -1589,8 +1589,6 @@
 
         const lenis = new Lenis();
 
-        let parallaxAnimationRegistered = false;
-
         lenis.on('scroll', (e) => {
             // Ensure parallax effect updates on Lenis scroll
             if (!parallaxAnimationRegistered) {
@@ -1599,15 +1597,11 @@
             }
         });
 
-        // Separate function to ensure lenis runs without frame cap
-        function runLenis(timestamp) {
+        let parallaxAnimationRegistered = false;
+
+        AnimationManager.registerAnimation((timestamp) => {
             lenis.raf(timestamp);
-            requestAnimationFrame(runLenis); // Continuously request the next animation frame
-        }
-
-        // Start lenis animation loop
-        requestAnimationFrame(runLenis);
-
+        });
 
         function scrollToTop() {
             // Disable Lenis smooth scrolling
@@ -1627,7 +1621,6 @@
                 AnimationManager.registerAnimation(updateParallax); // Ensure parallax effect updates after scroll to top
             }, 50); // Using setTimeout ensures this occurs in the next event loop cycle
         }
-
 
 //////// Interface Loadin //////
         
@@ -2229,7 +2222,7 @@
             }).then(() => {
                 updateLogoVisibility();
                 updateMenu(menuData);
-                //triggerOrientationWithoutCalibration();
+                triggerOrientationWithoutCalibration();
                 isMenuLoaded = true;
             });    
         }
@@ -2533,8 +2526,8 @@
             existingContainers.forEach(container => container.remove());
 
             // Clear dynamic styles
-            dynamicStyles.forEach(style => style.remove());
-            dynamicStyles.length = 0; // Clear the array
+            //dynamicStyles.forEach(style => style.remove());
+            //dynamicStyles.length = 0; // Clear the array
 
             loadInterface(index);
 
@@ -2543,7 +2536,7 @@
             // Update the iframe with the new scene
             updateIframe(formattedSceneKey);
             //console.log('Formatted Scene Key:', formattedSceneKey);
-            
+            triggerOrientationWithoutCalibration();
             
             // Merge and sort text and image containers
             let combinedData = [];
@@ -2597,7 +2590,7 @@
                 return url;
             }
 
-            triggerOrientationWithoutCalibration();
+
             // Create containers in sorted order
             combinedData.forEach(async (item) => {
                 const container = document.createElement('div');
@@ -3070,92 +3063,27 @@
         }
 
 
-        // Initialize cache status in localStorage
-        async function initializeCacheStatus(urls) {
-            const cacheName = 'site-assets';
-            const cache = await caches.open(cacheName);
-
-            for (const url of urls) {
-                const response = await cache.match(url);
-                const cacheKey = `cache_${url}`;
-                if (response) {
-                    localStorage.setItem(cacheKey, 'cached');
-                } else {
-                    localStorage.setItem(cacheKey, 'not_cached');
-                }
-            }
-        }
-
-        // This function should be called with all the URLs you plan to use
-        function initializeCacheForDynamicUrls(sceneIndices) {
-            const baseUrls = [
-                'https://raw.githubusercontent.com/Mischlichter/data/main/interface/background/b',
-                'https://raw.githubusercontent.com/Mischlichter/data/main/interface/side/s',
-                'https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/v',
-                'https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/vm'
-            ];
-            
-            const urls = [];
-            for (const baseUrl of baseUrls) {
-                for (const index of sceneIndices) {
-                    const formattedIndex = index.toString().padStart(2, '0');
-                    urls.push(`${baseUrl}${formattedIndex}.jpg`);
-                    if (baseUrl.includes('vm')) {
-                        urls.push(`${baseUrl}${formattedIndex}.png`);
-                    }
-                }
-            }
-
-            initializeCacheStatus(urls);
-        }
-
-        // Call this function at the beginning with all possible scene indices
-        initializeCacheForDynamicUrls([00, 01, 02, 03, 04]);
-
-        function getCachedOrFetchImageSync(url) {
-            const cacheKey = `cache_${url}`;
-            const cacheStatus = localStorage.getItem(cacheKey);
-
-            if (cacheStatus === 'cached') {
-                console.log(`Loaded from cache: ${url}`);
-                return url;
-            } else {
-                console.log(`Fetching from network: ${url}`);
-                let xhr = new XMLHttpRequest();
-                xhr.open('GET', url, false); // synchronous request
-                try {
-                    xhr.send();
-                    if (xhr.status === 200) {
-                        return url;
-                    } else {
-                        console.error(`Failed to fetch image at ${url}`);
-                        return url;
-                    }
-                } catch (error) {
-                    console.error(`Error fetching image for URL ${url}:`, error);
-                    return url;
-                }
-            }
-        }
-
-        function loadInterface(currentSceneIndex) {
+        async function loadInterface(currentSceneIndex) {
+            // Extend: Function to ensure wrapper existence
             function ensureWrapperExistence(wrapperClass, contentStructure) {
                 let wrapper = document.querySelector(`.${wrapperClass}`);
                 if (!wrapper) {
                     wrapper = document.createElement('div');
                     wrapper.className = wrapperClass;
-                    document.body.appendChild(wrapper);
-                    wrapper.innerHTML = contentStructure;
+                    document.body.appendChild(wrapper); // Append wrapper to the body
+                    wrapper.innerHTML = contentStructure; // Set the inner HTML as per the structure required
                 }
             }
 
+            // For scene index 4 or 5, remove the wrappers completely
             if (currentSceneIndex === 4 || currentSceneIndex === 5) {
                 document.querySelectorAll('.scale-wrapper-background, .scale-wrapper-interface').forEach(wrapper => {
                     wrapper.parentNode.removeChild(wrapper);
                 });
-                return;
+                return; // Exit the function after handling the special case for scene index 4 or 5
             }
 
+            // Ensure the existence of `.scale-wrapper-background` and `.scale-wrapper-interface` wrappers
             ensureWrapperExistence('scale-wrapper-background', `
                 <div id="backgroundRoot">
                     <div id="backgroundContainer">
@@ -3176,50 +3104,91 @@
                 </div>
             `);
 
+            // Your existing code to tile images and update the viewer image
             const sceneFormatted = currentSceneIndex.toString().padStart(2, '0');
-            const imageHeight = 2048;
+            const imageHeight = 2048; // Fixed height for all images
 
             const backgroundUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/background/b${sceneFormatted}.jpg`;
             const sideImageUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/side/s${sceneFormatted}.jpg`;
             const viewerImageUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/v${sceneFormatted}.jpg`;
             const viewerMaskUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/vm${sceneFormatted}.png`;
 
-            const backgroundPromise = createVerticalTiles_a('interfaceBackground', getCachedOrFetchImageSync(backgroundUrl), imageHeight);
-            const sideLeftPromise = createVerticalTiles_b('interfaceSideLeft', getCachedOrFetchImageSync(sideImageUrl), imageHeight);
-            const sideRightPromise = createVerticalTiles_b('interfaceSideRight', getCachedOrFetchImageSync(sideImageUrl), imageHeight);
+            // Function to get cached image or fetch it if not in cache
+            async function getCachedOrFetchImage(url) {
+                try {
+                    const cacheName = 'site-assets';
+                    const cache = await caches.open(cacheName);
+                    let response = await cache.match(url);
+                    
+                    if (response) {
+                        //console.log(`Loaded from cache: ${url}`);
+                        return response.url; // Return cached URL
+                    } else {
+                        console.log(`Fetching from network: ${url}`);
+                        response = await fetch(url);
+                        if (response.ok) {
+                            await cache.put(url, response.clone());
+                            //console.log(`Fetched and cached: ${url}`);
+                            return response.url; // Return network URL
+                        } else {
+                            throw new Error(`Failed to fetch image at ${url}`);
+                        }
+                    }
+                } catch (error) {
+                    console.error(`Error fetching cached image for URL ${url}:`, error);
+                    return url; // Fallback to the original URL if not found in cache
+                }
+            }
 
-            const viewerImagePromise = new Promise((resolve, reject) => {
+
+            // Create promises for vertical tiles
+            const backgroundPromise = getCachedOrFetchImage(backgroundUrl).then(url => createVerticalTiles_a('interfaceBackground', url, imageHeight));
+            const sideLeftPromise = getCachedOrFetchImage(sideImageUrl).then(url => createVerticalTiles_b('interfaceSideLeft', url, imageHeight));
+            const sideRightPromise = getCachedOrFetchImage(sideImageUrl).then(url => createVerticalTiles_b('interfaceSideRight', url, imageHeight));
+
+            // Create a promise for the viewer image
+            const viewerImagePromise = new Promise(async (resolve, reject) => {
                 const viewerImageElement = document.getElementById('interfaceViewerImage');
                 if (viewerImageElement && document.body.contains(viewerImageElement)) {
-                    const tempImage = new Image();
-                    tempImage.onload = function () {
-                        viewerImageElement.src = tempImage.src;
-                        viewerImageElement.style.maskImage = `url('${viewerMaskUrl}')`;
-                        viewerImageElement.style.webkitMaskImage = `url('${viewerMaskUrl}')`;
-                        viewerImageElement.style.maskSize = '100% 100%';
-                        viewerImageElement.style.webkitMaskSize = '100% 100%';
-                        resolve();
-                    };
-                    tempImage.onerror = function () {
-                        console.error("Failed to load image at url:", viewerImageUrl);
-                        reject();
-                    };
-                    tempImage.src = getCachedOrFetchImageSync(viewerImageUrl);
+                    try {
+                        const cachedViewerImageUrl = await getCachedOrFetchImage(viewerImageUrl);
+                        const tempImage = new Image();
+                        tempImage.onload = function() {
+                            viewerImageElement.src = tempImage.src;
+                            viewerImageElement.style.maskImage = `url('${viewerMaskUrl}')`;
+                            viewerImageElement.style.webkitMaskImage = `url('${viewerMaskUrl}')`;
+                            viewerImageElement.style.maskSize = '100% 100%';
+                            viewerImageElement.style.webkitMaskSize = '100% 100%';
+                            resolve(); // Resolve the promise when the image is loaded
+                        };
+                        tempImage.onerror = function() {
+                            console.error("Failed to load image at url:", viewerImageUrl);
+                            reject(); // Reject the promise on error
+                        };
+                        tempImage.src = cachedViewerImageUrl; // Set the image source which starts loading the image
+                    } catch (error) {
+                        reject(error);
+                    }
                 } else {
                     console.log("Viewer image element does not exist in the DOM.");
-                    reject();
+                    reject(); // Reject the promise if the element does not exist
                 }
             });
 
+            // Wait for all promises to resolve before triggering fadeInElements
             Promise.all([backgroundPromise, sideLeftPromise, sideRightPromise, viewerImagePromise]).then(() => {
+                // Force layout update to prevent initial load issues
+                document.body.style.width = 'auto';
+                document.body.style.overflow = 'hidden'; // Prevent scroll bars during layout calculation
+
                 setTimeout(() => {
-                    fadeInElements();
-                }, 111);
+                    fadeInElements(); // This function should handle fading in the viewer and associated elements
+                    document.body.style.overflow = ''; // Restore scroll behavior
+                }, 1111); // Delay to allow the browser to render the updated image before fading in
             }).catch((error) => {
                 console.error("Error loading elements:", error);
             });
         }
-
 
 
 

@@ -2525,6 +2525,10 @@
         function loadScene(index) {
             const scene = scenesData[index];
             const sceneImages = scenesiData[index]; // Assuming scenesiData is structured similarly
+            let formattedSceneKey = scene.sceneKey.length === 6 ? `scene0${scene.sceneKey.charAt(5)}` : scene.sceneKey;
+
+            // Update the iframe with the new scene
+            updateIframe(formattedSceneKey);
 
             if (!scene) return;
 
@@ -2538,10 +2542,7 @@
 
             loadInterface(index);
 
-            let formattedSceneKey = scene.sceneKey.length === 6 ? `scene0${scene.sceneKey.charAt(5)}` : scene.sceneKey;
-
-            // Update the iframe with the new scene
-            updateIframe(formattedSceneKey);
+            
             //console.log('Formatted Scene Key:', formattedSceneKey);
             
             
