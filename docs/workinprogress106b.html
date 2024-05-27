@@ -2191,7 +2191,7 @@
                     menuContainer.addEventListener('touchend', handleMenuInteraction);
                     menuContainer.addEventListener('touchend', () => animateTextDuringHover(menuContainer));
 
-                    menuContainer.addEventListener('mouseover', () => animateTextDuringHover(menuContainer));
+                    //menuContainer.addEventListener('mouseover', () => animateTextDuringHover(menuContainer));
 
                     if (index === 0) {
                         setTimeout(() => animateTextDuringHover(menuContainer), 5000);
@@ -2430,7 +2430,7 @@
         function animateTextDuringHover(element, finalDuration = 150) {
             // Check if an animation is in progress
             if (isAnimating) {
-                ///console.log("Animation already in progress. Hover animation blocked.");
+                //console.log("Animation already in progress. Hover animation blocked.");
                 return; // Exit the function if an animation is already happening
             }
 
@@ -2439,28 +2439,28 @@
                 element.dataset.originalText = element.textContent;
             }
 
-            var originalText = element.dataset.originalText; // Use the stored original text
-
-            var startTime = null;
+            const originalText = element.dataset.originalText; // Use the stored original text
+            let startTime = null;
 
             function step(timestamp) {
                 if (!startTime) startTime = timestamp;
-                var progress = timestamp - startTime;
+                const progress = timestamp - startTime;
 
                 if (progress < finalDuration) {
                     // Scramble text
-                    var scrambledText = generateRandomString(originalText.length);
+                    const scrambledText = generateRandomString(originalText.length);
                     element.textContent = scrambledText;
-                    requestAnimationFrame(step);
+                    return true; // Continue the animation
                 } else {
                     // Revert back to the original text
                     element.textContent = originalText;
+                    return false; // Stop the animation
                 }
             }
 
-            requestAnimationFrame(step);
+            // Register the animation with the AnimationManager
+            AnimationManager.registerAnimation(step);
         }
-
         // Attach the event listener to each menu item for hover animation
         document.querySelectorAll('.menu-container').forEach(item => {
             item.addEventListener('mouseover', () => animateTextDuringHover(item));
