@@ -1560,7 +1560,7 @@
 //////// MOUSE SMOOTHING ////////
 
         const AnimationManager = {
-            frameCap: 60,
+            frameCap: 90,
             lastRender: performance.now(),
             animations: [],
             running: false,
@@ -3111,14 +3111,14 @@
                     let response = await cache.match(url);
                     
                     if (response) {
-                        console.log(`Loaded from cache: ${url}`);
+                        //console.log(`Loaded from cache: ${url}`);
                         return response.url; // Return cached URL
                     } else {
                         console.log(`Fetching from network: ${url}`);
                         response = await fetch(url);
                         if (response.ok) {
                             await cache.put(url, response.clone());
-                            console.log(`Fetched and cached: ${url}`);
+                            //console.log(`Fetched and cached: ${url}`);
                             return response.url; // Return network URL
                         } else {
                             throw new Error(`Failed to fetch image at ${url}`);
