@@ -2505,30 +2505,24 @@
 
 
         function clearDynamicStyles() {
-            return new Promise((resolve) => {
-                dynamicStyles.forEach(style => style.remove());
-                dynamicStyles.length = 0; // Clear the array
-                resolve();
-            });
+            dynamicStyles.forEach(style => style.remove());
+            dynamicStyles.length = 0; // Clear the array
         }
 
         function removeContainers() {
-            return new Promise((resolve) => {
-                const existingContainers = document.querySelectorAll('.flex-container, .flex-icontainer');
-                existingContainers.forEach(container => container.remove());
-                resolve();
-            });
+            const existingContainers = document.querySelectorAll('.flex-container, .flex-icontainer');
+            existingContainers.forEach(container => container.remove());
         }
 
-        async function loadScene(index) {
+        function loadScene(index) {
             const scene = scenesData[index];
             const sceneImages = scenesiData[index]; // Assuming scenesiData is structured similarly
 
             if (!scene) return;
 
             // Remove all existing containers and dynamic styles
-            await removeContainers();
-            //await clearDynamicStyles();
+            removeContainers();
+            clearDynamicStyles();
 
             loadInterface(index);
 
@@ -2556,42 +2550,8 @@
                 return numA - numB || (a.type === 'text' ? -1 : 1);
             });
 
-            // Function to get the image from the cache
-            async function getCachedImage(url) {
-                try {
-                    // Open the specified cache
-                    const cache = await caches.open('site-assets');
-                    
-                    // Try to find a match for the URL in the cache
-                    const response = await cache.match(url);
-                    
-                    if (response) {
-                        // If a match is found, convert the response to a Blob
-                        const blob = await response.blob();
-                        
-                        // Create a local URL for the Blob object
-                        const objectURL = URL.createObjectURL(blob);
-                        
-                        // Log that the cached file is being used
-                        //console.log(`Using cached file for URL: ${url}`);
-                        
-                        // Return the local URL for use in your application
-                        return objectURL;
-                    } else {
-                        // Log that the cached file was not found
-                        console.log(`Cached file not found for URL: ${url}, downloading...`);
-                    }
-                } catch (error) {
-                    console.error(`Error fetching cached image for URL ${url}:`, error);
-                }
-                
-                // Log that the original URL is being used as fallback
-                console.log(`Falling back to original URL: ${url}`);
-                return url;
-            }
-
             // Create containers in sorted order
-            for (const item of combinedData) {
+            combinedData.forEach((item) => {
                 const container = document.createElement('div');
                 container.id = item.key;
                 container.className = item.type === 'text' ? 'flex-container' : 'flex-icontainer';
@@ -2608,14 +2568,12 @@
 
                 if (item.type === 'image') {
                     const image = document.createElement('img');
-                    const cachedImage = await getCachedImage(item.content.src);
-
-                    image.src = cachedImage;
+                    image.src = item.content.src;
                     //console.log(`Loaded image from cache or network: ${item.content.src}`);
 
                     container.appendChild(image);
                 }
-            }
+            });
 
             // Create and style the footer
             createStyledFooter();
@@ -2629,6 +2587,7 @@
             observeImagesForAnimation();
             createScrollToTopButton();
         }
+
 
 
 
