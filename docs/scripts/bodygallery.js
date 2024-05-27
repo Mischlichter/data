@@ -80,7 +80,7 @@ const galleryHTML = `
         var dynamicImages = [];
         var currentImageIndex = 0;
         var hoverEffectInstance;
-        const TOTAL_IMAGES_FOR_PRE_PERCENTAGE = 72;
+        const TOTAL_IMAGES_FOR_PRE_PERCENTAGE = 144;
         let loadCallCount = 0;
 
 
