@@ -492,12 +492,6 @@ const galleryHTML = `
                                     .then(files => {
                                         const totalImages = files.length;
                                         let loadedImages = 0;
-                                        // Reset variables
-                                        loadingPercentage = 0;
-                                        loadingprePercentage = 0;
-                                        loadCallCount = 0;
-                                        loadedImages = 0;
-
 
                                         function loadImage(index) {
                                             if (index >= totalImages) {
@@ -729,23 +723,10 @@ const galleryHTML = `
                     }, 150); // Match the timeout with your CSS transition time
 
                     hideLoadingProgress(); // Hide the loading indicator, if applicable
-
-                    loadingprePercentage = 0;
-                    loadingPercentage = 0;
-
+                    
                 }
             }
         }
-
-        function resetLoadingStatus() {
-            loadingPercentage = 0;
-            loadingprePercentage = 0;
-            loadCallCount = 0;
-            loadedImages = 0;
-        }
- 
-
-
 
         function simulateWindowResize() {
             const originalWidth = window.outerWidth;
