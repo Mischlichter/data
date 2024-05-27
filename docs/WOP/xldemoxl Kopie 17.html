@@ -1560,7 +1560,7 @@
 //////// MOUSE SMOOTHING ////////
 
         const AnimationManager = {
-            frameCap: 90,
+            frameCap: 60,
             lastRender: performance.now(),
             animations: [],
             running: false,
@@ -1641,7 +1641,6 @@
                 existingIframe.remove(); // Remove the old iframe
             }
             if (bodyGalleryContainer) {
-                resetLoadingStatus();
                 bodyGalleryContainer.innerHTML = ''; // Clear body gallery content
             }
 
@@ -2161,7 +2160,7 @@
                         highlightActiveMenuItem(itemId); // Otherwise, highlight the current menu item
                     }
 
-                    //triggerOrientationWithoutCalibration();
+                    triggerOrientationWithoutCalibration();
 
                     
                 };
@@ -2186,12 +2185,8 @@
                     };
 
                     menuContainer.addEventListener('click', handleMenuInteraction);
-                    menuContainer.addEventListener('click', () => animateTextDuringHover(menuContainer));
-
                     menuContainer.addEventListener('touchend', handleMenuInteraction);
-                    menuContainer.addEventListener('touchend', () => animateTextDuringHover(menuContainer));
-
-                    //menuContainer.addEventListener('mouseover', () => animateTextDuringHover(menuContainer));
+                    menuContainer.addEventListener('mouseover', () => animateTextDuringHover(menuContainer));
 
                     if (index === 0) {
                         setTimeout(() => animateTextDuringHover(menuContainer), 5000);
@@ -2430,7 +2425,7 @@
         function animateTextDuringHover(element, finalDuration = 150) {
             // Check if an animation is in progress
             if (isAnimating) {
-                //console.log("Animation already in progress. Hover animation blocked.");
+                ///console.log("Animation already in progress. Hover animation blocked.");
                 return; // Exit the function if an animation is already happening
             }
 
@@ -2439,28 +2434,28 @@
                 element.dataset.originalText = element.textContent;
             }
 
-            const originalText = element.dataset.originalText; // Use the stored original text
-            let startTime = null;
+            var originalText = element.dataset.originalText; // Use the stored original text
+
+            var startTime = null;
 
             function step(timestamp) {
                 if (!startTime) startTime = timestamp;
-                const progress = timestamp - startTime;
+                var progress = timestamp - startTime;
 
                 if (progress < finalDuration) {
                     // Scramble text
-                    const scrambledText = generateRandomString(originalText.length);
+                    var scrambledText = generateRandomString(originalText.length);
                     element.textContent = scrambledText;
-                    return true; // Continue the animation
+                    requestAnimationFrame(step);
                 } else {
                     // Revert back to the original text
                     element.textContent = originalText;
-                    return false; // Stop the animation
                 }
             }
 
-            // Register the animation with the AnimationManager
-            AnimationManager.registerAnimation(step);
+            requestAnimationFrame(step);
         }
+
         // Attach the event listener to each menu item for hover animation
         document.querySelectorAll('.menu-container').forEach(item => {
             item.addEventListener('mouseover', () => animateTextDuringHover(item));
@@ -2503,12 +2498,33 @@
 
         }
 
+        async function getCachedImage(db, url) {
+            try {
+                const tx = db.transaction('assets', 'readonly');
+                const store = tx.objectStore('assets');
+                const cachedAsset = await store.get(url);
+
+                if (cachedAsset) {
+                    const blob = cachedAsset.blob;
+                    const objectURL = URL.createObjectURL(blob);
+                    return objectURL;
+                }
+            } catch (error) {
+                console.error(`Error fetching cached image for URL ${url}:`, error);
+            }
+            return null;
+        }
+
 
 
         // Keep track of dynamically added style elements
         const dynamicStyles = [];
 
-  
+        function clearDynamicStyles() {
+          dynamicStyles.forEach(style => style.remove());
+          dynamicStyles.length = 0; // Clear the array
+        }
+
         function loadScene(index) {
             const scene = scenesData[index];
             const sceneImages = scenesiData[index]; // Assuming scenesiData is structured similarly
@@ -2520,8 +2536,7 @@
             existingContainers.forEach(container => container.remove());
 
             // Clear dynamic styles
-            //dynamicStyles.forEach(style => style.remove());
-            //dynamicStyles.length = 0; // Clear the array
+            clearDynamicStyles();
 
             loadInterface(index);
 
@@ -2530,7 +2545,6 @@
             // Update the iframe with the new scene
             updateIframe(formattedSceneKey);
             //console.log('Formatted Scene Key:', formattedSceneKey);
-            triggerOrientationWithoutCalibration();
             
             // Merge and sort text and image containers
             let combinedData = [];
@@ -2553,37 +2567,18 @@
             // Function to get the image from the cache
             async function getCachedImage(url) {
                 try {
-                    // Open the specified cache
                     const cache = await caches.open('site-assets');
-                    
-                    // Try to find a match for the URL in the cache
                     const response = await cache.match(url);
-                    
                     if (response) {
-                        // If a match is found, convert the response to a Blob
                         const blob = await response.blob();
-                        
-                        // Create a local URL for the Blob object
                         const objectURL = URL.createObjectURL(blob);
-                        
-                        // Log that the cached file is being used
-                        //console.log(`Using cached file for URL: ${url}`);
-                        
-                        // Return the local URL for use in your application
                         return objectURL;
-                    } else {
-                        // Log that the cached file was not found
-                        console.log(`Cached file not found for URL: ${url}, downloading...`);
                     }
                 } catch (error) {
                     console.error(`Error fetching cached image for URL ${url}:`, error);
                 }
-                
-                // Log that the original URL is being used as fallback
-                console.log(`Falling back to original URL: ${url}`);
-                return url;
+                return url; // Fallback to the original URL if not found in cache
             }
-
 
             // Create containers in sorted order
             combinedData.forEach(async (item) => {
@@ -2606,7 +2601,7 @@
                     const cachedImage = await getCachedImage(item.content.src);
 
                     image.src = cachedImage;
-                    //console.log(`Loaded image from cache or network: ${item.content.src}`);
+                    console.log(`Loaded image from cache or network: ${item.content.src}`);
 
                     container.appendChild(image);
                 }
@@ -2620,10 +2615,9 @@
             // Update containers when loading a new scene
             updateAllContainers(scene);
 
-            
+            highlightActiveMenuItem(`menuContainer${index}`);
             observeImagesForAnimation();
             createScrollToTopButton();
-            highlightActiveMenuItem(`menuContainer${index}`);
         }
 
 
@@ -3056,8 +3050,7 @@
             setTimeout(updateVirtualCanvasSize, 100); // Delay of 100 milliseconds
         }
 
-
-        async function loadInterface(currentSceneIndex) {
+        function loadInterface(currentSceneIndex) {
             // Extend: Function to ensure wrapper existence
             function ensureWrapperExistence(wrapperClass, contentStructure) {
                 let wrapper = document.querySelector(`.${wrapperClass}`);
@@ -3069,12 +3062,12 @@
                 }
             }
 
-            // For scene index 4 or 5, remove the wrappers completely
+            // For scene index 3, remove the wrappers completely
             if (currentSceneIndex === 4 || currentSceneIndex === 5) {
                 document.querySelectorAll('.scale-wrapper-background, .scale-wrapper-interface').forEach(wrapper => {
                     wrapper.parentNode.removeChild(wrapper);
                 });
-                return; // Exit the function after handling the special case for scene index 4 or 5
+                return; // Exit the function after handling the special case for scene index 3
             }
 
             // Ensure the existence of `.scale-wrapper-background` and `.scale-wrapper-interface` wrappers
@@ -3107,62 +3100,29 @@
             const viewerImageUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/v${sceneFormatted}.jpg`;
             const viewerMaskUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/vm${sceneFormatted}.png`;
 
-            // Function to get cached image or fetch it if not in cache
-            async function getCachedOrFetchImage(url) {
-                try {
-                    const cacheName = 'site-assets';
-                    const cache = await caches.open(cacheName);
-                    let response = await cache.match(url);
-                    
-                    if (response) {
-                        //console.log(`Loaded from cache: ${url}`);
-                        return response.url; // Return cached URL
-                    } else {
-                        console.log(`Fetching from network: ${url}`);
-                        response = await fetch(url);
-                        if (response.ok) {
-                            await cache.put(url, response.clone());
-                            //console.log(`Fetched and cached: ${url}`);
-                            return response.url; // Return network URL
-                        } else {
-                            throw new Error(`Failed to fetch image at ${url}`);
-                        }
-                    }
-                } catch (error) {
-                    console.error(`Error fetching cached image for URL ${url}:`, error);
-                    return url; // Fallback to the original URL if not found in cache
-                }
-            }
-
-
             // Create promises for vertical tiles
-            const backgroundPromise = getCachedOrFetchImage(backgroundUrl).then(url => createVerticalTiles_a('interfaceBackground', url, imageHeight));
-            const sideLeftPromise = getCachedOrFetchImage(sideImageUrl).then(url => createVerticalTiles_b('interfaceSideLeft', url, imageHeight));
-            const sideRightPromise = getCachedOrFetchImage(sideImageUrl).then(url => createVerticalTiles_b('interfaceSideRight', url, imageHeight));
+            const backgroundPromise = createVerticalTiles_a('interfaceBackground', backgroundUrl, imageHeight);
+            const sideLeftPromise = createVerticalTiles_b('interfaceSideLeft', sideImageUrl, imageHeight);
+            const sideRightPromise = createVerticalTiles_b('interfaceSideRight', sideImageUrl, imageHeight);
 
             // Create a promise for the viewer image
-            const viewerImagePromise = new Promise(async (resolve, reject) => {
+            const viewerImagePromise = new Promise((resolve, reject) => {
                 const viewerImageElement = document.getElementById('interfaceViewerImage');
                 if (viewerImageElement && document.body.contains(viewerImageElement)) {
-                    try {
-                        const cachedViewerImageUrl = await getCachedOrFetchImage(viewerImageUrl);
-                        const tempImage = new Image();
-                        tempImage.onload = function() {
-                            viewerImageElement.src = tempImage.src;
-                            viewerImageElement.style.maskImage = `url('${viewerMaskUrl}')`;
-                            viewerImageElement.style.webkitMaskImage = `url('${viewerMaskUrl}')`;
-                            viewerImageElement.style.maskSize = '100% 100%';
-                            viewerImageElement.style.webkitMaskSize = '100% 100%';
-                            resolve(); // Resolve the promise when the image is loaded
-                        };
-                        tempImage.onerror = function() {
-                            console.error("Failed to load image at url:", viewerImageUrl);
-                            reject(); // Reject the promise on error
-                        };
-                        tempImage.src = cachedViewerImageUrl; // Set the image source which starts loading the image
-                    } catch (error) {
-                        reject(error);
-                    }
+                    const tempImage = new Image();
+                    tempImage.onload = function() {
+                        viewerImageElement.src = tempImage.src;
+                        viewerImageElement.style.maskImage = `url('${viewerMaskUrl}')`;
+                        viewerImageElement.style.webkitMaskImage = `url('${viewerMaskUrl}')`;
+                        viewerImageElement.style.maskSize = '100% 100%';
+                        viewerImageElement.style.webkitMaskSize = '100% 100%';
+                        resolve(); // Resolve the promise when the image is loaded
+                    };
+                    tempImage.onerror = function() {
+                        console.error("Failed to load image at url:", viewerImageUrl);
+                        reject(); // Reject the promise on error
+                    };
+                    tempImage.src = viewerImageUrl; // Set the image source which starts loading the image
                 } else {
                     console.log("Viewer image element does not exist in the DOM.");
                     reject(); // Reject the promise if the element does not exist
@@ -3171,21 +3131,13 @@
 
             // Wait for all promises to resolve before triggering fadeInElements
             Promise.all([backgroundPromise, sideLeftPromise, sideRightPromise, viewerImagePromise]).then(() => {
-                // Force layout update to prevent initial load issues
-                document.body.style.width = 'auto';
-                document.body.style.overflow = 'hidden'; // Prevent scroll bars during layout calculation
-
                 setTimeout(() => {
                     fadeInElements(); // This function should handle fading in the viewer and associated elements
-                    document.body.style.overflow = ''; // Restore scroll behavior
-                }, 1111); // Delay to allow the browser to render the updated image before fading in
+                }, 111); // Delay to allow the browser to render the updated image before fading in
             }).catch((error) => {
                 console.error("Error loading elements:", error);
             });
         }
-
-
-
 
 
         
@@ -3499,8 +3451,8 @@
             });
             window.scrollTo(0, savedScrollPosition);
         }
-
-       
+        
+        
 
 
         function checkAndStartAnimationsOnScroll() {
