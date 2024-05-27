@@ -2144,7 +2144,6 @@
 
                     if (currentlyActiveMenuItemId === itemId) {
                         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-                        highlightActiveMenuItem(itemId);
                         return;
                     }
 
@@ -2517,8 +2516,8 @@
             existingContainers.forEach(container => container.remove());
 
             // Clear dynamic styles
-            dynamicStyles.forEach(style => style.remove());
-            dynamicStyles.length = 0; // Clear the array
+            //dynamicStyles.forEach(style => style.remove());
+            //dynamicStyles.length = 0; // Clear the array
 
             loadInterface(index);
 
