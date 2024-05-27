@@ -2186,8 +2186,12 @@
                     };
 
                     menuContainer.addEventListener('click', handleMenuInteraction);
+                    menuContainer.addEventListener('click', () => animateTextDuringHover(menuContainer));
+
                     menuContainer.addEventListener('touchend', handleMenuInteraction);
-                    //menuContainer.addEventListener('mouseover', () => animateTextDuringHover(menuContainer));
+                    menuContainer.addEventListener('touchend', () => animateTextDuringHover(menuContainer));
+
+                    menuContainer.addEventListener('mouseover', () => animateTextDuringHover(menuContainer));
 
                     if (index === 0) {
                         setTimeout(() => animateTextDuringHover(menuContainer), 5000);
