@@ -2121,36 +2121,7 @@
         return blockMenuInteractions;
         }
 
-        async function getCachedImage(url) {
-            try {
-                // Open the specified cache
-                const cache = await caches.open('site-assets');
-                
-                // Try to find a match for the URL in the cache
-                const response = await cache.match(url);
-                
-                if (response) {
-                    // If a match is found, convert the response to a Blob
-                    const blob = await response.blob();
-                    
-                    // Create a local URL for the Blob object
-                    const objectURL = URL.createObjectURL(blob);
-                    
-                    // Return the local URL for use in your application
-                    return objectURL;
-                } else {
-                    console.log(`Cached file not found for URL: ${url}, downloading...`);
-                }
-            } catch (error) {
-                console.error(`Error fetching cached image for URL ${url}:`, error);
-            }
-            
-            // Fallback to the original URL if cache lookup fails
-            console.log(`Falling back to original URL: ${url}`);
-            return url;
-        }
-
-        async function loadMenu(menuData) {
+        function loadMenu(menuData) {
             return new Promise((resolve, reject) => {
                 isAnimating = true;
 
@@ -2168,13 +2139,7 @@
                 }
 
                 const logoImg = document.createElement('img');
-                getCachedImage('https://raw.githubusercontent.com/Mischlichter/data/main/interface/logo5.png')
-                    .then(url => {
-                        logoImg.src = url;
-                    })
-                    .catch(() => {
-                        logoImg.src = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logo5.png'; // Fallback URL
-                    });
+                logoImg.src = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logo5.png';
                 logoImg.style.marginRight = '20px';
                 logoImg.id = 'menuLogo';
                 menuBar.appendChild(logoImg);
@@ -2210,7 +2175,10 @@
                     }
 
                     //triggerOrientationWithoutCalibration();
+
+                    
                 };
+
 
                 logoImg.addEventListener('click', () => handleInteraction('menuLogo', 0));
                 logoImg.addEventListener('touchend', () => handleInteraction('menuLogo', 0));
@@ -2236,6 +2204,8 @@
                     menuContainer.addEventListener('touchend', handleMenuInteraction);
                     menuContainer.addEventListener('touchend', () => animateTextDuringHover(menuContainer));
 
+                    //menuContainer.addEventListener('mouseover', () => animateTextDuringHover(menuContainer));
+
                     if (index === 0) {
                         setTimeout(() => animateTextDuringHover(menuContainer), 5000);
                     }
@@ -2253,6 +2223,7 @@
                 fakeMenuItem2.setAttribute('data-fake', 'true');
                 menuBar.insertBefore(fakeMenuItem2, menuBar.children[5]);
 
+               
                 resolve();
 
             }).then(() => {
@@ -2260,11 +2231,14 @@
                 updateMenu(menuData);
                 //triggerOrientationWithoutCalibration();
                 isMenuLoaded = true;
-            });
+            });    
         }
 
-        async function updateLogoVisibility() {
+
+
+        function updateLogoVisibility() {
             const logoImg = document.getElementById('menuLogo');
+            // Select only fake menu items using the data-fake attribute
             const fakeMenuItems = document.querySelectorAll('.menu-container[data-fake="true"]');
 
             if (!logoImg) return; // Exit the function early if the logo image does not exist
@@ -2273,33 +2247,17 @@
             const height = window.innerHeight;
             const isPortrait = width - 1 < height; // Add a buffer to ensure width is definitely less than height
 
-            try {
-                if (width <= 768 || isPortrait) {
-                    const logoSUrl = await getCachedImage('https://raw.githubusercontent.com/Mischlichter/data/main/interface/logoS.png');
-                    logoImg.src = logoSUrl;
-                    logoImg.classList.add('logo-small');
-                    fakeMenuItems.forEach(item => item.style.display = '');
-                } else {
-                    const logo5Url = await getCachedImage('https://raw.githubusercontent.com/Mischlichter/data/main/interface/logo5.png');
-                    logoImg.src = logo5Url;
-                    logoImg.classList.remove('logo-small');
-                    fakeMenuItems.forEach(item => item.style.display = 'none');
-                }
-            } catch (error) {
-                console.error('Error fetching logo from cache:', error);
-                // Fallback to original URLs if there is an error
-                if (width <= 768 || isPortrait) {
-                    logoImg.src = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logoS.png';
-                    logoImg.classList.add('logo-small');
-                    fakeMenuItems.forEach(item => item.style.display = '');
-                } else {
-                    logoImg.src = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logo5.png';
-                    logoImg.classList.remove('logo-small');
-                    fakeMenuItems.forEach(item => item.style.display = 'none');
-                }
+            // Check if screen width is <= 768 or if the device is in portrait orientation
+            if (width <= 768 || isPortrait) {
+                logoImg.src = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logoS.png'; 
+                logoImg.classList.add('logo-small');
+                fakeMenuItems.forEach(item => item.style.display = '');
+            } else {
+                logoImg.src = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logo5.png'; 
+                logoImg.classList.remove('logo-small');
+                fakeMenuItems.forEach(item => item.style.display = 'none');
             }
         }
-
 
 
 
@@ -3113,6 +3071,7 @@
         }
 
 
+        // Initialize cache status in localStorage
         async function initializeCacheStatus(urls) {
             const cacheName = 'site-assets';
             const cache = await caches.open(cacheName);
@@ -3136,7 +3095,7 @@
                 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/v',
                 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/vm'
             ];
-
+            
             const urls = [];
             for (const baseUrl of baseUrls) {
                 for (const index of sceneIndices) {
@@ -3153,7 +3112,6 @@
 
         // Call this function at the beginning with all possible scene indices
         initializeCacheForDynamicUrls([00, 01, 02, 03, 04]);
-
 
         function getCachedOrFetchImageSync(url) {
             const cacheKey = `cache_${url}`;
@@ -3262,6 +3220,8 @@
                 console.error("Error loading elements:", error);
             });
         }
+
+
 
 
 
