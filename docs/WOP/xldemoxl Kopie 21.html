@@ -1027,7 +1027,7 @@
 
             async function preloadAssets() {
                 const supportsIndexedDB = checkIndexedDBSupport();
-                console.log('Loading');
+                console.log('Starting to preload assets');
 
                 let db;
                 if (supportsIndexedDB) {
@@ -1070,7 +1070,7 @@
                 let cache;
                 try {
                     cache = await caches.open(cacheName);
-                    //console.log('Cache opened successfully');
+                    console.log('Cache opened successfully');
                 } catch (error) {
                     console.error('Error opening cache:', error);
                     return;
@@ -1096,7 +1096,7 @@
                 const extraAssetsUrls = parseExtraAssets(extraText, assetsJson); // Pass manifest to parseExtraAssets
                 urlsToCache.push(...extraAssetsUrls); // Add extra assets to urlsToCache
 
-                //console.log(`Total URLs to cache: ${urlsToCache.length}`);
+                console.log(`Total URLs to cache: ${urlsToCache.length}`);
                 let loaded = 0;
                 const delay = 111;
                 let assetsToStore = [];
@@ -1132,7 +1132,6 @@
                                     const lastModifiedHeader = response.headers.get('last-modified') || new Date(lastModified).toISOString();
                                     //console.log(`Preparing to store in DB: ${url}, Last Modified: ${lastModifiedHeader}`);
                                     assetsToStore.push({ url, blob, lastModified: lastModifiedHeader });
-
                                 }
                             } else {
                                 console.error(`HTTP error! Status: ${response.status}`);
@@ -1159,8 +1158,6 @@
                         console.error('Error storing assets in IndexedDB:', error);
                     }
                 }
-
-                
 
                 if (!localStorage.getItem(firstLoadCompleteFlag)) {
                     localStorage.setItem(firstLoadCompleteFlag, 'true');
@@ -1269,7 +1266,7 @@
                 for (let url of urls) {
                     if (cacheKeys.some(request => request.url === url)) {
                         verifiedCount++;
-                        console.log(`Verified: ${url}`);
+                        //console.log(`Verified: ${url}`);
                     } else {
                         console.error(`Verification failed for: ${url}`);
                     }
@@ -3163,10 +3160,10 @@
             const cacheStatus = localStorage.getItem(cacheKey);
 
             if (cacheStatus === 'cached') {
-                //console.log(`Loaded from cache: ${url}`);
+                console.log(`Loaded from cache: ${url}`);
                 return url;
             } else {
-                //console.log(`Fetching from network: ${url}`);
+                console.log(`Fetching from network: ${url}`);
                 let xhr = new XMLHttpRequest();
                 xhr.open('GET', url, false); // synchronous request
                 try {
