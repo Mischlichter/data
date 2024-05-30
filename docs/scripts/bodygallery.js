@@ -65,7 +65,7 @@ const galleryHTML = `
         </div>
 
         <div id="search-container">
-            <input type="text" id="search-bar" placeholder="Please wait..." disabled>
+            <input type="text" id="search-bar" placeholder="Please wait... fetching full collection" disabled>
         </div>
 
 
