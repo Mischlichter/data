@@ -1126,14 +1126,14 @@
                     }
 
                     loaded++;
-                    console.log(`Loaded count: ${loaded} of ${urlsToCache.length}`);
+                    //console.log(`Loaded count: ${loaded} of ${urlsToCache.length}`);
                     requestAnimationFrame(() => {
                         if (loaded < urlsToCache.length) {
                             loadingPercentage = Math.floor((loaded / urlsToCache.length) * 80); // Cap at 80%
                             console.log(`Loading percentage (0-80% range): ${loadingPercentage}%`);
                         } else {
                             loadingPercentage = 80; // Ensure it is set to exactly 80% when loaded is 100
-                            console.log(`Loading percentage set to 80%`);
+                            //console.log(`Loading percentage set to 80%`);
 
                             // Animate from 80% to 100% over 2 seconds
                             const animationStartTime = performance.now();
@@ -1143,13 +1143,13 @@
                                 const elapsedTime = timestamp - animationStartTime;
                                 const progress = Math.min(elapsedTime / animationDuration, 1); // Progress from 0 to 1
                                 loadingPercentage = 80 + (20 * progress); // Calculate percentage from 80 to 100
-                                console.log(`Loading: ${loadingPercentage.toFixed(2)}% complete`);
+                                //console.log(`Loading: ${loadingPercentage.toFixed(2)}% complete`);
 
                                 if (progress < 1) {
                                     requestAnimationFrame(animateTo100); // Continue animation
                                 } else {
                                     loadingPercentage = 100;
-                                    console.log(`Loading: ${loadingPercentage}% complete`); // Ensure it is set to exactly 100% at the end
+                                    //console.log(`Loading: ${loadingPercentage}% complete`); // Ensure it is set to exactly 100% at the end
                                 }
                             }
 
