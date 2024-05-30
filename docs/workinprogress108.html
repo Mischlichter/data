@@ -1087,7 +1087,7 @@
                 urlsToCache.push(...extraAssetsUrls); // Add extra assets to urlsToCache
 
                 let loaded = 0;
-                const delay = 36;
+                const delay = 77;
                 let assetsToStore = [];
 
                 for (let { url, lastModified } of urlsToCache) {
@@ -1129,20 +1129,20 @@
                     //console.log(`Loaded count: ${loaded} of ${urlsToCache.length}`);
                     requestAnimationFrame(() => {
                         if (loaded < urlsToCache.length) {
-                            loadingPercentage = Math.floor((loaded / urlsToCache.length) * 80); // Cap at 80%
-                            console.log(`Loading percentage (0-80% range): ${loadingPercentage}%`);
+                            loadingPercentage = Math.floor((loaded / urlsToCache.length) * 90); // Cap at 80%
+                            console.log(`Loading percentage (0-90% range): ${loadingPercentage}%`);
                         } else {
-                            loadingPercentage = 80; // Ensure it is set to exactly 80% when loaded is 100
+                            loadingPercentage = 90; // Ensure it is set to exactly 80% when loaded is 100
                             //console.log(`Loading percentage set to 80%`);
 
                             // Animate from 80% to 100% over 2 seconds
                             const animationStartTime = performance.now();
-                            const animationDuration = 2000; // 2 seconds
+                            const animationDuration = 1000; // 2 seconds
 
                             function animateTo100(timestamp) {
                                 const elapsedTime = timestamp - animationStartTime;
                                 const progress = Math.min(elapsedTime / animationDuration, 1); // Progress from 0 to 1
-                                loadingPercentage = 80 + (20 * progress); // Calculate percentage from 80 to 100
+                                loadingPercentage = 90 + (10 * progress); // Calculate percentage from 80 to 100
                                 //console.log(`Loading: ${loadingPercentage.toFixed(2)}% complete`);
 
                                 if (progress < 1) {
