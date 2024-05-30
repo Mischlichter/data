@@ -3694,5 +3694,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "8551965201"
+    },
+    "27731753056.jpg": {
+        "File Name": "27731753056.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man surrounded by numerous HogeAI friends) in an enchanting, neon-lit magical school filled with creativity and excitement. HogeAI man stands at the center, holding a radiant, magical wand that glows with vibrant energy. Surrounding him are holographic screens and floating canvases, each displaying stunning, transforming artworks enhanced by magical effects. Characters around him are using glowing, enchanted tools to create and transform art, with vivid colors and light trails streaming from their hands. The air is filled with floating holographic formulas and shimmering neon words, representing the magic of creative language. The studio is alive with neon colors, digital graffiti, and interactive installations, creating a whimsical and fantastical atmosphere. Bright neon lights, magical symbols, and enchanted art tools create a dynamic setting. Characters draw whimsical hoge...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "27731753056"
     }
 }
