@@ -926,7 +926,7 @@
 
 
             const loadingInterval = setInterval(function() {
-                if (loadingPercentage >= 40) {
+                if (loadingPercentage >= 60) {
                     // Loading is complete
                     shuffleOnes(); // Start shuffling spans with '1'
                     clearInterval(loadingInterval);
@@ -1137,7 +1137,7 @@
 
                             // Animate from 80% to 100% over 2 seconds
                             const animationStartTime = performance.now();
-                            const animationDuration = 1000; // 2 seconds
+                            const animationDuration = 2000; // 2 seconds
 
                             function animateTo100(timestamp) {
                                 const elapsedTime = timestamp - animationStartTime;
