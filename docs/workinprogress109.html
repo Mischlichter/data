@@ -926,7 +926,7 @@
 
 
             const loadingInterval = setInterval(function() {
-                if (loadingPercentage >= 80) {
+                if (loadingPercentage >= 50) {
                     // Loading is complete
                     shuffleOnes(); // Start shuffling spans with '1'
                     clearInterval(loadingInterval);
@@ -937,7 +937,7 @@
         // Function to shuffle spans with '1'
             function shuffleOnes() {
                 const spansWithOne = Array.from(document.querySelectorAll('span')).filter(span => span.getAttribute('data-original-char') === '1');
-                const shuffleDuration = 150; // Duration for each span to shuffle
+                const shuffleDuration = 1500; // Duration for each span to shuffle
                 const delayBetweenSpans = 50; // Delay between spans
 
                 spansWithOne.forEach((span, index) => {
