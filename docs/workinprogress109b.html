@@ -2944,9 +2944,28 @@
                 });
             };
 
-            // Wait for both tiles.a and tiles.b to become true
-            waitForTiles().then(() => {
-                const selectors = ['#interfaceContainer', '#backgroundContainer', '#iframeContainer', '#bodyGalleryContainer', '.flex-container'];
+            const waitForDOMElements = (selectors) => {
+                return new Promise((resolve) => {
+                    const checkDOMElements = () => {
+                        const allElementsExist = selectors.every(selector => {
+                            return document.querySelector(selector) !== null;
+                        });
+
+                        if (allElementsExist) {
+                            resolve();
+                        } else {
+                            setTimeout(checkDOMElements, 100); // Check every 100 milliseconds
+                        }
+                    };
+                    checkDOMElements();
+                });
+            };
+
+            // Define selectors to be checked
+            const selectors = ['#interfaceContainer', '#backgroundContainer', '#iframeContainer', '#bodyGalleryContainer', '.flex-container'];
+
+            // Wait for both tiles.a and tiles.b to become true and for all necessary DOM elements to exist
+            Promise.all([waitForTiles(), waitForDOMElements(selectors)]).then(() => {
                 let animationCount = 0;
 
                 const animationEndHandler = () => {
@@ -2956,23 +2975,43 @@
                     }
                 };
 
+                // Hide elements before starting the fade-in
                 selectors.forEach(selector => {
                     const elements = document.querySelectorAll(selector);
                     elements.forEach(element => {
                         if (element) {
-                            animationCount++;
-                            element.style.opacity = 1; // Set opacity to 1
-                            if (isIOS()) {
-                                element.style.transition = 'none'; // Remove transitions for iOS
-                            } else {
-                                element.style.transition = 'opacity 1s ease-in-out'; // Apply transitions for non-iOS
-                            }
-                            element.addEventListener('transitionend', animationEndHandler);
+                            element.style.visibility = 'hidden'; // Set initial visibility to hidden
                         }
                     });
                 });
+
+                // Ensure a brief delay to allow visibility changes to take effect
+                setTimeout(() => {
+                    selectors.forEach(selector => {
+                        const elements = document.querySelectorAll(selector);
+                        elements.forEach(element => {
+                            if (element) {
+                                animationCount++;
+                                element.style.opacity = 0; // Start with opacity 0
+                                element.style.visibility = 'visible'; // Make elements visible
+                                if (isIOS()) {
+                                    element.style.transition = 'none'; // Remove transitions for iOS
+                                } else {
+                                    element.style.transition = 'opacity 1s ease-in-out'; // Apply transitions for non-iOS
+                                }
+                                element.addEventListener('transitionend', animationEndHandler);
+                                
+                                // Trigger reflow to ensure visibility change takes effect before starting opacity transition
+                                element.getBoundingClientRect();
+                                element.style.opacity = 1; // Fade in
+                            }
+                        });
+                    });
+                }, 100); // 100ms delay to ensure visibility change takes effect
             });
         }
+
+
         
 
 
@@ -3153,20 +3192,17 @@
                 for (const index of sceneIndices) {
                     const formattedIndex = index.toString().padStart(2, '0');
                     urls.push(`${baseUrl}${formattedIndex}.jpg`);
-                    if (baseUrl includes 'vm') {
+                    if (baseUrl.includes('vm')) {
                         urls.push(`${baseUrl}${formattedIndex}.png`);
                     }
                 }
             }
 
-            return initializeCacheStatus(urls);
+            initializeCacheStatus(urls);
         }
 
-        // Call this function at the beginning with all possible scene indices and ensure the promise resolves before proceeding
-        initializeCacheForDynamicUrls([0, 1, 2, 3, 4]).then(() => {
-            loadInterface(1); // Replace '1' with the appropriate scene index
-        });
-
+        // Call this function at the beginning with all possible scene indices
+        initializeCacheForDynamicUrls([00, 01, 02, 03, 04]);
 
 
         function getCachedOrFetchImageSync(url) {
