@@ -3718,5 +3718,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "50422514680"
+    },
+    "80891290317.jpg": {
+        "File Name": "80891290317.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man surrounded by numerous HogeAI friends) in a vibrant, magical school filled with whimsical energy and creativity. HogeAI man stands at a large cauldron in the center of an enchanted classroom, stirring a glowing, neon potion with a long, enchanted brush. Surrounding him, HogeAI characters are engaged in various magical activities some are adding ingredients like sparkling fairy dust, colorful crystals, and glowing mushrooms into the cauldron, while others are reading from ancient, holographic spellbooks. Floating in the air, holographic magical formulas and spells shimmer with bright neon colors. The atmosphere is alive with the buzz of excitement and collaboration. Bright neon lights, magical symbols floating in the air, and enchanted tools create a dynamic and fantastical setting. Towards the back, some characters are using digital pens to draw whimsical hogeai man-insp...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "80891290317"
     }
 }
