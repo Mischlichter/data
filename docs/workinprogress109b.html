@@ -3053,9 +3053,10 @@
         function createVerticalTiles_a(containerId, imageUrl, imageHeight) {
             return new Promise((resolve, reject) => {
                 const container = document.getElementById(containerId);
-                container.style.visibility = 'hidden'; // Hide the container initially
                 container.innerHTML = ''; // Clear existing content
 
+                // Assuming the container's height is directly based on its content (the images)
+                // We calculate the number of tiles needed to fill the container plus one for overflow
                 const numTiles = 20; // Since you mentioned wanting about 10 tiles
 
                 for (let i = 0; i < numTiles; i++) {
@@ -3078,19 +3079,20 @@
                 // Resolve the promise to indicate that tiles are constructed
                 resolve();
             }).then(() => {
-                requestAnimationFrame(() => {
-                    container.style.visibility = 'visible';
-                    tiles.a = true; // Set the flag for tiles a to true after the container is visible
-                });
+                tiles.a = true;
+                // Set the flag for tiles a to true after the promise is resolved
             });
         }
+
 
         function createVerticalTiles_b(containerId, imageUrl, imageHeight) {
             return new Promise((resolve, reject) => {
                 const container = document.getElementById(containerId);
-                container.style.visibility = 'hidden'; // Hide the container initially
                 container.innerHTML = ''; // Clear existing content
 
+                
+                // Assuming the container's height is directly based on its content (the images)
+                // We calculate the number of tiles needed to fill the container plus one for overflow
                 const numTiles = 20; // Since you mentioned wanting about 10 tiles
 
                 for (let i = 0; i < numTiles; i++) {
@@ -3102,20 +3104,24 @@
                     img.style.width = '100%'; // Stretch the image to fill the container's width
                     img.style.height = `${imageHeight}px`; // Set a fixed height for direct tiling
                     container.appendChild(img);
-
+                    
+                    
                     updateVirtualCanvasSize();
                 }
 
                 // Resolve the promise to indicate that tiles are constructed
                 resolve();
             }).then(() => {
-                requestAnimationFrame(() => {
-                    container.style.visibility = 'visible';
-                    tiles.b = true; // Set the flag for tiles b to true after the container is visible
-                });
+                // Set the flag for tiles b to true after the promise is resolved
+                tiles.b = true;
             });
         }
 
+        function delayedVirtualCanvasUpdate() {
+            // Delay the call to updateVirtualCanvasSize
+            
+            setTimeout(updateVirtualCanvasSize, 100); // Delay of 100 milliseconds
+        }
 
 
         async function initializeCacheStatus(urls) {
@@ -3147,17 +3153,20 @@
                 for (const index of sceneIndices) {
                     const formattedIndex = index.toString().padStart(2, '0');
                     urls.push(`${baseUrl}${formattedIndex}.jpg`);
-                    if (baseUrl.includes('vm')) {
+                    if (baseUrl includes 'vm') {
                         urls.push(`${baseUrl}${formattedIndex}.png`);
                     }
                 }
             }
 
-            initializeCacheStatus(urls);
+            return initializeCacheStatus(urls);
         }
 
-        // Call this function at the beginning with all possible scene indices
-        initializeCacheForDynamicUrls([00, 01, 02, 03, 04]);
+        // Call this function at the beginning with all possible scene indices and ensure the promise resolves before proceeding
+        initializeCacheForDynamicUrls([0, 1, 2, 3, 4]).then(() => {
+            loadInterface(1); // Replace '1' with the appropriate scene index
+        });
+
 
 
         function getCachedOrFetchImageSync(url) {
