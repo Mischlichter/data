@@ -3078,9 +3078,10 @@
                 // Resolve the promise to indicate that tiles are constructed
                 resolve();
             }).then(() => {
-                tiles.a = true;
-                // Make the container visible after elements are appended and flag is set
-                document.getElementById(containerId).style.visibility = 'visible';
+                requestAnimationFrame(() => {
+                    container.style.visibility = 'visible';
+                    tiles.a = true; // Set the flag for tiles a to true after the container is visible
+                });
             });
         }
 
@@ -3108,18 +3109,13 @@
                 // Resolve the promise to indicate that tiles are constructed
                 resolve();
             }).then(() => {
-                tiles.b = true;
-                // Make the container visible after elements are appended and flag is set
-                document.getElementById(containerId).style.visibility = 'visible';
+                requestAnimationFrame(() => {
+                    container.style.visibility = 'visible';
+                    tiles.b = true; // Set the flag for tiles b to true after the container is visible
+                });
             });
         }
 
-
-        function delayedVirtualCanvasUpdate() {
-            // Delay the call to updateVirtualCanvasSize
-            
-            setTimeout(updateVirtualCanvasSize, 100); // Delay of 100 milliseconds
-        }
 
 
         async function initializeCacheStatus(urls) {
