@@ -3726,5 +3726,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "80891290317"
+    },
+    "95315698026.jpg": {
+        "File Name": "95315698026.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man) dancing joyfully on a vibrant stage, wearing a silky blue scarf that flows gracefully with his movements. The scarf in blue shimmers in the spotlight, adding a touch of elegance and flair to HogeAI man's ecstatic dance. Surrounding him, bright neon lights and colorful spotlights create a dynamic and festive atmosphere. The stage is set with vibrant, swirling patterns and glowing holographic elements that enhance the sense of movement and joy. The background features whimsical digital graffiti and interactive installations, reminiscent of a lively festival. The entire scene is alive with energy, capturing the feeling of ecstasy and the elegance of the blue scarf. 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Luis Royo, Bayard Wu, Greg Rutkowski, Maxim Verehin.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "95315698026"
     }
 }
