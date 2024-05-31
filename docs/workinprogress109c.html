@@ -3005,7 +3005,7 @@
                             }
                         });
                     });
-                }, 0); // 100ms delay to ensure visibility change takes effect
+                }, 100); // 100ms delay to ensure visibility change takes effect
             });
         }
 
@@ -3158,7 +3158,7 @@
         function delayedVirtualCanvasUpdate() {
             // Delay the call to updateVirtualCanvasSize
             
-            setTimeout(updateVirtualCanvasSize, 11); // Delay of 100 milliseconds
+            setTimeout(updateVirtualCanvasSize, 100); // Delay of 100 milliseconds
         }
 
 
@@ -3306,7 +3306,7 @@
             Promise.all([backgroundPromise, sideLeftPromise, sideRightPromise, viewerImagePromise]).then(() => {
                 setTimeout(() => {
                     fadeInElements();
-                }, 0);
+                }, 111);
             }).catch((error) => {
                 console.error("Error loading elements:", error);
             });
