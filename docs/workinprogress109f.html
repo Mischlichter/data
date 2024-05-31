@@ -2949,6 +2949,7 @@
             waitForTiles().then(() => {
                 const selectors = ['#interfaceContainer', '#backgroundContainer', '#iframeContainer', '#bodyGalleryContainer', '.flex-container'];
                 let animationCount = 0;
+                let shouldFadeIn = false;
 
                 const animationEndHandler = () => {
                     animationCount--;
@@ -2961,19 +2962,26 @@
                     const elements = document.querySelectorAll(selector);
                     elements.forEach(element => {
                         if (element) {
+                            element.style.opacity = 0; // Set initial opacity to 0
+                            element.style.display = 'block'; // Ensure elements are visible
+
                             animationCount++;
-                            element.style.opacity = 1; // Set opacity to 1
-                            if (isIOS()) {
-                                element.style.transition = 'none'; // Remove transitions for iOS
-                            } else {
-                                element.style.transition = 'opacity 1s ease-in-out'; // Apply transitions for non-iOS
-                            }
-                            element.addEventListener('transitionend', animationEndHandler);
+                            // Start the fade-in effect after a short delay to ensure initial styles are applied
+                            setTimeout(() => {
+                                element.style.opacity = 1; // Set opacity to 1
+                                if (isIOS()) {
+                                    element.style.transition = 'none'; // Remove transitions for iOS
+                                } else {
+                                    element.style.transition = 'opacity 1s ease-in-out'; // Apply transitions for non-iOS
+                                }
+                                element.addEventListener('transitionend', animationEndHandler);
+                            }, 50); // 50ms delay before starting the fade-in
                         }
                     });
                 });
             });
         }
+
 
 
         function fadeInmenu() {
