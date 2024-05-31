@@ -3044,10 +3044,16 @@
         }
 
 
+
+
+
+
+
+
         function createVerticalTiles_a(containerId, imageUrl, imageHeight) {
             return new Promise((resolve, reject) => {
                 const container = document.getElementById(containerId);
-                container.style.display = 'none'; // Hide the container initially
+                container.style.visibility = 'hidden'; // Hide the container initially
                 container.innerHTML = ''; // Clear existing content
 
                 const numTiles = 20; // Since you mentioned wanting about 10 tiles
@@ -3073,15 +3079,15 @@
                 resolve();
             }).then(() => {
                 tiles.a = true;
-                // Show the container after elements are appended and flag is set
-                document.getElementById(containerId).style.display = 'block';
+                // Make the container visible after elements are appended and flag is set
+                document.getElementById(containerId).style.visibility = 'visible';
             });
         }
 
         function createVerticalTiles_b(containerId, imageUrl, imageHeight) {
             return new Promise((resolve, reject) => {
                 const container = document.getElementById(containerId);
-                container.style.display = 'none'; // Hide the container initially
+                container.style.visibility = 'hidden'; // Hide the container initially
                 container.innerHTML = ''; // Clear existing content
 
                 const numTiles = 20; // Since you mentioned wanting about 10 tiles
@@ -3103,8 +3109,8 @@
                 resolve();
             }).then(() => {
                 tiles.b = true;
-                // Show the container after elements are appended and flag is set
-                document.getElementById(containerId).style.display = 'block';
+                // Make the container visible after elements are appended and flag is set
+                document.getElementById(containerId).style.visibility = 'visible';
             });
         }
 
