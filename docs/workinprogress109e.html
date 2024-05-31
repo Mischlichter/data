@@ -1130,7 +1130,7 @@
                     requestAnimationFrame(() => {
                         if (loaded < urlsToCache.length) {
                             loadingPercentage = Math.floor((loaded / urlsToCache.length) * 90); // Cap at 80%
-                            console.log(`Loading percentage (0-90% range): ${loadingPercentage}%`);
+                            //console.log(`Loading percentage (0-90% range): ${loadingPercentage}%`);
                         } else {
                             loadingPercentage = 90; // Ensure it is set to exactly 80% when loaded is 100
 
@@ -1152,7 +1152,7 @@
 
                             requestAnimationFrame(animateTo100);
                         }
-                        console.log(`Loading: ${loadingPercentage}% complete`);
+                        //console.log(`Loading: ${loadingPercentage}% complete`);
                     });
                     await new Promise(resolve => setTimeout(resolve, delay));
                 }
