@@ -282,7 +282,7 @@ P02:
 Setting the Stage - Alright, adventurer! Before you unleash your creativity, let's lay down some ground rules. Crafting the perfect prompt is like whipping up a magical potion: a dash of description, a sprinkle of specifics, and a big ol' dollop of imagination.
 
 P03:
-The Basics - Be descriptive: The more you tell, the more we show. Instead of "Hoge with a hat", try "Hoge rocking a neon-green cowboy hat under a disco ball". See the difference? Set the mood and setting: Is it a sunny day at the beach or a mysterious moonlit forest? Your choice, your story.
+The Basics - Be descriptive: The more you tell, the more we show. Instead of "Hoge with a hat", try "Hoge standing confidently on a peaceful beach, wearing a cowboy hat in neon green, smiling and looking thankful, golden sand, grassy dunes, sunny day, peaceful sounds of nature, painting vibe, 8K UHD". See the difference? Set the mood and setting: Is it a sunny day at the beach or a mysterious moonlit forest? Your choice, your story.
 
 P04:
 Dive Deeper - Colors & Textures: Add some flair! "Hoge's silky blue scarf" paints a clearer picture than just "Hoge's scarf". Actions & Emotions: What's Hoge up to? Is he dancing, meditating, or maybe feeling ecstatic or pensive? Let us know!
