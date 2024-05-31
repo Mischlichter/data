@@ -2949,7 +2949,6 @@
             waitForTiles().then(() => {
                 const selectors = ['#interfaceContainer', '#backgroundContainer', '#iframeContainer', '#bodyGalleryContainer', '.flex-container'];
                 let animationCount = 0;
-                let shouldFadeIn = false;
 
                 const animationEndHandler = () => {
                     animationCount--;
@@ -2962,26 +2961,19 @@
                     const elements = document.querySelectorAll(selector);
                     elements.forEach(element => {
                         if (element) {
-                            element.style.opacity = 0; // Set initial opacity to 0
-                            element.style.display = 'block'; // Ensure elements are visible
-
                             animationCount++;
-                            // Start the fade-in effect after a short delay to ensure initial styles are applied
-                            setTimeout(() => {
-                                element.style.opacity = 1; // Set opacity to 1
-                                if (isIOS()) {
-                                    element.style.transition = 'none'; // Remove transitions for iOS
-                                } else {
-                                    element.style.transition = 'opacity 1s ease-in-out'; // Apply transitions for non-iOS
-                                }
-                                element.addEventListener('transitionend', animationEndHandler);
-                            }, 50); // 50ms delay before starting the fade-in
+                            element.style.opacity = 1; // Set opacity to 1
+                            if (isIOS()) {
+                                element.style.transition = 'none'; // Remove transitions for iOS
+                            } else {
+                                element.style.transition = 'opacity 1s ease-in-out'; // Apply transitions for non-iOS
+                            }
+                            element.addEventListener('transitionend', animationEndHandler);
                         }
                     });
                 });
             });
         }
-
 
 
         function fadeInmenu() {
@@ -3249,7 +3241,7 @@
             const backgroundPromise = createVerticalTiles_a('interfaceBackground', getCachedOrFetchImageSync(backgroundUrl), imageHeight)
                 .then(() => {
                     //console.log("Background tiles loaded.");
-                    tiles.a = true;
+                   
                 });
 
             const sideLeftPromise = createVerticalTiles_b('interfaceSideLeft', getCachedOrFetchImageSync(sideImageUrl), imageHeight)
@@ -3260,7 +3252,7 @@
             const sideRightPromise = createVerticalTiles_b('interfaceSideRight', getCachedOrFetchImageSync(sideImageUrl), imageHeight)
                 .then(() => {
                     //console.log("Side right tiles loaded.");
-                    tiles.b = true;
+                   
                 });
 
             const viewerImagePromise = new Promise((resolve, reject) => {
