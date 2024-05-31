@@ -2975,41 +2975,40 @@
                     }
                 };
 
-                // Hide elements before starting the fade-in
                 selectors.forEach(selector => {
                     const elements = document.querySelectorAll(selector);
                     elements.forEach(element => {
                         if (element) {
                             element.style.visibility = 'hidden'; // Set initial visibility to hidden
+                            element.style.opacity = 0; // Start with opacity 0
                         }
                     });
                 });
 
-                // Ensure a brief delay to allow visibility changes to take effect
+                // Ensure all elements are fully loaded and off-screen before starting fade-in
                 setTimeout(() => {
                     selectors.forEach(selector => {
                         const elements = document.querySelectorAll(selector);
                         elements.forEach(element => {
                             if (element) {
                                 animationCount++;
-                                element.style.opacity = 0; // Start with opacity 0
                                 element.style.visibility = 'visible'; // Make elements visible
-                                if (isIOS()) {
-                                    element.style.transition = 'none'; // Remove transitions for iOS
-                                } else {
-                                    element.style.transition = 'opacity 1s ease-in-out'; // Apply transitions for non-iOS
-                                }
-                                element.addEventListener('transitionend', animationEndHandler);
-                                
-                                // Trigger reflow to ensure visibility change takes effect before starting opacity transition
-                                element.getBoundingClientRect();
-                                element.style.opacity = 1; // Fade in
+
+                                // Use requestAnimationFrame to ensure the styles are applied in the next frame
+                                requestAnimationFrame(() => {
+                                    if (!isIOS()) {
+                                        element.style.transition = 'opacity 1s ease-in-out'; // Apply transitions for non-iOS
+                                    }
+                                    element.addEventListener('transitionend', animationEndHandler);
+                                    element.style.opacity = 1; // Fade in
+                                });
                             }
                         });
                     });
                 }, 100); // 100ms delay to ensure visibility change takes effect
             });
         }
+
 
 
         
