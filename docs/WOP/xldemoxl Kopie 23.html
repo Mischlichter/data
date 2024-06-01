@@ -1649,11 +1649,9 @@
         var iframeIsVisible = false;
 
         function updateIframe(sceneKey) {
-
             const iframeContainer = document.getElementById('iframeContainer');
             const mouseOverlay = document.getElementById('mouseOverlay');
             const bodyGalleryContainer = document.getElementById('bodyGalleryContainer');
-
 
             unhideElementsByClass("foreground-image-container");
 
@@ -1692,8 +1690,7 @@
                 hideElementsByClass("foreground-image-container");
 
                 setupDirectIframe('frames/clipz2.html'); // Load clipz2.html for scene05 directly into the body
-                unhideDirectIframe();
-                
+                fadeInElements();
             } else {
                 // Logic for other scenes
                 setupIframe(`VIEWER.html?scene=${sceneKey}`);
@@ -1721,14 +1718,11 @@
             }
 
             function setupDirectIframe(src) {
-                hideFooterInstantly();
                 const newIframe = document.createElement('iframe');
                 newIframe.id = 'sceneIframe';
                 newIframe.style.width = '100%';
                 newIframe.style.height = '100vh';
                 newIframe.style.border = 'none';
-                newIframe.style.display = 'none'; // Make iframe invisible on load
-                newIframe.style.opacity = '0'; // Set initial opacity to 0
                 newIframe.src = src;
 
                 document.body.appendChild(newIframe); // Directly append to the body
@@ -1840,57 +1834,7 @@
 
  
 
-        function unhideDirectIframe() {
-            const iframe = document.getElementById('sceneIframe');
-            if (iframe) {
-                iframe.style.display = 'block'; // Make iframe visible
-
-                setTimeout(() => {
-                    if (isIOS()) {
-                        iframe.style.transition = 'none'; // Disable transition for iOS
-                        iframe.style.opacity = '1'; // Set opacity to 1 immediately
-                    } else {
-                        iframe.style.transition = 'opacity 2s'; // Set transition for opacity
-                        iframe.style.opacity = '1'; // Fade in by changing opacity to 1
-                    }
-                }, 100); // Delay to ensure the display change is rendered
-            }
-        }
-
-        function hideDirectIframe() {
-            const iframe = document.getElementById('sceneIframe');
-            if (iframe) {
-                if (isIOS()) {
-                    iframe.style.transition = 'none'; // Disable transition for iOS
-                    iframe.style.opacity = '0'; // Set opacity to 0 immediately
-                    setTimeout(() => {
-                        iframe.style.display = 'none'; // Hide iframe after a short delay
-                    }, 100); // Short delay to ensure the opacity change is rendered
-                } else {
-                    iframe.style.transition = 'opacity 1s'; // Set transition for opacity
-                    iframe.style.opacity = '0'; // Fade out by changing opacity to 0
-                    setTimeout(() => {
-                        iframe.style.display = 'none'; // Hide iframe after transition
-                    }, 1000); // Delay to ensure the transition completes
-                }
-            }
-        }
-
-
-
-        function hideFooterInstantly() {
-            const footerContainer = document.getElementById('customStyledFooter');
-            if (footerContainer) {
-                footerContainer.style.display = 'none'; // Instantly hide the footer
-            }
-        }
-
-        function unhideFooterInstantly() {
-            const footerContainer = document.getElementById('customStyledFooter');
-            if (footerContainer) {
-                footerContainer.style.display = 'block'; // Instantly unhide the footer
-            }
-        }
+        
 
 
 //////// MOUSE HANDLING ///////////        
@@ -2264,9 +2208,7 @@
                     }
 
                     currentlyActiveMenuItemId = itemId;
-                    hideDirectIframe();
                     await fadeOutElements();
-
                     currentSceneIndex = (itemId === 'menuLogo') ? 0 : index;
 
                     // Load the selected scene
