@@ -926,7 +926,7 @@
 
 
             const loadingInterval = setInterval(function() {
-                if (loadingPercentage >= 45) {
+                if (loadingPercentage >= 90) {
                     // Loading is complete
                     shuffleOnes(); // Start shuffling spans with '1'
                     clearInterval(loadingInterval);
@@ -937,7 +937,7 @@
         // Function to shuffle spans with '1'
             function shuffleOnes() {
                 const spansWithOne = Array.from(document.querySelectorAll('span')).filter(span => span.getAttribute('data-original-char') === '1');
-                const shuffleDuration = 11100; // Duration for each span to shuffle
+                const shuffleDuration = 150; // Duration for each span to shuffle
                 const delayBetweenSpans = 50; // Delay between spans
 
                 spansWithOne.forEach((span, index) => {
@@ -1025,8 +1025,6 @@
                 });
             }
 
-    
-
             async function preloadAssets() {
                 const supportsIndexedDB = checkIndexedDBSupport();
                 console.log('Loading');
@@ -1039,22 +1037,29 @@
 
                     for (let attempt = 1; attempt <= maxRetries; attempt++) {
                         try {
+                            //console.log(`Attempt ${attempt} to open database`);
                             db = await timeoutPromise(
                                 idb.openDB('MyDatabase', 1, {
                                     upgrade(db, oldVersion, newVersion, transaction) {
+                                      
                                         if (!db.objectStoreNames.contains('assets')) {
+                                         
                                             db.createObjectStore('assets', { keyPath: 'url' });
                                         }
                                     }
                                 }),
                                 openDBTimeout
                             );
+                            //console.log('Database opened successfully on attempt', attempt);
                             break; // Exit the loop if successful
                         } catch (error) {
                             console.error(`Error opening database on attempt ${attempt}:`, error);
                             if (attempt < maxRetries) {
+                                //console.log(`Retrying to open database in ${retryDelay} ms...`);
                                 await new Promise(resolve => setTimeout(resolve, retryDelay));
                             } else {
+                                //console.error('Maximum retries reached. Could not open database.');
+                                // Fallback to caching without IndexedDB
                                 db = null;
                                 break;
                             }
@@ -1065,6 +1070,7 @@
                 let cache;
                 try {
                     cache = await caches.open(cacheName);
+                    //console.log('Cache opened successfully');
                 } catch (error) {
                     console.error('Error opening cache:', error);
                     return;
@@ -1072,22 +1078,27 @@
 
                 let assetsJson, extraText;
                 try {
+                    //console.log('Fetching assets and extra assets');
                     [assetsJson, extraText] = await Promise.all([
                         fetch(ASSETS_MANIFEST_URL).then(res => res.json()),
                         fetch(EXTRA_ASSETS_URL).then(res => res.text()),
                     ]);
+                    //console.log('Assets and extra assets fetched successfully');
                 } catch (error) {
                     console.error('Error fetching assets or extra assets:', error);
                     return;
                 }
+
+                //console.log('Assets JSON:', assetsJson);
 
                 const urlsToCache = [];
                 parseAssets(assetsJson, urlsToCache);
                 const extraAssetsUrls = parseExtraAssets(extraText, assetsJson); // Pass manifest to parseExtraAssets
                 urlsToCache.push(...extraAssetsUrls); // Add extra assets to urlsToCache
 
+                //console.log(`Total URLs to cache: ${urlsToCache.length}`);
                 let loaded = 0;
-                const delay = 77;
+                const delay = 111;
                 let assetsToStore = [];
 
                 for (let { url, lastModified } of urlsToCache) {
@@ -1095,8 +1106,10 @@
 
                     if (supportsIndexedDB && db) {
                         try {
+                            //console.log(`Checking IndexedDB for ${url}`);
                             const idbResponse = await db.transaction('assets').objectStore('assets').get(url);
                             if (idbResponse && new Date(idbResponse.lastModified) >= new Date(lastModified)) {
+                                //console.log(`Loaded from IndexedDB: ${url}`);
                                 shouldFetch = false;
                             }
                         } catch (error) {
@@ -1108,14 +1121,18 @@
                     if (shouldFetch) {
                         let response;
                         try {
+                            //console.log(`Fetching ${url}`);
                             response = await fetch(url);
                             if (response.ok) {
                                 const cloneForCache = response.clone();
                                 await cache.put(url, cloneForCache);
+                                //console.log(`Fetched and cached: ${url}`);
                                 if (supportsIndexedDB && db) {
                                     const blob = await response.blob();
                                     const lastModifiedHeader = response.headers.get('last-modified') || new Date(lastModified).toISOString();
+                                    //console.log(`Preparing to store in DB: ${url}, Last Modified: ${lastModifiedHeader}`);
                                     assetsToStore.push({ url, blob, lastModified: lastModifiedHeader });
+
                                 }
                             } else {
                                 console.error(`HTTP error! Status: ${response.status}`);
@@ -1126,32 +1143,8 @@
                     }
 
                     loaded++;
-                    //console.log(`Loaded count: ${loaded} of ${urlsToCache.length}`);
                     requestAnimationFrame(() => {
-                        if (loaded < urlsToCache.length) {
-                            loadingPercentage = Math.floor((loaded / urlsToCache.length) * 90); // Cap at 80%
-                            //console.log(`Loading percentage (0-90% range): ${loadingPercentage}%`);
-                        } else {
-                            loadingPercentage = 90; // Ensure it is set to exactly 80% when loaded is 100
-
-                            // Animate from 80% to 100% over 2 seconds
-                            const animationStartTime = performance.now();
-                            const animationDuration = 1000; // 2 seconds
-
-                            function animateTo100(timestamp) {
-                                const elapsedTime = timestamp - animationStartTime;
-                                const progress = Math.min(elapsedTime / animationDuration, 1); // Progress from 0 to 1
-                                loadingPercentage = 90 + (10 * progress); // Calculate percentage from 80 to 100
-
-                                if (progress < 1) {
-                                    requestAnimationFrame(animateTo100); // Continue animation
-                                } else {
-                                    loadingPercentage = 100;
-                                }
-                            }
-
-                            requestAnimationFrame(animateTo100);
-                        }
+                        loadingPercentage = Math.floor((loaded / urlsToCache.length) * 100);
                         //console.log(`Loading: ${loadingPercentage}% complete`);
                     });
                     await new Promise(resolve => setTimeout(resolve, delay));
@@ -1159,11 +1152,15 @@
 
                 if (supportsIndexedDB && db) {
                     try {
+                        //console.log('Storing assets in IndexedDB');
                         await storeAssetsInDB(assetsToStore);
+                        
                     } catch (error) {
                         console.error('Error storing assets in IndexedDB:', error);
                     }
                 }
+
+                
 
                 if (!localStorage.getItem(firstLoadCompleteFlag)) {
                     localStorage.setItem(firstLoadCompleteFlag, 'true');
@@ -1174,8 +1171,6 @@
 
                 fadeOutAsciiLinesXL(); // Assuming this is a function for UI effects
             }
-
-
 
             
 
@@ -1896,15 +1891,12 @@
                 }
 
                 sendMouseEventToIframe('mousemove', { clientX: mouseX, clientY: mouseY });
+                requestAnimationFrame(animate);  // Only request a new frame if animation isn't excluded
             } else {
                 console.log('Animation is disabled on this device.');
                 // Optionally handle any cleanup here if necessary when stopping the animation
             }
-            return !shouldExcludeAnimation();  // Return false if the animation should be excluded, to remove it from the animation list
         }
-
-        // Register the animate function with the AnimationManager
-        AnimationManager.registerAnimation(animate);
 
 
         // Start the animation loop
@@ -2088,7 +2080,6 @@
             fetchAndParseMenuData().then(menuData => {
                 if (menuData && menuData.length > 0) {
                     loadMenu(menuData);
-
                 }
             });
         }
@@ -2929,15 +2920,14 @@
 
       
 
-        let tiles = { a: false, b: false, viewerReady: false };
+        let tiles = { a: false, b: false };
 
         function fadeInElements() {
             const waitForTiles = () => {
                 return new Promise((resolve) => {
                     const checkTiles = () => {
-                        //console.log(`Checking tiles: a=${tiles.a}, b=${tiles.b}, viewerReady=${tiles.viewerReady}`);
-                        if (tiles.a && tiles.b && tiles.viewerReady) {
-                            resolve(); // Resolve the promise when both tiles.a, tiles.b, and tiles.viewerReady are true
+                        if (tiles.a && tiles.b) {
+                            resolve(); // Resolve the promise when both tiles.a and tiles.b are true
                         } else {
                             setTimeout(checkTiles, 100); // Check every 100 milliseconds
                         }
@@ -2946,7 +2936,7 @@
                 });
             };
 
-            // Wait for both tiles.a, tiles.b, and tiles.viewerReady to become true
+            // Wait for both tiles.a and tiles.b to become true
             waitForTiles().then(() => {
                 const selectors = ['#interfaceContainer', '#backgroundContainer', '#iframeContainer', '#bodyGalleryContainer', '.flex-container'];
                 let animationCount = 0;
@@ -2975,10 +2965,10 @@
                 });
             });
         }
+        
 
 
         function fadeInmenu() {
-            updateLogoVisibility();
             return new Promise((resolve, reject) => {
                 const selectors = ['.menu-bar', '.menu-container'];
                 let animationCount = 0;
@@ -3240,22 +3230,9 @@
             const viewerImageUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/v${sceneFormatted}.jpg`;
             const viewerMaskUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/vm${sceneFormatted}.png`;
 
-            const backgroundPromise = createVerticalTiles_a('interfaceBackground', getCachedOrFetchImageSync(backgroundUrl), imageHeight)
-                .then(() => {
-                    //console.log("Background tiles loaded.");
-                    tiles.a = true;
-                });
-
-            const sideLeftPromise = createVerticalTiles_b('interfaceSideLeft', getCachedOrFetchImageSync(sideImageUrl), imageHeight)
-                .then(() => {
-                    //console.log("Side left tiles loaded.");
-                });
-
-            const sideRightPromise = createVerticalTiles_b('interfaceSideRight', getCachedOrFetchImageSync(sideImageUrl), imageHeight)
-                .then(() => {
-                    //console.log("Side right tiles loaded.");
-                    tiles.b = true;
-                });
+            const backgroundPromise = createVerticalTiles_a('interfaceBackground', getCachedOrFetchImageSync(backgroundUrl), imageHeight);
+            const sideLeftPromise = createVerticalTiles_b('interfaceSideLeft', getCachedOrFetchImageSync(sideImageUrl), imageHeight);
+            const sideRightPromise = createVerticalTiles_b('interfaceSideRight', getCachedOrFetchImageSync(sideImageUrl), imageHeight);
 
             const viewerImagePromise = new Promise((resolve, reject) => {
                 const viewerImageElement = document.getElementById('interfaceViewerImage');
@@ -3267,8 +3244,6 @@
                         viewerImageElement.style.webkitMaskImage = `url('${viewerMaskUrl}')`;
                         viewerImageElement.style.maskSize = '100% 100%';
                         viewerImageElement.style.webkitMaskSize = '100% 100%';
-                        //console.log("Viewer image loaded and masked.");
-                        
                         resolve();
                     };
                     tempImage.onerror = function () {
@@ -3282,17 +3257,18 @@
                 }
             });
 
-            Promise.all([backgroundPromise, sideLeftPromise, sideRightPromise, viewerImagePromise])
-                .then(() => {
-                    setTimeout(() => {
-                        tiles.viewerReady = true;
-                        fadeInElements();
-                    }, 111);
-                })
-                .catch((error) => {
-                    console.error("Error loading elements:", error);
-                });
+            Promise.all([backgroundPromise, sideLeftPromise, sideRightPromise, viewerImagePromise]).then(() => {
+                setTimeout(() => {
+                    fadeInElements();
+                }, 111);
+            }).catch((error) => {
+                console.error("Error loading elements:", error);
+            });
         }
+
+
+
+
         
 
         let lastScrollY = 0;
@@ -3594,10 +3570,7 @@
             if (!currentSceneData) {
                 return; // Exit if not set
             }
-
             const savedScrollPosition = window.scrollY;
-            const initialHeight = document.body.scrollHeight;
-
             // Use currentSceneData for scaling animation
             Object.keys(currentSceneData.containers).forEach(containerId => {
                 let containerData = currentSceneData.containers[containerId];
@@ -3605,12 +3578,9 @@
                 let lineSpans = createSpansForContainer(containerId, textLines.join(' '));
                 startScalingAnimation(lineSpans);
             });
-
-            const newHeight = document.body.scrollHeight;
-            const heightDifference = newHeight - initialHeight;
-
-            window.scrollTo(0, savedScrollPosition + heightDifference);
+            window.scrollTo(0, savedScrollPosition);
         }
+
        
 
 
