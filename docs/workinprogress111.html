@@ -1694,7 +1694,7 @@
                 hideElementsByClass("foreground-image-container");
 
                 setupDirectIframe('frames/clipz2.html'); // Load clipz2.html for scene05 directly into the body
-                unhideDirectIframe();
+                
                 
             } else {
                 // Logic for other scenes
@@ -1741,6 +1741,8 @@
                 hideBackground();
                 scrollToTop();
                 iframeLoaded(newIframe);
+                
+                unhideDirectIframe();
             }
 
             function iframeLoaded(iframe) {
