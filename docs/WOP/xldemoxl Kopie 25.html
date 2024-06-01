@@ -691,25 +691,7 @@
         }
 
 
-        html.lenis, html.lenis body {
-          height: auto;
-        }
 
-        .lenis.lenis-smooth {
-          scroll-behavior: auto !important;
-        }
-
-        .lenis.lenis-smooth [data-lenis-prevent] {
-          overscroll-behavior: contain;
-        }
-
-        .lenis.lenis-stopped {
-          overflow: hidden;
-        }
-
-        .lenis.lenis-smooth iframe {
-          pointer-events: none;
-        }
 
 
     </style>
@@ -775,7 +757,7 @@
     <link rel="stylesheet" type="text/css" href="css/bodygallery.css">
     <script src="https://kit.fontawesome.com/a258000a2d.js" crossorigin="anonymous"></script>
 
-    <script src="scripts/lenis.min.js"></script>
+    <script src="scripts/lenis.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
@@ -1585,10 +1567,6 @@
         
 //////// MOUSE SMOOTHING ////////
 
-        let lastScrollY = 0;
-        let lenisInitialized = false;
-        let parallaxAnimationRegistered = false;
-
         const AnimationManager = {
             frameCap: 90,
             lastRender: performance.now(),
@@ -1596,9 +1574,7 @@
             running: false,
 
             registerAnimation(stepFunction) {
-                if (!this.animations.includes(stepFunction)) {
-                    this.animations.push(stepFunction);
-                }
+                this.animations.push(stepFunction);
                 if (!this.running) {
                     this.running = true;
                     requestAnimationFrame(this.runAnimations.bind(this));
@@ -1621,30 +1597,24 @@
 
         const lenis = new Lenis();
 
-        lenis.on('scroll', () => {
+        let parallaxAnimationRegistered = false;
+
+        lenis.on('scroll', (e) => {
+            // Ensure parallax effect updates on Lenis scroll
             if (!parallaxAnimationRegistered) {
                 parallaxAnimationRegistered = true;
-                AnimationManager.registerAnimation(throttleUpdateParallax);
+                AnimationManager.registerAnimation(updateParallax);
             }
         });
 
-        function throttleUpdateParallax() {
-            requestAnimationFrame(updateParallax);
-        }
-
+        // Separate function to ensure lenis runs without frame cap
         function runLenis(timestamp) {
             lenis.raf(timestamp);
-            requestAnimationFrame(runLenis);
+            requestAnimationFrame(runLenis); // Continuously request the next animation frame
         }
 
-
-
-        if (!lenisInitialized) {
-            lenisInitialized = true;
-            requestAnimationFrame(runLenis);
-        }
-
-
+        // Start lenis animation loop
+        requestAnimationFrame(runLenis);
 
 
         function scrollToTop() {
@@ -2538,8 +2508,8 @@
             //loadScene(currentSceneIndex); // Load the first scene
             fadeInmenu();
 
-            
-            
+            // Add scroll event listener after initializing the first scene
+            window.addEventListener('scroll', checkAndStartAnimationsOnScroll);
         }
 
 
@@ -2785,7 +2755,7 @@
             updateAllContainers(scene);
 
             
-            observeElementsForAnimations();
+            observeImagesForAnimation();
             createScrollToTopButton();
             highlightActiveMenuItem(`menuContainer${index}`);
         }
@@ -3004,7 +2974,20 @@
 
 
 
+        function observeImagesForAnimation() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1; // Trigger the fade-in animation
+                    }
+                });
+            }, {
+                threshold: 0.25 // This means the animation will start when 10% of the item is visible
+            });
 
+            const images = document.querySelectorAll('.flex-icontainer');
+            images.forEach(image => observer.observe(image));
+        }
 
         function isIOS() {
             return /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
@@ -3025,7 +3008,6 @@
                         }
                     };
                     checkTiles(); // Start checking tiles
-                    updateParallax();
                 });
             };
 
@@ -3155,7 +3137,7 @@
                     container.appendChild(img);
 
                     // Add updateParallax to the AnimationManager
-                    //AnimationManager.registerAnimation(updateParallax);
+                    AnimationManager.registerAnimation(updateParallax);
 
                     // This function needs to be called to update the virtual canvas size accordingly
                     delayedVirtualCanvasUpdate();
@@ -3369,7 +3351,6 @@
                 .then(() => {
                     setTimeout(() => {
                         tiles.viewerReady = true;
-
                         fadeInElements();
                     }, 111);
                 })
@@ -3379,10 +3360,10 @@
         }
         
 
-        
+        let lastScrollY = 0;
 
         function updateParallax() {
-            const isiOS = /iPad|iPhone|iPod/.test(navigator.platform) ||
+            const isiOS = /iPad|iPhone|iPod/.test(navigator.platform) || 
                           (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
             if (isiOS) {
                 return;
@@ -3400,28 +3381,27 @@
 
             lastScrollY = scrollY;
 
-            requestAnimationFrame(() => {
-                const background = document.getElementById('interfaceBackground');
-                if (background) {
-                    const offsetBackground = scrollY * speedFactorBackground;
-                    background.style.transform = `translateY(${offsetBackground}px)`;
-                }
+            const background = document.getElementById('interfaceBackground');
+            if (background) {
+                const offsetBackground = scrollY * speedFactorBackground;
+                background.style.transform = `translateY(${offsetBackground}px)`;
+            }
 
-                const sideLeft = document.getElementById('interfaceSideLeft');
-                const sideRight = document.getElementById('interfaceSideRight');
-                if (sideLeft && sideRight) {
-                    const offsetSides = scrollY * speedFactorSides;
-                    sideLeft.style.transform = `translateY(${offsetSides}px)`;
-                    sideRight.style.transform = `translateY(${offsetSides}px)`;
-                }
+            const sideLeft = document.getElementById('interfaceSideLeft');
+            const sideRight = document.getElementById('interfaceSideRight');
+            if (sideLeft && sideRight) {
+                const offsetSides = scrollY * speedFactorSides;
+                sideLeft.style.transform = `translateY(${offsetSides}px)`;
+                sideRight.style.transform = `translateY(${offsetSides}px)`;
+            }
 
-                const viewerContainer = document.getElementById('interfaceViewerContainer');
-                if (viewerContainer) {
-                    const offsetViewer = scrollY * speedFactorViewer;
-                    viewerContainer.style.transform = `translateY(${offsetViewer}px)`;
-                }
-            });
+            const viewerContainer = document.getElementById('interfaceViewerContainer');
+            if (viewerContainer) {
+                const offsetViewer = scrollY * speedFactorViewer;
+                viewerContainer.style.transform = `translateY(${offsetViewer}px)`;
+            }
         }
+
 
 
 /////////// ANIMATION TEXT /////
@@ -3698,49 +3678,19 @@
         }
        
 
-        let observedElements = [];
 
-        function observeElementsForAnimations() {
-            const observerOptions = {
-                threshold: 0.25 // Trigger when 25% of the item is visible
-            };
+        function checkAndStartAnimationsOnScroll() {
+            const viewportHeight = window.innerHeight;
+            const triggerHeight = viewportHeight / 1.05; // 1/4 of the viewport height
 
-            const observerCallback = (entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        if (entry.target.classList.contains('flex-icontainer')) {
-                            entry.target.style.opacity = 1; // Trigger the fade-in animation
-                        } else if (entry.target.classList.contains('animation-container')) {
-                            startAnimationForContainer(entry.target.id);
-                            entry.target.dataset.animationStarted = 'true'; // Mark as animated
-                        }
-                        observer.unobserve(entry.target); // Stop observing the element once it's animated
+            containerIds.forEach(containerId => {
+                const container = document.getElementById(containerId);
+                if (container) {
+                    const rect = container.getBoundingClientRect();
+                    if (rect.top <= triggerHeight && !container.dataset.animationStarted) {
+                        startAnimationForContainer(containerId);
+                        container.dataset.animationStarted = 'true'; // Mark as animated
                     }
-                });
-            };
-
-            const observer = new IntersectionObserver(observerCallback, observerOptions);
-
-            // Clear existing observations
-            observedElements.forEach(element => observer.unobserve(element));
-            observedElements = [];
-
-            // Batch style updates to avoid multiple reflows/repaints
-            const elementsToObserve = [
-                ...document.querySelectorAll('.flex-icontainer'),
-                ...containerIds.map(id => document.getElementById(id)).filter(Boolean)
-            ];
-
-            elementsToObserve.forEach(element => {
-                if (element && !element.dataset.observed) {
-                    if (element.classList.contains('flex-icontainer')) {
-                        element.style.opacity = 0; // Start with images hidden
-                    } else if (!element.classList.contains('animation-container')) {
-                        element.classList.add('animation-container');
-                    }
-                    observer.observe(element);
-                    element.dataset.observed = 'true'; // Mark as observed
-                    observedElements.push(element); // Track observed element
                 }
             });
         }
