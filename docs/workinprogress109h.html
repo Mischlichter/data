@@ -2088,6 +2088,7 @@
             fetchAndParseMenuData().then(menuData => {
                 if (menuData && menuData.length > 0) {
                     loadMenu(menuData);
+                    updateLogoVisibility();
                 }
             });
         }
