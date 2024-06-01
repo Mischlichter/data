@@ -293,12 +293,8 @@ Pro Tips - Keep It Clear: While details are awesome, don't overload. "Hoge havin
 P06:
 Advanced Prompting Tactics - Order Matters: Start with the main idea, then sprinkle in the details. Words at the beginning carry more weight. Ditch "very big". Opt for "gigantic" or "colossal". Aim for a blueprint that outlines the Main Subject, Environment/Setting, and Style/Mood.
 
-P08:
-Example - Prompt: Hoge in colossal size, standing in a futuristic cityscape with towering neon-lit skyscrapers, bustling with flying cars and holographic advertisements, in a cyberpunk style, capturing a vibrant, energetic, and high-tech atmosphere
-
-
 P07:
-Experiment & Explore - The beauty of HogeAI? There's no right or wrong. Play around, experiment, and most importantly, have a blast! From serene landscapes to wacky adventures, the Hoge universe is yours to explore.
+Experiment & Explore - The beauty of HogeAI? There's no right or wrong. Play around and most importantly, have a blast! From serene landscapes to wacky adventures, the Hoge universe is yours to explore.
 
 
 #container01 {
