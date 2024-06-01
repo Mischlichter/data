@@ -3241,7 +3241,6 @@
             const backgroundPromise = createVerticalTiles_a('interfaceBackground', getCachedOrFetchImageSync(backgroundUrl), imageHeight)
                 .then(() => {
                     //console.log("Background tiles loaded.");
-                   
                 });
 
             const sideLeftPromise = createVerticalTiles_b('interfaceSideLeft', getCachedOrFetchImageSync(sideImageUrl), imageHeight)
@@ -3252,59 +3251,38 @@
             const sideRightPromise = createVerticalTiles_b('interfaceSideRight', getCachedOrFetchImageSync(sideImageUrl), imageHeight)
                 .then(() => {
                     //console.log("Side right tiles loaded.");
-                   
                 });
 
             const viewerImagePromise = new Promise((resolve, reject) => {
                 const viewerImageElement = document.getElementById('interfaceViewerImage');
-                const viewerMaskUrl = 'path_to_mask_image'; // Replace with the actual mask URL
-                const viewerImageUrl = 'path_to_viewer_image'; // Replace with the actual viewer image URL
-
                 if (viewerImageElement && document.body.contains(viewerImageElement)) {
                     const tempImage = new Image();
-                    const tempMaskImage = new Image();
-
-                    let imagesLoaded = 0;
-
-                    const checkImagesLoaded = () => {
-                        if (imagesLoaded === 2) {
-                            viewerImageElement.src = tempImage.src;
-                            viewerImageElement.style.maskImage = `url('${viewerMaskUrl}')`;
-                            viewerImageElement.style.webkitMaskImage = `url('${viewerMaskUrl}')`;
-                            viewerImageElement.style.maskSize = '100% 100%';
-                            viewerImageElement.style.webkitMaskSize = '100% 100%';
-                            //console.log("Viewer image loaded and masked.");
-                            tiles.viewerReady = true;
-                            resolve();
-                        }
-                    };
-
                     tempImage.onload = function () {
-                        imagesLoaded++;
-                        checkImagesLoaded();
+                        viewerImageElement.src = tempImage.src;
+                        viewerImageElement.style.maskImage = `url('${viewerMaskUrl}')`;
+                        viewerImageElement.style.webkitMaskImage = `url('${viewerMaskUrl}')`;
+                        viewerImageElement.style.maskSize = '100% 100%';
+                        viewerImageElement.style.webkitMaskSize = '100% 100%';
+                        //console.log("Viewer image loaded and masked.");
+                        tiles.viewerReady = true;
+                        resolve();
                     };
                     tempImage.onerror = function () {
                         console.error("Failed to load image at url:", viewerImageUrl);
-                        reject();
+                        reject(new Error(`Failed to load image at url: ${viewerImageUrl}`));
                     };
-
-                    tempMaskImage.onload = function () {
-                        imagesLoaded++;
-                        checkImagesLoaded();
-                    };
-                    tempMaskImage.onerror = function () {
-                        console.error("Failed to load mask image at url:", viewerMaskUrl);
-                        reject();
-                    };
-
-                    tempImage.src = getCachedOrFetchImageSync(viewerImageUrl);
-                    tempMaskImage.src = viewerMaskUrl;
+                    try {
+                        const cachedImage = getCachedOrFetchImageSync(viewerImageUrl);
+                        tempImage.src = cachedImage;
+                    } catch (error) {
+                        console.error(`Error fetching image from cache or network: ${viewerImageUrl}`, error);
+                        reject(new Error(`Error fetching image from cache or network: ${viewerImageUrl}`));
+                    }
                 } else {
                     console.log("Viewer image element does not exist in the DOM.");
-                    reject();
+                    reject(new Error("Viewer image element does not exist in the DOM."));
                 }
             });
-
 
             Promise.all([backgroundPromise, sideLeftPromise, sideRightPromise, viewerImagePromise])
                 .then(() => {
@@ -3316,6 +3294,7 @@
                     console.error("Error loading elements:", error);
                 });
         }
+
 
 
 
