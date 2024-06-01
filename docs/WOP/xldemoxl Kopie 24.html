@@ -1648,8 +1648,6 @@
         
         var iframeIsVisible = false;
 
-        let tiles = { a: false, b: false, viewerReady: false, iframeReady: false };
-
         function updateIframe(sceneKey) {
 
             const iframeContainer = document.getElementById('iframeContainer');
@@ -1716,14 +1714,10 @@
                 newIframe.style.border = 'none';
                 newIframe.src = src;
 
-                // Event listener for when the iframe content has fully loaded
-                newIframe.onload = () => {
-                    tiles.iframeReady = true; // Set iframeReady to true when iframe content is loaded
-                };
-
                 iframeContainer.appendChild(newIframe);
                 hideBackground();
                 scrollToTop();
+                iframeLoaded(newIframe);
             }
 
             function setupDirectIframe(src) {
@@ -2993,14 +2987,15 @@
 
       
 
-        
+        let tiles = { a: false, b: false, viewerReady: false };
 
         function fadeInElements() {
             const waitForTiles = () => {
                 return new Promise((resolve) => {
                     const checkTiles = () => {
-                        if (tiles.a && tiles.b && tiles.viewerReady && tiles.iframeReady) {
-                            resolve(); // Resolve the promise when all conditions are met
+                        //console.log(`Checking tiles: a=${tiles.a}, b=${tiles.b}, viewerReady=${tiles.viewerReady}`);
+                        if (tiles.a && tiles.b && tiles.viewerReady) {
+                            resolve(); // Resolve the promise when both tiles.a, tiles.b, and tiles.viewerReady are true
                         } else {
                             setTimeout(checkTiles, 100); // Check every 100 milliseconds
                         }
@@ -3009,7 +3004,7 @@
                 });
             };
 
-            // Wait for all conditions to become true
+            // Wait for both tiles.a, tiles.b, and tiles.viewerReady to become true
             waitForTiles().then(() => {
                 const selectors = ['#interfaceContainer', '#backgroundContainer', '#iframeContainer', '#bodyGalleryContainer', '.flex-container'];
                 let animationCount = 0;
