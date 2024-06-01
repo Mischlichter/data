@@ -2088,7 +2088,7 @@
             fetchAndParseMenuData().then(menuData => {
                 if (menuData && menuData.length > 0) {
                     loadMenu(menuData);
-                    updateLogoVisibility();
+
                 }
             });
         }
@@ -2978,6 +2978,7 @@
 
 
         function fadeInmenu() {
+            updateLogoVisibility();
             return new Promise((resolve, reject) => {
                 const selectors = ['.menu-bar', '.menu-container'];
                 let animationCount = 0;
