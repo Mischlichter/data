@@ -3241,6 +3241,7 @@
             const backgroundPromise = createVerticalTiles_a('interfaceBackground', getCachedOrFetchImageSync(backgroundUrl), imageHeight)
                 .then(() => {
                     //console.log("Background tiles loaded.");
+                    tiles.a = true;
                 });
 
             const sideLeftPromise = createVerticalTiles_b('interfaceSideLeft', getCachedOrFetchImageSync(sideImageUrl), imageHeight)
@@ -3251,6 +3252,7 @@
             const sideRightPromise = createVerticalTiles_b('interfaceSideRight', getCachedOrFetchImageSync(sideImageUrl), imageHeight)
                 .then(() => {
                     //console.log("Side right tiles loaded.");
+                    tiles.b = true;
                 });
 
             const viewerImagePromise = new Promise((resolve, reject) => {
@@ -3264,29 +3266,24 @@
                         viewerImageElement.style.maskSize = '100% 100%';
                         viewerImageElement.style.webkitMaskSize = '100% 100%';
                         //console.log("Viewer image loaded and masked.");
-                        tiles.viewerReady = true;
+                        
                         resolve();
                     };
                     tempImage.onerror = function () {
                         console.error("Failed to load image at url:", viewerImageUrl);
-                        reject(new Error(`Failed to load image at url: ${viewerImageUrl}`));
+                        reject();
                     };
-                    try {
-                        const cachedImage = getCachedOrFetchImageSync(viewerImageUrl);
-                        tempImage.src = cachedImage;
-                    } catch (error) {
-                        console.error(`Error fetching image from cache or network: ${viewerImageUrl}`, error);
-                        reject(new Error(`Error fetching image from cache or network: ${viewerImageUrl}`));
-                    }
+                    tempImage.src = getCachedOrFetchImageSync(viewerImageUrl);
                 } else {
                     console.log("Viewer image element does not exist in the DOM.");
-                    reject(new Error("Viewer image element does not exist in the DOM."));
+                    reject();
                 }
             });
 
             Promise.all([backgroundPromise, sideLeftPromise, sideRightPromise, viewerImagePromise])
                 .then(() => {
                     setTimeout(() => {
+                        tiles.viewerReady = true;
                         fadeInElements();
                     }, 111);
                 })
@@ -3294,11 +3291,6 @@
                     console.error("Error loading elements:", error);
                 });
         }
-
-
-
-
-
         
 
         let lastScrollY = 0;
