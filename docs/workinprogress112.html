@@ -1600,7 +1600,7 @@
         
 
         const AnimationManager = {
-            frameCap: 90,
+            frameCap: 90, // Set to desired frame rate
             lastRender: performance.now(),
             animations: [],
             running: false,
@@ -1616,7 +1616,7 @@
             },
 
             runAnimations(timestamp) {
-                let progress = timestamp - this.lastRender;
+                const progress = timestamp - this.lastRender;
                 if (progress > 1000 / this.frameCap) {
                     this.lastRender = timestamp - (progress % (1000 / this.frameCap));
                     this.animations = this.animations.filter(step => step(timestamp) !== false);
@@ -1629,31 +1629,36 @@
             }
         };
 
-        const lenis = new Lenis();
 
-        lenis.on('scroll', () => {
-            if (!parallaxAnimationRegistered) {
-                parallaxAnimationRegistered = true;
-                AnimationManager.registerAnimation(throttleUpdateParallax);
-            }
+
+    
+
+
+        const lenis = new Lenis({
+            duration: 1.2,
+            smoothWheel: true,
+            smoothTouch: false,
+            normalizeWheel: true, // Normalize scroll wheel delta values to ensure consistent scroll speeds
         });
 
-        function throttleUpdateParallax() {
-            requestAnimationFrame(updateParallax);
-        }
+  
 
         function runLenis(timestamp) {
             lenis.raf(timestamp);
             requestAnimationFrame(runLenis);
         }
 
-
-
         if (!lenisInitialized) {
             lenisInitialized = true;
             requestAnimationFrame(runLenis);
         }
 
+        lenis.on('scroll', () => {
+            if (!parallaxAnimationRegistered) {
+                parallaxAnimationRegistered = true;
+                AnimationManager.registerAnimation(updateParallax);
+            }
+        });
 
 
 
@@ -3387,8 +3392,8 @@
 
         
 
-        function updateParallax() {
-            if (!isIOS) {
+        function updateParallax(timestamp) {
+            if (isIOS) {
                 return;
             }
 
@@ -3404,28 +3409,30 @@
 
             lastScrollY = scrollY;
 
-            requestAnimationFrame(() => {
-                const background = document.getElementById('interfaceBackground');
-                if (background) {
-                    const offsetBackground = scrollY * speedFactorBackground;
-                    background.style.transform = `translateY(${offsetBackground}px)`;
-                }
+            const background = document.getElementById('interfaceBackground');
+            if (background) {
+                const offsetBackground = scrollY * speedFactorBackground;
+                background.style.transform = `translateY(${offsetBackground}px)`;
+            }
 
-                const sideLeft = document.getElementById('interfaceSideLeft');
-                const sideRight = document.getElementById('interfaceSideRight');
-                if (sideLeft && sideRight) {
-                    const offsetSides = scrollY * speedFactorSides;
-                    sideLeft.style.transform = `translateY(${offsetSides}px)`;
-                    sideRight.style.transform = `translateY(${offsetSides}px)`;
-                }
+            const sideLeft = document.getElementById('interfaceSideLeft');
+            const sideRight = document.getElementById('interfaceSideRight');
+            if (sideLeft && sideRight) {
+                const offsetSides = scrollY * speedFactorSides;
+                sideLeft.style.transform = `translateY(${offsetSides}px)`;
+                sideRight.style.transform = `translateY(${offsetSides}px)`;
+            }
 
-                const viewerContainer = document.getElementById('interfaceViewerContainer');
-                if (viewerContainer) {
-                    const offsetViewer = scrollY * speedFactorViewer;
-                    viewerContainer.style.transform = `translateY(${offsetViewer}px)`;
-                }
-            });
+            const viewerContainer = document.getElementById('interfaceViewerContainer');
+            if (viewerContainer) {
+                const offsetViewer = scrollY * speedFactorViewer;
+                viewerContainer.style.transform = `translateY(${offsetViewer}px)`;
+            }
+
+            return true; // Return true to keep the animation running in the AnimationManager
         }
+
+
 
 
 /////////// ANIMATION TEXT /////
