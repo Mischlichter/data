@@ -10,6 +10,9 @@
     <meta http-equiv="Cache-Control" content="public, max-age=31536000">
 
     <title>HOGE AI</title>
+
+    
+
     <style>
         @font-face {
             font-family: 'JetBrainsMono-Regular';
@@ -717,6 +720,9 @@
     
 
 </head>
+
+
+
 <body>
     
     <div class="center-container-XL"> <!-- Updated class name -->
@@ -775,7 +781,7 @@
     <link rel="stylesheet" type="text/css" href="css/bodygallery.css">
     <script src="https://kit.fontawesome.com/a258000a2d.js" crossorigin="anonymous"></script>
 
-    <script src="scripts/lenis.min.js"></script>
+    <script src="./scripts/lenis.min.js"></script> 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
@@ -788,6 +794,8 @@
             FastClick.attach(document.body);
         }, false);
     </script>
+
+
 
     <script src="scripts/bodygallery.js"></script>
     
@@ -1576,18 +1584,24 @@
 
     </script>
 
-
-
-
+    
 
 
     <script>
         
 //////// MOUSE SMOOTHING ////////
 
+        var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
         let lastScrollY = 0;
         let lenisInitialized = false;
         let parallaxAnimationRegistered = false;
+        
+
+        // Cache DOM elements
+        let backgroundElement = null;
+        let sideLeftElement = null;
+        let sideRightElement = null;
+        let viewerContainerElement = null;
 
         const AnimationManager = {
             frameCap: 90,
@@ -1596,12 +1610,17 @@
             running: false,
 
             registerAnimation(stepFunction) {
-                if (!this.animations.includes(stepFunction)) {
-                    this.animations.push(stepFunction);
-                }
+                this.animations.push(stepFunction);
                 if (!this.running) {
                     this.running = true;
                     requestAnimationFrame(this.runAnimations.bind(this));
+                }
+            },
+
+            removeAnimation(stepFunction) {
+                const index = this.animations.indexOf(stepFunction);
+                if (index !== -1) {
+                    this.animations.splice(index, 1);
                 }
             },
 
@@ -1609,7 +1628,7 @@
                 let progress = timestamp - this.lastRender;
                 if (progress > 1000 / this.frameCap) {
                     this.lastRender = timestamp - (progress % (1000 / this.frameCap));
-                    this.animations = this.animations.filter(step => step(timestamp) !== false);
+                    this.animations.forEach(step => step(timestamp));
                 }
                 if (this.animations.length > 0) {
                     requestAnimationFrame(this.runAnimations.bind(this));
@@ -1624,26 +1643,23 @@
         lenis.on('scroll', () => {
             if (!parallaxAnimationRegistered) {
                 parallaxAnimationRegistered = true;
-                AnimationManager.registerAnimation(throttleUpdateParallax);
+                AnimationManager.registerAnimation(updateParallax);
             }
         });
-
-        function throttleUpdateParallax() {
-            requestAnimationFrame(updateParallax);
-        }
 
         function runLenis(timestamp) {
             lenis.raf(timestamp);
             requestAnimationFrame(runLenis);
         }
 
-
-
         if (!lenisInitialized) {
             lenisInitialized = true;
             requestAnimationFrame(runLenis);
+            backgroundElement = document.getElementById('interfaceBackground');
+            sideLeftElement = document.getElementById('interfaceSideLeft');
+            sideRightElement = document.getElementById('interfaceSideRight');
+            viewerContainerElement = document.getElementById('interfaceViewerContainer');
         }
-
 
 
 
@@ -1884,7 +1900,7 @@
                 iframe.style.display = 'block'; // Make iframe visible
 
                 setTimeout(() => {
-                    if (isIOS()) {
+                    if (isIOS) {
                         iframe.style.transition = 'none'; // Disable transition for iOS
                         iframe.style.opacity = '1'; // Set opacity to 1 immediately
                     } else {
@@ -1898,7 +1914,7 @@
         function hideDirectIframe() {
             const iframe = document.getElementById('sceneIframe');
             if (iframe) {
-                if (isIOS()) {
+                if (isIOS) {
                     iframe.style.transition = 'none'; // Disable transition for iOS
                     iframe.style.opacity = '0'; // Set opacity to 0 immediately
                     setTimeout(() => {
@@ -3005,12 +3021,7 @@
 
 
 
-
-        function isIOS() {
-            return /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-        }
-
-      
+         
 
         
 
@@ -3047,7 +3058,7 @@
                         if (element) {
                             animationCount++;
                             element.style.opacity = 1; // Set opacity to 1
-                            if (isIOS()) {
+                            if (isIOS) {
                                 element.style.transition = 'none'; // Remove transitions for iOS
                             } else {
                                 element.style.transition = 'opacity 1s ease-in-out'; // Apply transitions for non-iOS
@@ -3081,7 +3092,7 @@
                         if (element) {
                             animationCount++;
                             element.style.opacity = 1; // Set opacity to 1
-                            if (!isIOS()) {
+                            if (!isIOS) {
                                 element.style.transition = 'opacity 0.5s ease-in-out'; // Apply a half-second transition for non-iOS
                                 element.addEventListener('transitionend', animationEndHandler);
                             } else {
@@ -3116,7 +3127,7 @@
 
                 elementsToFadeOut.forEach(element => {
                     element.style.opacity = 0; // Set opacity to 0
-                    if (isIOS()) {
+                    if (isIOS) {
                         element.style.transition = 'none'; // Remove transitions for iOS
                     } else {
                         element.style.transition = 'opacity 1s ease-in-out'; // Apply transitions for non-iOS
@@ -3124,7 +3135,7 @@
                 });
 
                 // Assuming the transition duration is 1 second as set in CSS for non-iOS devices
-                setTimeout(resolve, isIOS() ? 0 : 1000); // Resolve immediately for iOS
+                setTimeout(resolve, isIOS ? 0 : 1000); // Resolve immediately for iOS
             });
         }
 
@@ -3382,9 +3393,13 @@
         
 
         function updateParallax() {
-            const isiOS = /iPad|iPhone|iPod/.test(navigator.platform) ||
-                          (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-            if (isiOS) {
+            // Ensure the function waits until isIOS is defined
+            if (typeof isIOS === 'undefined') {
+                setTimeout(updateParallax, 100);
+                return;
+            }
+
+            if (isIOS) {
                 return;
             }
 
@@ -3400,27 +3415,21 @@
 
             lastScrollY = scrollY;
 
-            requestAnimationFrame(() => {
-                const background = document.getElementById('interfaceBackground');
-                if (background) {
-                    const offsetBackground = scrollY * speedFactorBackground;
-                    background.style.transform = `translateY(${offsetBackground}px)`;
-                }
+            if (backgroundElement) {
+                const offsetBackground = scrollY * speedFactorBackground;
+                backgroundElement.style.transform = `translateY(${offsetBackground}px)`;
+            }
 
-                const sideLeft = document.getElementById('interfaceSideLeft');
-                const sideRight = document.getElementById('interfaceSideRight');
-                if (sideLeft && sideRight) {
-                    const offsetSides = scrollY * speedFactorSides;
-                    sideLeft.style.transform = `translateY(${offsetSides}px)`;
-                    sideRight.style.transform = `translateY(${offsetSides}px)`;
-                }
+            if (sideLeftElement && sideRightElement) {
+                const offsetSides = scrollY * speedFactorSides;
+                sideLeftElement.style.transform = `translateY(${offsetSides}px)`;
+                sideRightElement.style.transform = `translateY(${offsetSides}px)`;
+            }
 
-                const viewerContainer = document.getElementById('interfaceViewerContainer');
-                if (viewerContainer) {
-                    const offsetViewer = scrollY * speedFactorViewer;
-                    viewerContainer.style.transform = `translateY(${offsetViewer}px)`;
-                }
-            });
+            if (viewerContainerElement) {
+                const offsetViewer = scrollY * speedFactorViewer;
+                viewerContainerElement.style.transform = `translateY(${offsetViewer}px)`;
+            }
         }
 
 
@@ -3727,9 +3736,13 @@
 
             // Batch style updates to avoid multiple reflows/repaints
             const elementsToObserve = [
-                ...document.querySelectorAll('.flex-icontainer'),
-                ...containerIds.map(id => document.getElementById(id)).filter(Boolean)
+                ...document.querySelectorAll('.flex-icontainer')
             ];
+
+            // Add container elements if containerIds is defined
+            if (typeof containerIds !== 'undefined' && containerIds.length > 0) {
+                elementsToObserve.push(...containerIds.map(id => document.getElementById(id)).filter(Boolean));
+            }
 
             elementsToObserve.forEach(element => {
                 if (element && !element.dataset.observed) {
@@ -3803,7 +3816,7 @@
             var scaleFactor = Math.min(size.width / 1536, size.height / 1024);
 
             // Detecting iOS devices
-            var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            //var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
             // Apply the scale factor for all modes without checking for changes
             document.querySelectorAll('.scale-wrapper-interface').forEach(element => {
