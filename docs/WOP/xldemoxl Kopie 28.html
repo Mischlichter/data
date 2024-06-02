@@ -1591,13 +1591,17 @@
         
 //////// MOUSE SMOOTHING ////////
 
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.platform) || 
-              (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-
+        var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
         let lastScrollY = 0;
         let lenisInitialized = false;
         let parallaxAnimationRegistered = false;
         
+
+        // Cache DOM elements
+        let backgroundElement = null;
+        let sideLeftElement = null;
+        let sideRightElement = null;
+        let viewerContainerElement = null;
 
         const AnimationManager = {
             frameCap: 90,
@@ -1606,12 +1610,17 @@
             running: false,
 
             registerAnimation(stepFunction) {
-                if (!this.animations.includes(stepFunction)) {
-                    this.animations.push(stepFunction);
-                }
+                this.animations.push(stepFunction);
                 if (!this.running) {
                     this.running = true;
                     requestAnimationFrame(this.runAnimations.bind(this));
+                }
+            },
+
+            removeAnimation(stepFunction) {
+                const index = this.animations.indexOf(stepFunction);
+                if (index !== -1) {
+                    this.animations.splice(index, 1);
                 }
             },
 
@@ -1619,7 +1628,7 @@
                 let progress = timestamp - this.lastRender;
                 if (progress > 1000 / this.frameCap) {
                     this.lastRender = timestamp - (progress % (1000 / this.frameCap));
-                    this.animations = this.animations.filter(step => step(timestamp) !== false);
+                    this.animations.forEach(step => step(timestamp));
                 }
                 if (this.animations.length > 0) {
                     requestAnimationFrame(this.runAnimations.bind(this));
@@ -1634,27 +1643,23 @@
         lenis.on('scroll', () => {
             if (!parallaxAnimationRegistered) {
                 parallaxAnimationRegistered = true;
-                AnimationManager.registerAnimation(throttleUpdateParallax);
+                AnimationManager.registerAnimation(updateParallax);
             }
         });
-
-        function throttleUpdateParallax() {
-            requestAnimationFrame(updateParallax);
-        }
 
         function runLenis(timestamp) {
             lenis.raf(timestamp);
             requestAnimationFrame(runLenis);
         }
 
-
-
         if (!lenisInitialized) {
             lenisInitialized = true;
             requestAnimationFrame(runLenis);
+            backgroundElement = document.getElementById('interfaceBackground');
+            sideLeftElement = document.getElementById('interfaceSideLeft');
+            sideRightElement = document.getElementById('interfaceSideRight');
+            viewerContainerElement = document.getElementById('interfaceViewerContainer');
         }
-
-
 
 
 
@@ -3388,6 +3393,12 @@
         
 
         function updateParallax() {
+            // Ensure the function waits until isIOS is defined
+            if (typeof isIOS === 'undefined') {
+                setTimeout(updateParallax, 100);
+                return;
+            }
+
             if (isIOS) {
                 return;
             }
@@ -3404,27 +3415,21 @@
 
             lastScrollY = scrollY;
 
-            requestAnimationFrame(() => {
-                const background = document.getElementById('interfaceBackground');
-                if (background) {
-                    const offsetBackground = scrollY * speedFactorBackground;
-                    background.style.transform = `translateY(${offsetBackground}px)`;
-                }
+            if (backgroundElement) {
+                const offsetBackground = scrollY * speedFactorBackground;
+                backgroundElement.style.transform = `translateY(${offsetBackground}px)`;
+            }
 
-                const sideLeft = document.getElementById('interfaceSideLeft');
-                const sideRight = document.getElementById('interfaceSideRight');
-                if (sideLeft && sideRight) {
-                    const offsetSides = scrollY * speedFactorSides;
-                    sideLeft.style.transform = `translateY(${offsetSides}px)`;
-                    sideRight.style.transform = `translateY(${offsetSides}px)`;
-                }
+            if (sideLeftElement && sideRightElement) {
+                const offsetSides = scrollY * speedFactorSides;
+                sideLeftElement.style.transform = `translateY(${offsetSides}px)`;
+                sideRightElement.style.transform = `translateY(${offsetSides}px)`;
+            }
 
-                const viewerContainer = document.getElementById('interfaceViewerContainer');
-                if (viewerContainer) {
-                    const offsetViewer = scrollY * speedFactorViewer;
-                    viewerContainer.style.transform = `translateY(${offsetViewer}px)`;
-                }
-            });
+            if (viewerContainerElement) {
+                const offsetViewer = scrollY * speedFactorViewer;
+                viewerContainerElement.style.transform = `translateY(${offsetViewer}px)`;
+            }
         }
 
 
