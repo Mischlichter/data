@@ -1657,22 +1657,16 @@
 
 
         function scrollToTop() {
-            // Disable Lenis smooth scrolling
-            lenis.stop();
-
+  
             // Instantly set the scroll position to the top
             if (typeof window !== 'undefined') {
                 window.scrollTo({
                     top: 0,
-                    behavior: 'instant'
+                    behavior: 'instant' // Use 'instant' to avoid smooth scrolling
                 });
             }
 
-            // Re-enable Lenis smooth scrolling
-            setTimeout(() => {
-                lenis.start();
-                AnimationManager.registerAnimation(updateParallax); // Ensure parallax effect updates after scroll to top
-            }, 50); // Using setTimeout ensures this occurs in the next event loop cycle
+
         }
 
 
@@ -2686,8 +2680,7 @@
             const sceneImages = scenesiData[index]; // Assuming scenesiData is structured similarly
             let formattedSceneKey = scene.sceneKey.length === 6 ? `scene0${scene.sceneKey.charAt(5)}` : scene.sceneKey;
 
-            scrollToTop();
-
+            
             // Update the iframe with the new scene
             updateIframe(formattedSceneKey);
 
