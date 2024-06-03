@@ -3385,6 +3385,7 @@
                         viewerImageElement.style.webkitMaskImage = `url('${viewerMaskUrl}')`;
                         viewerImageElement.style.maskSize = '100% 100%';
                         viewerImageElement.style.webkitMaskSize = '100% 100%';
+                        tiles.viewerReady = true; // Move this inside onload to ensure it's ready
                         resolve();
                     };
                     tempImage.onerror = function () {
@@ -3400,14 +3401,12 @@
 
             Promise.all([backgroundPromise, sideLeftPromise, sideRightPromise, viewerImagePromise])
                 .then(() => {
-                    tiles.viewerReady = true;
                     fadeInElements();
                 })
                 .catch((error) => {
                     console.error("Error loading elements:", error);
                 });
         }
-
         
 
         function updateParallax() {
