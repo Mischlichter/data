@@ -1779,26 +1779,10 @@
                 document.body.appendChild(newIframe); // Directly append to the body
                 hideBackground();
                 scrollToTop();
-
-                // Disable scrolling
-                document.body.classList.add('no-scroll');
-
                 iframeLoaded(newIframe);
                 
                 unhideDirectIframe();
             }
-
-            function iframeLoaded(iframe) {
-                iframe.onload = function() {
-                    // Show iframe after it has loaded
-                    iframe.style.display = 'block';
-                    iframe.style.opacity = '1';
-
-                    // Enable scrolling again if needed
-                    document.body.classList.remove('no-scroll');
-                };
-            }
-
 
             function iframeLoaded(iframe) {
                 // Wait for the iframe to load completely before setting up the observer
@@ -2981,7 +2965,7 @@
 
                 if (window.scrollY > maxScrollY) {
                     // Disable Lenis smooth scrolling
-                    lenis.stop();
+                 
 
                     // If the user scrolls beyond the max Y position, smoothly scroll them back to the max Y position
                     window.scrollTo({
@@ -2989,11 +2973,7 @@
                         behavior: 'smooth'
                     });
 
-                    // Wait for the smooth scroll to finish
-                    setTimeout(() => {
-                        // Re-enable Lenis smooth scrolling
-                        lenis.start();
-                    }, 500); // Adjust the timeout duration according to your smooth scroll duration
+                 
                 }
             }
 
