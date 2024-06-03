@@ -995,7 +995,7 @@ const galleryHTML = `
 
                 if (elapsedTime >= duration) {
                     span.innerText = finalText; // Set to final text when duration is met or exceeded
-                    return false; // Return false to remove this animation from the AnimationManager
+                    return;
                 }
 
                 // Check if the time since the last update exceeds minInterval
@@ -1008,11 +1008,10 @@ const galleryHTML = `
                     span.innerText = finalText.substring(0, mixIndex) + randomizedPart;
                 }
 
-                return true; // Return true to keep this animation in the AnimationManager
+                requestAnimationFrame(animate); // Recursively call animate
             }
 
-            // Register the animation with the AnimationManager
-            AnimationManager.registerAnimation(animate);
+            requestAnimationFrame(animate);
         }
 
 
