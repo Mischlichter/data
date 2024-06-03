@@ -1657,16 +1657,22 @@
 
 
         function scrollToTop() {
-  
+            // Disable Lenis smooth scrolling
+            lenis.stop();
+
             // Instantly set the scroll position to the top
             if (typeof window !== 'undefined') {
                 window.scrollTo({
                     top: 0,
-                    behavior: 'instant' // Use 'instant' to avoid smooth scrolling
+                    behavior: 'instant'
                 });
             }
 
-
+            // Re-enable Lenis smooth scrolling
+            setTimeout(() => {
+                lenis.start();
+                AnimationManager.registerAnimation(updateParallax); // Ensure parallax effect updates after scroll to top
+            }, 50); // Using setTimeout ensures this occurs in the next event loop cycle
         }
 
 
@@ -2680,7 +2686,6 @@
             const sceneImages = scenesiData[index]; // Assuming scenesiData is structured similarly
             let formattedSceneKey = scene.sceneKey.length === 6 ? `scene0${scene.sceneKey.charAt(5)}` : scene.sceneKey;
 
-            
             // Update the iframe with the new scene
             updateIframe(formattedSceneKey);
 
@@ -2825,8 +2830,9 @@
             document.body.appendChild(button);
 
             // Function to scroll to the top smoothly
-            function scrollToTopS() {
+            function scrollToTop() {
             
+
                 // Smoothly scroll to the top
                 window.scrollTo({
                     top: 0,
@@ -2838,10 +2844,10 @@
 
 
             // Listen to both click and touchend events
-            button.addEventListener('click', scrollToTopS);
+            button.addEventListener('click', scrollToTop);
             button.addEventListener('touchend', function(event) {
                 event.preventDefault();  // Prevent the mouse event from firing
-                scrollToTopS();
+                scrollToTop();
             });
 
             // Show and hide button with fade effects when scrolling
