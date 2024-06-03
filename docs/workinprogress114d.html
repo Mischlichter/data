@@ -1753,15 +1753,12 @@
                 newIframe.style.display = 'none'; // Hide initially
 
                 // Event listener for when the iframe content has fully loaded
-                
-
-                
-                iframeContainer.appendChild(newIframe);
-                
                 newIframe.onload = () => {
                     tiles.iframeReady = true; // Set iframeReady to true when iframe content is loaded
                 };
 
+                
+                iframeContainer.appendChild(newIframe);
                 hideBackground();
                 scrollToTop();
             }
