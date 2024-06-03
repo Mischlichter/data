@@ -3674,8 +3674,30 @@
         }
 
  
+        function updateAllContainersDuringScaling() {
+            if (!currentSceneData) {
+                return; // Exit if not set
+            }
+
+            const savedScrollPosition = window.scrollY;
+            const initialHeight = document.body.scrollHeight;
+
+            // Use currentSceneData for scaling animation
+            Object.keys(currentSceneData.containers).forEach(containerId => {
+                let containerData = currentSceneData.containers[containerId];
+                let textLines = containerData.text.split('\n');
+                let lineSpans = createSpansForContainer(containerId, textLines.join(' '));
+                startScalingAnimation(lineSpans);
+            });
+
+            const newHeight = document.body.scrollHeight;
+            const heightDifference = newHeight - initialHeight;
+
+            window.scrollTo(0, savedScrollPosition + heightDifference);
+        }
+       
+
         let observedElements = [];
-        let observedElementsData = [];
 
         function observeElementsForAnimations() {
             const observerOptions = {
@@ -3722,70 +3744,7 @@
             });
         }
 
-        function saveElementsViewportPosition() {
-            observedElementsData = observedElements.map(element => ({
-                element,
-                viewportCenter: (element.getBoundingClientRect().top + element.getBoundingClientRect().bottom) / 2
-            }));
-        }
-
-        function getClosestElementToViewportCenter() {
-            const viewportCenter = window.innerHeight / 2;
-            let closestElementData = null;
-            let minDistanceToCenter = Infinity;
-
-            observedElementsData.forEach(data => {
-                const distanceToCenter = Math.abs(data.viewportCenter - viewportCenter);
-
-                if (distanceToCenter < minDistanceToCenter) {
-                    closestElementData = data;
-                    minDistanceToCenter = distanceToCenter;
-                }
-            });
-
-            return closestElementData;
-        }
-
-        function updateAllContainersDuringScaling() {
-            if (!currentSceneData) {
-                return; // Exit if not set
-            }
-
-            // Save the initial height of the document
-            const initialHeight = document.body.scrollHeight;
-
-            // Save the viewport positions of observed elements
-            saveElementsViewportPosition();
-
-            // Use currentSceneData for scaling animation
-            Object.keys(currentSceneData.containers).forEach(containerId => {
-                let containerData = currentSceneData.containers[containerId];
-                let textLines = containerData.text.split('\n');
-                let lineSpans = createSpansForContainer(containerId, textLines.join(' '));
-                startScalingAnimation(lineSpans);
-            });
-
-            // Calculate the new height and adjust the scroll position immediately
-            const newHeight = document.body.scrollHeight;
-            const heightDifference = newHeight - initialHeight;
-
-            // Adjust the scroll position by the height difference
-            window.scrollTo(0, window.scrollY + heightDifference);
-
-            // Find the element closest to the viewport center
-            const closestElementData = getClosestElementToViewportCenter();
-            if (closestElementData) {
-                const { element, viewportCenter } = closestElementData;
-                const currentViewportCenter = (element.getBoundingClientRect().top + element.getBoundingClientRect().bottom) / 2;
-                const adjustment = currentViewportCenter - viewportCenter;
-
-                // Directly set the scroll position to match the recorded relative position
-                window.scrollTo(0, window.scrollY + adjustment);
-            }
-        }
-
- 
-
+        
 
         function getSmoothAspectRatio(viewportWidth, viewportHeight) {
             const portraitAspectRatio = 1.6; 

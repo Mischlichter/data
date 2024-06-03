@@ -3725,17 +3725,20 @@
         function saveElementsViewportPosition() {
             observedElementsData = observedElements.map(element => ({
                 element,
-                viewportCenter: (element.getBoundingClientRect().top + element.getBoundingClientRect().bottom) / 2
+                viewportOffsetTop: element.getBoundingClientRect().top,
+                viewportOffsetBottom: element.getBoundingClientRect().bottom
             }));
         }
 
-        function getClosestElementToViewportCenter() {
+        function restoreScrollPosition() {
+            // Find the element closest to the viewport center
             const viewportCenter = window.innerHeight / 2;
             let closestElementData = null;
             let minDistanceToCenter = Infinity;
 
             observedElementsData.forEach(data => {
-                const distanceToCenter = Math.abs(data.viewportCenter - viewportCenter);
+                const elementCenter = (data.viewportOffsetTop + data.viewportOffsetBottom) / 2;
+                const distanceToCenter = Math.abs(elementCenter - viewportCenter);
 
                 if (distanceToCenter < minDistanceToCenter) {
                     closestElementData = data;
@@ -3743,7 +3746,14 @@
                 }
             });
 
-            return closestElementData;
+            if (closestElementData) {
+                const { element, viewportOffsetTop } = closestElementData;
+                const currentOffsetTop = element.getBoundingClientRect().top;
+                const adjustment = currentOffsetTop - viewportOffsetTop;
+
+                // Adjust the scroll position to keep the closest element in the same relative position
+                window.scrollBy(0, adjustment);
+            }
         }
 
         function updateAllContainersDuringScaling() {
@@ -3751,7 +3761,11 @@
                 return; // Exit if not set
             }
 
-            // Save the initial height of the document
+            // Stop Lenis smooth scrolling
+            lenis.stop();
+
+            // Save the initial scroll position and initial height of the document
+            const savedScrollPosition = window.scrollY;
             const initialHeight = document.body.scrollHeight;
 
             // Save the viewport positions of observed elements
@@ -3765,27 +3779,22 @@
                 startScalingAnimation(lineSpans);
             });
 
-            // Calculate the new height and adjust the scroll position immediately
-            const newHeight = document.body.scrollHeight;
-            const heightDifference = newHeight - initialHeight;
+            // Defer the height calculation to allow for any rendering changes to take effect
+            setTimeout(() => {
+                const newHeight = document.body.scrollHeight;
+                const heightDifference = newHeight - initialHeight;
 
-            // Adjust the scroll position by the height difference
-            window.scrollTo(0, window.scrollY + heightDifference);
+                // Adjust the scroll position by the height difference
+                window.scrollTo(0, savedScrollPosition + heightDifference);
 
-            // Find the element closest to the viewport center
-            const closestElementData = getClosestElementToViewportCenter();
-            if (closestElementData) {
-                const { element, viewportCenter } = closestElementData;
-                const currentViewportCenter = (element.getBoundingClientRect().top + element.getBoundingClientRect().bottom) / 2;
-                const adjustment = currentViewportCenter - viewportCenter;
+                // Restore the scroll position to keep the observed elements in view
+                restoreScrollPosition();
 
-                // Directly set the scroll position to match the recorded relative position
-                window.scrollTo(0, window.scrollY + adjustment);
-            }
+                // Re-enable Lenis smooth scrolling
+                lenis.start();
+            }, 0); // Use a timeout of 0 to defer to the next event loop iteration
         }
-
- 
-
+        
 
         function getSmoothAspectRatio(viewportWidth, viewportHeight) {
             const portraitAspectRatio = 1.6; 
