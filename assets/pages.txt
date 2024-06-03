@@ -151,7 +151,7 @@ The Journey Unfolds - The saga of HogeAI is an ever-evolving narrative of creati
 SCENE03:
 
 P01:
-THE HOGEAI BOT - Dive Deep, Dive Hoge
+THE HOGEAI BOT
 
 P02:
 Kickstart your HogeAI journey by joining the @OfficialHogeCommunity on Telegram. Click here to dive into all the Hoge magic!
@@ -276,7 +276,7 @@ Unleash Your Creativity - At HogeAI, we believe in the power of community and li
 SCENE04:
 
 P01:
-PROMPT GUIDE - Crafting Your Hoge Tale
+PROMPT GUIDE
 
 P02:
 Setting the Stage - Alright, adventurer! Before you unleash your creativity, let's lay down some ground rules. Crafting the perfect prompt is like whipping up a magical potion: a dash of description, a sprinkle of specifics, and a big ol' dollop of imagination.
