@@ -711,6 +711,12 @@
           pointer-events: none;
         }
 
+        /* Add this CSS to your stylesheet */
+        .no-scroll {
+            overflow: hidden;
+        }
+
+
 
     </style>
 
@@ -1773,10 +1779,26 @@
                 document.body.appendChild(newIframe); // Directly append to the body
                 hideBackground();
                 scrollToTop();
+
+                // Disable scrolling
+                document.body.classList.add('no-scroll');
+
                 iframeLoaded(newIframe);
                 
                 unhideDirectIframe();
             }
+
+            function iframeLoaded(iframe) {
+                iframe.onload = function() {
+                    // Show iframe after it has loaded
+                    iframe.style.display = 'block';
+                    iframe.style.opacity = '1';
+
+                    // Enable scrolling again if needed
+                    document.body.classList.remove('no-scroll');
+                };
+            }
+
 
             function iframeLoaded(iframe) {
                 // Wait for the iframe to load completely before setting up the observer
@@ -2825,11 +2847,22 @@
 
             // Function to scroll to the top smoothly
             function scrollToTop() {
+                // Disable Lenis smooth scrolling
+                lenis.stop();
+
+                // Smoothly scroll to the top
                 window.scrollTo({
                     top: 0,
                     behavior: 'smooth'
                 });
+
+                // Wait for the smooth scroll to finish
+                setTimeout(() => {
+                    // Re-enable Lenis smooth scrolling
+                    lenis.start();
+                }, 800); // Adjust the timeout duration according to your smooth scroll duration
             }
+
 
             // Listen to both click and touchend events
             button.addEventListener('click', scrollToTop);
