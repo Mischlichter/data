@@ -3031,6 +3031,7 @@
       
 
         
+
         function fadeInElements() {
             const waitForTiles = () => {
                 return new Promise((resolve) => {
@@ -3046,38 +3047,8 @@
                 });
             };
 
-            const waitForImages = () => {
-                return new Promise((resolve) => {
-                    const images = document.querySelectorAll('img');
-                    let loadedCount = 0;
-                    const totalImages = images.length;
-
-                    images.forEach((img) => {
-                        if (img.complete) {
-                            loadedCount++;
-                        } else {
-                            img.addEventListener('load', () => {
-                                loadedCount++;
-                                if (loadedCount === totalImages) {
-                                    resolve();
-                                }
-                            });
-                            img.addEventListener('error', () => {
-                                loadedCount++;
-                                if (loadedCount === totalImages) {
-                                    resolve();
-                                }
-                            });
-                        }
-                    });
-
-                    if (loadedCount === totalImages) {
-                        resolve();
-                    }
-                });
-            };
-
-            Promise.all([waitForTiles(), waitForImages()]).then(() => {
+            // Wait for all conditions to become true
+            waitForTiles().then(() => {
                 const selectors = ['#interfaceContainer', '#backgroundContainer', '#iframeContainer', '#bodyGalleryContainer', '.flex-container'];
                 let animationCount = 0;
 
@@ -3105,7 +3076,6 @@
                 });
             });
         }
-
 
 
         function fadeInmenu() {
@@ -3371,9 +3341,22 @@
             const viewerImageUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/v${sceneFormatted}.jpg`;
             const viewerMaskUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/vm${sceneFormatted}.png`;
 
-            const backgroundPromise = createVerticalTiles_a('interfaceBackground', getCachedOrFetchImageSync(backgroundUrl), imageHeight);
-            const sideLeftPromise = createVerticalTiles_b('interfaceSideLeft', getCachedOrFetchImageSync(sideImageUrl), imageHeight);
-            const sideRightPromise = createVerticalTiles_b('interfaceSideRight', getCachedOrFetchImageSync(sideImageUrl), imageHeight);
+            const backgroundPromise = createVerticalTiles_a('interfaceBackground', getCachedOrFetchImageSync(backgroundUrl), imageHeight)
+                .then(() => {
+                    //console.log("Background tiles loaded.");
+                    tiles.a = true;
+                });
+
+            const sideLeftPromise = createVerticalTiles_b('interfaceSideLeft', getCachedOrFetchImageSync(sideImageUrl), imageHeight)
+                .then(() => {
+                    //console.log("Side left tiles loaded.");
+                });
+
+            const sideRightPromise = createVerticalTiles_b('interfaceSideRight', getCachedOrFetchImageSync(sideImageUrl), imageHeight)
+                .then(() => {
+                    //console.log("Side right tiles loaded.");
+                    tiles.b = true;
+                });
 
             const viewerImagePromise = new Promise((resolve, reject) => {
                 const viewerImageElement = document.getElementById('interfaceViewerImage');
@@ -3385,7 +3368,8 @@
                         viewerImageElement.style.webkitMaskImage = `url('${viewerMaskUrl}')`;
                         viewerImageElement.style.maskSize = '100% 100%';
                         viewerImageElement.style.webkitMaskSize = '100% 100%';
-                        tiles.viewerReady = true; // Move this inside onload to ensure it's ready
+                        //console.log("Viewer image loaded and masked.");
+                        
                         resolve();
                     };
                     tempImage.onerror = function () {
@@ -3401,12 +3385,18 @@
 
             Promise.all([backgroundPromise, sideLeftPromise, sideRightPromise, viewerImagePromise])
                 .then(() => {
-                    fadeInElements();
+                    setTimeout(() => {
+                        tiles.viewerReady = true;
+
+                        fadeInElements();
+                    }, 111);
                 })
                 .catch((error) => {
                     console.error("Error loading elements:", error);
                 });
         }
+        
+
         
 
         function updateParallax() {
