@@ -53,7 +53,7 @@ P01:
 Development Journey
 
 P02:
-The Spark of Innovation - Within the vibrant chats of the Hoge community, where memes flourish and conversations spark, an audacious idea is born. Picture an AI, a digital artist poised to produce Hoge-inspired visuals on demand. This concept, far from ephemeral, was the genesis of an epic endeavor, evolving from mere speculation to a trailblazing project.
+The Spark of Innovation - Within the vibrant chats of the Hoge community, where memes flourish and conversations spark, an audacious idea is born. Picture an AI, a digital artist poised to produce Hoge-inspired visuals on demand. This idea, far from temporary, sparked the beginning of an adventurous quest, growing from casual conversation to a trailblazing project.
 
 P03:
 Diving Deep into AI - Our odyssey kicked off with a dive into the AI realm, where we quickly uncovered the limitations of conventional models in capturing the Hoge character's unique charm. This discovery propelled us deeper into AI training, leading us to tailor existing models to breathe life into our character. This crucial phase laid the foundation for a tool skilled in translating whimsical Hoge prompts into stunning visuals.
