@@ -2961,19 +2961,14 @@
             function preventScrollBeyondFooter() {
                 // Calculate the maximum Y position users should be able to scroll to
                 // This is the document's height minus the viewport's height and the footer's height
-                const maxScrollY = document.body.offsetHeight - window.innerHeight - footerContainer.offsetHeight + 111; // Adjust according to your footer margin
+                const maxScrollY = document.body.offsetHeight - window.innerHeight - footerContainer.offsetHeight + 111; // 256px is the margin top of the footer
 
                 if (window.scrollY > maxScrollY) {
-                    // Disable Lenis smooth scrolling
-                 
-
                     // If the user scrolls beyond the max Y position, smoothly scroll them back to the max Y position
                     window.scrollTo({
                         top: maxScrollY,
                         behavior: 'smooth'
                     });
-
-                 
                 }
             }
 
