@@ -18,14 +18,13 @@
             </section>
         </div>
         
-
-        
         <!-- Add other elements here -->
     </div>
 
     <!-- Dependencies -->
     <script src="scripts/pixi.4.8.9.js"></script>
     <script src="scripts/DepthyViewerlarge.js"></script>
+    <script src="scripts/index-min.js"></script>
 
     <script>
         var isVisible = false;
@@ -44,22 +43,17 @@
                         // Handle mouse move event and apply scale factor
                         mouseX = event.data.mouseX * scaleMFactor; // Apply scale factor
                         mouseY = event.data.mouseY * scaleMFactor; // Apply scale factor
-                        //console.log('Mouse move at iframe', mouseX, mouseY);
                         break;
                     case 'click':
                         // Handle click event and apply scale factor
                         mouseX = event.data.mouseX * scaleMFactor; // Apply scale factor
                         mouseY = event.data.mouseY * scaleMFactor; // Apply scale factor
-                        //console.log('Click at', mouseX, mouseY);
                         break;
 
                     // Handle other events as needed
                 }
             }
         });
-
-
-
 
         // Define initial container size
         var initialContainerWidth = container.offsetWidth;
@@ -128,23 +122,74 @@
 
         const imageCache = {};
 
-        function preloadAndCacheImage(url) {
-            return new Promise(async (resolve, reject) => {
-                if (imageCache[url]) {
-                    resolve(imageCache[url]);
-                    return;
-                }
-                
-                try {
-                    const response = await fetch(url);
-                    const blob = await response.blob();
-                    const blobURL = URL.createObjectURL(blob);
-                    imageCache[url] = blobURL;
-                    resolve(blobURL);
-                } catch (error) {
-                    reject(error);
-                }
+        // IndexedDB Utility Functions
+        const dbName = 'viewerCache';
+        const storeName = 'assets';
+
+        function openDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(dbName, 1);
+                request.onupgradeneeded = function(event) {
+                    const db = event.target.result;
+                    db.createObjectStore(storeName, { keyPath: 'url' });
+                };
+                request.onsuccess = function(event) {
+                    resolve(event.target.result);
+                };
+                request.onerror = function(event) {
+                    reject(event.target.error);
+                };
             });
+        }
+
+        async function getCachedAsset(url) {
+            const db = await openDB();
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([storeName], 'readonly');
+                const store = transaction.objectStore(storeName);
+                const request = store.get(url);
+                request.onsuccess = function(event) {
+                    resolve(event.target.result);
+                };
+                request.onerror = function(event) {
+                    reject(event.target.error);
+                };
+            });
+        }
+
+        async function cacheAsset(asset) {
+            const db = await openDB();
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([storeName], 'readwrite');
+                const store = transaction.objectStore(storeName);
+                const request = store.put(asset);
+                request.onsuccess = function(event) {
+                    resolve();
+                };
+                request.onerror = function(event) {
+                    reject(event.target.error);
+                };
+            });
+        }
+
+        async function preloadAndCacheImage(url) {
+            let cachedAsset = await getCachedAsset(url);
+            if (cachedAsset) {
+                return cachedAsset.blobURL;
+            }
+
+            try {
+                const response = await fetch(url);
+                const blob = await response.blob();
+                const blobURL = URL.createObjectURL(blob);
+                imageCache[url] = blobURL;
+
+                await cacheAsset({ url, blobURL });
+                return blobURL;
+            } catch (error) {
+                console.error('Failed to fetch and cache image:', error);
+                throw error;
+            }
         }
 
         async function preloadAllAssets() {
@@ -218,18 +263,14 @@
                     }
                 }
             });
-            //console.log("Loaded assets:", assets);
             await Promise.all(preloadPromises);
         }
 
         function changeScene(sceneKey) {
-            //console.log(sceneKey);
             const scene = assets[sceneKey];
             const currentContainer = document.querySelector('.current-scene');
             const nextContainer = document.querySelector('.next-scene');
 
-           
-            
             viewerContainers = [];
 
             Object.keys(scene).forEach((key, index) => {
@@ -250,7 +291,6 @@
                 viewerContainers.push(viewer);
             });
 
-
             // Start the transition
             currentContainer.style.opacity = '0';
             nextContainer.style.opacity = '1';
@@ -267,7 +307,6 @@
             }, 1000);  // Assuming 1s transition duration
         }
 
-
         function getSceneKeyFromURL() {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get('scene') || currentSceneKey; // Use currentSceneKey as the default
@@ -283,37 +322,20 @@
         }
 
         // Listener for message events from the parent page
-        async function setup() {
-            await loadAssets();
-            await preloadAllAssets();
-            const sceneKey = getSceneKeyFromURL();
-            changeScene(sceneKey);
-        }
-
         window.addEventListener('message', (event) => {
             if (event.origin === window.location.origin) {
                 if (event.data.type === 'visibilityChange') {
-                    //console.log('Visibility changed in iframe:', event.data.isVisible);
                     handleVisibilityChange(event.data.isVisible);
                 }
             }
         });
-
 
         // Function to handle changes in visibility
         function handleVisibilityChange(isVisible) {
             viewerContainers.forEach(viewer => {
                 viewer.setPauseRender(!isVisible);
             });
-            //console.log(isVisible ? "Scene is visible. Resuming rendering..." : "Scene is not visible. Pausing rendering...");
         }
-
-
-
-
-
-
-
 
         setup();
     </script>
