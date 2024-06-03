@@ -1662,7 +1662,7 @@
             if (typeof window !== 'undefined') {
                 window.scrollTo({
                     top: 0,
-                    behavior: 'smooth' // Use 'instant' to avoid smooth scrolling
+                    behavior: 'instant' // Use 'instant' to avoid smooth scrolling
                 });
             }
 
@@ -2841,7 +2841,7 @@
             button.addEventListener('click', scrollToTopS);
             button.addEventListener('touchend', function(event) {
                 event.preventDefault();  // Prevent the mouse event from firing
-                scrollToTop();
+                scrollToTopS();
             });
 
             // Show and hide button with fade effects when scrolling
