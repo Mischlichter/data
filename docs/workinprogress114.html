@@ -2686,6 +2686,8 @@
             const sceneImages = scenesiData[index]; // Assuming scenesiData is structured similarly
             let formattedSceneKey = scene.sceneKey.length === 6 ? `scene0${scene.sceneKey.charAt(5)}` : scene.sceneKey;
 
+            scrollToTop();
+
             // Update the iframe with the new scene
             updateIframe(formattedSceneKey);
 
@@ -2830,9 +2832,8 @@
             document.body.appendChild(button);
 
             // Function to scroll to the top smoothly
-            function scrollToTop() {
+            function scrollToTopS() {
             
-
                 // Smoothly scroll to the top
                 window.scrollTo({
                     top: 0,
@@ -2844,7 +2845,7 @@
 
 
             // Listen to both click and touchend events
-            button.addEventListener('click', scrollToTop);
+            button.addEventListener('click', scrollToTopS);
             button.addEventListener('touchend', function(event) {
                 event.preventDefault();  // Prevent the mouse event from firing
                 scrollToTop();
