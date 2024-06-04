@@ -247,9 +247,11 @@
             overflow: hidden; /* Ensures nothing spills outside the rounded corners */
             box-sizing: border-box;
             background-color: black;
-
         }
 
+        .flex-icontainer.visible {
+            opacity: 1; /* Visible state */
+        }
 
         .flex-icontainer img {
             position: absolute;
@@ -1702,7 +1704,6 @@
 
             if (sceneKey === 'scene05') {
                 // Logic for scene04 (Gallery)
-                hideFooterInstantly();
                 toggleRemoveFooterActivation();
                 resetRemoveStyledFooterCounter();
                 iframeContainer.style.display = 'none';
@@ -3726,7 +3727,11 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         if (entry.target.classList.contains('flex-icontainer')) {
+                            addWillChange(entry.target, 'opacity');
                             entry.target.style.opacity = 1; // Trigger the fade-in animation
+                            entry.target.addEventListener('transitionend', () => {
+                                removeWillChange(entry.target);
+                            }, { once: true });
                         } else if (entry.target.classList.contains('animation-container')) {
                             startAnimationForContainer(entry.target.id);
                             entry.target.dataset.animationStarted = 'true'; // Mark as animated
@@ -3761,6 +3766,15 @@
                 }
             });
         }
+
+        function addWillChange(element, property) {
+            element.style.willChange = property;
+        }
+
+        function removeWillChange(element) {
+            element.style.willChange = '';
+        }
+
 
 
         function saveElementsViewportPosition() {
