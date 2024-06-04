@@ -3423,6 +3423,10 @@
                 return;
             }
 
+            const speedFactorBackground = 0.3;
+            const speedFactorSides = -1.2;
+            const speedFactorViewer = -0.3;
+
             const scrollY = window.scrollY;
 
             if (scrollY === lastScrollY) {
@@ -3430,14 +3434,6 @@
             }
 
             lastScrollY = scrollY;
-
-            updateParallaxElements(scrollY);
-        }
-
-        function updateParallaxElements(scrollY) {
-            const speedFactorBackground = 0.3;
-            const speedFactorSides = -1.2;
-            const speedFactorViewer = -0.3;
 
             const background = document.getElementById('interfaceBackground');
             const sideLeft = document.getElementById('interfaceSideLeft');
@@ -3448,40 +3444,23 @@
             const offsetSides = scrollY * speedFactorSides;
             const offsetViewer = scrollY * speedFactorViewer;
 
-            if (background) {
-                background.style.transform = `translate3d(0, ${offsetBackground}px, 0)`;
-                background.style.willChange = 'transform';
-            }
-            if (sideLeft && sideRight) {
-                sideLeft.style.transform = `translate3d(0, ${offsetSides}px, 0)`;
-                sideRight.style.transform = `translate3d(0, ${offsetSides}px, 0)`;
-                sideLeft.style.willChange = 'transform';
-                sideRight.style.willChange = 'transform';
-            }
-            if (viewerContainer) {
-                viewerContainer.style.transform = `translate3d(0, ${offsetViewer}px, 0)`;
-                viewerContainer.style.willChange = 'transform';
-            }
+            requestAnimationFrame(() => {
+                if (background) {
+                    background.style.transform = `translate3d(0, ${offsetBackground}px, 0)`;
+                    background.style.willChange = 'transform';
+                }
+                if (sideLeft && sideRight) {
+                    sideLeft.style.transform = `translate3d(0, ${offsetSides}px, 0)`;
+                    sideRight.style.transform = `translate3d(0, ${offsetSides}px, 0)`;
+                    sideLeft.style.willChange = 'transform';
+                    sideRight.style.willChange = 'transform';
+                }
+                if (viewerContainer) {
+                    viewerContainer.style.transform = `translate3d(0, ${offsetViewer}px, 0)`;
+                    viewerContainer.style.willChange = 'transform';
+                }
+            });
         }
-
-        let lastKnownScrollPosition = 0;
-        let ticking = false;
-
-        function onScroll() {
-            lastKnownScrollPosition = window.scrollY;
-
-            if (!ticking) {
-                window.requestAnimationFrame(() => {
-                    updateParallaxElements(lastKnownScrollPosition);
-                    ticking = false;
-                });
-
-                ticking = true;
-            }
-        }
-
-        window.addEventListener('scroll', onScroll);
-
 
   
 
