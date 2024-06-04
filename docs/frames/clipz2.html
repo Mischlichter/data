@@ -273,7 +273,9 @@
 
             const video1 = document.getElementById('video1');
             const video2 = document.getElementById('video2');
-            activeVideo = video1; // Start with video1
+            let activeVideo = video1; // Start with video1
+            let intervalId;
+            const FRAMERATE = 30;
 
             document.addEventListener('touchstart', () => {
                 video1.play();
@@ -307,24 +309,28 @@
             video2.addEventListener('seeked', repaintAmbilight);
 
             function toggleMute() {
-                console.log('toggleMute function called'); // Debug statement
+                //console.log('toggleMute function called'); // Debug statement
 
                 video1.muted = !video1.muted;
                 video2.muted = !video2.muted;
 
                 document.getElementById('muteButton').innerText = video1.muted ? 'Unmute' : 'Mute';
 
-                const volumeSlider = document.getElementById('volumeSlider');
-                volumeSlider.style.opacity = video1.muted ? 0 : 1;
-                volumeSlider.style.visibility = video1.muted ? 'hidden' : 'visible';
+                updateVolumeSliderVisibility();
 
-                console.log('New Mute State (after toggle): Video1:', video1.muted, 'Video2:', video2.muted);
+                //console.log('New Mute State (after toggle): Video1:', video1.muted, 'Video2:', video2.muted);
             }
 
-            document.getElementById('muteButton').addEventListener('click', toggleMute);
+            function updateVolumeSliderVisibility() {
+                volumeSlider.style.opacity = video1.muted ? 0 : 1;
+                volumeSlider.style.visibility = video1.muted ? 'hidden' : 'visible';
+            }
 
             const button = document.getElementById('muteButton');
             const videoWrapper = document.querySelector('.videoWrapper');
+            const volumeSlider = document.getElementById('volumeSlider');
+
+            button.addEventListener('click', toggleMute);
 
             function toggleButtonVisibility() {
                 if (button.style.opacity === '1') {
@@ -340,10 +346,16 @@
             videoWrapper.addEventListener('mouseenter', function () {
                 button.style.opacity = 1;
                 button.style.visibility = 'visible';
+                if (!video1.muted) {
+                    volumeSlider.style.opacity = 1;
+                    volumeSlider.style.visibility = 'visible';
+                }
             });
             videoWrapper.addEventListener('mouseleave', function () {
                 button.style.opacity = 0;
                 button.style.visibility = 'hidden';
+                volumeSlider.style.opacity = 0;
+                volumeSlider.style.visibility = 'hidden';
             });
 
             function adjustButtonPosition() {
@@ -357,7 +369,6 @@
             window.addEventListener('resize', adjustButtonPosition);
             adjustButtonPosition(); // Initial call to set the position 
 
-            const volumeSlider = document.getElementById('volumeSlider');
             video1.volume = volumeSlider.value;
             video2.volume = volumeSlider.value;
 
@@ -366,6 +377,9 @@
                 video1.volume = volume;
                 video2.volume = volume;
             });
+
+            // Initial update for volume slider visibility based on mute status
+            updateVolumeSliderVisibility();
 
             fetchVideoUrls().then(videoUrls => {
                 if (videoUrls.length > 0) {
@@ -377,6 +391,7 @@
                 console.error('Error fetching video URLs:', error);
             });
         };
+
 
         async function fetchVideoUrls() {
             try {

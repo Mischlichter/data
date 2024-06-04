@@ -237,8 +237,8 @@
      
         /* Individual image containers */
         .flex-icontainer {
-            opacity: 0;
-            transition: opacity 1s ease-out;
+            opacity: 0; /* Initially hidden */
+            transition: opacity 1s ease-out; /* Smooth fade-in transition */
             position: relative; /* Essential for absolute child positioning */
             padding-top: 38%; /* Same as width for a 1:1 aspect ratio */
             margin: 50px auto; /* Center horizontally */
@@ -247,11 +247,10 @@
             overflow: hidden; /* Ensures nothing spills outside the rounded corners */
             box-sizing: border-box;
             background-color: black;
-            will-change: opacity, transform; /* Hint to the browser for optimization */
         }
 
         .flex-icontainer.visible {
-            opacity: 1;
+            opacity: 1; /* Visible state */
         }
 
         .flex-icontainer img {
@@ -262,8 +261,8 @@
             height: 100%;
             transform: translate(-50%, -50%); /* Center the image */
             object-fit: cover; /* Ensure the image covers the container */
-            will-change: opacity, transform; /* Hint to the browser for optimization */
         }
+
 
 
 
@@ -287,7 +286,7 @@
             border-radius: 20px; /* Rounded corners */
             padding: 8px 15px; /* Adjust padding as needed */
             background-color: black;
-            will-change: opacity, transform;
+            
             
         }
 
@@ -297,12 +296,12 @@
             white-space: nowrap;
             display: inline-block;
             margin: 0 5px 5px 0;
-            will-change: contents, opacity, transform; /* Hinting for optimization */
+            
         }
 
         #mainpage .dynamic-text { 
             opacity: 0;
-            will-change: opacity; /* Hinting for opacity changes */
+            
         }
 
         
@@ -443,77 +442,69 @@
 
 
         :root {
-          --viewer-width: 1024px;
-          --viewer-height: 2048px;
-          --total-width: 3072px; /* New variable for total width */
-
+            --viewer-width: 1024px;
+            --viewer-height: 2048px;
+            --total-width: 3072px; /* New variable for total width */
         }
 
         #interfaceContainer {
-          position: absolute; /* or 'fixed' depending on use case */
-          top: 50%;
-          left: 50%;
-          z-index: 15;
-          transform: translate(-50%, -50%);
-          width: var(--total-width); /* Assuming this is set to 3072px or as needed */
-          height: var(--viewer-height); /* Assuming this is set to 2048px */
-          margin: 0 auto; /* Center the container */
-          will-change: transform, opacity;
-          pointer-events: none;
+            position: absolute; /* or 'fixed' depending on use case */
+            top: 50%;
+            left: 50%;
+            z-index: 15;
+            transform: translate(-50%, -50%);
+            width: var(--total-width); /* Assuming this is set to 3072px or as needed */
+            height: var(--viewer-height); /* Assuming this is set to 2048px */
+            margin: 0 auto; /* Center the container */
+            will-change: transform; /* Hint to optimize transform */
+            pointer-events: none;
         }
 
         .sideImageContainer {
-          background-size: cover;
-          background-repeat: no-repeat;
-          z-index: 15;
-
+            background-size: cover;
+            background-repeat: no-repeat;
+            z-index: 15;
+            will-change: transform; /* Hint to optimize transform */
         }
 
-   
-
         #interfaceSideLeft, #interfaceSideRight {
-          position: absolute;
-          top: 0;
-          width: calc((var(--total-width) - var(--viewer-width)) / 2); /* Adjust width for side containers */
-          height: 100%;
-          will-change: transform, opacity;
-          
-
+            position: absolute;
+            top: 0;
+            width: calc((var(--total-width) - var(--viewer-width)) / 2); /* Adjust width for side containers */
+            height: 100%;
+            will-change: transform; /* Hint to optimize transform */
         }
 
         #interfaceSideLeft {
-          left: 0;
-
+            left: 0;
+            will-change: transform; /* Hint to optimize transform */
         }
 
         #interfaceSideRight {
-          right: 0;
-
+            right: 0;
+            will-change: transform; /* Hint to optimize transform */
         }
 
         #interfaceViewerContainer {
-          position: absolute;
-          top: 0;
-          left: calc((100% - var(--viewer-width)) / 2); /* Center the viewer */
-          width: var(--viewer-width);
-          height: 100%;
-          z-index: 15;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          pointer-events: none;
-          will-change: transform, opacity;
+            position: absolute;
+            top: 0;
+            left: calc((100% - var(--viewer-width)) / 2); /* Center the viewer */
+            width: var(--viewer-width);
+            height: 100%;
+            z-index: 15;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+            will-change: transform; /* Hint to optimize transform */
         }
-   
-
 
         #interfaceViewerImage {
-          width: 100%;
-          height: 100%;
-          pointer-events: none;
-          will-change: transform, opacity;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            will-change: transform; /* Hint to optimize transform */
         }
-
 
         :root {
             --background-total-width: 4096px;
@@ -535,7 +526,7 @@
             width: var(--total-width); /* Assuming this is set to 3072px or as needed */
             height: var(--viewer-height); /* Assuming this is set to 2048px */
             margin: 0 auto; /* Center the container */
-            will-change: transform, opacity;
+            will-change: transform; /* Hint to optimize transform */
         }
 
         #backgroundInterfaceContainer {
@@ -548,14 +539,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            will-change: transform, opacity;
+            will-change: transform; /* Hint to optimize transform */
         }
 
         #interfaceBackground {
             width: 100%;
             height: auto;
-            will-change: transform, opacity;
-          
+            will-change: transform; /* Hint to optimize transform */
         }
 
         .scale-wrapper-background, .scale-wrapper-interface {
@@ -576,7 +566,7 @@
             width: fit-content; /* Ensures the wrapper fits the scaled content */
             height: fit-content; /* Ensures the wrapper fits the scaled content */
             transform: translate(-50%, -50%) scale(0.8); /* Centers and then scales the content */
-            will-change: transform, opacity;
+            will-change: transform; /* Hint to optimize transform */
         }
 
         .scale-wrapper-interface {
@@ -588,7 +578,7 @@
             width: fit-content; /* Ensures the wrapper fits the scaled content */
             height: fit-content; /* Ensures the wrapper fits the scaled content */
             transform: translate(-50%, -50%) scale(0.8); /* Centers and then scales the content */
-            will-change: transform, opacity;
+            will-change: transform; /* Hint to optimize transform */
         }
 
         .scale-wrapper-background {
@@ -599,18 +589,16 @@
             z-index: 15; /* Ensures the interface is placed above the background */
         }
 
-        
-
         #interfaceContainer, #backgroundContainer, #iframeContainer, #bodyGalleryContainer, .flex-icontainer, .flex-container {
             transition: opacity 1s ease-in-out;
             opacity: 0;  /* Initially hidden, ensure this is your intent */
-            will-change: opacity;
+            
         }
 
         .menu-bar, .menu-container {
             transition: opacity 0.5s ease-in-out;
             opacity: 0;  /* Initially hidden, ensure this is your intent */
-            will-change: opacity;
+            
         }
 
 
@@ -1649,6 +1637,7 @@
                 parallaxAnimationRegistered = true;
                 AnimationManager.registerAnimation(throttleUpdateParallax);
             }
+            updateParallax();
         });
 
         function throttleUpdateParallax() {
@@ -3737,7 +3726,11 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         if (entry.target.classList.contains('flex-icontainer')) {
+                            addWillChange(entry.target, 'opacity');
                             entry.target.style.opacity = 1; // Trigger the fade-in animation
+                            entry.target.addEventListener('transitionend', () => {
+                                removeWillChange(entry.target);
+                            }, { once: true });
                         } else if (entry.target.classList.contains('animation-container')) {
                             startAnimationForContainer(entry.target.id);
                             entry.target.dataset.animationStarted = 'true'; // Mark as animated
@@ -3772,6 +3765,16 @@
                 }
             });
         }
+
+        function addWillChange(element, property) {
+            element.style.willChange = property;
+        }
+
+        function removeWillChange(element) {
+            element.style.willChange = '';
+        }
+
+
 
         function saveElementsViewportPosition() {
             observedElementsData = observedElements.map(element => ({
