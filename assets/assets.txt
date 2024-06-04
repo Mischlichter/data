@@ -3,8 +3,8 @@ IMG01=https://raw.githubusercontent.com/Mischlichter/data/main/Viewer/HogeAI_000
 DMP01=https://raw.githubusercontent.com/Mischlichter/data/main/Viewer/HogeAI_dpmap__00008_.png:0.80:0:0
 
 scene02:
-IMG01=https://raw.githubusercontent.com/Mischlichter/data/main/Viewer/HogeAI_00036_.png:0.80:0:0
-DMP01=https://raw.githubusercontent.com/Mischlichter/data/main/Viewer/HogeAI_dpmap__00034_.png:0.80:0:0
+IMG01=https://raw.githubusercontent.com/Mischlichter/data/main/Viewer/HogeAI_00160_.png:0.80:0:0
+DMP01=https://raw.githubusercontent.com/Mischlichter/data/main/Viewer/HogeAI_dpmap__00145_.png:0.80:0:0
 
 scene03:
 IMG01=https://raw.githubusercontent.com/Mischlichter/data/main/Viewer/HogeAI_00020_.png:0.80:0:0
