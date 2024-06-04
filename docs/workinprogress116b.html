@@ -3434,7 +3434,56 @@
             updateParallaxElements(scrollY);
         }
 
-          
+        function updateParallaxElements(scrollY) {
+            const speedFactorBackground = 0.3;
+            const speedFactorSides = -1.2;
+            const speedFactorViewer = -0.3;
+
+            const background = document.getElementById('interfaceBackground');
+            const sideLeft = document.getElementById('interfaceSideLeft');
+            const sideRight = document.getElementById('interfaceSideRight');
+            const viewerContainer = document.getElementById('interfaceViewerContainer');
+
+            const offsetBackground = scrollY * speedFactorBackground;
+            const offsetSides = scrollY * speedFactorSides;
+            const offsetViewer = scrollY * speedFactorViewer;
+
+            if (background) {
+                background.style.transform = `translate3d(0, ${offsetBackground}px, 0)`;
+                background.style.willChange = 'transform';
+            }
+            if (sideLeft && sideRight) {
+                sideLeft.style.transform = `translate3d(0, ${offsetSides}px, 0)`;
+                sideRight.style.transform = `translate3d(0, ${offsetSides}px, 0)`;
+                sideLeft.style.willChange = 'transform';
+                sideRight.style.willChange = 'transform';
+            }
+            if (viewerContainer) {
+                viewerContainer.style.transform = `translate3d(0, ${offsetViewer}px, 0)`;
+                viewerContainer.style.willChange = 'transform';
+            }
+        }
+
+        let lastKnownScrollPosition = 0;
+        let ticking = false;
+
+        function onScroll() {
+            lastKnownScrollPosition = window.scrollY;
+
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    updateParallaxElements(lastKnownScrollPosition);
+                    ticking = false;
+                });
+
+                ticking = true;
+            }
+        }
+
+        window.addEventListener('scroll', onScroll);
+
+
+  
 
 
 /////////// ANIMATION TEXT /////
@@ -3688,24 +3737,8 @@
         }
 
  
-        let lastKnownScrollPosition = 0;
-        let ticking = false;
-
         let observedElements = [];
         let observedElementsData = [];
-
-        function onScroll() {
-            lastKnownScrollPosition = window.scrollY;
-
-            if (!ticking) {
-                window.requestAnimationFrame(() => {
-                    updateParallaxElements(lastKnownScrollPosition);
-                    ticking = false;
-                });
-
-                ticking = true;
-            }
-        }
 
         function observeElementsForAnimations() {
             const observerOptions = {
@@ -3751,42 +3784,6 @@
                 }
             });
         }
-
-        function updateParallaxElements(scrollY) {
-            const speedFactorBackground = 0.3;
-            const speedFactorSides = -1.2;
-            const speedFactorViewer = -0.3;
-
-            const background = document.getElementById('interfaceBackground');
-            const sideLeft = document.getElementById('interfaceSideLeft');
-            const sideRight = document.getElementById('interfaceSideRight');
-            const viewerContainer = document.getElementById('interfaceViewerContainer');
-
-            const offsetBackground = scrollY * speedFactorBackground;
-            const offsetSides = scrollY * speedFactorSides;
-            const offsetViewer = scrollY * speedFactorViewer;
-
-            if (background) {
-                background.style.transform = `translate3d(0, ${offsetBackground}px, 0)`;
-                background.style.willChange = 'transform';
-            }
-            if (sideLeft && sideRight) {
-                sideLeft.style.transform = `translate3d(0, ${offsetSides}px, 0)`;
-                sideRight.style.transform = `translate3d(0, ${offsetSides}px, 0)`;
-                sideLeft.style.willChange = 'transform';
-                sideRight.style.willChange = 'transform';
-            }
-            if (viewerContainer) {
-                viewerContainer.style.transform = `translate3d(0, ${offsetViewer}px, 0)`;
-                viewerContainer.style.willChange = 'transform';
-            }
-        }
-
-        window.addEventListener('scroll', onScroll);
-
-        // Call observeElementsForAnimations to set up the initial observations
-        observeElementsForAnimations();
-
 
         function saveElementsViewportPosition() {
             observedElementsData = observedElements.map(element => ({
