@@ -788,10 +788,7 @@
     <script src="./scripts/lenis.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
     <script src="./scripts/index-min.js"></script>
 
 
@@ -3420,7 +3417,9 @@
         
 
         function updateParallax() {
-            if (isIOS) {
+            const isiOS = /iPad|iPhone|iPod/.test(navigator.platform) ||
+                          (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+            if (isiOS) {
                 return;
             }
 
@@ -3462,6 +3461,7 @@
                 }
             });
         }
+
   
 
 
