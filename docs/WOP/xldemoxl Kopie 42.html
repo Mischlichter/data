@@ -1628,10 +1628,7 @@
             }
         };
 
-        const lenis = new Lenis()
-     
-  
-
+        const lenis = new Lenis();
 
         lenis.on('scroll', () => {
             if (!parallaxAnimationRegistered) {
@@ -1647,12 +1644,8 @@
 
         function runLenis(timestamp) {
             lenis.raf(timestamp);
-            // Prioritize the runLenis function
-            setTimeout(() => {
-                requestAnimationFrame(runLenis);
-            }, 0); // <-- This line sets the priority
+            requestAnimationFrame(runLenis);
         }
-
 
         if (!lenisInitialized) {
             lenisInitialized = true;

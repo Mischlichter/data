@@ -11,6 +11,6 @@ IMG01=https://raw.githubusercontent.com/Mischlichter/data/main/Viewer/HogeAI_000
 DMP01=https://raw.githubusercontent.com/Mischlichter/data/main/Viewer/HogeAI_dpmap__00033_.png:0.80:0:0
 
 scene04:
-IMG01=https://raw.githubusercontent.com/Mischlichter/data/main/Viewer/HogeAI_00020_.png:0.80:0:0
-DMP01=https://raw.githubusercontent.com/Mischlichter/data/main/Viewer/HogeAI_dpmap__00019_.png:0.80:0:0
+IMG01=https://raw.githubusercontent.com/Mischlichter/data/main/Viewer/HogeAI_00246_.png:0.80:0:0
+DMP01=https://raw.githubusercontent.com/Mischlichter/data/main/Viewer/HogeAI_dpmap__00226_.png:0.80:0:0
 
