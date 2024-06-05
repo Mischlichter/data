@@ -1983,7 +1983,7 @@
         // Animation Frame Function
         function animate() {
             // Perform the exclusion check at the start of the animation function
-            if (!shouldExcludeAnimation()) {
+            if (!isIOS) {
                 if (applySmoothing) {
                     var dx = targetMouseX - mouseX;
                     var dy = targetMouseY - mouseY;
