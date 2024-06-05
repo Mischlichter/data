@@ -710,6 +710,9 @@
         }
 
 
+
+
+
     </style>
 
     
@@ -771,12 +774,17 @@
 
     
     <link rel="stylesheet" type="text/css" href="css/bodygallery.css">
+
+    
     <script src="https://kit.fontawesome.com/a258000a2d.js" crossorigin="anonymous"></script>
 
     <script src="./scripts/lenis.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
+
     <script src="./scripts/index-min.js"></script>
 
 
@@ -1103,7 +1111,7 @@
                 urlsToCache.push(...extraAssetsUrls); // Add extra assets to urlsToCache
 
                 let loaded = 0;
-                const delay = 77;
+                const delay = 23;
                 let assetsToStore = [];
 
                 for (let { url, lastModified } of urlsToCache) {
@@ -1652,8 +1660,6 @@
         }
 
 
-
-
         function scrollToTop() {
   
             // Instantly set the scroll position to the top
@@ -1703,6 +1709,7 @@
 
             if (sceneKey === 'scene05') {
                 // Logic for scene04 (Gallery)
+                hideFooterInstantly();
                 toggleRemoveFooterActivation();
                 resetRemoveStyledFooterCounter();
                 iframeContainer.style.display = 'none';
@@ -2679,6 +2686,8 @@
             const scene = scenesData[index];
             const sceneImages = scenesiData[index]; // Assuming scenesiData is structured similarly
             let formattedSceneKey = scene.sceneKey.length === 6 ? `scene0${scene.sceneKey.charAt(5)}` : scene.sceneKey;
+            lenis.stop();
+
 
             
             // Update the iframe with the new scene
@@ -3096,8 +3105,10 @@
                             element.style.opacity = 1; // Set opacity to 1
                             if (isIOS) {
                                 element.style.transition = 'none'; // Remove transitions for iOS
+                                lenis.start();
                             } else {
                                 element.style.transition = 'opacity 1s ease-in-out'; // Apply transitions for non-iOS
+                                lenis.start();
                             }
                             element.addEventListener('transitionend', animationEndHandler);
                         }
@@ -3402,6 +3413,8 @@
             Promise.all([backgroundPromise, sideLeftPromise, sideRightPromise, viewerImagePromise])
                 .then(() => {
                     fadeInElements();
+
+
                 })
                 .catch((error) => {
                     console.error("Error loading elements:", error);
@@ -3452,6 +3465,8 @@
                 }
             });
         }
+
+  
 
 
 /////////// ANIMATION TEXT /////
@@ -3710,7 +3725,8 @@
 
         function observeElementsForAnimations() {
             const observerOptions = {
-                threshold: 0.25 // Trigger when 25% of the item is visible
+                threshold: 0.25, // Trigger when 25% of the item is visible
+                rootMargin: '50px' // Start observing a bit before the element is in view
             };
 
             const observerCallback = (entries, observer) => {
@@ -3752,6 +3768,7 @@
                 }
             });
         }
+
 
         function saveElementsViewportPosition() {
             observedElementsData = observedElements.map(element => ({
@@ -3992,11 +4009,7 @@
             shuffleMenu();
         });
 
-
-
         
-
-
         //initialize();
     </script>
 </body>
