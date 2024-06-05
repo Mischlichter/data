@@ -1661,17 +1661,14 @@
 
 
         function scrollToTop() {
-  
-            // Instantly set the scroll position to the top
             if (typeof window !== 'undefined') {
                 window.scrollTo({
                     top: 0,
-                    behavior: 'instant' // Use 'instant' to avoid smooth scrolling
+                    behavior: 'smooth'  // Use 'smooth' to enable smooth scrolling
                 });
             }
-
-
         }
+
 
 
 //////// Interface Loadin //////
@@ -2346,6 +2343,7 @@
                         if (isTouch && event.type === 'click') return;
                         isTouch = event.type === 'touchend';
                         handleInteraction(menuContainer.id, index);
+                        scrollToTop(); // <-- Added this line
                     };
 
                     menuContainer.addEventListener('click', handleMenuInteraction);
@@ -2353,6 +2351,7 @@
 
                     menuContainer.addEventListener('touchend', handleMenuInteraction);
                     menuContainer.addEventListener('touchend', () => animateTextDuringHover(menuContainer));
+
 
                     if (index === 0) {
                         setTimeout(() => animateTextDuringHover(menuContainer), 5000);
