@@ -1880,7 +1880,7 @@
 
             // Remove event listeners that may have been added during the gallery view
             // Example: assuming a function disableScroll() added event listeners
-            enableScroll();
+            //enableScroll();
 
             // Reset any additional styles or modifications
             // This depends on what else might be manipulated during your gallery's runtime
@@ -2564,6 +2564,7 @@
         function initializeFirstScene() {
             currentSceneIndex = 0; // Set to the first scene
             //loadScene(currentSceneIndex); // Load the first scene
+            scrollToTop();
             fadeInmenu();
 
             
@@ -2707,7 +2708,7 @@
             lenis.stop();
 
 
-            scrollToTop();
+            
             // Update the iframe with the new scene
             updateIframe(formattedSceneKey);
 
@@ -3195,8 +3196,12 @@
                     element.style.opacity = 0; // Set opacity to 0
                     if (isIOS) {
                         element.style.transition = 'none'; // Remove transitions for iOS
+                        lenis.stop();
+                        scrollToTop();
                     } else {
                         element.style.transition = 'opacity 1s ease-in-out'; // Apply transitions for non-iOS
+                        lenis.stop();
+                        scrollToTop();
                     }
                 });
 
