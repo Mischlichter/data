@@ -1592,11 +1592,14 @@
 //////// MOUSE SMOOTHING ////////
 
         const isIOS = /iPad|iPhone|iPod/.test(navigator.platform) || 
-                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) ||
+                      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                      ('ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0);
 
         let lastScrollY = 0;
         let lenisInitialized = false;
         let parallaxAnimationRegistered = false;
+        let animateRegistered = false;  // Add a flag to track animate registration
 
         const AnimationManager = {
             frameCap: 90,
@@ -1628,10 +1631,7 @@
             }
         };
 
-        const lenis = new Lenis()
-     
-  
-
+        const lenis = new Lenis();
 
         lenis.on('scroll', () => {
             if (!parallaxAnimationRegistered) {
@@ -1653,28 +1653,80 @@
             }, 0); // <-- This line sets the priority
         }
 
-
         if (!lenisInitialized) {
             lenisInitialized = true;
             requestAnimationFrame(runLenis);
         }
 
-
         function scrollToTop() {
             if (typeof window !== 'undefined') {
+                // First, attempt to scroll to the top using instant behavior
                 window.scrollTo({
                     top: 0,
                     behavior: 'instant' // Use 'instant' to avoid smooth scrolling
                 });
 
-                // Fallback for iOS devices if the above method fails
-                if (window.pageYOffset !== 0) {
-                    setTimeout(() => {
-                        window.scrollTo(0, 0);
-                    }, 0);
-                }
+                // Check if the scroll position is not at the top after a small delay
+                setTimeout(() => {
+                    if (window.pageYOffset !== 0) {
+                        // If still not at the top, attempt to scroll to top again with a fallback
+                        window.scrollTo({
+                            top: 0,
+                            behavior: 'auto' // Use 'auto' as a fallback
+                        });
+
+                        // Fallback for iOS devices if the above method fails
+                        setTimeout(() => {
+                            if (window.pageYOffset !== 0) {
+                                window.scrollTo(0, 0);
+                            }
+                        }, 50); // Adjust delay if necessary
+                    }
+                }, 50); // Initial delay to check if the first scroll was successful
             }
         }
+
+
+        function animate(timestamp) {
+            // Perform the exclusion check at the start of the animation function
+            if (!isIOS) {
+                if (applySmoothing) {
+                    var dx = targetMouseX - mouseX;
+                    var dy = targetMouseY - mouseY;
+                    var distance = Math.sqrt(dx * dx + dy * dy);
+                    var smoothingFactor = Math.min(distance / 100, maxSmoothingFactor);
+
+                    mouseX += dx * smoothingFactor;
+                    mouseY += dy * smoothingFactor;
+
+                    // Disable smoothing when close enough
+                    if (distance < 1) {
+                        applySmoothing = false;
+                        mouseX = targetMouseX;
+                        mouseY = targetMouseY;
+                    }
+                } else {
+                    mouseX = targetMouseX;
+                    mouseY = targetMouseY;
+                }
+
+                sendMouseEventToIframe('mousemove', { clientX: mouseX, clientY: mouseY });
+            } else {
+                console.log('Animation is disabled on this device.');
+                // Optionally handle any cleanup here if necessary when stopping the animation
+            }
+            return !isIOS;  // Return false if the animation should be excluded, to remove it from the animation list
+        }
+
+        // Register the animate function with the AnimationManager if not already registered
+        if (!animateRegistered) {
+            animateRegistered = true;
+            AnimationManager.registerAnimation(animate);
+        }
+
+
+      
+
 
 
 
@@ -1980,51 +2032,10 @@
         mouseOverlay.addEventListener('mousemove', handleMouseMove);
 
 
-        // Animation Frame Function
-        function animate() {
-            // Perform the exclusion check at the start of the animation function
-            if (!isIOS) {
-                if (applySmoothing) {
-                    var dx = targetMouseX - mouseX;
-                    var dy = targetMouseY - mouseY;
-                    var distance = Math.sqrt(dx * dx + dy * dy);
-                    var smoothingFactor = Math.min(distance / 100, maxSmoothingFactor);
 
-                    mouseX += dx * smoothingFactor;
-                    mouseY += dy * smoothingFactor;
-
-                    // Disable smoothing when close enough
-                    if (distance < 1) {
-                        applySmoothing = false;
-                        mouseX = targetMouseX;
-                        mouseY = targetMouseY;
-                    }
-                } else {
-                    mouseX = targetMouseX;
-                    mouseY = targetMouseY;
-                }
-
-                sendMouseEventToIframe('mousemove', { clientX: mouseX, clientY: mouseY });
-            } else {
-                console.log('Animation is disabled on this device.');
-                // Optionally handle any cleanup here if necessary when stopping the animation
-            }
-            return !shouldExcludeAnimation();  // Return false if the animation should be excluded, to remove it from the animation list
-        }
-
-        // Register the animate function with the AnimationManager
-        AnimationManager.registerAnimation(animate);
+        
 
 
-        // Start the animation loop
-        requestAnimationFrame(animate);
-
-
-        function shouldExcludeAnimation() {
-            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-            const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
-            return isMobile || hasTouch;
-        }
 
 
         // Update sendMouseEventToIframe to use coordinates
