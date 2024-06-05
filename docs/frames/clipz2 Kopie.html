@@ -414,11 +414,11 @@
             const video2 = document.getElementById('video2');
             let currentVideo = video1;
             let nextVideo = video2;
-            let originalVideoUrls = [...videoUrls];
 
             function playNextVideo() {
                 if (videoUrls.length === 0) {
-                    videoUrls = [...originalVideoUrls]; // Reset the video URLs list
+                    console.error('No more video URLs to play');
+                    return;
                 }
                 const randomIndex = Math.floor(Math.random() * videoUrls.length);
                 const nextUrl = videoUrls[randomIndex];
@@ -448,7 +448,6 @@
 
             playNextVideo();
         }
-
     </script>
 
 
