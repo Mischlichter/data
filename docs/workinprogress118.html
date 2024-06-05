@@ -1664,7 +1664,8 @@
             if (typeof window !== 'undefined') {
                 window.scrollTo({
                     top: 0,
-                    behavior: 'smooth'  // Use 'smooth' to enable smooth scrolling
+                    left: 0
+                    // Do not use 'behavior' property to make it instant
                 });
             }
         }
