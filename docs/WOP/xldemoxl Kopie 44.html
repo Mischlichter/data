@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=1, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/Mischlichter/data/main/gallerycom/65411740980.jpg">
     <meta http-equiv="Cache-Control" content="public, max-age=31536000">
@@ -416,7 +417,21 @@
         }
 
 
+        .foreground-image-container {
+            position: absolute; /* or absolute, depending on your layout needs */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Ensures it is above all other content */
+            pointer-events: none; /* Allows clicks to pass through to elements below */
+        }
 
+        .foreground-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Adjust this as necessary to fit your design */
+        }
 
 
 
@@ -695,9 +710,6 @@
         }
 
 
-
-
-
     </style>
 
     
@@ -759,17 +771,12 @@
 
     
     <link rel="stylesheet" type="text/css" href="css/bodygallery.css">
-
-    
     <script src="https://kit.fontawesome.com/a258000a2d.js" crossorigin="anonymous"></script>
 
     <script src="./scripts/lenis.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
     <script src="./scripts/index-min.js"></script>
 
 
@@ -1096,7 +1103,7 @@
                 urlsToCache.push(...extraAssetsUrls); // Add extra assets to urlsToCache
 
                 let loaded = 0;
-                const delay = 23;
+                const delay = 11;
                 let assetsToStore = [];
 
                 for (let { url, lastModified } of urlsToCache) {
@@ -1577,15 +1584,11 @@
 //////// MOUSE SMOOTHING ////////
 
         const isIOS = /iPad|iPhone|iPod/.test(navigator.platform) || 
-                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) ||
-                      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-                      ('ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0);
-
+                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
         let lastScrollY = 0;
         let lenisInitialized = false;
         let parallaxAnimationRegistered = false;
-        let animateRegistered = false;
 
         const AnimationManager = {
             frameCap: 90,
@@ -1649,23 +1652,20 @@
         }
 
 
+
+
         function scrollToTop() {
+  
+            // Instantly set the scroll position to the top
             if (typeof window !== 'undefined') {
                 window.scrollTo({
                     top: 0,
                     behavior: 'instant' // Use 'instant' to avoid smooth scrolling
                 });
-
-                // Fallback for iOS devices if the above method fails
-                if (window.pageYOffset !== 0) {
-                    setTimeout(() => {
-                        window.scrollTo(0, 0);
-                    }, 0);
-                }
             }
+
+
         }
-
-
 
 
 //////// Interface Loadin //////
@@ -1686,7 +1686,9 @@
             const iframeContainer = document.getElementById('iframeContainer');
             const mouseOverlay = document.getElementById('mouseOverlay');
             const bodyGalleryContainer = document.getElementById('bodyGalleryContainer');
-       
+
+
+            unhideElementsByClass("foreground-image-container");
 
             // Remove existing iframe and clear body gallery content
             let existingIframe = document.getElementById('sceneIframe');
@@ -1701,7 +1703,6 @@
 
             if (sceneKey === 'scene05') {
                 // Logic for scene04 (Gallery)
-                hideFooterInstantly();
                 toggleRemoveFooterActivation();
                 resetRemoveStyledFooterCounter();
                 iframeContainer.style.display = 'none';
@@ -1715,13 +1716,13 @@
                     console.error('bodyGalleryContainer not found in the DOM');
                 }
                 bodyGalleryContainer.style.display = 'block';
-                
+                hideElementsByClass("foreground-image-container,");
                 loadGallery(); // Load the gallery for scene04
                 unhideBackground();
                 scrollToTop();
             } else if (sceneKey === 'scene06') {
                 // Logic for scene05 (Clipz)
-                
+                hideElementsByClass("foreground-image-container");
 
                 setupDirectIframe('frames/clipz2.html'); // Load clipz2.html for scene05 directly into the body
                 
@@ -1755,7 +1756,6 @@
                 iframeContainer.appendChild(newIframe);
                 hideBackground();
                 scrollToTop();
-                lenis.start();
             }
 
 
@@ -1816,13 +1816,34 @@
 
             // Remove event listeners that may have been added during the gallery view
             // Example: assuming a function disableScroll() added event listeners
-            //disableScroll();
+            enableScroll();
 
             // Reset any additional styles or modifications
             // This depends on what else might be manipulated during your gallery's runtime
         }
 
 
+        function hideElementsByClass(className) {
+          // Get all elements with the specified class name
+          var elements = document.getElementsByClassName(className);
+          
+          // Loop through each element
+          for (var i = 0; i < elements.length; i++) {
+            // Hide the current element by setting its display property to 'none'
+            elements[i].style.display = 'none';
+          }
+        }
+
+        function unhideElementsByClass(className) {
+          // Get all elements with the specified class name
+          var elements = document.getElementsByClassName(className);
+          
+          // Loop through each element
+          for (var i = 0; i < elements.length; i++) {
+            // Unhide the current element by setting its display property to its default value
+            elements[i].style.display = '';
+          }
+        }
 
 
 
@@ -1915,43 +1936,47 @@
 
 //////// MOUSE HANDLING ///////////        
 
-        let targetMouseX = window.innerWidth / 2, targetMouseY = window.innerHeight / 2;
-        const maxSmoothingFactor = 0.111; // Maximum smoothing factor
-        let isMouseInArea = false;
-        let applySmoothing = false;
+        var targetMouseX = window.innerWidth / 2, targetMouseY = window.innerHeight / 2;
+        
+        var maxSmoothingFactor = 0.111; // Maximum smoothing factor
+        var isMouseInArea = false;
+        var applySmoothing = false;
 
-        const mouseOverlay = document.getElementById('mouseOverlay');
+        var mouseOverlay = document.getElementById('mouseOverlay');
 
-        // Consolidated Event Handler
-        function handleMouseEvent(e, eventType) {
-            e.preventDefault(); // Added preventDefault for better mobile experience
+        // Event Handlers
+        function handleMouseEnter(e) {
+            isMouseInArea = true;
+            applySmoothing = true; // Enable smoothing on entering
+            targetMouseX = e.clientX - mouseOverlay.offsetLeft - mouseOverlay.offsetWidth / 2;
+            targetMouseY = e.clientY - mouseOverlay.offsetTop - mouseOverlay.offsetHeight / 2;
+            
+        }
 
-            if (eventType === 'enter') {
-                isMouseInArea = true;
-                applySmoothing = true; // Enable smoothing on entering
-            } else if (eventType === 'leave') {
-                isMouseInArea = false;
-            }
+        function handleMouseLeave(e) {
+            isMouseInArea = false;
+        }
 
-            if (eventType !== 'leave') {
-                targetMouseX = e.clientX - mouseOverlay.offsetLeft - mouseOverlay.offsetWidth / 2;
-                targetMouseY = e.clientY - mouseOverlay.offsetTop - mouseOverlay.offsetHeight / 2;
-            }
+        function handleMouseMove(e) {
+            targetMouseX = e.clientX - mouseOverlay.offsetLeft - mouseOverlay.offsetWidth / 2;
+            targetMouseY = e.clientY - mouseOverlay.offsetTop - mouseOverlay.offsetHeight / 2;
         }
 
         // Attach Event Listeners
-        mouseOverlay.addEventListener('mouseenter', (e) => handleMouseEvent(e, 'enter'));
-        mouseOverlay.addEventListener('mouseleave', (e) => handleMouseEvent(e, 'leave'));
-        mouseOverlay.addEventListener('mousemove', (e) => handleMouseEvent(e, 'move'));
+        mouseOverlay.addEventListener('mouseenter', handleMouseEnter);
+        mouseOverlay.addEventListener('mouseleave', handleMouseLeave);
+        mouseOverlay.addEventListener('mousemove', handleMouseMove);
 
-        // Animate Mouse Movement
+
+        // Animation Frame Function
         function animate() {
-            if (!isIOS) {
+            // Perform the exclusion check at the start of the animation function
+            if (!shouldExcludeAnimation()) {
                 if (applySmoothing) {
-                    const dx = targetMouseX - mouseX;
-                    const dy = targetMouseY - mouseY;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    const smoothingFactor = Math.min(distance / 100, maxSmoothingFactor);
+                    var dx = targetMouseX - mouseX;
+                    var dy = targetMouseY - mouseY;
+                    var distance = Math.sqrt(dx * dx + dy * dy);
+                    var smoothingFactor = Math.min(distance / 100, maxSmoothingFactor);
 
                     mouseX += dx * smoothingFactor;
                     mouseY += dy * smoothingFactor;
@@ -1970,15 +1995,25 @@
                 sendMouseEventToIframe('mousemove', { clientX: mouseX, clientY: mouseY });
             } else {
                 console.log('Animation is disabled on this device.');
+                // Optionally handle any cleanup here if necessary when stopping the animation
             }
-            return !isIOS;  // Return false if the animation should be excluded, to remove it from the animation list
+            return !shouldExcludeAnimation();  // Return false if the animation should be excluded, to remove it from the animation list
         }
 
-        // Register the animate function with the AnimationManager if not already registered
-        if (!animateRegistered) {
-            animateRegistered = true;
-            AnimationManager.registerAnimation(animate);
+        // Register the animate function with the AnimationManager
+        AnimationManager.registerAnimation(animate);
+
+
+        // Start the animation loop
+        requestAnimationFrame(animate);
+
+
+        function shouldExcludeAnimation() {
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+            return isMobile || hasTouch;
         }
+
 
         // Update sendMouseEventToIframe to use coordinates
         function sendMouseEventToIframe(eventType, coordinates) {
@@ -1991,6 +2026,8 @@
                 }, '*');
             }
         }
+
+
 
 
 //////// IMAGE LOADING ////////////////////
@@ -2302,7 +2339,6 @@
                         if (isTouch && event.type === 'click') return;
                         isTouch = event.type === 'touchend';
                         handleInteraction(menuContainer.id, index);
-                       
                     };
 
                     menuContainer.addEventListener('click', handleMenuInteraction);
@@ -2310,7 +2346,6 @@
 
                     menuContainer.addEventListener('touchend', handleMenuInteraction);
                     menuContainer.addEventListener('touchend', () => animateTextDuringHover(menuContainer));
-
 
                     if (index === 0) {
                         setTimeout(() => animateTextDuringHover(menuContainer), 5000);
@@ -2644,8 +2679,6 @@
             const scene = scenesData[index];
             const sceneImages = scenesiData[index]; // Assuming scenesiData is structured similarly
             let formattedSceneKey = scene.sceneKey.length === 6 ? `scene0${scene.sceneKey.charAt(5)}` : scene.sceneKey;
-            lenis.stop();
-
 
             
             // Update the iframe with the new scene
@@ -3009,7 +3042,7 @@
                         }
                     };
                     checkTiles(); // Start checking tiles
-                    
+                    updateParallax();
                 });
             };
 
@@ -3063,12 +3096,8 @@
                             element.style.opacity = 1; // Set opacity to 1
                             if (isIOS) {
                                 element.style.transition = 'none'; // Remove transitions for iOS
-                                //lenis.start();
-                                //disableScroll()
                             } else {
                                 element.style.transition = 'opacity 1s ease-in-out'; // Apply transitions for non-iOS
-                                //lenis.start();
-                                //disableScroll()
                             }
                             element.addEventListener('transitionend', animationEndHandler);
                         }
@@ -3137,10 +3166,8 @@
                     element.style.opacity = 0; // Set opacity to 0
                     if (isIOS) {
                         element.style.transition = 'none'; // Remove transitions for iOS
-                        
                     } else {
                         element.style.transition = 'opacity 1s ease-in-out'; // Apply transitions for non-iOS
-
                     }
                 });
 
@@ -3375,8 +3402,6 @@
             Promise.all([backgroundPromise, sideLeftPromise, sideRightPromise, viewerImagePromise])
                 .then(() => {
                     fadeInElements();
-
-
                 })
                 .catch((error) => {
                     console.error("Error loading elements:", error);
@@ -3427,8 +3452,6 @@
                 }
             });
         }
-
-  
 
 
 /////////// ANIMATION TEXT /////
@@ -3687,25 +3710,19 @@
 
         function observeElementsForAnimations() {
             const observerOptions = {
-                threshold: [0.05, 0.25], // Use an array to handle multiple thresholds
-                rootMargin: '50px' // Start observing a bit before the element is in view
+                threshold: 0.25 // Trigger when 25% of the item is visible
             };
 
             const observerCallback = (entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         if (entry.target.classList.contains('flex-icontainer')) {
-                            if (entry.intersectionRatio >= 0.25) {
-                                entry.target.style.opacity = 1; // Trigger the fade-in animation
-                                observer.unobserve(entry.target); // Stop observing the element once it's animated
-                            }
+                            entry.target.style.opacity = 1; // Trigger the fade-in animation
                         } else if (entry.target.classList.contains('animation-container')) {
-                            if (entry.intersectionRatio >= 0.05) {
-                                startAnimationForContainer(entry.target.id);
-                                entry.target.dataset.animationStarted = 'true'; // Mark as animated
-                                observer.unobserve(entry.target); // Stop observing the element once it's animated
-                            }
+                            startAnimationForContainer(entry.target.id);
+                            entry.target.dataset.animationStarted = 'true'; // Mark as animated
                         }
+                        observer.unobserve(entry.target); // Stop observing the element once it's animated
                     }
                 });
             };
@@ -3975,23 +3992,11 @@
             shuffleMenu();
         });
 
-        function preventDefault(e) {
-            e.preventDefault();
-        }
 
-        function disableScroll() {
-            // Add event listeners to prevent scrolling
-            window.addEventListener('wheel', preventDefault, { passive: false });
-            window.addEventListener('touchmove', preventDefault, { passive: false });
-        }
-
-        function enableScroll() {
-            // Remove event listeners to re-enable scrolling
-            window.removeEventListener('wheel', preventDefault);
-            window.removeEventListener('touchmove', preventDefault);
-        }
 
         
+
+
         //initialize();
     </script>
 </body>
