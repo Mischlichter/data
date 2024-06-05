@@ -1768,6 +1768,7 @@
                 iframeContainer.appendChild(newIframe);
                 hideBackground();
                 scrollToTop();
+                lenis.start();
             }
 
 
@@ -1828,7 +1829,7 @@
 
             // Remove event listeners that may have been added during the gallery view
             // Example: assuming a function disableScroll() added event listeners
-            enableScroll();
+            //disableScroll();
 
             // Reset any additional styles or modifications
             // This depends on what else might be manipulated during your gallery's runtime
@@ -3112,10 +3113,12 @@
                             element.style.opacity = 1; // Set opacity to 1
                             if (isIOS) {
                                 element.style.transition = 'none'; // Remove transitions for iOS
-                                lenis.start();
+                                //lenis.start();
+                                //disableScroll()
                             } else {
                                 element.style.transition = 'opacity 1s ease-in-out'; // Apply transitions for non-iOS
-                                lenis.start();
+                                //lenis.start();
+                                //disableScroll()
                             }
                             element.addEventListener('transitionend', animationEndHandler);
                         }
@@ -3184,8 +3187,10 @@
                     element.style.opacity = 0; // Set opacity to 0
                     if (isIOS) {
                         element.style.transition = 'none'; // Remove transitions for iOS
+                        
                     } else {
                         element.style.transition = 'opacity 1s ease-in-out'; // Apply transitions for non-iOS
+
                     }
                 });
 
@@ -4015,6 +4020,22 @@
             updateAllContainersDuringScaling();
             shuffleMenu();
         });
+
+        function preventDefault(e) {
+            e.preventDefault();
+        }
+
+        function disableScroll() {
+            // Add event listeners to prevent scrolling
+            window.addEventListener('wheel', preventDefault, { passive: false });
+            window.addEventListener('touchmove', preventDefault, { passive: false });
+        }
+
+        function enableScroll() {
+            // Remove event listeners to re-enable scrolling
+            window.removeEventListener('wheel', preventDefault);
+            window.removeEventListener('touchmove', preventDefault);
+        }
 
         
         //initialize();
