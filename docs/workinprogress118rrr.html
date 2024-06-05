@@ -3687,7 +3687,7 @@
 
         function observeElementsForAnimations() {
             const observerOptions = {
-                threshold: 0.25, // Trigger when 25% of the item is visible
+                threshold: [0.05, 0.25], // Use an array to handle multiple thresholds
                 rootMargin: '50px' // Start observing a bit before the element is in view
             };
 
@@ -3695,12 +3695,17 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         if (entry.target.classList.contains('flex-icontainer')) {
-                            entry.target.style.opacity = 1; // Trigger the fade-in animation
+                            if (entry.intersectionRatio >= 0.25) {
+                                entry.target.style.opacity = 1; // Trigger the fade-in animation
+                                observer.unobserve(entry.target); // Stop observing the element once it's animated
+                            }
                         } else if (entry.target.classList.contains('animation-container')) {
-                            startAnimationForContainer(entry.target.id);
-                            entry.target.dataset.animationStarted = 'true'; // Mark as animated
+                            if (entry.intersectionRatio >= 0.05) {
+                                startAnimationForContainer(entry.target.id);
+                                entry.target.dataset.animationStarted = 'true'; // Mark as animated
+                                observer.unobserve(entry.target); // Stop observing the element once it's animated
+                            }
                         }
-                        observer.unobserve(entry.target); // Stop observing the element once it's animated
                     }
                 });
             };
@@ -3730,7 +3735,6 @@
                 }
             });
         }
-
 
         function saveElementsViewportPosition() {
             observedElementsData = observedElements.map(element => ({
