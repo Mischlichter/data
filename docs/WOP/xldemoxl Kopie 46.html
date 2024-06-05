@@ -1596,6 +1596,9 @@
         let messageEventListenerAdded = false;
         let mouseEventListenersAdded = false;
         let touchEndEventListenerAdded = false;
+       
+      
+       
         let touchMoveEventListenerAdded = false;
         let wheelEventListenerAdded = false;
         let touchStartEventListenerAdded = false;
@@ -1694,7 +1697,8 @@
             const iframeContainer = document.getElementById('iframeContainer');
             const mouseOverlay = document.getElementById('mouseOverlay');
             const bodyGalleryContainer = document.getElementById('bodyGalleryContainer');
-            
+       
+
             // Remove existing iframe and clear body gallery content
             let existingIframe = document.getElementById('sceneIframe');
             if (existingIframe) {
@@ -1707,7 +1711,7 @@
             }
 
             if (sceneKey === 'scene05') {
-                // Logic for scene05 (Gallery)
+                // Logic for scene04 (Gallery)
                 hideFooterInstantly();
                 toggleRemoveFooterActivation();
                 resetRemoveStyledFooterCounter();
@@ -1723,12 +1727,15 @@
                 }
                 bodyGalleryContainer.style.display = 'block';
                 
-                loadGallery(); // Load the gallery for scene05
+                loadGallery(); // Load the gallery for scene04
                 unhideBackground();
                 scrollToTop();
             } else if (sceneKey === 'scene06') {
-                // Logic for scene06 (Clipz)
-                setupDirectIframe('frames/clipz2.html'); // Load clipz2.html for scene06 directly into the body
+                // Logic for scene05 (Clipz)
+                
+
+                setupDirectIframe('frames/clipz2.html'); // Load clipz2.html for scene05 directly into the body
+                
                 
             } else {
                 // Logic for other scenes
@@ -1759,11 +1766,13 @@
                     messageEventListenerAdded = true; // Set the flag to true after adding the listener
                 }
 
+
                 iframeContainer.appendChild(newIframe);
                 hideBackground();
                 scrollToTop();
                 lenis.start();
             }
+
 
             function setupDirectIframe(src) {
                 hideFooterInstantly();
@@ -1798,11 +1807,10 @@
             function setupObserver(iframe) {
                 let observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
-                        if (iframe.contentWindow) { // Moved the check here
-                            iframe.contentWindow.postMessage({ 
-                                type: 'visibilityChange', 
-                                isVisible: entry.isIntersecting 
-                            }, '*');
+                        if (entry.isIntersecting && iframe.contentWindow) {
+                            iframe.contentWindow.postMessage({ type: 'visibilityChange', isVisible: true }, '*');
+                        } else if (!entry.isIntersecting && iframe.contentWindow) {
+                            iframe.contentWindow.postMessage({ type: 'visibilityChange', isVisible: false }, '*');
                         }
                     });
                 }, {
@@ -1812,7 +1820,6 @@
                 observer.observe(iframe);
             }
         }
-
 
         function resetPageStyles() {
             // Re-enable scrolling on the body and html
@@ -2794,20 +2801,16 @@
 
             // Function to scroll to the top smoothly
             function scrollToTopS() {
+            
                 // Smoothly scroll to the top
                 window.scrollTo({
                     top: 0,
                     behavior: 'smooth'
                 });
 
-                // Reload the iframe
-                const iframe = document.getElementById('sceneIframe');
-                if (iframe) {
-                    const src = iframe.src;
-                    iframe.src = 'about:blank'; // Set to blank to trigger unload
-                    iframe.src = src; // Reset to original source to reload
-                }
+        
             }
+
 
             // Listen to both click and touchend events
             button.addEventListener('click', scrollToTopS);
@@ -2820,14 +2823,13 @@
             window.addEventListener('scroll', function() {
                 if (window.scrollY > 1111) {
                     button.style.display = 'block';
-                    setTimeout(() => button.style.opacity = 1, 1500); // Increased delay to 1500ms for showing
+                    setTimeout(() => button.style.opacity = 1, 1500); // Increased delay to 500ms for showing
                 } else {
                     button.style.opacity = 0;
-                    setTimeout(() => button.style.display = 'none', 100); // Keep delay at 100ms for hiding
+                    setTimeout(() => button.style.display = 'none', 100); // Keep delay at 300ms for hiding
                 }
             });
         }
-
 
 
 
@@ -3693,7 +3695,7 @@
 
         function observeElementsForAnimations() {
             const observerOptions = {
-                threshold: [0.011, 0.25], // Use an array to handle multiple thresholds
+                threshold: [0.05, 0.25], // Use an array to handle multiple thresholds
                 rootMargin: '50px' // Start observing a bit before the element is in view
             };
 
