@@ -273,9 +273,7 @@
 
             const video1 = document.getElementById('video1');
             const video2 = document.getElementById('video2');
-            let activeVideo = video1; // Start with video1
-            let intervalId;
-            const FRAMERATE = 30;
+            activeVideo = video1; // Start with video1
 
             document.addEventListener('touchstart', () => {
                 video1.play();
@@ -296,8 +294,14 @@
                 clearInterval(intervalId);
             }
 
-            video1.addEventListener('play', startAmbilightRepaint);
-            video2.addEventListener('play', startAmbilightRepaint);
+            video1.addEventListener('play', () => {
+                activeVideo = video1;
+                startAmbilightRepaint();
+            });
+            video2.addEventListener('play', () => {
+                activeVideo = video2;
+                startAmbilightRepaint();
+            });
 
             video1.addEventListener('pause', stopAmbilightRepaint);
             video2.addEventListener('pause', stopAmbilightRepaint);
@@ -309,16 +313,12 @@
             video2.addEventListener('seeked', repaintAmbilight);
 
             function toggleMute() {
-                //console.log('toggleMute function called'); // Debug statement
-
                 video1.muted = !video1.muted;
                 video2.muted = !video2.muted;
 
                 document.getElementById('muteButton').innerText = video1.muted ? 'Unmute' : 'Mute';
 
                 updateVolumeSliderVisibility();
-
-                //console.log('New Mute State (after toggle): Video1:', video1.muted, 'Video2:', video2.muted);
             }
 
             function updateVolumeSliderVisibility() {
@@ -390,8 +390,10 @@
             }).catch(error => {
                 console.error('Error fetching video URLs:', error);
             });
-        };
 
+            // Ensure ambilight starts with the first video
+            startAmbilightRepaint();
+        };
 
         async function fetchVideoUrls() {
             try {
@@ -447,6 +449,7 @@
             playNextVideo();
         }
     </script>
+
 
 
 
