@@ -1915,49 +1915,43 @@
 
 //////// MOUSE HANDLING ///////////        
 
-        var targetMouseX = window.innerWidth / 2, targetMouseY = window.innerHeight / 2;
-        
-        var maxSmoothingFactor = 0.111; // Maximum smoothing factor
-        var isMouseInArea = false;
-        var applySmoothing = false;
+        let targetMouseX = window.innerWidth / 2, targetMouseY = window.innerHeight / 2;
+        const maxSmoothingFactor = 0.111; // Maximum smoothing factor
+        let isMouseInArea = false;
+        let applySmoothing = false;
 
-        var mouseOverlay = document.getElementById('mouseOverlay');
+        const mouseOverlay = document.getElementById('mouseOverlay');
 
-        // Event Handlers
-        function handleMouseEnter(e) {
+        // Consolidated Event Handler
+        function handleMouseEvent(e, eventType) {
             e.preventDefault(); // Added preventDefault for better mobile experience
-            isMouseInArea = true;
-            applySmoothing = true; // Enable smoothing on entering
-            targetMouseX = e.clientX - mouseOverlay.offsetLeft - mouseOverlay.offsetWidth / 2;
-            targetMouseY = e.clientY - mouseOverlay.offsetTop - mouseOverlay.offsetHeight / 2;
-        }
 
-        function handleMouseLeave(e) {
-            e.preventDefault(); // Added preventDefault for better mobile experience
-            isMouseInArea = false;
-        }
+            if (eventType === 'enter') {
+                isMouseInArea = true;
+                applySmoothing = true; // Enable smoothing on entering
+            } else if (eventType === 'leave') {
+                isMouseInArea = false;
+            }
 
-        function handleMouseMove(e) {
-            e.preventDefault(); // Added preventDefault for better mobile experience
-            targetMouseX = e.clientX - mouseOverlay.offsetLeft - mouseOverlay.offsetWidth / 2;
-            targetMouseY = e.clientY - mouseOverlay.offsetTop - mouseOverlay.offsetHeight / 2;
+            if (eventType !== 'leave') {
+                targetMouseX = e.clientX - mouseOverlay.offsetLeft - mouseOverlay.offsetWidth / 2;
+                targetMouseY = e.clientY - mouseOverlay.offsetTop - mouseOverlay.offsetHeight / 2;
+            }
         }
-
 
         // Attach Event Listeners
-        mouseOverlay.addEventListener('mouseenter', handleMouseEnter);
-        mouseOverlay.addEventListener('mouseleave', handleMouseLeave);
-        mouseOverlay.addEventListener('mousemove', handleMouseMove);
+        mouseOverlay.addEventListener('mouseenter', (e) => handleMouseEvent(e, 'enter'));
+        mouseOverlay.addEventListener('mouseleave', (e) => handleMouseEvent(e, 'leave'));
+        mouseOverlay.addEventListener('mousemove', (e) => handleMouseEvent(e, 'move'));
 
-
-
+        // Animate Mouse Movement
         function animate() {
             if (!isIOS) {
                 if (applySmoothing) {
-                    var dx = targetMouseX - mouseX;
-                    var dy = targetMouseY - mouseY;
-                    var distance = Math.sqrt(dx * dx + dy * dy);
-                    var smoothingFactor = Math.min(distance / 100, maxSmoothingFactor);
+                    const dx = targetMouseX - mouseX;
+                    const dy = targetMouseY - mouseY;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    const smoothingFactor = Math.min(distance / 100, maxSmoothingFactor);
 
                     mouseX += dx * smoothingFactor;
                     mouseY += dy * smoothingFactor;
@@ -1986,10 +1980,6 @@
             AnimationManager.registerAnimation(animate);
         }
 
-
-
-        
-
         // Update sendMouseEventToIframe to use coordinates
         function sendMouseEventToIframe(eventType, coordinates) {
             const iframe = document.getElementById('sceneIframe');
@@ -2001,8 +1991,6 @@
                 }, '*');
             }
         }
-
-
 
 
 //////// IMAGE LOADING ////////////////////
