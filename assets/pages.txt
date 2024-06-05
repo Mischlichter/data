@@ -300,7 +300,7 @@ P08:
 Using References - Art and Media Influences: Mentioning specific references can guide the AI effectively. If you want a scene reminiscent of a popular movie or artwork, include that in your prompt. For example, "inspired by the cyberpunk aesthetic of Blade Runner" can yield highly stylized and recognizable imagery.
 
 P09:
-Experiment & Explore - The beauty of HogeAI? There's no right or wrong. Play around and most importantly, have a blast! From serene landscapes to wacky adventures, the Hoge universe is yours to explore.
+Experiment & Explore - The beauty of HogeAI? There's no right or wrong. Play around and most importantly, have a blast! From serene landscapes to wacky adventures, the universe is yours to explore.
 
 
 #container01 {
