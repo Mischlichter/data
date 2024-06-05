@@ -1596,9 +1596,6 @@
         let messageEventListenerAdded = false;
         let mouseEventListenersAdded = false;
         let touchEndEventListenerAdded = false;
-       
-      
-       
         let touchMoveEventListenerAdded = false;
         let wheelEventListenerAdded = false;
         let touchStartEventListenerAdded = false;
@@ -3695,7 +3692,7 @@
 
         function observeElementsForAnimations() {
             const observerOptions = {
-                threshold: [0.05, 0.25], // Use an array to handle multiple thresholds
+                threshold: [0.011, 0.25], // Use an array to handle multiple thresholds
                 rootMargin: '50px' // Start observing a bit before the element is in view
             };
 
