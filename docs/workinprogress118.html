@@ -1664,11 +1664,18 @@
             if (typeof window !== 'undefined') {
                 window.scrollTo({
                     top: 0,
-                    left: 0
-                    // Do not use 'behavior' property to make it instant
+                    behavior: 'instant' // Use 'instant' to avoid smooth scrolling
                 });
+
+                // Fallback for iOS devices if the above method fails
+                if (window.pageYOffset !== 0) {
+                    setTimeout(() => {
+                        window.scrollTo(0, 0);
+                    }, 0);
+                }
             }
         }
+
 
 
 
@@ -2344,7 +2351,7 @@
                         if (isTouch && event.type === 'click') return;
                         isTouch = event.type === 'touchend';
                         handleInteraction(menuContainer.id, index);
-                        scrollToTop(); // <-- Added this line
+                       
                     };
 
                     menuContainer.addEventListener('click', handleMenuInteraction);
