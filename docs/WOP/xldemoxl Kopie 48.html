@@ -1592,6 +1592,7 @@
         let lenisInitialized = false;
         let parallaxAnimationRegistered = false;
         let animateRegistered = false;
+        let messageEventListenerAdded = false;
         let mouseEventListenersAdded = false;
        
        
@@ -1681,15 +1682,12 @@
 
 //////// IFRAME LOADING ////////
         
-
-
         var iframeIsVisible = false;
+
         let tiles = { a: false, b: false, viewerReady: false, iframeReady: false };
-        let observer; // Declare a global variable to store the observer instance
-        let messageEventListenerAdded = false;
-        let iframeObserverAdded = false;
 
         function updateIframe(sceneKey) {
+
             const iframeContainer = document.getElementById('iframeContainer');
             const mouseOverlay = document.getElementById('mouseOverlay');
             const bodyGalleryContainer = document.getElementById('bodyGalleryContainer');
@@ -1697,7 +1695,6 @@
             // Remove existing iframe and clear body gallery content
             let existingIframe = document.getElementById('sceneIframe');
             if (existingIframe) {
-                console.log('Removing existing iframe.');
                 existingIframe.src = 'about:blank';
                 existingIframe.remove(); // Remove the old iframe
             }
@@ -1708,7 +1705,6 @@
 
             if (sceneKey === 'scene05') {
                 // Logic for scene05 (Gallery)
-                console.log('Setting up scene05 (Gallery).');
                 hideFooterInstantly();
                 toggleRemoveFooterActivation();
                 resetRemoveStyledFooterCounter();
@@ -1730,17 +1726,14 @@
                 lenis.start();
             } else if (sceneKey === 'scene06') {
                 // Logic for scene06 (Clipz)
-                console.log('Setting up scene06 (Clipz).');
                 setupDirectIframe('frames/clipz2.html'); // Load clipz2.html for scene06 directly into the body
                 
             } else {
                 // Logic for other scenes
-                console.log(`Setting up other scene: ${sceneKey}.`);
                 setupIframe(`VIEWER.html?scene=${sceneKey}`);
             }
 
             function setupIframe(src) {
-                //console.log('Setting up iframe.');
                 iframeContainer.style.display = 'block';
                 if (mouseOverlay) {
                     mouseOverlay.style.display = 'block';
@@ -1768,13 +1761,9 @@
                 hideBackground();
                 scrollToTop();
                 lenis.start();
-
-                // Ensure the observer is set up after adding the iframe to the DOM
-                iframeLoaded(newIframe);
             }
 
             function setupDirectIframe(src) {
-                //console.log('Setting up direct iframe.');
                 hideFooterInstantly();
                 const newIframe = document.createElement('iframe');
                 newIframe.id = 'sceneIframe';
@@ -1794,11 +1783,9 @@
             }
 
             function iframeLoaded(iframe) {
-                //console.log('Iframe loaded, setting up observer.');
                 // Wait for the iframe to load completely before setting up the observer
                 iframe.onload = function() {
                     if (iframe.contentWindow) {
-                        console.log('Iframe contentWindow is available, setting up observer.');
                         setupObserver(iframe);
                     } else {
                         console.error('Iframe contentWindow is not available after load!');
@@ -1807,18 +1794,12 @@
             }
 
             function setupObserver(iframe) {
-                if (iframeObserverAdded) {
-                    observer.disconnect(); // Disconnect the existing observer before creating a new one
-                    iframeObserverAdded = false; // Reset the flag
-                }
-
-                observer = new IntersectionObserver((entries) => {
+                let observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
-                        if (iframe.contentWindow) {
-                            //console.log(`Iframe visibility changed: ${entry.isIntersecting ? 'visible' : 'not visible'}`);
-                            iframe.contentWindow.postMessage({
-                                type: 'visibilityChange',
-                                isVisible: entry.isIntersecting
+                        if (iframe.contentWindow) { // Moved the check here
+                            iframe.contentWindow.postMessage({ 
+                                type: 'visibilityChange', 
+                                isVisible: entry.isIntersecting 
                             }, '*');
                         }
                     });
@@ -1827,11 +1808,8 @@
                     threshold: 0.1
                 });
                 observer.observe(iframe);
-                iframeObserverAdded = true; // Set the flag to true after adding the observer
             }
         }
-
-
 
 
         function resetPageStyles() {
@@ -3770,10 +3748,6 @@
                 viewportCenter: (element.getBoundingClientRect().top + element.getBoundingClientRect().bottom) / 2
             }));
         }
-
-
-
-        
 
         function getClosestElementToViewportCenter() {
             const viewportCenter = window.innerHeight / 2;
