@@ -288,7 +288,7 @@ P04:
 Dive Deeper - Colors & Textures: Add some flair! "Hoge's silky blue scarf" paints a clearer picture than just "Hoge's scarf". Actions & Emotions: What's Hoge up to? Is he dancing, meditating, or maybe feeling ecstatic or pensive? Let us know!
 
 P05:
-Arrangement Tactics - Order Matters: Kick off with your main idea! The AI gives more weight to words at the start. Here is your formula: medium->subject->description->style->composition.
+Arrangement Tactics - Order Matters: Kick off with your main idea! The AI gives more weight to words at the start. Here is your formula: medium -> subject -> description -> style -> composition.
 Try to avoid using “very” before any other word; opt for precise terms and steer clear of repetition to refine your descriptions and enhance your prompts.
 
 P06:
