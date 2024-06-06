@@ -2332,7 +2332,9 @@
                         if (isTouch && event.type === 'click') return;
                         isTouch = event.type === 'touchend';
                         handleInteraction(menuContainer.id, index);
-                       
+                        // Update the state of the scroll to top button
+
+
                     };
 
                     menuContainer.addEventListener('click', handleMenuInteraction);
@@ -2341,13 +2343,13 @@
                     menuContainer.addEventListener('touchend', handleMenuInteraction);
                     menuContainer.addEventListener('touchend', () => animateTextDuringHover(menuContainer));
 
-
                     if (index === 0) {
                         setTimeout(() => animateTextDuringHover(menuContainer), 5000);
                     }
 
                     menuContainerIds.push(menuContainer.id);
                 });
+
 
                 const fakeMenuItem1 = document.createElement('div');
                 fakeMenuItem1.className = 'menu-container';
@@ -2664,6 +2666,7 @@
         function loadScene(index) {
             const scene = scenesData[index];
             const sceneImages = scenesiData[index]; // Assuming scenesiData is structured similarly
+
             let formattedSceneKey = scene.sceneKey.length === 6 ? `scene0${scene.sceneKey.charAt(5)}` : scene.sceneKey;
             lenis.stop();
 
@@ -2681,7 +2684,7 @@
             // Clear dynamic styles
             dynamicStyles.forEach(style => style.remove());
             dynamicStyles.length = 0; // Clear the array
-
+            handleScroll();
             loadInterface(index);
 
             
@@ -2780,16 +2783,25 @@
             observeElementsForAnimations();
             createScrollToTopButton();
             highlightActiveMenuItem(`menuContainer${index}`);
+
+
         }
 
 
 
 
+        let scrollToTopButton = null;
+
         function createScrollToTopButton() {
-            const button = document.createElement('button');
-            button.id = 'scrollToTopButton';
-            button.innerHTML = '<span style="position: relative; top: -5px;">▲</span>'; // Triangle symbol adjusted
-            button.style.cssText = `
+            if (scrollToTopButton) {
+                // If the button already exists, do not create a new one
+                return;
+            }
+
+            scrollToTopButton = document.createElement('button');
+            scrollToTopButton.id = 'scrollToTopButton';
+            scrollToTopButton.innerHTML = '<span style="position: relative; top: -5px;">▲</span>'; // Triangle symbol adjusted
+            scrollToTopButton.style.cssText = `
                 position: fixed; 
                 bottom: 30px; 
                 right: 30px; 
@@ -2810,44 +2822,45 @@
                 opacity: 0;
                 transition: opacity 1.5s ease; /* Smooth transition for opacity */
             `;
-            document.body.appendChild(button);
+            document.body.appendChild(scrollToTopButton);
 
             // Function to scroll to the top smoothly
             function scrollToTopS() {
-                // Smoothly scroll to the top
                 window.scrollTo({
                     top: 0,
                     behavior: 'smooth'
                 });
 
-                // Reload the iframe
                 const iframe = document.getElementById('sceneIframe');
                 if (iframe) {
                     const src = iframe.src;
-                    iframe.src = 'about:blank'; // Set to blank to trigger unload
-                    iframe.src = src; // Reset to original source to reload
+                    iframe.src = 'about:blank';
+                    iframe.src = src;
                 }
             }
 
             // Listen to both click and touchend events
-            button.addEventListener('click', scrollToTopS);
-            button.addEventListener('touchend', function(event) {
-                event.preventDefault();  // Prevent the mouse event from firing
+            scrollToTopButton.addEventListener('click', scrollToTopS);
+            scrollToTopButton.addEventListener('touchend', function(event) {
+                event.preventDefault(); // Prevent the mouse event from firing
                 scrollToTopS();
             });
 
             // Show and hide button with fade effects when scrolling
-            window.addEventListener('scroll', function() {
-                if (window.scrollY > 1111) {
-                    button.style.display = 'block';
-                    setTimeout(() => button.style.opacity = 1, 1500); // Increased delay to 1500ms for showing
-                } else {
-                    button.style.opacity = 0;
-                    setTimeout(() => button.style.display = 'none', 100); // Keep delay at 100ms for hiding
-                }
-            });
+            window.addEventListener('scroll', handleScroll);
         }
 
+        function handleScroll() {
+            if (!scrollToTopButton) return;
+
+            if (window.scrollY > 1111) {
+                scrollToTopButton.style.display = 'block';
+                setTimeout(() => scrollToTopButton.style.opacity = 1, 1500);
+            } else {
+                scrollToTopButton.style.opacity = 0;
+                setTimeout(() => scrollToTopButton.style.display = 'none', 11);
+            }
+        }
 
 
 
@@ -3204,7 +3217,7 @@
 
                     // Add updateParallax to the AnimationManager
                     //AnimationManager.registerAnimation(updateParallax);
-
+                    
                     // This function needs to be called to update the virtual canvas size accordingly
                     delayedVirtualCanvasUpdate();
                 }
