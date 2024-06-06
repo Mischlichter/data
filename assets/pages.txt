@@ -338,7 +338,7 @@ Experiment & Explore - The beauty of HogeAI? There's no right or wrong. Play aro
 
 #container07 {
     text-transform: none;
-    pointer-events: none;
+    /* link: https://prompthero.com/ */
 }
 
 #container08 {
