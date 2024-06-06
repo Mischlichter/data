@@ -1697,7 +1697,7 @@
             // Remove existing iframe and clear body gallery content
             let existingIframe = document.getElementById('sceneIframe');
             if (existingIframe) {
-                console.log('Removing existing iframe.');
+                //console.log('Removing existing iframe.');
                 existingIframe.src = 'about:blank';
                 existingIframe.remove(); // Remove the old iframe
             }
@@ -1708,7 +1708,7 @@
 
             if (sceneKey === 'scene05') {
                 // Logic for scene05 (Gallery)
-                console.log('Setting up scene05 (Gallery).');
+                //console.log('Setting up scene05 (Gallery).');
                 hideFooterInstantly();
                 toggleRemoveFooterActivation();
                 resetRemoveStyledFooterCounter();
@@ -1730,12 +1730,12 @@
                 lenis.start();
             } else if (sceneKey === 'scene06') {
                 // Logic for scene06 (Clipz)
-                console.log('Setting up scene06 (Clipz).');
+                //console.log('Setting up scene06 (Clipz).');
                 setupDirectIframe('frames/clipz2.html'); // Load clipz2.html for scene06 directly into the body
                 
             } else {
                 // Logic for other scenes
-                console.log(`Setting up other scene: ${sceneKey}.`);
+                //console.log(`Setting up other scene: ${sceneKey}.`);
                 setupIframe(`VIEWER.html?scene=${sceneKey}`);
             }
 
@@ -1798,7 +1798,7 @@
                 // Wait for the iframe to load completely before setting up the observer
                 iframe.onload = function() {
                     if (iframe.contentWindow) {
-                        console.log('Iframe contentWindow is available, setting up observer.');
+                        //console.log('Iframe contentWindow is available, setting up observer.');
                         setupObserver(iframe);
                     } else {
                         console.error('Iframe contentWindow is not available after load!');
