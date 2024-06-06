@@ -3742,5 +3742,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "97460083050"
+    },
+    "3458655515.jpg": {
+        "File Name": "3458655515.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "shadowlady goth girl with blue hair and big eyes, epic dark portrait, gemstones in eyes, abandonned factory background,  The composition\u2019s careful balance and the fantastical interplay of light and shadow are reminiscent of the poetic, contemplative scenes painted by Caspar David Friedrich and the visual lyricism of Gustav",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "3458655515"
     }
 }
