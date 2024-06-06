@@ -292,7 +292,7 @@ Arrangement Tactics - Order Matters: Kick off with your main idea! The AI gives 
 Try to avoid using “very” before any other word; opt for precise terms and steer clear of repetition to refine your descriptions and enhance your prompts.
 
 P06:
-Technical Mastery - Visual Craftsmanship: Lighting can dramatically impact your image; terms like "soft ambient lighting," "cinematic lighting," or "neon lights" set the mood. Camera angles add perspective; think "low-angle," "panoramic," or "close-up" to create depth. Enhance quality by including details like "ultra wide-angle," "depth of field (DOF)," or "8K UHD." Experiment with styles such as "realistic renderings," "concept art," "oil painting," or "pencil drawing." Combining these elements in your prompts can refine your image's mood and quality.
+Technical Mastery - Visual Craftsmanship: Lighting can dramatically impact your image; terms like "soft ambient lighting," "cinematic lighting," or "neon lights" set the mood. Camera angles add perspective; consider "low-angle," "panoramic," or "close-up" to create depth. Highlight technical features such as "depth of field," "8K UHD," or "dynamic range" to enrich your prompts. Experiment with styles like "realistic rendering," "concept art," "oil painting," or "pencil drawing." Combining these elements in your prompts can refine your image's mood and quality.
 
 P07:
 Artistic Inspirations - Leveraging Media: Want your scene to evoke a specific vibe? Mentioning popular movies or artworks can steer the AI in the right direction. For instance, "inspired by the cyberpunk aesthetic of Blade Runner" can lead to highly stylized and iconic imagery.
