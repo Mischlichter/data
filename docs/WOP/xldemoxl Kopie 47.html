@@ -1594,9 +1594,11 @@
         let animateRegistered = false;
         let messageEventListenerAdded = false;
         let mouseEventListenersAdded = false;
-       
-       
-      
+        let touchEndEventListenerAdded = false;
+        let touchMoveEventListenerAdded = false;
+        let wheelEventListenerAdded = false;
+        let touchStartEventListenerAdded = false;
+        let resizeEventListenerAdded = false;
 
 
         const AnimationManager = {
@@ -1723,7 +1725,6 @@
                 loadGallery(); // Load the gallery for scene05
                 unhideBackground();
                 scrollToTop();
-                lenis.start();
             } else if (sceneKey === 'scene06') {
                 // Logic for scene06 (Clipz)
                 setupDirectIframe('frames/clipz2.html'); // Load clipz2.html for scene06 directly into the body
@@ -3981,21 +3982,7 @@
             shuffleMenu();
         });
 
-        function preventDefault(e) {
-            e.preventDefault();
-        }
 
-        function disableScroll() {
-            // Add event listeners to prevent scrolling
-            window.addEventListener('wheel', preventDefault, { passive: false });
-            window.addEventListener('touchmove', preventDefault, { passive: false });
-        }
-
-        function enableScroll() {
-            // Remove event listeners to re-enable scrolling
-            window.removeEventListener('wheel', preventDefault);
-            window.removeEventListener('touchmove', preventDefault);
-        }
 
         
 
