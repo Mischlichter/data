@@ -1723,6 +1723,7 @@
                 loadGallery(); // Load the gallery for scene05
                 unhideBackground();
                 scrollToTop();
+                lenis.start();
             } else if (sceneKey === 'scene06') {
                 // Logic for scene06 (Clipz)
                 setupDirectIframe('frames/clipz2.html'); // Load clipz2.html for scene06 directly into the body
@@ -2642,7 +2643,7 @@
             const scene = scenesData[index];
             const sceneImages = scenesiData[index]; // Assuming scenesiData is structured similarly
             let formattedSceneKey = scene.sceneKey.length === 6 ? `scene0${scene.sceneKey.charAt(5)}` : scene.sceneKey;
-            //lenis.stop();
+            lenis.stop();
 
 
             
