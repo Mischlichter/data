@@ -328,7 +328,7 @@ Experiment & Explore - The beauty of HogeAI? There's no right or wrong. Play aro
 
 #container05 {
     text-transform: none;
-    pointer-events: none;
+  
     /* link: https://www.losethevery.com/ */
 }
 
