@@ -334,47 +334,69 @@ def generate_html_page(metadata, output_dir, image_path):
     with open(output_path, "w") as file:
         file.write(html_content)
 
-def main():
-    base_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-    gallery_path = os.path.join(base_path, 'gallerycom')
-    html_output_dir = os.path.join(base_path, 'docs/sharing')
-    json_file_path = os.path.join(base_path, 'lib/metadata.json')
+        def main():
+            base_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+            gallery_path = os.path.join(base_path, 'gallerycom')
+            html_output_dir = os.path.join(base_path, 'docs/sharing')
+            json_file_path = os.path.join(base_path, 'lib/metadata.json')
 
-    if not os.path.exists(html_output_dir):
-        os.makedirs(html_output_dir)
+            if not os.path.exists(html_output_dir):
+                os.makedirs(html_output_dir)
 
-    # Load existing metadata from JSON
-    if os.path.exists(json_file_path) and os.path.getsize(json_file_path) > 0:
-        with open(json_file_path, 'r') as file:
-            existing_metadata = json.load(file)
-    else:
-        existing_metadata = {}
+            # Load existing metadata from JSON
+            if os.path.exists(json_file_path) and os.path.getsize(json_file_path) > 0:
+                with open(json_file_path, 'r') as file:
+                    existing_metadata = json.load(file)
+            else:
+                existing_metadata = {}
 
-    # Create a set of current files in the directory
-    current_files = set(os.listdir(gallery_path))
+            current_files = set(os.listdir(gallery_path))
+            current_files = {f for f in current_files if f.lower().endswith(('.jpg', '.jpeg'))}
 
-    # Remove entries for files that no longer exist
-    for file_name in list(existing_metadata.keys()):
-        if file_name not in current_files:
-            del existing_metadata[file_name]
+            # Find and remove entries for deleted files
+            files_to_remove = set(existing_metadata.keys()) - current_files
+            for file in files_to_remove:
+                metadata = existing_metadata.pop(file, None)
+                if metadata:
+                    # Remove the corresponding HTML file
+                    html_file_path = os.path.join(html_output_dir, metadata["Seed"] + ".html")
+                    if os.path.exists(html_file_path):
+                        os.remove(html_file_path)
 
-    # Scan gallery directory for images and update metadata if needed
-    for image in current_files:
-        if image.lower().endswith(('.jpg', '.jpeg')):
-            image_path = os.path.join(gallery_path, image)
-            image_metadata = extract_specific_metadata(image_path)
-            if image_metadata:
-                # Check if the image is already in metadata and if it has been updated
-                if image not in existing_metadata or existing_metadata[image] != image_metadata:
-                    existing_metadata[image] = image_metadata
-                    # Generate HTML page for updated metadata
-                    output_html_path = os.path.join(html_output_dir, image_metadata["Seed"] + ".html")
-                    if not os.path.exists(output_html_path):
-                        generate_html_page(image_metadata, html_output_dir, image_path)
+                    # Remove the corresponding favicon
+                    favicon_file_path = os.path.join(html_output_dir, metadata["Seed"] + "_favicon.ico")
+                    if os.path.exists(favicon_file_path):
+                        os.remove(favicon_file_path)
 
-    # Update JSON file with new metadata
-    with open(json_file_path, 'w') as file:
-        json.dump(existing_metadata, file, indent=4)
+            # Also clean up any orphaned HTML files and favicons
+            existing_seeds = {metadata["Seed"] for metadata in existing_metadata.values()}
+            for file in os.listdir(html_output_dir):
+                file_path = os.path.join(html_output_dir, file)
+                if file.endswith('.html'):
+                    seed = file.split('.')[0]
+                    if seed not in existing_seeds and os.path.exists(file_path):
+                        os.remove(file_path)
+                elif file.endswith('_favicon.ico'):
+                    seed = file.split('_')[0]
+                    if seed not in existing_seeds and os.path.exists(file_path):
+                        os.remove(file_path)
 
-if __name__ == "__main__":
-    main()
+            # Scan gallery directory for images and update metadata if needed
+            for image in current_files:
+                image_path = os.path.join(gallery_path, image)
+                image_metadata = extract_specific_metadata(image_path)
+                if image_metadata:
+                    # Check if the image is already in metadata and if it has been updated
+                    if image not in existing_metadata or existing_metadata[image] != image_metadata:
+                        existing_metadata[image] = image_metadata
+                        # Generate HTML page for updated metadata
+                        output_html_path = os.path.join(html_output_dir, image_metadata["Seed"] + ".html")
+                        if not os.path.exists(output_html_path):
+                            generate_html_page(image_metadata, html_output_dir, image_path)
+
+            # Update JSON file with new metadata
+            with open(json_file_path, 'w') as file:
+                json.dump(existing_metadata, file, indent=4)
+
+        if __name__ == "__main__":
+            main()
