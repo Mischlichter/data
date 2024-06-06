@@ -289,11 +289,10 @@ Dive Deeper - Colors & Textures: Add some flair! "Hoge's silky blue scarf" paint
 
 P05:
 Arrangement Tactics - Order Matters: Kick off with your main idea! The AI gives more weight to words at the start. Here’s your formula: content type > description > style > composition.
-
 Avoid using “very” before any other word; opt for precise terms and steer clear of repetition to refine your descriptions and enhance your prompts.
 
 P06:
-Technical Mastery - Lighting & Camera: Lighting and camera angles can transform your image. Try "soft ambient lighting for calm scenes," "cinematic lighting for theater vibes," or "neon lights for a futuristic feel." Pair with angles like "low-angle for hero shots," "aerial for sweeping views," or "close-up for details." Experiment with techniques like "watercolor washes for a soft look," "oil painting for rich textures," or "pencil sketch for fine lines." Mix and match to perfect your image's mood and quality.
+Technical Mastery - Visual Dynamics: Lighting can dramatically impact your image; terms like "soft ambient lighting," "cinematic lighting," or "neon lights" set the mood. Camera angles add perspective; think "low-angle," "panoramic," or "close-up" to create depth. Enhance quality by including details like "ultra wide-angle," "depth of field (DOF)," or "8K UHD." Experiment with styles such as "realistic renderings," "concept art," "oil painting," or "pencil drawing." Combining these elements in your prompts can refine your image's mood and quality.
 
 P07:
 Artistic Inspirations - Leveraging Media: Want your scene to evoke a specific vibe? Mentioning popular movies or artworks can steer the AI in the right direction. For instance, "inspired by the cyberpunk aesthetic of Blade Runner" can lead to highly stylized and iconic imagery.
