@@ -288,7 +288,9 @@ P04:
 Dive Deeper - Colors & Textures: Add some flair! "Hoge's silky blue scarf" paints a clearer picture than just "Hoge's scarf". Actions & Emotions: What's Hoge up to? Is he dancing, meditating, or maybe feeling ecstatic or pensive? Let us know!
 
 P05:
-Advanced Prompting Tactics - Order Matters: Kick off with your main idea! The AI gives more weight to words at the start. Here’s your formula: content type > description > style > composition. Avoid using “very” before any other word; opt for precise terms and steer clear of repetition to refine your descriptions and enhance your prompts.
+Advanced Prompting Tactics - Order Matters: Kick off with your main idea! The AI gives more weight to words at the start. Here’s your formula: content type > description > style > composition.
+
+Avoid using “very” before any other word; opt for precise terms and steer clear of repetition to refine your descriptions and enhance your prompts.
 
 P06:
 Technical Mastery - Lighting & Camera: Lighting and camera angles can transform your image. Try "soft ambient lighting for calm scenes," "cinematic lighting for theater vibes," or "neon lights for a futuristic feel." Pair with angles like "low-angle for hero shots," "aerial for sweeping views," or "close-up for details." Experiment with techniques like "watercolor washes for a soft look," "oil painting for rich textures," or "pencil sketch for fine lines." Mix and match to perfect your image's mood and quality.
