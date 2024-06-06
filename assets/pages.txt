@@ -288,16 +288,16 @@ P04:
 Dive Deeper - Colors & Textures: Add some flair! "Hoge's silky blue scarf" paints a clearer picture than just "Hoge's scarf". Actions & Emotions: What's Hoge up to? Is he dancing, meditating, or maybe feeling ecstatic or pensive? Let us know!
 
 P05:
-Pro Tips - Keep It Clear: While details are awesome, don't overload. "Hoge having a picnic with unicorns, dragons, and robots on Mars while a meteor shower is happening" might just leave the AI scratching its digital head. Use wildcards for an element of surprise. If you're ever feeling indecisive, let the wildcard decide!
+Advanced Prompting Tactics - Order Matters: Kick off with your main idea! The AI gives more weight to words at the start. Here’s your formula: content type > description > style > composition. “very” before any other word; opt for precise terms and steer clear of repetition to refine your descriptions and enhance your prompts.
 
 P06:
-Advanced Prompting Tactics - Order Matters: Start with the main idea, then sprinkle in the details. Words at the beginning carry more weight. Ditch "very big". Opt for "gigantic" or "colossal". Aim for a blueprint that outlines the Main Subject, Environment/Setting, and Style/Mood.
-
-P07:
 Technical Mastery - Lighting & Camera: Lighting and camera angles can transform your image. Try "soft ambient lighting for calm scenes," "cinematic lighting for theater vibes," or "neon lights for a futuristic feel." Pair with angles like "low-angle for hero shots," "aerial for sweeping views," or "close-up for details." Experiment with techniques like "watercolor washes for a soft look," "oil painting for rich textures," or "pencil sketch for fine lines." Mix and match to perfect your image's mood and quality.
 
-P08:
+P07:
 Using References - Art and Media Influences: Mentioning specific references can guide the AI effectively. If you want a scene reminiscent of a popular movie or artwork, include that in your prompt. For example, "inspired by the cyberpunk aesthetic of Blade Runner" can yield highly stylized and recognizable imagery.
+
+P08:
+Pro Tips - Keep It Clear: While details are awesome, don't overload. "Hoge having a picnic with unicorns, dragons, and robots on Mars while a meteor shower is happening" might just leave the AI scratching its digital head. Use wildcards for an element of surprise. If you're ever feeling indecisive, let the wildcard decide!
 
 P09:
 Experiment & Explore - The beauty of HogeAI? There's no right or wrong. Play around and most importantly, have a blast! From serene landscapes to wacky adventures, the universe is yours to explore.
@@ -327,6 +327,7 @@ Experiment & Explore - The beauty of HogeAI? There's no right or wrong. Play aro
 #container05 {
     text-transform: none;
     pointer-events: none;
+    /* link: https://www.losethevery.com/ */
 }
 
 #container06 {
