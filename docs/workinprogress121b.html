@@ -1594,11 +1594,9 @@
         let animateRegistered = false;
         let messageEventListenerAdded = false;
         let mouseEventListenersAdded = false;
-        let touchEndEventListenerAdded = false;
-        let touchMoveEventListenerAdded = false;
-        let wheelEventListenerAdded = false;
-        let touchStartEventListenerAdded = false;
-        let resizeEventListenerAdded = false;
+       
+       
+      
 
 
         const AnimationManager = {
@@ -1824,7 +1822,7 @@
             // Remove event listeners that may have been added during the gallery view
             // Example: assuming a function disableScroll() added event listeners
             //disableScroll();
-            enableScroll();
+
             // Reset any additional styles or modifications
             // This depends on what else might be manipulated during your gallery's runtime
         }
@@ -2644,7 +2642,7 @@
             const scene = scenesData[index];
             const sceneImages = scenesiData[index]; // Assuming scenesiData is structured similarly
             let formattedSceneKey = scene.sceneKey.length === 6 ? `scene0${scene.sceneKey.charAt(5)}` : scene.sceneKey;
-            lenis.stop();
+            //lenis.stop();
 
 
             
