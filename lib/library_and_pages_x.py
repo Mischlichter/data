@@ -337,8 +337,8 @@ def generate_html_page(metadata, output_dir, image_path):
 def main():
     base_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
     gallery_path = os.path.join(base_path, 'gallerycom')
-    html_output_dir = os.path.join(base_path, 'docs/sharing')
-    json_file_path = os.path.join(base_path, 'lib/metadata.json')
+    html_output_dir = os.path.join(base_path, 'docs', 'sharing')
+    json_file_path = os.path.join(base_path, 'lib', 'metadata.json')
 
     if not os.path.exists(html_output_dir):
         os.makedirs(html_output_dir)
@@ -392,3 +392,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
