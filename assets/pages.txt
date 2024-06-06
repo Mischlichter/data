@@ -295,7 +295,7 @@ P06:
 Technical Mastery - Visual Craftsmanship: Describing Lighting situation can dramatically impact your image; terms like "soft ambient lighting," "cinematic lighting," or "neon lights" set the mood. Camera angles add perspective; consider "low-angle," "panoramic," or "close-up" to create depth. Highlight technical features such as "depth of field," "8K UHD," or "dynamic range" to enrich your prompts. Experiment with styles like "realistic rendering," "concept art," "oil painting," or "pencil drawing." Combining these elements can refine your image's mood and quality.
 
 P07:
-Artistic Inspirations - Leveraging Media: Want your scene to evoke a specific vibe? Mentioning popular movies or artworks can steer the AI in the right direction. For instance, "inspired by the cyberpunk aesthetic of Blade Runner" can lead to highly stylized and iconic imagery.
+Artistic Inspirations - Leveraging Media: Seeking a distinct ambiance for your scene? Referencing well-known films or artworks can guide the AI effectively. For instance, stating "inspired by the cyberpunk aesthetic of Blade Runner" can yield striking and iconic visuals.
 
 P08:
 Pro Tips - Keep It Clear: While details are awesome, don't overload. "Hoge having a picnic with unicorns, dragons, and robots on Mars while a meteor shower is happening" might just leave the AI scratching its digital head. Use wildcards for an element of surprise. If you're ever feeling indecisive, let the wildcard decide!
