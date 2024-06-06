@@ -1706,7 +1706,8 @@
             }
 
             if (sceneKey === 'scene05') {
-                // Logic for scene04 (Gallery)
+                // Logic for scene05 (Gallery)
+                hideFooterInstantly();
                 toggleRemoveFooterActivation();
                 resetRemoveStyledFooterCounter();
                 iframeContainer.style.display = 'none';
@@ -1721,7 +1722,7 @@
                 }
                 bodyGalleryContainer.style.display = 'block';
                 
-                loadGallery(); // Load the gallery for scene04
+                loadGallery(); // Load the gallery for scene05
                 unhideBackground();
                 scrollToTop();
             } else if (sceneKey === 'scene06') {
@@ -1823,7 +1824,7 @@
             // Remove event listeners that may have been added during the gallery view
             // Example: assuming a function disableScroll() added event listeners
             //disableScroll();
-
+            enableScroll();
             // Reset any additional styles or modifications
             // This depends on what else might be manipulated during your gallery's runtime
         }
@@ -3981,7 +3982,21 @@
             shuffleMenu();
         });
 
+        function preventDefault(e) {
+            e.preventDefault();
+        }
 
+        function disableScroll() {
+            // Add event listeners to prevent scrolling
+            window.addEventListener('wheel', preventDefault, { passive: false });
+            window.addEventListener('touchmove', preventDefault, { passive: false });
+        }
+
+        function enableScroll() {
+            // Remove event listeners to re-enable scrolling
+            window.removeEventListener('wheel', preventDefault);
+            window.removeEventListener('touchmove', preventDefault);
+        }
 
         
 
