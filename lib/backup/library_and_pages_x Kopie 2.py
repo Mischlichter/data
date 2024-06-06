@@ -350,16 +350,8 @@ def main():
     else:
         existing_metadata = {}
 
-    # Create a set of current files in the directory
-    current_files = set(os.listdir(gallery_path))
-
-    # Remove entries for files that no longer exist
-    for file_name in list(existing_metadata.keys()):
-        if file_name not in current_files:
-            del existing_metadata[file_name]
-
     # Scan gallery directory for images and update metadata if needed
-    for image in current_files:
+    for image in os.listdir(gallery_path):
         if image.lower().endswith(('.jpg', '.jpeg')):
             image_path = os.path.join(gallery_path, image)
             image_metadata = extract_specific_metadata(image_path)
