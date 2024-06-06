@@ -356,17 +356,22 @@ def main():
     # Find and remove entries for deleted files
     files_to_remove = set(existing_metadata.keys()) - current_files
     for file in files_to_remove:
-        metadata = existing_metadata.pop(file, None)
+        metadata = existing_metadata.get(file, None)
         if metadata:
             # Remove the corresponding HTML file
             html_file_path = os.path.join(html_output_dir, metadata["Seed"] + ".html")
             if os.path.exists(html_file_path):
                 os.remove(html_file_path)
+                print(f"Removed HTML file: {html_file_path}")
 
             # Remove the corresponding favicon
             favicon_file_path = os.path.join(html_output_dir, metadata["Seed"] + "_favicon.ico")
             if os.path.exists(favicon_file_path):
                 os.remove(favicon_file_path)
+                print(f"Removed favicon file: {favicon_file_path}")
+
+            # Remove the metadata entry
+            existing_metadata.pop(file)
 
     # Scan gallery directory for images and update metadata if needed
     for image in current_files:
