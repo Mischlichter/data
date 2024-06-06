@@ -38,10 +38,6 @@ jobs:
       - name: Pop the stash
         run: git stash pop
 
-      - name: Stage Deletions
-        run: |
-          git add -u     
-
       - name: Commit and Push Changes
         run: |
           git config --global user.name 'Mischlichter'
