@@ -333,7 +333,7 @@ Experiment & Explore - The beauty of HogeAI? There's no right or wrong. Play aro
 
 #container06 {
     text-transform: none;
-    pointer-events: none;
+    /* link: https://www.studiobinder.com/blog/ultimate-guide-to-camera-shots/ */
 }
 
 #container07 {
