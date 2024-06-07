@@ -3070,5 +3070,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "83468910945"
+    },
+    "36463241947.jpg": {
+        "File Name": "36463241947.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man as a gourmet chef concocting a galactic dish) in a floating kitchen above Mars, bob ross painting of interstellar flavors. Nebulae are whipped into souffl\u00e9s, starbursts sprinkled as seasonings, and black holes used for perfect roasting. Palette of tantalizing reds and creamy whites, 4K, next gen, 3d octane rendering, unreal engine 5, culinary artistry, with the flair of Salvador Dali and Takashi Murakami, a feast beyond worlds.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "36463241947"
     }
 }
