@@ -10,7 +10,7 @@ def create_client():
         consumer_secret=os.getenv('TWITTER_API_SECRET'),
         access_token=os.getenv('TWITTER_ACCESS_TOKEN'),
         access_token_secret=os.getenv('TWITTER_ACCESS_TOKEN_SECRET'),
-        wait_on_rate_limit=True
+        wait_on_rate_limit=False  # Disable automatic rate limit waiting
     )
     return client
 
