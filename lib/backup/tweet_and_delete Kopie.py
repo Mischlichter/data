@@ -14,30 +14,19 @@ def create_client():
     )
     return client
 
-def check_rate_limit(client):
-    rate_limit_status = client.get_rate_limit_status()
-    remaining = rate_limit_status['resources']['statuses']['/statuses/update']['remaining']
-    reset_time = rate_limit_status['resources']['statuses']['/statuses/update']['reset']
-    return remaining, reset_time
-
 def tweet_and_delete(client, file_path):
     try:
         with open(file_path, 'r') as file:
             html_files = file.readlines()
-
+        
         for html_file in html_files:
-            remaining, reset_time = check_rate_limit(client)
-            if remaining == 0:
-                print(f"Rate limit exceeded. Skipping execution until {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(reset_time))}")
-                break
-
             html_file = html_file.strip()
             filename = os.path.basename(html_file)
             tweet_url = f"https://www.hogeai.com/sharing/{filename}"  # Construct URL
             tweet = client.create_tweet(text=tweet_url)  # Post the tweet
             print(f"Tweet posted: {tweet.data['id']} - URL: {tweet_url}")
-
-            time.sleep(60)  # Wait for 60 seconds before deleting the tweet
+            
+            time.sleep(1)  # Wait for 60 seconds before deleting the tweet
 
             client.delete_tweet(tweet.data['id'])  # Delete the tweet
             print(f"Deleted Tweet ID: {tweet.data['id']}")
