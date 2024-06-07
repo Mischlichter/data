@@ -6,7 +6,7 @@ def create_client():
     # Initialize the Tweepy Client with OAuth 2.0 Bearer Token
     client = tweepy.Client(
         bearer_token=os.getenv('BEARER_TOKEN'),
-        consumer_key=os.getenv('TWITTER_API_KEY'),
+        consumer_key=os.getenv('TWITTER_API_KEY'),  # These are only needed if user-context actions are necessary
         consumer_secret=os.getenv('TWITTER_API_SECRET'),
         access_token=os.getenv('TWITTER_ACCESS_TOKEN'),
         access_token_secret=os.getenv('TWITTER_ACCESS_TOKEN_SECRET'),
@@ -14,39 +14,28 @@ def create_client():
     )
     return client
 
-def get_rate_limit_status(headers):
-    remaining = int(headers.get('x-rate-limit-remaining', 0))
-    reset_time = int(headers.get('x-rate-limit-reset', 0))
-    return remaining, reset_time
-
 def tweet_and_delete(client, file_path):
     try:
         with open(file_path, 'r') as file:
             html_files = file.readlines()
-
+        
         for html_file in html_files:
             html_file = html_file.strip()
             filename = os.path.basename(html_file)
             tweet_url = f"https://www.hogeai.com/sharing/{filename}"  # Construct URL
-
+            
             try:
-                response = client.create_tweet(text=tweet_url)
-                headers = response.meta.get('headers', {})
-                remaining, reset_time = get_rate_limit_status(headers)
-                print(f"Tweet posted: {response.data['id']} - URL: {tweet_url}")
+                tweet = client.create_tweet(text=tweet_url)  # Post the tweet
+                print(f"Tweet posted: {tweet.data['id']} - URL: {tweet_url}")
+                
+                time.sleep(1)  # Wait for 1 second before deleting the tweet
 
-                if remaining == 0:
-                    print(f"Rate limit exceeded. Continuing to next file.")
-                    continue  # Skip further execution in case of rate limit exception
-
-                time.sleep(60)  # Wait for 60 seconds before deleting the tweet
-
-                client.delete_tweet(response.data['id'])
-                print(f"Deleted Tweet ID: {response.data['id']}")
+                client.delete_tweet(tweet.data['id'])  # Delete the tweet
+                print(f"Deleted Tweet ID: {tweet.data['id']}")
 
             except tweepy.TooManyRequests as e:
-                print(f"Rate limit exceeded. Continuing to next file. Error: {e}")
-                continue  # Skip further execution in case of rate limit exception
+                print(f"Rate limit exceeded. Skipping further processing. Error: {e}")
+                break  # Skip further processing if rate limit is hit
             except Exception as e:
                 print(f"An error occurred while posting the tweet: {e}")
 
