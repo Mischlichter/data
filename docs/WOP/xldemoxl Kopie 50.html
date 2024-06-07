@@ -1647,7 +1647,10 @@
 
         function runLenis(timestamp) {
             lenis.raf(timestamp);
-            requestAnimationFrame(runLenis);
+            // Prioritize the runLenis function
+            setTimeout(() => {
+                requestAnimationFrame(runLenis);
+            }, 0); // <-- This line sets the priority
         }
 
 
@@ -3438,25 +3441,29 @@
 
             lastScrollY = scrollY;
 
+            const background = document.getElementById('interfaceBackground');
+            const sideLeft = document.getElementById('interfaceSideLeft');
+            const sideRight = document.getElementById('interfaceSideRight');
+            const viewerContainer = document.getElementById('interfaceViewerContainer');
+
+            const offsetBackground = scrollY * speedFactorBackground;
+            const offsetSides = scrollY * speedFactorSides;
+            const offsetViewer = scrollY * speedFactorViewer;
+
             requestAnimationFrame(() => {
-                const background = document.getElementById('interfaceBackground');
                 if (background) {
-                    const offsetBackground = scrollY * speedFactorBackground;
-                    background.style.transform = `translateY(${offsetBackground}px)`;
+                    background.style.transform = `translate3d(0, ${offsetBackground}px, 0)`;
+                    background.style.willChange = 'transform';
                 }
-
-                const sideLeft = document.getElementById('interfaceSideLeft');
-                const sideRight = document.getElementById('interfaceSideRight');
                 if (sideLeft && sideRight) {
-                    const offsetSides = scrollY * speedFactorSides;
-                    sideLeft.style.transform = `translateY(${offsetSides}px)`;
-                    sideRight.style.transform = `translateY(${offsetSides}px)`;
+                    sideLeft.style.transform = `translate3d(0, ${offsetSides}px, 0)`;
+                    sideRight.style.transform = `translate3d(0, ${offsetSides}px, 0)`;
+                    sideLeft.style.willChange = 'transform';
+                    sideRight.style.willChange = 'transform';
                 }
-
-                const viewerContainer = document.getElementById('interfaceViewerContainer');
                 if (viewerContainer) {
-                    const offsetViewer = scrollY * speedFactorViewer;
-                    viewerContainer.style.transform = `translateY(${offsetViewer}px)`;
+                    viewerContainer.style.transform = `translate3d(0, ${offsetViewer}px, 0)`;
+                    viewerContainer.style.willChange = 'transform';
                 }
             });
         }
