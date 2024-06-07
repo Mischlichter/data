@@ -3046,5 +3046,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "64326188764"
+    },
+    "19281045035.jpg": {
+        "File Name": "19281045035.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man lounging within a chalice of a blooming cannabis flower) with twinkling stars and soft, radiant light illuminating the intricate textures of the petals. The composition, with its sensual, organic forms and mesmerizing colors, is inspired by the ethereal, romantic paintings of John William Waterhouse and the symbolic, detailed works of Alphonse Mucha.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "19281045035"
     }
 }
