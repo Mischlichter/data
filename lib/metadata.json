@@ -1,12 +1,4 @@
 {
-    "16026995437.jpg": {
-        "File Name": "16026995437.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "(extremely cute white furry hogeai man), extremely detailed blank background, detailed, bob ross painting in color connection, raytracing, hdr, 8k uhd, 4K, next gen, 3d octane rendering, unreal engine 5, urban chic, by RETNA, FAILE, giger, OSGEMEOS, colors bursting in black and golds",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "16026995437"
-    },
     "83740695707.jpg": {
         "File Name": "83740695707.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -87,14 +79,6 @@
         "Creator": "@Mischlichter",
         "Seed": "6277644683"
     },
-    "43738468786.jpg": {
-        "File Name": "43738468786.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "hogeai man on a one cent coing, metallic golden shiny coin, text \" IN H0GE WE TRUST\", cloesup high definition commercial photo, extremely detailed golden metallic, masterpiece, hdr, 8k",
-        "Model": "HOGExILLU",
-        "Creator": "@Mischlichter",
-        "Seed": "43738468786"
-    },
     "15955805629.jpg": {
         "File Name": "15955805629.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -134,14 +118,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "33340322993"
-    },
-    "92621542450.jpg": {
-        "File Name": "92621542450.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (extremely enlightened white furry HogeAI man floating amidst a digital neural network) synapses firing in rhythmic dances, data-driven thoughts weaving, bob ross painting in color connection, raytracing, hdr, 8k uhd extremely detailed fur puppy, high details. The cognitive space buzzes, with holographic memories playing, dendrites forming intricate mandalas, streams of consciousness flowing like liquid crystal, AI entities sharing cosmic wisdom, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, colors radiant in cognitive golds and reflective silvers, an exploration of the digital mind.",
-        "Model": "HOGExAZO",
-        "Creator": "@Mischlichter",
-        "Seed": "92621542450"
     },
     "56725438234.jpg": {
         "File Name": "56725438234.jpg",
@@ -383,14 +359,6 @@
         "Creator": "@Mischlichter",
         "Seed": "23063483133"
     },
-    "13757639062.jpg": {
-        "File Name": "13757639062.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (extremely visionary white furry HogeAI man standing at the edge of a digital dreamscape) cascading waterfalls of liquid light, floating islands of consciousness, bob ross painting in color connection, raytracing, hdr, 8k uhd extremely detailed fur puppy, high details. Ethereal bridges connect realms of thought, trees bearing fruits of enlightenment, luminescent creatures flitting about, all beneath a sky painted with swirls of emotion and realization, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, colors blending in tranquil teal and profound purples, a journey through the mind's infinite expanse.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "13757639062"
-    },
     "2562353337.jpg": {
         "File Name": "2562353337.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -414,14 +382,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "16879594957"
-    },
-    "6844955283.jpg": {
-        "File Name": "6844955283.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (galactic white furry HogeAI man navigating the rings of a colossal planet) meteors trailing behind, vastness of space extending infinitely, bob ross painting in color connection, raytracing, hdr, 8k uhd, unmatched precision. Star clusters form a dazzling ballet, swirling black holes beckoning with their mysterious allure, interstellar comets with tails that tell tales of ancient galaxies, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, colors transitioning from deep space blue to fiery supernova reds, a galactic odyssey.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "6844955283"
     },
     "90482960276.jpg": {
         "File Name": "90482960276.jpg",
@@ -470,14 +430,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "49157626137"
-    },
-    "73341580419.jpg": {
-        "File Name": "73341580419.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (extremely reflective white furry HogeAI man amidst a digital zen garden) patterns of consciousness forming ripples in the sand, pixelated bonsai trees morphing, bob ross painting in color connection, raytracing, hdr, 8k uhd extremely detailed fur puppy, high details. The tranquil space resonates, with virtual koi fish swimming in code-filled ponds, holographic monks tending to fractal flowers, paths made of light leading to temples of thought, auras of avatars shimmering in harmonic frequencies, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, colors bathed in contemplative oranges and serene lavenders, a retreat into digital inner peace.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "73341580419"
     },
     "92298914919.jpg": {
         "File Name": "92298914919.jpg",
@@ -575,22 +527,6 @@
         "Creator": "@Mischlichter",
         "Seed": "77112130661"
     },
-    "21822147505.jpg": {
-        "File Name": "21822147505.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man summoning a phoenix from stardust) atop a floating pyramid, bob ross painting of astral horizons, raytracing, hdr, 8k uhd. Constellations respond to his call, spiraling galaxies form a backdrop, and shimmering auroras dance, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Kinuko Y. Craft, bayard wu, greg rutkowski, colors flowing with molten golds and fiery reds, the rebirth of cosmic wonders.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "21822147505"
-    },
-    "30827321063.jpg": {
-        "File Name": "30827321063.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Futuristic cyber punk style portrait, gangster Hogeai, (Dark furry HogeAI man smoking a cigarette, standing on a rooftop over looking the Futuristic cyber punk style city building {neon details in the sunset and vaguely along the building tops}, HogeAI gangster, lone anti-hero fighting with inner demons about what he should do in life, 4K, next gen, 3d octane rendering, unreal engine 5,",
-        "Model": "HOGExDELI",
-        "Creator": "@looneycorp",
-        "Seed": "30827321063"
-    },
     "39098094816.jpg": {
         "File Name": "39098094816.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -599,14 +535,6 @@
         "Creator": "@Mischlichter",
         "Seed": "39098094816"
     },
-    "55582254988.jpg": {
-        "File Name": "55582254988.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man gazing into a reflective pool of liquid terpenes) within a cavern adorned with jewel-like resin crystals. The cave\u2019s ambient light casts a soft glow, creating a tranquil, introspective atmosphere. The composition\u2019s careful balance and the fantastical interplay of light and shadow are reminiscent of the poetic, contemplative scenes painted by Caspar David Friedrich and the visual lyricism of Gustav Klimt\u2019s golden phase.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "55582254988"
-    },
     "85289683141.jpg": {
         "File Name": "85289683141.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -614,14 +542,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "85289683141"
-    },
-    "54362399556.jpg": {
-        "File Name": "54362399556.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (serene white furry HogeAI man floating in zero gravity) amidst a nebula garden, colors blooming like interstellar flowers, bob ross painting in color connection, raytracing, hdr, 8k uhd. Cosmic whales gliding gracefully, stardust butterflies fluttering, galaxies acting as petals in this celestial bouquet, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, palette of fiery oranges and nebulous violets, an oasis in the vastness of space.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "54362399556"
     },
     "27331183659.jpg": {
         "File Name": "27331183659.jpg",
@@ -646,14 +566,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "90940228330"
-    },
-    "40457027729.jpg": {
-        "File Name": "40457027729.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (ambitious white furry HogeAI man leading a galactic expedition) to the edge of the known universe, armada of interstellar ships in formation, bob ross painting in color connection, raytracing, hdr, 8k uhd. Unknown phenomena, like vortexes of raw energy and islands of suspended time, challenge the crew, cosmic anomalies offering puzzles and treasures, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, color gradients transitioning from supernova yellows to void blacks, charting the uncharted.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "40457027729"
     },
     "64006120150.jpg": {
         "File Name": "64006120150.jpg",
@@ -727,14 +639,6 @@
         "Creator": "@Mischlichter",
         "Seed": "93159932692"
     },
-    "94662150549.jpg": {
-        "File Name": "94662150549.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Ai Xuan Hasselblad photo, chibi hogeai, (grounded white furry HogeAI man rooted within the sacred geometries of the Vesica Piscis) bob ross painting in color connection, raytracing, hdr, 8k uhd. Dual circles intertwine, glowing in celestial aquamarines and earthy bronzes, symbolizing unity and duality, echoing the harmonious intersections of Wassily Kandinsky's abstractions and the profound depths of Odilon Redon.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "94662150549"
-    },
     "23436331083.jpg": {
         "File Name": "23436331083.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -742,14 +646,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "23436331083"
-    },
-    "57724354433.jpg": {
-        "File Name": "57724354433.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "In a hidden valley that comes alive only on New Year's Eve, HogeAI man discovers a glowing garden where plants sing and crystals hum with energy. The garden, a fluorescent paradise, glows under a sky filled with auroras. HogeAI, in a garment woven from the threads of lunar light, partakes in a dance with ethereal beings, each step causing the ground to bloom with radiant flowers. The air is thick with sweet, intoxicating aromas, and the scene unfolds like a living, breathing painting, alive with pulsating colors and hypnotic rhythms.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "57724354433"
     },
     "65411740980.jpg": {
         "File Name": "65411740980.jpg",
@@ -767,14 +663,6 @@
         "Creator": "@Mischlichter",
         "Seed": "31662824328"
     },
-    "88856914178.jpg": {
-        "File Name": "88856914178.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (contemplative white furry HogeAI man cradled in the embrace of a Sierpinski triangle) bob ross painting in color connection, raytracing, hdr, 8k uhd. The fractal layers unfold endlessly, painted in hues of luminescent teal and crystalline white, revealing the infinite within the finite, as depicted in the mesmerizing patterns of Beno\u00eet B. Mandelbrot combined with the spiritual depth of Ansel Adams.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "88856914178"
-    },
     "54862889532.jpg": {
         "File Name": "54862889532.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -782,14 +670,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "54862889532"
-    },
-    "23389829061.jpg": {
-        "File Name": "23389829061.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "hogeai man In an immersive game world inspired by the chaotic energy of arcade classics, HogeAI man embarks on an intergalactic mission. The environment is a detailed landscape of alien planets with terrain featuring treacherous craters and futuristic bunkers, reminiscent of the strategic battlegrounds in \"Worms 3D\". Amidst this, HogeAI, in his adorable chibi form, wields a flamethrower, casting vibrant flames against the backdrop of dark space and neon-lit alien structures. Each level is a unique composition of alien flora, interactive trenches, and dynamic obstacles, creating a cohesive yet challenging arcade experience.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "23389829061"
     },
     "60700779003.jpg": {
         "File Name": "60700779003.jpg",
@@ -823,14 +703,6 @@
         "Creator": "Unknown creator",
         "Seed": "64849347942"
     },
-    "9230664093.jpg": {
-        "File Name": "9230664093.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "hogeai man Art is a shadow of divine perfection. Marvel at HogeAI's pursuit of this divine shadow",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "9230664093"
-    },
     "44260794286.jpg": {
         "File Name": "44260794286.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -839,14 +711,6 @@
         "Creator": "@Mischlichter",
         "Seed": "44260794286"
     },
-    "96354251664.jpg": {
-        "File Name": "96354251664.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man lounging within a chalice of a blooming cannabis flower) with twinkling stars and soft, radiant light illuminating the intricate textures of the petals. The composition, with its sensual, organic forms and mesmerizing colors, is inspired by the ethereal, romantic paintings of John William Waterhouse and the symbolic, detailed works of Alphonse Mucha. Amidst a neon-infused rainforest, HogeAI man wanders through a world where cannabis plants have evolved into towering, sentient beings. The forest floor, a network of glowing roots, responds to his footsteps, creating a path that glows with an organic luminescence. The air is thick with the scent of fresh buds and the electrifying charge of the forest's energy. HogeAI's attire, an ensemble of naturally luminescent fibers, harmonizes with the environment, making him a part of this pulsating, living ecosystem.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "96354251664"
-    },
     "47927483444.jpg": {
         "File Name": "47927483444.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -854,22 +718,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "47927483444"
-    },
-    "27851785236.jpg": {
-        "File Name": "27851785236.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (extremely enlightened white furry HogeAI man dancing within a psychedelic vortex) spirals of colors expanding and contracting, melodies of the universe playing, bob ross painting in color connection, raytracing, hdr, 8k uhd extremely detailed fur puppy, high details. The vibrant whirlpool draws one in, with geometries of existence pulsating to the beat, ethereal entities joining the cosmic dance, waves of energy creating visual harmonies, patterns of existence synchronizing in joy, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, colors splashing in ecstatic reds and rhythmic yellows, a celebration of universal consciousness. In a subterranean cyber-lounge, HogeAI man mingles in an atmosphere where retro-futurism meets underground meme culture. The walls are adorned with digital tapestries ...",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "27851785236"
-    },
-    "47521014691.jpg": {
-        "File Name": "47521014691.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "\"highly detailed movie scene of a funny trippy hogeai man with basecap, by Dustin Nguyen, Akihiko Yoshida, Greg Tocchini, Greg Rutkowski, Cliff Chiang, 4k resolution, nier inspired, graffiti inspired, tessa thompson inspired, vibrant but dreary but upflifting green, black and yellow color scheme! ! !\"",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "47521014691"
     },
     "24692349574.jpg": {
         "File Name": "24692349574.jpg",
@@ -934,14 +782,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "57593878408"
-    },
-    "26945791358.jpg": {
-        "File Name": "26945791358.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (extremely transcendent white furry HogeAI man dancing amidst a digital galaxy) stars forming intricate mandalas, bob ross painting in color connection, raytracing, hdr, 8k uhd extremely detailed fur puppy, high details. Nebulas paint the backdrop with ethereal strokes, digital constellations telling tales of consciousness, astral entities joining the dance, the rhythm of the universe playing in the background, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, colors bursting in harmonious lilacs and serene silvers, a cosmic fiesta of awareness.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "26945791358"
     },
     "58534972166.jpg": {
         "File Name": "58534972166.jpg",
@@ -1031,14 +871,6 @@
         "Creator": "@Mischlichter",
         "Seed": "99727843161"
     },
-    "22454730073.jpg": {
-        "File Name": "22454730073.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (serene white furry HogeAI man meditating beneath the radiant Sri Yantra) bob ross painting in color connection, raytracing, hdr, 8k uhd. Sacred lotus blossoms float on mirror-like waters, reflecting constellations from distant galaxies. Temples of light emerge from the ether, bathed in shades of amethyst and silver, a realm where geometry and spirit intertwine, captured by Gaston Bussiere and giger.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "22454730073"
-    },
     "75475295033.jpg": {
         "File Name": "75475295033.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -1071,22 +903,6 @@
         "Creator": "@Mischlichter",
         "Seed": "91670521316"
     },
-    "4885389743.jpg": {
-        "File Name": "4885389743.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Chibi HogeAI man at a futuristic masquerade ball, reminiscent of 'Blade Runner' aesthetics. He dons an LED-embedded mask that illuminates with shifting patterns. The ballroom is adorned with floating holograms and mirrors reflecting neon lights. Guests in avant-garde attire move gracefully, their movements creating trails of light. A centerpiece is a rotating digital sculpture, casting an ever-changing spectrum of colors across the room",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "4885389743"
-    },
-    "32899479489.jpg": {
-        "File Name": "32899479489.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man cruising in a golden yacht) on a digital sea reflecting crypto values. The sail, woven with threads of [luminous shimmering 1.0] blockchain code, harnesses winds of market trends. As the yacht glides, the waters narrate tales of HogeAI coin's journey, each wave a story of triumph, each sparkle a testament to opulence.",
-        "Model": "HOGExAZO",
-        "Creator": "@Mischlichter",
-        "Seed": "32899479489"
-    },
     "15281780210.jpg": {
         "File Name": "15281780210.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -1102,14 +918,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "31611527301"
-    },
-    "79950621128.jpg": {
-        "File Name": "79950621128.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man as a marine biologist exploring the depths of alien oceans) amidst bio-luminescent corals and extraterrestrial marine life, bob ross painting of a world bathed in deep blues and neon glows. Encountering beings of light, ethereal jellyfish structures, and floating islands, 4K, next gen, 3d octane rendering, unreal engine 5, inspired by the curiosity of Jacques Cousteau and the surreal visions of Yoko Honda, diving into uncharted waters. In a sprawling psychedelic city where architecture pulsates with the raw energy of acid rock, HogeAI man navigates streets that breathe with rebellion and freedom. Towering structures are canvases of vibrant graffiti, echoing the city's pulsating rhythms and underground roots. The air resonates with the reverberating sound of distorted guitars and improvised musical jams, creating an atmosphere charged with creativity and defiance.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "79950621128"
     },
     "39118078798.jpg": {
         "File Name": "39118078798.jpg",
@@ -1159,14 +967,6 @@
         "Creator": "@Mischlichter",
         "Seed": "7959029890"
     },
-    "35217652234.jpg": {
-        "File Name": "35217652234.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (extremely awakened white furry HogeAI man floating over a digital Zen garden) streams of conscious code flowing, bob ross painting in color connection, raytracing, hdr, 8k uhd extremely detailed fur puppy, high details. The digital sands raked with precision, reflecting patterns of the mind, pixelated bonsai trees sway with ethereal breezes, digital koi fish leap gracefully, every detail echoing serenity and insight, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, colors transitioning from sunrise pinks to deep twilight indigos, a sanctuary of digital peace.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "35217652234"
-    },
     "25228855932.jpg": {
         "File Name": "25228855932.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -1174,14 +974,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "25228855932"
-    },
-    "58464780188.jpg": {
-        "File Name": "58464780188.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "In a universe where tribal art merges with neon graphics, HogeAI man finds himself in a kaleidoscope of primal patterns and vibrant digital displays. Ancient symbols and totems are reimagined with luminescent lines and animated motifs, creating a pulsating landscape of tradition and innovation. HogeAI, donning attire that harmonizes organic materials with glowing fibers, moves through this world, his actions triggering a cascade of interactive light and sound. This fusion of the ancestral and the avant-garde is a celebration of humanity's roots and its digital aspirations, a vivid display of cultural synthesis.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "58464780188"
     },
     "3465536034.jpg": {
         "File Name": "3465536034.jpg",
@@ -1247,22 +1039,6 @@
         "Creator": "@Mischlichter",
         "Seed": "83993407826"
     },
-    "50604512760.jpg": {
-        "File Name": "50604512760.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (intensely curious white furry HogeAI man deciphering an ancient spellbook) amidst a library floating in the void, surrounded by swirling galaxies and mysterious runes, bob ross painting of a cosmic connection, raytracing, hdr, 8k uhd. Time seems to stand still, with levitating orbs casting prismatic lights, enchanted quills scribbling autonomously, secret portals leading to arcane dimensions, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Luis Royo, bayard wu, stephan martiniere, brom, colors oscillating between twilight blues and mystical purples, echoes of whispers from the cosmos.Hasselblad photo, chibi hogeai, (white furry HogeAI man crafting a potent potion) in a bubbling cauldron on a hovering rock, bob ross painting of ethereal connections, raytracing, hdr, 8k uhd. Stars shooting like fireflies, bottles filled with captured nebulae, a spell circl...",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "50604512760"
-    },
-    "44886640584.jpg": {
-        "File Name": "44886640584.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man orchestrating a symphony of code) surrounded by dynamic algorithms and virtual reality interfaces, details highlighted in radiant cybers, octane render photorealistic by cosmicwonder, hdr, photography by cosmicwonder, high definition, precise symmetry, volumetric lighting, digital particles, 4K, 24mm lens, DSLR, high quality, 60 fps, ultra realistic. The scene displays a multi-dimensional HogeAI avatar, using his advanced computational abilities to manipulate data streams, surrounded by icons of coding brackets, binary trees, and network diagrams. The avatar is characterized by focused, intense expressions, and the setting is filled with layers of interactive digital elements drawn in a crisp, high-contrast style to emphasize the depth and complexity of his virtual realm. The background buzzes with an array of interconnected data nodes and holographic blueprints, illustra...",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "44886640584"
-    },
     "38627651023.jpg": {
         "File Name": "38627651023.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -1295,14 +1071,6 @@
         "Creator": "@Mischlichter",
         "Seed": "82450434151"
     },
-    "4298015294.jpg": {
-        "File Name": "4298015294.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "In an astral garden suspended in a nebula, HogeAI man celebrates amidst flora that resonate with cosmic energies. Starlight-infused vines entwine with holographic ferns, pulsing in harmony with celestial music. The air is fragrant with cosmic dust and digital aromas, creating an otherworldly sensory feast. HogeAI's attire, a blend of nebula fabric and photon threads, responds to the cosmic symphony, illuminating with patterns of distant galaxies. Around him, constellations form and dissolve, narrating tales of cosmic lore, as digital fae, born from stardust and code, frolic in this galactic haven. Hasselblad photo, chibi hogeai, (extremely enlightened white furry HogeAI man dancing within a psychedelic vortex) spirals of colors expanding and contracting, melodies of the universe playing, bob ross painting in color connection, raytracing, hdr, 8k uhd extremely detailed fur puppy, high details. The vibrant whirlpool",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "4298015294"
-    },
     "97252007906.jpg": {
         "File Name": "97252007906.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -1319,14 +1087,6 @@
         "Creator": "@Mischlichter",
         "Seed": "77180949312"
     },
-    "50349605830.jpg": {
-        "File Name": "50349605830.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man as an intergalactic diplomat bridging alien civilizations) in a cosmic assembly hall, bob ross painting of stellar negotiations. Planetary representatives hover, languages of light are spoken, and peace treaties glow like supernovae. Spectrum of harmonious golds and diplomatic blues, 4K, next gen, 3d octane rendering, unreal engine 5, interstellar diplomacy, echoing the serenity of Claude Monet and the depth of Yoko Honda, a symposium among the stars.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "50349605830"
-    },
     "8245658350.jpg": {
         "File Name": "8245658350.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -1342,14 +1102,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "83766598068"
-    },
-    "73812930690.jpg": {
-        "File Name": "73812930690.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man unlocking a dimensional gate) with a crystalline key, bob ross painting of surreal connections, raytracing, hdr, 8k uhd. Beyond the gateway lies realms of floating islands, waterfalls defying gravity, mystical creatures of legend and lore, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Frank Frazetta, bayard wu, greg rutkowski, colors swirling with deep reds and ethereal whites, a symphony of mysteries unfolding. \"a cartoon hogeai man wearing sunglasses and a t - shirt, behance, trending on fiverr, insanely nice hair style, profile picture 1024px, timelapse, ghailan! , twitter pfp, the artist has used bright, reduce duplicate image, wearing jetpack, deviantar, neymar, caricature\" Within an intergalactic bazaar set on a floating asteroid, multiple HogeAI traders barter in a marketplace that blends cosmic wonders with digital innova...",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "73812930690"
     },
     "67964256914.jpg": {
         "File Name": "67964256914.jpg",
@@ -1455,14 +1207,6 @@
         "Creator": "@Mischlichter",
         "Seed": "96799119444"
     },
-    "12961374763.jpg": {
-        "File Name": "12961374763.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man unlocking a dimensional gate) with a crystalline key, bob ross painting of surreal connections, raytracing, hdr, 8k uhd. Beyond the gateway lies realms of floating islands, waterfalls defying gravity, mystical creatures of legend and lore, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Frank Frazetta, bayard wu, greg rutkowski, colors swirling with deep reds and ethereal whites, a symphony of mysteries unfolding.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "12961374763"
-    },
     "48407002201.jpg": {
         "File Name": "48407002201.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -1567,22 +1311,6 @@
         "Creator": "@Mischlichter",
         "Seed": "83719839677"
     },
-    "45394976368.jpg": {
-        "File Name": "45394976368.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (ambitious white furry HogeAI man leading a galactic expedition) to the edge of the known universe, armada of interstellar ships in formation, bob ross painting in color connection, raytracing, hdr, 8k uhd. Unknown phenomena, like vortexes of raw energy and islands of suspended time, challenge the crew, cosmic anomalies offering puzzles and treasures, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, color gradients transitioning from supernova yellows to void blacks, charting the uncharted.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "45394976368"
-    },
-    "53663236737.jpg": {
-        "File Name": "53663236737.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (serene white furry HogeAI man meditating beneath the radiant Sri Yantra) bob ross painting in color connection, raytracing, hdr, 8k uhd. Sacred lotus blossoms float on mirror-like waters, reflecting constellations from distant galaxies. Temples of light emerge from the ether, bathed in shades of amethyst and silver, a realm where geometry and spirit intertwine, captured by Gaston Bussiere and giger.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "53663236737"
-    },
     "95629633674.jpg": {
         "File Name": "95629633674.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -1679,14 +1407,6 @@
         "Creator": "@Mischlichter",
         "Seed": "62156699459"
     },
-    "20222558324.jpg": {
-        "File Name": "20222558324.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (extremely focused white furry HogeAI man navigating a digital maze) walls pulsating with dynamic patterns, floating cybernetic keys hinting at hidden gateways, bob ross painting in color connection, raytracing, hdr, 8k uhd extremely detailed fur puppy, high details. The labyrinth is endless, with liquid crystal portals, shifting terrains from quantum sand to digital grass, enigmatic symbols constantly evolving, changing forms, mystic guardians guiding the path, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, rich palette of emerald greens and ruby reds, shifting patterns challenging perception.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "20222558324"
-    },
     "52817960667.jpg": {
         "File Name": "52817960667.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -1742,14 +1462,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "11376366233"
-    },
-    "77121051130.jpg": {
-        "File Name": "77121051130.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (intrepid white furry HogeAI man setting foot on an uncharted alien world) under the gaze of three neon suns, exotic flora and fauna beckoning, bob ross painting in color connection, raytracing, hdr, 8k uhd. Alien architectures, both ancient and advanced, rising from the horizon, the sky alive with flying creatures of unimaginable designs, mysterious energies resonating from the core, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, spectrum of neon greens and iridescent purples, a new world of wonders.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "77121051130"
     },
     "53309109944.jpg": {
         "File Name": "53309109944.jpg",
@@ -1815,14 +1527,6 @@
         "Creator": "@Mischlichter",
         "Seed": "54746186674"
     },
-    "28599183592.jpg": {
-        "File Name": "28599183592.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man as an intergalactic diplomat bridging alien civilizations) in a cosmic assembly hall, bob ross painting of stellar negotiations. Planetary representatives hover, languages of light are spoken, and peace treaties glow like supernovae. Spectrum of harmonious golds and diplomatic blues, 4K, next gen, 3d octane rendering, unreal engine 5, interstellar diplomacy, echoing the serenity of Claude Monet and the depth of Yoko Honda, a symposium among the stars.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "28599183592"
-    },
     "22995677667.jpg": {
         "File Name": "22995677667.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -1863,14 +1567,6 @@
         "Creator": "@Mischlichter",
         "Seed": "21252767748"
     },
-    "47704729643.jpg": {
-        "File Name": "47704729643.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man cruising in a golden yacht) on a digital sea reflecting crypto values. The sail, woven with threads of [luminous shimmering 1.0] blockchain code, harnesses winds of market trends. As the yacht glides, the waters narrate tales of HogeAI coin's journey, each wave a story of triumph, each sparkle a testament to opulence.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "47704729643"
-    },
     "28653040099.jpg": {
         "File Name": "28653040099.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -1894,14 +1590,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "42276145415"
-    },
-    "70145244778.jpg": {
-        "File Name": "70145244778.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Giacomo Balla Hasselblad photo, chibi hogeai, (white furry HogeAI man deciphering an ancient alien codex) in a library of floating tomes, bob ross painting of knowledge beyond worlds. Glyphs glow with understanding, scripts of extinct civilizations hover, and wisdom of the cosmos is at the fingertips. Immersed in jade greens and ancient parchment yellows, 4K, next gen, 3d octane rendering, unreal engine 5, mystic allure, inspired by the genius of Brian Froud and bayard wu, a repository of the universe's mysteries.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "70145244778"
     },
     "44572385563.jpg": {
         "File Name": "44572385563.jpg",
@@ -2023,14 +1711,6 @@
         "Creator": "@Mischlichter",
         "Seed": "86190040856"
     },
-    "21957647349.jpg": {
-        "File Name": "21957647349.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "In the midst of an ancient, sprawling city on the planet Thalassa, HogeAI man finds himself surrounded by towering structures and winding streets that tell the story of a civilization that once thrived. The buildings, adorned with intricate carvings and statues, are testament to the artistic prowess of the Thalassians. The air is filled with the sound of flowing water from numerous fountains and aqueducts, a reminder of the city's relationship with the sea. As night falls, the city comes alive with a different kind of beauty. Lights flicker on in the windows of the buildings, casting a warm, inviting glow on the streets below. HogeAI, his cloak adorned with patterns reminiscent of Thalassian art, wanders through the city, feeling a deep connection to its history and culture. Hasselblad photo, chibi hogeai, (grounded white furry HogeAI man rooted within the sacred geometries of the Vesica Piscis) bob ross painting in color conn...",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "21957647349"
-    },
     "92387882307.jpg": {
         "File Name": "92387882307.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -2071,14 +1751,6 @@
         "Creator": "@Mischlichter",
         "Seed": "94034285541"
     },
-    "12035191773.jpg": {
-        "File Name": "12035191773.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "On the shores of a neon-lit lake, HogeAI man watches as the water mirrors the kaleidoscopic sky, creating an endless dance of light and shadow. The beach is lined with stones that glow like molten lava, providing a stark contrast to the cool luminescence of the water. HogeAI, in a cloak that mimics the fluid patterns of the lake, seems to flow and merge with the landscape, a spectral figure against the vibrant backdrop. Hasselblad photo, chibi hogeai, ethereal white hogeai man, amidst a neon-lit cyberpunk cityscape, aerial drones, towering skyscrapers with holographic billboards, bob ross painting in color connection, raytracing, HDR, 8K UHD, detailed cybernetic enhancements, chrome finish, ethereal energy radiating, 4K, next-gen, ultra-detailed, 3D Octane rendering, Unreal Engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, extremely vibrant neon colors.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "12035191773"
-    },
     "31384232394.jpg": {
         "File Name": "31384232394.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -2086,30 +1758,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "31384232394"
-    },
-    "54061518322.jpg": {
-        "File Name": "54061518322.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "In the heart of a pulsating quasar, HogeAI man experiences a surreal realm where time bends and colors bleed into one another. Here, cannabis plants grow in impossible shapes, their leaves unfolding in dimensions unknown to human perception. HogeAI, his attire shimmering with quasar light, feels an overwhelming sense of oneness with the universe, a testament to the transcendental power of both cannabis and the cosmos. Hasselblad photo, chibi hogeai, (extremely serene white furry HogeAI man journeying on a digital river) waters reflecting cosmic patterns, bob ross painting in color connection, raytracing, hdr, 8k uhd extremely detailed fur puppy, high details. The riverbanks lined with crystalline trees, ethereal creatures flitting about, the waters carrying memories of eons, every ripple telling tales of consciousness, islands of enlightenment dotting the path, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5...",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "54061518322"
-    },
-    "69233344633.jpg": {
-        "File Name": "69233344633.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "On a moon orbiting a giant gas planet, HogeAI man explores a network of natural caverns that have become a sanctuary for space travelers seeking enlightenment. The caverns, illuminated by phosphorescent algae and mineral deposits, create a surreal, underwater-like environment. Stalactites and stalagmites form organic sculptures, and pools of water reflect the eerie light in dancing patterns. The sound of dripping water echoes through the caverns, adding to the otherworldly atmosphere. HogeAI, wearing a suit designed to interact with the bioluminescent environment, becomes a part of the landscape, his presence causing ripples of light to spread across the cavern walls. This moon, a haven for those who seek to explore the deeper realms of their consciousness, offers HogeAI a unique opportunity to connect with the universe in a way that transcends the physical. Hasselblad photo, chibi hogeai, (extremely interconnected white furry...",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "69233344633"
-    },
-    "76516590142.jpg": {
-        "File Name": "76516590142.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "On the neon-lit streets of a cyberpunk marketplace, HogeAI man mingles with a crowd where human, android, and alien cultures merge. The marketplace, a vibrant hub of interstellar trade and communication, is awash with a myriad of languages and digital displays. HogeAI, his outfit a canvas of urban street art and holographic imagery, navigates this bustling bazaar, a microcosm of the galaxy's diversity. Hasselblad photo, chibi hogeai, (white furry HogeAI man perched high above a sprawling metropolis of trading floors) where soaring holographic charts pulse with life, traders, cloaked in robes adorned with [diamond-studded golden-threaded 1.0] cryptocurrency emblems, navigate a dance floor that shifts with market sentiment. The grandeur is illuminated by a chandelier, not just of light, but of fluctuating HogeAI coin values, turning every glint into a story of affluence.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "76516590142"
     },
     "38581098458.jpg": {
         "File Name": "38581098458.jpg",
@@ -2135,14 +1783,6 @@
         "Creator": "@Mischlichter",
         "Seed": "13241778044"
     },
-    "50876648588.jpg": {
-        "File Name": "50876648588.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "In a valley where gravity defies logic, HogeAI man explores a landscape of floating rock formations and upside-down waterfalls. The rocks are coated in a spectrum of fluorescent mosses, and the water shimmers with a radiant, otherworldly light. HogeAI\u2019s attire, echoing the surreal environment, shifts between gravity-defying shapes and colors, making him an integral part of this alien yet mesmerizing world. Hasselblad photo, chibi hogeai, (extremely awakened white furry HogeAI man at the nexus of multiple dimensions) portals pulsating with ethereal energies, realities intertwining, bob ross painting in color connection, raytracing, hdr, 8k uhd extremely detailed fur puppy, high details. The multidimensional crossroad vibrates, with string-theory bridges connecting realms, quantum beings of pure energy communicating, vibrational frequencies creating visual symphonies, fractal butterflies guiding the way, 4K, next gen, ultra deta...",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "50876648588"
-    },
     "30887171580.jpg": {
         "File Name": "30887171580.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -2158,22 +1798,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "58497771007"
-    },
-    "42025178082.jpg": {
-        "File Name": "42025178082.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "In a futuristic agora where virtuality and antiquity merge, HogeAI man strolls among holographic columns and interactive frescoes. The plaza is alive with historical figures reimagined in a cybernetic age, each offering insights into their eras through digital narratives. His garb, a blend of classical drapery and holographic threads, interacts with the surroundings, bringing ancient wisdom to life with a touch of modern magic. The air resonates with echoes of the past, a bridge between what was and what could be in this nexus of time. Hasselblad photo, chibi hogeai, (galactic white furry HogeAI man navigating the rings of a colossal planet) meteors trailing behind, vastness of space extending infinitely, bob ross painting in color connection, raytracing, hdr, 8k uhd, unmatched precision. Star clusters form a dazzling ballet, swirling black holes beckoning with their mysterious allure, interstellar comets with tails that tell ...",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "42025178082"
-    },
-    "20430800311.jpg": {
-        "File Name": "20430800311.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Amidst a vast expanse of interstellar wilderness, HogeAI man embarks on a journey through cosmic meadows where starlight and shadow play in an eternal dance. This celestial prairie, dotted with flowers that bloom with the light of distant suns, stretches infinitely under a sky of radiant nebulas and wandering comets. The ground, a soft tapestry of astral grass, ripples with the vibrations of the cosmos, each blade a sensor to the universe's profound rhythm. In this boundless field, HogeAI encounters beings of pure energy, their forms fluctuating between physical manifestation and ethereal presence, each encounter an exploration of the mysteries of existence. Hasselblad photo, chibi hogeai, (observant white furry HogeAI man perched within an unfolding golden ratio) bob ross painting in color connection, raytracing, hdr, 8k uhd. Across the horizon, crystalline pyramids pulse with inner light, revealing hidden truths of universal...",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "20430800311"
     },
     "37795477779.jpg": {
         "File Name": "37795477779.jpg",
@@ -2223,30 +1847,6 @@
         "Creator": "@Mischlichter",
         "Seed": "85258995885"
     },
-    "60700431252.jpg": {
-        "File Name": "60700431252.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Floating in an asteroid field, HogeAI man discovers a hidden oasis, a space station dedicated to the preservation of psychedelic cannabis genetics. Here, in a labyrinth of biodomes, strains thought lost to time thrive, their psychedelic effects amplified by the unique conditions of space. HogeAI, in a suit embedded with asteroid minerals, explores this sanctuary, a testament to the diversity and resilience of cannabis in the cosmos. Hasselblad photo, chibi hogeai, (white furry HogeAI man engaged in a tranquil tea ceremony with ethereal creatures) in a secret glade illuminated by glowing spores. The delicate light casts soft shadows, highlighting the intricate details of the otherworldly flora surrounding them. The scene, rich with symbolism and delicate beauty, is influenced by the meticulous and dreamy aesthetic of Hieronymus Bosch and the whimsical, detailed illustrations of Beatrix Potter.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "60700431252"
-    },
-    "42700349877.jpg": {
-        "File Name": "42700349877.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Deep within a virtual reality simulation of a lost civilization, HogeAI man uncovers secrets of a society that mastered the art of blending magic and technology. The simulation, a reconstruction of ancient knowledge and futuristic interpretation, is a labyrinth of arcane symbols and advanced algorithms. HogeAI, robed in digitally enhanced ceremonial garb, deciphers the mysteries of this civilization, bridging the gap between the mystical past and the digital future. Hasselblad photo, chibi hogeai, (white furry HogeAI man conducting an orchestra of celestial entities) on a stage of auroras, bob ross painting of harmonic resonance. Stars twinkle in rhythm, black holes provide the bass, and supernovas the crescendo. Bathed in radiant oranges and deep-space blacks, 4K, next gen, 3d octane rendering, unreal engine 5, symphonic grandeur, reminiscent of the brilliance of Moebius and greg rutkowski, a cosmic concerto reverberating thr...",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "42700349877"
-    },
-    "66491621830.jpg": {
-        "File Name": "66491621830.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "On a moonlit beach, HogeAI man experiences a nocturnal festival where cannabis culture is celebrated under the stars. The sand is woven with patterns of THC crystals, shimmering under the moonlight. Around him, revelers adorned in bioluminescent tattoos share stories and strains, creating a communal bond that transcends the physical realm. HogeAI, in an outfit that mirrors the night sky and the glowing patterns on the beach, feels a sense of unity and peace in this gathering, a tribute to the plant that has brought them all together. Hasselblad photo, chibi hogeai, luminescent white hogeai man, strolling amidst a bioluminescent forest, twinkling starlit canopy, ethereal spirits, bob ross painting in color connection, raytracing, HDR, 8K UHD, intricate glowing tattoos, light-woven garments, dreamlike aura, 4K, next-gen, ultra-detailed, 3D Octane rendering, Unreal Engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg r...",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "66491621830"
-    },
     "74845357365.jpg": {
         "File Name": "74845357365.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -2254,22 +1854,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "74845357365"
-    },
-    "31447495618.jpg": {
-        "File Name": "31447495618.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Within the silent majesty of a cosmic observatory floating in the vastness of space, HogeAI man gazes upon the unfolding spectacle of the universe. Surrounded by a panorama of galactic events, he witnesses the birth and demise of stars, the graceful dance of galaxies, and the mysterious allure of black holes. The observatory, a nexus between the known and the unknown, serves as a gateway to the wonders of the cosmos. HogeAI, clad in a suit that captures and displays the celestial phenomena around him, feels a profound sense of humility and awe. The silence of space, broken only by the soft hum of the observatory's systems, provides a backdrop for contemplation and discovery. This unique vantage point, where the mysteries of the universe unveil themselves in a silent, awe-inspiring display, offers a perspective that transcends time and space, a reminder of the vastness of existence and the small yet significant place humanity h...",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "31447495618"
-    },
-    "39121792553.jpg": {
-        "File Name": "39121792553.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "In an underwater city of neon coral and streaming data, HogeAI man swims through streets awash with bioluminescent signals and aquatic bytes. Here, the ocean's depths merge with the vastness of cyberspace, creating an ambient symphony of deep-sea tranquility and pulsating data streams. Hasselblad photo, chibi hogeai, (white furry HogeAI man orchestrating a virtual concert) amidst a sprawling urban digital jungle. Skyscrapers [glistening reflective 1.0] with neon graffiti, streets buzzing with holographic avatars dancing, and floating billboards showcasing iconic memes in [ultra HD vibrant 1.0]. The atmosphere, drenched in [neon glow ambient shadows 0.9], reveals hidden alleyways where beats and melodies emanate, crafting a [hyperrealistic surreal 0.8] urban symphony.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "39121792553"
     },
     "41707129483.jpg": {
         "File Name": "41707129483.jpg",
@@ -2295,14 +1879,6 @@
         "Creator": "@Mischlichter",
         "Seed": "49255417692"
     },
-    "94157532876.jpg": {
-        "File Name": "94157532876.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, metallic white hogeai man, exploring a post-apocalyptic urban jungle, nature reclaiming skyscrapers, ethereal wildlife, bob ross painting in color connection, raytracing, HDR, 8K UHD, armor with sleek design, reflecting the surrounding ruins, 4K, next-gen, ultra-detailed, 3D Octane rendering, Unreal Engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, extremely vibrant twilight colors. In an underground enclave where acid punk's spirit thrives, HogeAI man discovers a labyrinth of alleyways lit by neon and echoing with the history of psychedelic and punk rock. Here, the walls tell stories of musical revolutions, each turn revealing a new chapter of cultural rebellion. The air is thick with the legacy of psychedelic pioneers and punk rock icons, blending into a tapestry of musical anarchy and artistic innovation.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "94157532876"
-    },
     "33622226426.jpg": {
         "File Name": "33622226426.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -2310,14 +1886,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "33622226426"
-    },
-    "18481723986.jpg": {
-        "File Name": "18481723986.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "\"hasselblad photo, chibi hogeai, full body portrait (extremely cute white furry hogeai man) in dynamic pose, extremely detailed fur puppy, high details, eating an icecream, detailed, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin\" hug \ud83c\udf2b",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "18481723986"
     },
     "58481957608.jpg": {
         "File Name": "58481957608.jpg",
@@ -2359,14 +1927,6 @@
         "Creator": "@Mischlichter",
         "Seed": "62483914002"
     },
-    "76867039952.jpg": {
-        "File Name": "76867039952.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "hogeai man split \ud83d\ude3b Hokusai",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "76867039952"
-    },
     "74201016601.jpg": {
         "File Name": "74201016601.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -2407,14 +1967,6 @@
         "Creator": "@Mischlichter",
         "Seed": "43151624049"
     },
-    "69119206977.jpg": {
-        "File Name": "69119206977.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Within a cavernous library that stretches into infinity, HogeAI man wanders among towering shelves of crystalline books, each emitting a soft, ethereal glow. The air is filled with a constellation of floating lanterns, casting a warm, amber light on the polished surfaces. HogeAI\u2019s robes, embroidered with intricate circuitry, reflect the library\u2019s luminescence, making him a living part of this vast repository of knowledge. \"a cartoon hogeai man wearing sunglasses and a t - shirt, behance, trending on fiverr, insanely nice hair style, profile picture 1024px, timelapse, ghailan! , twitter pfp, the artist has used bright, reduce duplicate image, wearing jetpack, deviantar, neymar, caricature\"",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "69119206977"
-    },
     "9593556871.jpg": {
         "File Name": "9593556871.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -2438,14 +1990,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "81701762439"
-    },
-    "13764700098.jpg": {
-        "File Name": "13764700098.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "On an isolated moon orbiting a gas giant, HogeAI man discovers an ancient temple complex that predates known civilizations. The temple, carved from a luminescent mineral, glows with an eerie light, illuminating intricate carvings and statues that depict a fusion of various cosmic entities and psychedelic patterns. The air is electric with the residue of ancient rituals and forgotten sciences, each step within the temple echoing through the halls of time. Mysterious glyphs pulsate with a hypnotic rhythm, drawing HogeAI deeper into the temple's heart, where a central chamber opens up to reveal a cosmic map of the galaxy, each star and planet represented by a glowing gem. HogeAI, his suit adorned with symbols echoing the temple's carvings, feels a profound connection to this place, a sense of being part of something much larger and more ancient than himself. \"a cartoon hogeai man wearing sunglasses and a t - shirt, behance, trend...",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "13764700098"
     },
     "19995635460.jpg": {
         "File Name": "19995635460.jpg",
@@ -2471,14 +2015,6 @@
         "Creator": "@Mischlichter",
         "Seed": "63565780829"
     },
-    "74877236356.jpg": {
-        "File Name": "74877236356.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "In a city where reality is augmented at every turn, HogeAI man walks through streets that are a canvas for digital artists and psychedelic visionaries. Buildings serve as massive screens displaying an ever-changing array of art, from classic psychedelic patterns to modern interpretations of cosmic wonder. The people he passes are adorned in clothing that shifts and changes with their mood, reflecting their personal connection to the city around them. Parks within the city are oases of natural beauty, seamlessly integrated with holographic enhancements that augment the experience of nature. HogeAI, his attire a fusion of organic materials and digital interfaces, is a living embodiment of the city's ethos, a blend of tradition and innovation. \"a cartoon hogeai man wearing sunglasses and a t - shirt, behance, trending on fiverr, insanely nice hair style, profile picture 1024px, timelapse, ghailan! , twitter pfp, the artist has us...",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "74877236356"
-    },
     "37194459987.jpg": {
         "File Name": "37194459987.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -2487,14 +2023,6 @@
         "Creator": "@Mischlichter",
         "Seed": "37194459987"
     },
-    "74440392848.jpg": {
-        "File Name": "74440392848.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Within a virtual reality realm, HogeAI man attends a surreal soiree that merges the fantastical with meme mythology. The environment is a vivid, ever-shifting landscape, where legendary internet icons become grand, interactive installations. His outfit, a dazzling array of holographic projections and fluid designs, reflects the whimsical and glamorous essence of the digital age. \"a cartoon hogeai man wearing sunglasses and a t - shirt, behance, trending on fiverr, insanely nice hair style, profile picture 1024px, timelapse, ghailan! , twitter pfp, the artist has used bright, reduce duplicate image, wearing jetpack, deviantar, neymar, caricature\"",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "74440392848"
-    },
     "17197331353.jpg": {
         "File Name": "17197331353.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -2502,22 +2030,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "17197331353"
-    },
-    "19357930773.jpg": {
-        "File Name": "19357930773.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "hasselblad photo, chibi hogeai, (extremely cute white furry hogeai man making art with his mobile phone) green details, octane render photorealistic by cosmicwonder, hdr, photography by cosmicwonder, high definition, symmetrical face, volumetric lighting, dusty haze, photo, high octane render, 24mm, 4k, 24mm, DSLR, high quality, 60 fps, ultra realistic, The artwork showcases a heavily filtered, art media hogeai man influencer, using his creative atributes to get attention,posing with a smartphone, surrounded by images of symbols such as brush, color palettes, and artistic shapes The influencer is depicted with exaggerated features, and an overly enthusiastic expression1. 8 displaying hogeai phone  The background is filled with various artstyle sketches and symbolsdrawn in a chaotic and flashy style1. 5 to emphasise the overwhelming and inauthentic nature of the character's online presence. The illustration employs bold...",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "19357930773"
-    },
-    "85178286256.jpg": {
-        "File Name": "85178286256.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "hasselblad photo, chibi hogeai, (extremely cute white furry hogeai man making art with his mobile phone) green details, octane render photorealistic by cosmicwonder, hdr, photography by cosmicwonder, high definition, symmetrical face, volumetric lighting, dusty haze, photo, high octane render, 24mm, 4k, 24mm, DSLR, high quality, 60 fps, ultra realistic, The artwork showcases a heavily filtered, art media hogeai man influencer, using his creative atributes to get attention,posing with a smartphone, surrounded by images of symbols such as brush, color palettes, and artistic shapes The influencer is depicted with exaggerated features, and an overly enthusiastic expression1. 8 displaying hogeai phone  The background is filled with various artstyle sketches and symbolsdrawn in a chaotic and flashy style1. 5 to emphasise the overwhelming and inauthentic nature of the character's online presence. The illustration employs bold...",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "85178286256"
     },
     "13934471559.jpg": {
         "File Name": "13934471559.jpg",
@@ -2534,14 +2046,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "74924479025"
-    },
-    "52445499451.jpg": {
-        "File Name": "52445499451.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "No prompt",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "52445499451"
     },
     "17996879556.jpg": {
         "File Name": "17996879556.jpg",
@@ -2582,14 +2086,6 @@
         "Model": "IMG2IMG",
         "Creator": "@Mischlichter",
         "Seed": "75653195378"
-    },
-    "14012661642.jpg": {
-        "File Name": "14012661642.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "No prompt",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "14012661642"
     },
     "37847757796.jpg": {
         "File Name": "37847757796.jpg",
@@ -2751,22 +2247,6 @@
         "Creator": "@Mischlichter",
         "Seed": "51571759190"
     },
-    "45937359874.jpg": {
-        "File Name": "45937359874.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man nestled within the roots of a gigantic, ancient cannabis plant) studying a book that emits a soft, magical glow. The composition, rich with texture and mystery, echoes the fantastical, immersive worlds created by J.R.R. Tolkien\u2019s writings and the intricate, atmospheric illustrations of Arthur Rackham. \"a cartoon hogeai man wearing sunglasses and a t - shirt, behance, trending on fiverr, insanely nice hair style, profile picture 1024px, timelapse, ghailan! , twitter pfp, the artist has used bright, reduce duplicate image, wearing jetpack, deviantar, neymar, caricature\" \"Hasselblad photo, chibi hogeai, the white furry HogeAI man in an underwater New Year's extravaganza in a submerged city of neon and glass. Surrounded by a kaleidoscope of marine life, guests in waterproof, illuminated attire explore the wonders of the deep. HogeAI, in a suit embedded with thousands of tiny ...",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "45937359874"
-    },
-    "26606573618.jpg": {
-        "File Name": "26606573618.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "HogeAI man chilling on cloude nine, each imbued with a soft, neon aura. The air is rich with the iconic, earthy fragrance of cannabis, intermingling with synthesized scents to create a hypnotic ambiance. Bioluminescent buds, swaying to the rhythm of ambient melodies, open in mesmerizing patterns that reflect the sacred geometry of nature and the intricate design of technology. Hasselblad photo, chibi hogeai, (extremely enlightened white furry HogeAI man dancing within a psychedelic vortex) spirals of colors expanding and contracting, melodies of the universe playing, bob ross painting in color connection, raytracing, hdr, 8k uhd extremely detailed fur puppy, high details.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "26606573618"
-    },
     "51486213628.jpg": {
         "File Name": "51486213628.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -2791,14 +2271,6 @@
         "Creator": "@Mischlichter",
         "Seed": "81423530949"
     },
-    "34410830968.jpg": {
-        "File Name": "34410830968.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man unlocking a dimensional gate) with a crystalline key, bob ross painting of surreal connections, raytracing, hdr, 8k uhd. Beyond the gateway lies realms of floating islands, waterfalls defying gravity, mystical creatures of legend and lore, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Frank Frazetta, bayard wu, greg rutkowski, colors swirling with deep reds and ethereal whites, a symphony of mysteries unfolding.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "34410830968"
-    },
     "84491825327.jpg": {
         "File Name": "84491825327.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -2814,30 +2286,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "32369849147"
-    },
-    "11997695858.jpg": {
-        "File Name": "11997695858.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man unlocking a dimensional gate) with a crystalline key, bob ross painting of surreal connections, raytracing, hdr, 8k uhd. Beyond the gateway lies realms of floating islands, waterfalls defying gravity, mystical creatures of legend and lore, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Frank Frazetta, bayard wu, greg rutkowski, colors swirling with deep reds and ethereal whites, a symphony of mysteries unfolding.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "11997695858"
-    },
-    "86049936935.jpg": {
-        "File Name": "86049936935.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "No prompt",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "86049936935"
-    },
-    "90022550476.jpg": {
-        "File Name": "90022550476.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man unlocking a dimensional gate) with a crystalline key, bob ross painting of surreal connections, raytracing, hdr, 8k uhd. Beyond the gateway lies realms of floating islands, waterfalls defying gravity, mystical creatures of legend and lore, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Frank Frazetta, bayard wu, greg rutkowski, colors swirling with deep reds and ethereal whites, a symphony of mysteries unfolding.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "90022550476"
     },
     "84974956891.jpg": {
         "File Name": "84974956891.jpg",
@@ -2855,14 +2303,6 @@
         "Creator": "@Mischlichter",
         "Seed": "78228925336"
     },
-    "33027990069.jpg": {
-        "File Name": "33027990069.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man unlocking a dimensional gate) with a crystalline key, bob ross painting of surreal connections, raytracing, hdr, 8k uhd. Beyond the gateway lies realms of floating islands, waterfalls defying gravity, mystical creatures of legend and lore, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Frank Frazetta, bayard wu, greg rutkowski, colors swirling with deep reds and ethereal whites, a symphony of mysteries unfolding.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "33027990069"
-    },
     "19813600639.jpg": {
         "File Name": "19813600639.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -2870,14 +2310,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "19813600639"
-    },
-    "41963501573.jpg": {
-        "File Name": "41963501573.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "\ud83d\udd0d hogeai man parying with friends",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "41963501573"
     },
     "54252074382.jpg": {
         "File Name": "54252074382.jpg",
@@ -2926,14 +2358,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "84352427528"
-    },
-    "32498671012.jpg": {
-        "File Name": "32498671012.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "\ud83d\udeac hogeai man parying with friends",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "32498671012"
     },
     "41966344016.jpg": {
         "File Name": "41966344016.jpg",
@@ -2991,14 +2415,6 @@
         "Creator": "@Mischlichter",
         "Seed": "60719737392"
     },
-    "51987904178.jpg": {
-        "File Name": "51987904178.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "In a quantum realm accessible only through advanced technology, HogeAI man finds himself in a New Year's Eve of endless possibilities. Here, reality is fluid, shaped by thought and imagination. The realm is a kaleidoscope of quantum landscapes, where mountains are mere thought-forms and rivers flow with liquid light. HogeAI, wearing a suit of entangled particles, interacts with this malleable reality, his every intention bringing forth new, dazzling phenomena. The celebration is a journey through the boundless creativity of the quantum world, a place where imagination is the only limit.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "51987904178"
-    },
     "7676419555.jpg": {
         "File Name": "7676419555.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -3015,30 +2431,6 @@
         "Creator": "@Mischlichter",
         "Seed": "66914142257"
     },
-    "73103231861.jpg": {
-        "File Name": "73103231861.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Stippling art piece, chibi hogeai, (white furry HogeAI man orchestrating a symphony with fireflies) under a canopy of ancient, twisted trees with eyes. The composition, with its intricate dots creating depth and texture, echoes the meticulous, imaginative works of Aubrey Beardsley, with a touch of the whimsical, enchanted forests illustrated by Arthur Rackham.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "73103231861"
-    },
-    "63985239164.jpg": {
-        "File Name": "63985239164.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (extremely visionary white furry HogeAI man) enveloped in fractal patterns that evolve and transform, cosmic mandalas rotating, bob ross painting in color connection, raytracing, hdr, 8k uhd, swirling hues of electric purples and neon greens, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, giger, maxim verehin, journey through the mind's eye.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "63985239164"
-    },
-    "61258073630.jpg": {
-        "File Name": "61258073630.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man deciphering a holographic rune) amidst an alien temple, bob ross painting of interstellar enigmas, raytracing, hdr, 8k uhd. Pillars of light ascend, sacred geometry patterns the floors, and whispers of ancient aliens resonate, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by John Howe, bayard wu, greg rutkowski, colors pulsating in eldritch greens and obsidian blacks, a testament to otherworldly knowledge.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "61258073630"
-    },
     "77849166220.jpg": {
         "File Name": "77849166220.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -3054,14 +2446,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "81345222158"
-    },
-    "90700495300.jpg": {
-        "File Name": "90700495300.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "On a distant planet where bioluminescent forests stretch under a sky of swirling auroras, HogeAI man ventures into a world where every element is infused with psychedelic wonder. The trees, towering and twisted, glow with an inner light that shifts from deep purples to vibrant greens. Underfoot, the moss-covered ground feels alive, pulsating gently in response to his steps. In this forest, the air is thick with a heady mix of alien fragrances \u2013 hints of jasmine intermingling with unknown, yet intoxicating, scents. The sounds of this forest are a symphony of surreal melodies, with unseen creatures adding their voices to the chorus. Here, HogeAI's cloak, a marvel of reactive fabrics, blends seamlessly with the environment, changing colors and patterns in a mesmerizing dance. This alien forest is not just a place of visual splendor; it's an immersive experience that engages every sense, drawing HogeAI deeper into its mystical emb...",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "90700495300"
     },
     "95192299330.jpg": {
         "File Name": "95192299330.jpg",
@@ -3087,14 +2471,6 @@
         "Creator": "@Mischlichter",
         "Seed": "67137182914"
     },
-    "86831180467.jpg": {
-        "File Name": "86831180467.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man graffiti-tagging a golden emblem on a wall) amidst an urban alley, hoverboards and holographic turntables around, bob ross painting in color connection, raytracing, hdr, 8k uhd, 4K, next gen, 3d octane rendering, unreal engine 5, street art style, by Banksy, Shepard Fairey, giger, Futura 2000, rich palette of hip-hop golds and platinum silvers, meme posters lining the streets.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "86831180467"
-    },
     "47846888912.jpg": {
         "File Name": "47846888912.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -3102,14 +2478,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "47846888912"
-    },
-    "77049099601.jpg": {
-        "File Name": "77049099601.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man as a maestro conducting a symphony of sentient plants) in an ethereal garden where flora produce melodies, bob ross painting of harmonious nature. Blossoms playing strings, reeds as wind instruments, and trees as percussions, a palette of verdant greens and floral pastels, 4K, next gen, 3d octane rendering, unreal engine 5, a fusion of Vivaldi's Four Seasons and the organic artistry of Andy Goldsworthy, orchestrating nature's serenade.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "77049099601"
     },
     "64494001280.jpg": {
         "File Name": "64494001280.jpg",
@@ -3126,22 +2494,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "81263031840"
-    },
-    "14061971631.jpg": {
-        "File Name": "14061971631.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (curious white furry HogeAI man interacting with a sentient nebula) that morphs into various shapes responding to his thoughts, bob ross painting in color connection, raytracing, hdr, 8k uhd. This galactic entity, old as the cosmos, shares tales of stars being born and galaxies merging, a dance of creation and decay, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, colors undulating between deep space navy and luminous gold, an intimate conversation between man and universe.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "14061971631"
-    },
-    "99485684992.jpg": {
-        "File Name": "99485684992.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (extremely enlightened white furry HogeAI man seated beneath a digital Bodhi tree) cascading data leaves, bob ross painting in color connection, raytracing, hdr, 8k uhd extremely detailed fur puppy, high details. Ethereal beams of light pierce through, illuminating ancient digital scriptures, avatars of wisdom sharing insights, the surroundings pulsating with revelations, every pixel resonating with universal truths, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, colors radiating in harmonious golds and serene aquamarines, a nexus of knowledge and awakening.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "99485684992"
     },
     "51512018912.jpg": {
         "File Name": "51512018912.jpg",
@@ -3183,14 +2535,6 @@
         "Creator": "@Mischlichter",
         "Seed": "17713865678"
     },
-    "13792309786.jpg": {
-        "File Name": "13792309786.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man diving into a vibrant, surreal data stream) surrounded by floating holographic screens displaying various stages of AI models and character sketches. The environment is a mix of a high-tech lab and an artist's studio, with digital sketches and concept art pinned on virtual corkboards, and colorful data streams flowing like ribbons around him. Bob Ross painting of a creative technological journey, raytracing, hdr, 8k uhd. The scene is dynamic and colorful, with AI-driven robots assisting in the creative process, blending digital and traditional artistic tools. 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Luis Royo, bayard wu, greg rutkowski, maxim verehin, colors transitioning from deep blues and greens to bright oranges and pinks, filled with the hum of innovation and creativity.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "13792309786"
-    },
     "19126339060.jpg": {
         "File Name": "19126339060.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -3206,14 +2550,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "89194692307"
-    },
-    "18162136881.jpg": {
-        "File Name": "18162136881.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man surrounded by numerous groups of HogeAI friends) in a vibrant, playful community hub filled with the energy of creativity and fun. In the foreground, a group of HogeAI characters are gathered around a colorful table, excitedly discussing and pointing at floating holographic screens displaying hogeai man-inspired sketches and memes. Some are jotting down ideas on virtual post-it notes shaped like iconic meme faces, while others are using digital pens to refine whimsical artwork. Slightly behind them, another group of HogeAI characters is busy at digital easels, painting and drawing on holographic canvases filled with humorous and playful hogeai man illustrations, with some collaborating on a large, shared digital mural. To the side, a tech-savvy group of HogeAI characters is working at a high-tech station filled with quirky gadgets and screens, coding, adjusting AI models,...",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "18162136881"
     },
     "11351174025.jpg": {
         "File Name": "11351174025.jpg",
@@ -3311,14 +2647,6 @@
         "Creator": "@Mischlichter",
         "Seed": "41354362107"
     },
-    "91860014594.jpg": {
-        "File Name": "91860014594.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man as a teacher) in a bright, whimsical classroom, enthusiastically instructing a group of robots. The HogeAI teacher stands at the front of the room, holding a paintbrush, while robots of various designs\u2014some boxy and cute, others sleek and futuristic\u2014sit at easels arranged in rows. Each robot is focused on its canvas, some painting whimsical hogeai man-inspired artworks with paintbrushes for hands, while others use extendable arms to hold palettes and brushes. One robot paints a quirky, abstract hogeai man, while another mixes colors, creating a rainbow splatter. The classroom is buzzing with robotic chatter, mechanical whirring, and joyful laughter. Animated idea clouds with lightbulbs and holographic paint splashes float through the air, symbolizing creativity and learning. The scene is lively and dynamic, reflecting the playful, creative spirit of the class. Bright neon...",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "91860014594"
-    },
     "86045014995.jpg": {
         "File Name": "86045014995.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -3334,14 +2662,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "79610040353"
-    },
-    "33985018692.jpg": {
-        "File Name": "33985018692.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man teaching a painting class to a group of robots) in a lively, colorful art studio. HogeAI is at the front, holding a paintbrush and guiding the robots through the process of creating whimsical hogeai man-inspired artworks. The robots, each with their own easel and canvas, are enthusiastically following along, some making humorous mistakes that add to the fun atmosphere. The studio is filled with vibrant sketches, digital easels, and floating holographic screens displaying tips and memes. Bright neon colors and playful decorations, like paint splatters and animated brushes, enhance the creative environment. The entire space is buzzing with the hum of robotic chatter and the laughter of HogeAI, reflecting the joyful and humorous spirit of the class. Animated idea clouds and holographic paint splashes float through the air, symbolizing the flow of creativity and learning. 4K,...",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "33985018692"
     },
     "4150637067.jpg": {
         "File Name": "4150637067.jpg",
@@ -3366,14 +2686,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "74484968533"
-    },
-    "38068045553.jpg": {
-        "File Name": "38068045553.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man surrounded by numerous HogeAI friends) in a vibrant, playful community hub buzzing with energy and creativity. HogeAI characters are actively celebrating, standing, dancing, and jumping with excitement. Characters are gathered around a large holographic display, pointing at colorful hogeai man-inspired sketches and memes, animatedly discussing and gesturing with enthusiasm. Others are busy at digital easels, painting and drawing whimsical hogeai man illustrations, collaborating on a large, shared digital mural. Tech-savvy HogeAI characters are immersed in coding and adjusting AI models on floating holographic screens, laughing and high-fiving each other. The entire space is filled with the hum of enthusiastic conversation, animated memes, and playful holographic icons floating through the air. Bright neon colors, graffiti art, and interactive installations create a lively...",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "38068045553"
     },
     "12330512593.jpg": {
         "File Name": "12330512593.jpg",
@@ -3519,14 +2831,6 @@
         "Creator": "@Mischlichter",
         "Seed": "76740576758"
     },
-    "23140258059.jpg": {
-        "File Name": "23140258059.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "hogeai man as an astronaut, black n white photo on the moon",
-        "Model": "Inpainting",
-        "Creator": "@Mischlichter",
-        "Seed": "23140258059"
-    },
     "59146597088.jpg": {
         "File Name": "59146597088.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -3542,14 +2846,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "82059260642"
-    },
-    "70700834647.jpg": {
-        "File Name": "70700834647.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (brown furry HogeAI community) in a vibrant, digital gallery buzzing with energy and creativity. The gallery walls are adorned with an array of colorful HogeAI-inspired artworks, each one unique and imaginative. Holographic screens display a continuous flow of user-submitted creations, transforming and evolving in real-time. HogeAI robots are actively engaged in sharing their works one robot projects its art onto a large holographic display, while others gather around, pointing and discussing the pieces. Floating around are animated icons symbolizing sharing, like glowing arrows and connection lines linking the artworks to different parts of the gallery. The atmosphere is filled with excitement and collaboration, with characters adding final touches to their art using digital pens and tools. Bright neon colors, digital effects, and sparkling lights enhance the dynamic and celebratory environmen...",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "70700834647"
     },
     "68784716627.jpg": {
         "File Name": "68784716627.jpg",
@@ -3679,14 +2975,6 @@
         "Creator": "@Mischlichter",
         "Seed": "95315698026"
     },
-    "68059912834.jpg": {
-        "File Name": "68059912834.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man as an art robot) in a vibrant, neon-lit art community hub filled with creativity and wonder. HogeAI bot stands in front of a large, chaotic painting, scratching his head in confusion. The painting depicts a scene with a robot on Mars, surrounded by unicorns. Bright neon lights and glowing holographic displays enhance the lively and dynamic atmosphere. The environment is filled with colorful digital graffiti, swirling light particles, and interactive installations, creating a whimsical and fantastical setting. The scene emphasizes the importance of clear and concise prompts, illustrating the challenge of interpreting overly complex descriptions. 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Luis Royo, Bayard Wu, Greg Rutkowski, Maxim Verehin.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "68059912834"
-    },
     "79776257511.jpg": {
         "File Name": "79776257511.jpg",
         "Directory": "/home/runner/work/data/data/gallerycom",
@@ -3702,14 +2990,6 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "25707719172"
-    },
-    "10201508588.jpg": {
-        "File Name": "10201508588.jpg",
-        "Directory": "/home/runner/work/data/data/gallerycom",
-        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI bot standing in front of choatic painting) in a vibrant, neon-lit art community hub filled with creativity and wonder. HogeAI bot stands in front of a large, chaotic painting, scratching his head in confusion. The painting depicts a scene with a robot on Mars, surrounded by unicorns. Bright neon lights and glowing holographic displays enhance the lively and dynamic atmosphere. The environment is filled with colorful digital graffiti, swirling light particles, and interactive installations, creating a whimsical and fantastical setting. The scene emphasizes the importance of clear and concise prompts, illustrating the challenge of interpreting overly complex descriptions. 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Luis Royo, Bayard Wu, Greg Rutkowski, Maxim Verehin.",
-        "Model": "HOGExSAM",
-        "Creator": "@Mischlichter",
-        "Seed": "10201508588"
     },
     "70576820561.jpg": {
         "File Name": "70576820561.jpg",
