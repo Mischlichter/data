@@ -523,7 +523,7 @@
             width: var(--total-width); /* Assuming this is set to 3072px or as needed */
             height: var(--viewer-height); /* Assuming this is set to 2048px */
             margin: 0 auto; /* Center the container */
-            
+            will-change: transform; /* Hint to optimize transform */
         }
 
         #backgroundInterfaceContainer {
@@ -536,13 +536,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
-           
+            will-change: transform; /* Hint to optimize transform */
         }
 
         #interfaceBackground {
             width: 100%;
             height: auto;
-            
+            will-change: transform; /* Hint to optimize transform */
         }
 
         .scale-wrapper-background, .scale-wrapper-interface {
@@ -563,7 +563,7 @@
             width: fit-content; /* Ensures the wrapper fits the scaled content */
             height: fit-content; /* Ensures the wrapper fits the scaled content */
             transform: translate(-50%, -50%) scale(0.8); /* Centers and then scales the content */
-            
+            will-change: transform; /* Hint to optimize transform */
         }
 
         .scale-wrapper-interface {
