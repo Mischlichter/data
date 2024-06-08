@@ -7,8 +7,31 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/Mischlichter/data/main/gallerycom/65411740980.jpg">
     <meta http-equiv="Cache-Control" content="public, max-age=31536000">
+    
+    <meta name="description" content="HogeAI">
+    
+    <meta property="og:title" content="HogeAI">
+    <meta property="og:image" content="https://raw.githubusercontent.com/Mischlichter/data/main/Viewer/HogeAI_00034_.png">
+    <meta property="og:url" content="http://www.HogeAI.com">
+    <meta property="og:type" content="website">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="HogeAI">
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/Mischlichter/data/main/Viewer/HogeAI_00034_.png">
+    
+    <!-- Generated favicon links -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#000000">
+    <meta name="msapplication-TileColor" content="#000000">
+    <meta name="theme-color" content="#00ffcc">
+    
+    <meta name="robots" content="index, follow">
+    
+    <title>HogeAI</title>
 
-    <title>HOGE AI</title>
     <style>
         @font-face {
             font-family: 'JetBrainsMono-Regular';
@@ -1696,7 +1719,7 @@
 
 
         var iframeIsVisible = false;
-        let tiles = { a: false, b: false, viewerReady: false, iframeReady: false, menuReady: false };
+        let tiles = { a: false, b: false, viewerReady: false, iframeReady: false, menuReady: true };
         let observer; // Declare a global variable to store the observer instance
         let messageEventListenerAdded = false;
         let iframeObserverAdded = false;
@@ -1719,6 +1742,10 @@
             }
 
             if (sceneKey === 'scene05') {
+                lenis.start();
+                if (typeof lenis !== 'undefined' && lenis !== null) {
+                    lenis.scrollTo(0, { duration: 1 }); // Use Lenis to scroll to the top
+                }
                 // Logic for scene05 (Gallery)
                 //console.log('Setting up scene05 (Gallery).');
                 hideFooterInstantly();
@@ -1738,8 +1765,8 @@
                 
                 loadGallery(); // Load the gallery for scene05
                 unhideBackground();
-                scrollToTop();
-                lenis.start();
+                
+                
             } else if (sceneKey === 'scene06') {
                 // Logic for scene06 (Clipz)
                 //console.log('Setting up scene06 (Clipz).');
