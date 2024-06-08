@@ -1358,7 +1358,7 @@
 
             let gyroEnabled = false;
             let lastExecution = 0;
-            let throttleInterval = 50;
+            let throttleInterval = 32;
             let gyroMouseX = 0;
             let gyroMouseY = 0;
             let initialGamma = 0;
@@ -1369,7 +1369,7 @@
             let targetGyroMouseY = 0;
 
             // Interpolation parameters
-            let interpolationFactor = 0.5;
+            let interpolationFactor = 0.4;
 
             function handleOrientation(event) {
                 if (!gyroEnabled) return;
