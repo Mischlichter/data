@@ -1330,7 +1330,18 @@
             }
 
 
-            var gyroEnabled = false; // Flag to control gyro
+            let gyroEnabled = false;
+            let lastExecution = 0;
+            let throttleInterval = 36; // Throttle interval in milliseconds
+            let gyroMouseX = 0;
+            let gyroMouseY = 0;
+            let initialGamma = 0;
+            let initialBeta = 0;
+            let isCalibrated = false;
+            let gyroSensitivityMultiplier = 36.0; // Default multiplier
+            let lastAngle = window.orientation || 0; // Initial device angle
+            let targetGyroMouseX = 0;
+            let targetGyroMouseY = 0;
 
             function setupMotionListener() {
                   // Your existing function to map motion to mouse (if applicable)
@@ -1361,19 +1372,7 @@
                 
             }
 
-            let gyroEnabled = false;
-            let lastExecution = 0;
-            let throttleInterval = 36; // Throttle interval in milliseconds
-            let gyroMouseX = 0;
-            let gyroMouseY = 0;
-            let initialGamma = 0;
-            let initialBeta = 0;
-            let isCalibrated = false;
-            let gyroSensitivityMultiplier = 36.0; // Default multiplier
-            let lastAngle = window.orientation || 0; // Initial device angle
-            let targetGyroMouseX = 0;
-            let targetGyroMouseY = 0;
-
+            
             function sendMouseEventToIframe(eventType, coordinates) {
                 const iframe = document.querySelector('iframe');
                 if (iframe && iframe.contentWindow) {
