@@ -1335,7 +1335,7 @@
             }
 
 
-
+            var gyroEnabled = false; // Flag to control gyro
 
             function setupMotionListener() {
                   // Your existing function to map motion to mouse (if applicable)
@@ -1375,7 +1375,7 @@
             var isCalibrated = false;
             var gyroSensitivityMultiplier = 36.0; // Default multiplier
             var lastAngle = window.orientation || 0; // Initial device angle
-            var gyroEnabled = false; // Flag to control gyro
+            
 
             function handleOrientation(event) {
                 if (!gyroEnabled) return;
@@ -1421,7 +1421,7 @@
                     }
 
   
-
+                    console.log(`Gyro Activity Detected: Gamma = ${event.gamma}, Beta = ${event.beta}`);
                     // Send the updated gyro mouse coordinates directly to the iframe
                     sendMouseEventToIframe('mousemove', {clientX: gyroMouseX, clientY: gyroMouseY});
                     gyroEnabled = true;
@@ -1489,6 +1489,7 @@
                 if (!gyroEnabled) {
                     gyroEnabled = true;
                     window.addEventListener('deviceorientation', handleOrientation);
+                    console.log("Gyroscope Enabled");
                 }
             }
 
@@ -1496,6 +1497,7 @@
                 if (gyroEnabled) {
                     gyroEnabled = false;
                     window.removeEventListener('deviceorientation', handleOrientation);
+                    console.log("Gyroscope Disabled");
                 }
             }
 
