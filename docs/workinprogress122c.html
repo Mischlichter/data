@@ -1375,8 +1375,10 @@
             var isCalibrated = false;
             var gyroSensitivityMultiplier = 36.0; // Default multiplier
             var lastAngle = window.orientation || 0; // Initial device angle
+            var gyroEnabled = false; // Flag to control gyro
 
             function handleOrientation(event) {
+                if (!gyroEnabled) return;
                 var now = Date.now();
                 if (now - lastExecution > throttleInterval) {
                     // Update last execution time
@@ -1422,6 +1424,7 @@
 
                     // Send the updated gyro mouse coordinates directly to the iframe
                     sendMouseEventToIframe('mousemove', {clientX: gyroMouseX, clientY: gyroMouseY});
+                    gyroEnabled = true;
                 }
             }
 
