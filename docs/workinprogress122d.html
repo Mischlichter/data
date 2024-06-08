@@ -1329,12 +1329,11 @@
                 initializeMenu();
             }
 
-         
+
             function setupMotionListener() {
-                  // Your existing function to map motion to mouse (if applicable)
-                
                 fadeOutOverlay();
                 enterSite();
+
                 // Check for DeviceOrientationEvent support
                 if ('DeviceOrientationEvent' in window) {
                     // Request permission for iOS 13+ devices
@@ -1355,11 +1354,8 @@
                 } else {
                     console.error("Your device does not support gyroscope.");
                 }
-
-                
             }
 
-            
             let gyroEnabled = false;
             let lastExecution = 0;
             let throttleInterval = 66.67; // Throttle interval in milliseconds (15 fps)
@@ -1372,51 +1368,49 @@
             let targetGyroMouseX = 0;
             let targetGyroMouseY = 0;
 
-            function sendMouseEventToIframe(eventType, coordinates) {
-                const iframe = document.querySelector('iframe');
-                if (iframe && iframe.contentWindow) {
-                    iframe.contentWindow.postMessage({
-                        type: eventType,
-                        coordinates: coordinates
-                    }, '*');
-                }
-            }
-
             function handleOrientation(event) {
                 if (!gyroEnabled) return;
-                const now = Date.now();
+                var now = Date.now();
                 if (now - lastExecution > throttleInterval) {
                     lastExecution = now;
-                    const landscape = window.innerWidth > window.innerHeight;
-                    const angle = window.orientation || 0;
 
+                    // Determine the orientation of the device
+                    var landscape = window.innerWidth > window.innerHeight;
+                    var angle = window.orientation || 0; // Fallback to window.orientation if available
+
+                    // Check if the orientation has been calibrated
                     if (!isCalibrated) {
+                        // Set initial orientation values
                         initialGamma = event.gamma;
                         initialBeta = event.beta;
-                        isCalibrated = true;
+                        isCalibrated = true; // Ensure calibration happens only once
+                        console.log('Calibration set: Gamma = ' + initialGamma + ', Beta = ' + initialBeta);
                     }
 
-                    const adjustedGamma = event.gamma - initialGamma;
-                    const adjustedBeta = event.beta - initialBeta;
+                    // Determine how to adjust the x and y coordinates based on orientation and rotation
+                    var adjustedGamma = event.gamma - initialGamma;
+                    var adjustedBeta = event.beta - initialBeta;
 
+                    // Adjust the multiplier to the adjusted raw beta and gamma values
                     if (landscape) {
+                        // Check rotation direction in landscape mode
                         if (angle === 90) {
+                            // Device is rotated to the left
                             targetGyroMouseX = adjustedBeta * gyroSensitivityMultiplier;
                             targetGyroMouseY = -adjustedGamma * gyroSensitivityMultiplier;
                         } else if (angle === -90 || angle === 270) {
+                            // Device is rotated to the right
                             targetGyroMouseX = -adjustedBeta * gyroSensitivityMultiplier;
                             targetGyroMouseY = adjustedGamma * gyroSensitivityMultiplier;
                         }
                     } else {
+                        // Standard portrait mode
                         targetGyroMouseX = adjustedGamma * gyroSensitivityMultiplier;
                         targetGyroMouseY = adjustedBeta * gyroSensitivityMultiplier;
                     }
                 }
-            }
 
-            function animateGyroMouse() {
-                if (!gyroEnabled) return;
-
+                // Interpolate the coordinates
                 const deltaX = (targetGyroMouseX - gyroMouseX) * 0.1;
                 const deltaY = (targetGyroMouseY - gyroMouseY) * 0.1;
 
@@ -1427,27 +1421,30 @@
                 const clientX = Math.min(Math.max(gyroMouseX, 0), window.innerWidth);
                 const clientY = Math.min(Math.max(gyroMouseY, 0), window.innerHeight);
 
-                sendMouseEventToIframe('mousemove', { clientX, clientY });
+                // Send the updated gyro mouse coordinates directly to the iframe
+                sendMouseEventToIframe('mousemove', { clientX: gyroMouseX, clientY: gyroMouseY });
 
-                requestAnimationFrame(animateGyroMouse);
+                // Request the next animation frame
+                requestAnimationFrame(() => handleOrientation(event));
             }
 
             function enableGyro() {
                 if (!gyroEnabled) {
                     gyroEnabled = true;
-                    window.addEventListener('deviceorientation', handleOrientation);
+                    window.addEventListener('deviceorientation', handleOrientation, true);
                     console.log("Gyroscope Enabled");
-                    requestAnimationFrame(animateGyroMouse);
+                    requestAnimationFrame(() => handleOrientation({ gamma: initialGamma, beta: initialBeta }));
                 }
             }
 
             function disableGyro() {
                 if (gyroEnabled) {
                     gyroEnabled = false;
-                    window.removeEventListener('deviceorientation', handleOrientation);
+                    window.removeEventListener('deviceorientation', handleOrientation, true);
                     console.log("Gyroscope Disabled");
                 }
             }
+
 
             function triggerOrientationWithoutCalibration() {
                 isCalibrated = false; // Reset calibration flag
