@@ -1771,7 +1771,7 @@
             }
 
             function setupDirectIframe(src) {
-                lenis.stop();
+                
                
                 //console.log('Setting up direct iframe.');
                 hideFooterInstantly();
@@ -1788,8 +1788,10 @@
                 hideBackground();
                 
                 iframeLoaded(newIframe);
-                scrollToTop();
+
                 unhideDirectIframe();
+                scrollToTop();
+                lenis.start();
             }
 
             function iframeLoaded(iframe) {
