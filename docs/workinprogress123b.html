@@ -1696,7 +1696,7 @@
 
 
         var iframeIsVisible = false;
-        let tiles = { a: false, b: false, viewerReady: false, iframeReady: false };
+        let tiles = { a: false, b: false, viewerReady: false, iframeReady: false, menuReady: false };
         let observer; // Declare a global variable to store the observer instance
         let messageEventListenerAdded = false;
         let iframeObserverAdded = false;
@@ -3069,14 +3069,13 @@
             const waitForTiles = () => {
                 return new Promise((resolve) => {
                     const checkTiles = () => {
-                        if (tiles.a && tiles.b && tiles.viewerReady && tiles.iframeReady) {
+                        if (tiles.a && tiles.b && tiles.viewerReady && tiles.iframeReady && tiles.menuReady) {
                             resolve(); // Resolve the promise when all conditions are met
                         } else {
                             setTimeout(checkTiles, 100); // Check every 100 milliseconds
                         }
                     };
                     checkTiles(); // Start checking tiles
-                    
                 });
             };
 
@@ -3114,6 +3113,7 @@
             Promise.all([waitForTiles(), waitForImages()]).then(() => {
                 const selectors = ['#interfaceContainer', '#backgroundContainer', '#iframeContainer', '#bodyGalleryContainer', '.flex-container'];
                 let animationCount = 0;
+                let shouldFadeIn = false;
 
                 const animationEndHandler = () => {
                     animationCount--;
@@ -3141,22 +3141,26 @@
                         }
                     });
                 });
+
+                if (animationCount === 0) {
+                    shouldFadeIn = true; // If no animations, immediately set the flag
+                }
             });
         }
 
-
-
         function fadeInmenu() {
             updateLogoVisibility();
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve) => {
                 const selectors = ['.menu-bar', '.menu-container'];
                 let animationCount = 0;
+                let menufade = false;
 
                 const animationEndHandler = () => {
                     animationCount--;
                     if (animationCount === 0) {
                         // Set the flag after all animations have ended
                         menufade = true;
+                        tiles.menuReady = true; // Set menuReady to true when animations have completed
                         resolve(); // Resolve the promise to indicate that animations have completed
                     }
                 };
@@ -3173,18 +3177,21 @@
                             } else {
                                 // If it's iOS, immediately set the flag and resolve the promise
                                 menufade = true;
+                                tiles.menuReady = true; // Set menuReady to true for iOS
                                 resolve();
                             }
                         }
                     });
                 });
-                
+
                 // If no animations are found, resolve the promise immediately
                 if (animationCount === 0) {
+                    tiles.menuReady = true; // Set menuReady to true if no animations are found
                     resolve();
                 }
             });
         }
+
 
 
         function fadeOutElements() {
