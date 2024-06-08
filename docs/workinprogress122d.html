@@ -1367,6 +1367,7 @@
             let gyroSensitivityMultiplier = 36.0; // Default multiplier
             let targetGyroMouseX = 0;
             let targetGyroMouseY = 0;
+            let lastAngle = window.orientation || 0;
 
             // Interpolation parameters
             let interpolationFactor = 0.7;
@@ -1488,7 +1489,7 @@
 
                 if (currentAngle !== lastAngle) {
                     isCalibrated = false;
-                    //console.log("Orientation change detected. Recalibration required.");
+                    console.log("Orientation change detected. Recalibration required."); // Optional: Log for debugging
 
                     // Update the last known angle
                     lastAngle = currentAngle;
