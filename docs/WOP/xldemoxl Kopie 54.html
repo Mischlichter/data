@@ -453,7 +453,7 @@
             width: var(--total-width); /* Assuming this is set to 3072px or as needed */
             height: var(--viewer-height); /* Assuming this is set to 2048px */
             margin: 0 auto; /* Center the container */
-            
+            will-change: transform; /* Hint to optimize transform */
             pointer-events: none;
         }
 
@@ -461,7 +461,7 @@
             background-size: cover;
             background-repeat: no-repeat;
             z-index: 15;
-            
+            will-change: transform; /* Hint to optimize transform */
         }
 
         #interfaceSideLeft, #interfaceSideRight {
@@ -469,17 +469,17 @@
             top: 0;
             width: calc((var(--total-width) - var(--viewer-width)) / 2); /* Adjust width for side containers */
             height: 100%;
-            
+            will-change: transform; /* Hint to optimize transform */
         }
 
         #interfaceSideLeft {
             left: 0;
-            
+            will-change: transform; /* Hint to optimize transform */
         }
 
         #interfaceSideRight {
             right: 0;
-            
+            will-change: transform; /* Hint to optimize transform */
         }
 
         #interfaceViewerContainer {
@@ -493,14 +493,14 @@
             justify-content: center;
             align-items: center;
             pointer-events: none;
-            
+            will-change: transform; /* Hint to optimize transform */
         }
 
         #interfaceViewerImage {
             width: 100%;
             height: 100%;
             pointer-events: none;
-            
+            will-change: transform; /* Hint to optimize transform */
         }
 
         :root {
@@ -575,7 +575,7 @@
             width: fit-content; /* Ensures the wrapper fits the scaled content */
             height: fit-content; /* Ensures the wrapper fits the scaled content */
             transform: translate(-50%, -50%) scale(0.8); /* Centers and then scales the content */
-            
+            will-change: transform; /* Hint to optimize transform */
         }
 
         .scale-wrapper-background {
@@ -771,8 +771,13 @@
     
     <link rel="stylesheet" type="text/css" href="css/bodygallery.css">
     <script src="https://kit.fontawesome.com/a258000a2d.js" crossorigin="anonymous"></script>
+
     <script src="./scripts/lenis.min.js"></script>
+
+
     <script src="./scripts/index-min.js"></script>
+
+
     <script src="./scripts/fastclick.js"></script>
     <script>
         window.addEventListener('load', function() {
@@ -1330,10 +1335,13 @@
             }
 
 
+
+
             function setupMotionListener() {
+                  // Your existing function to map motion to mouse (if applicable)
+                
                 fadeOutOverlay();
                 enterSite();
-
                 // Check for DeviceOrientationEvent support
                 if ('DeviceOrientationEvent' in window) {
                     // Request permission for iOS 13+ devices
@@ -1354,26 +1362,21 @@
                 } else {
                     console.error("Your device does not support gyroscope.");
                 }
+
+                
             }
 
-            let gyroEnabled = false;
-            let lastExecution = 0;
-            let throttleInterval = 32;
-            let gyroMouseX = 0;
-            let gyroMouseY = 0;
-            let initialGamma = 0;
-            let initialBeta = 0;
-            let isCalibrated = false;
-            let gyroSensitivityMultiplier = 36.0; // Default multiplier
-            let targetGyroMouseX = 0;
-            let targetGyroMouseY = 0;
-            let lastAngle = window.orientation || 0;
-
-            // Interpolation parameters
-            let interpolationFactor = 0.7;
+            var lastExecution = 0;
+            var throttleInterval = 36; // Throttle interval in milliseconds
+            var gyroMouseX = 0;
+            var gyroMouseY = 0;
+            var initialGamma = 0;
+            var initialBeta = 0;
+            var isCalibrated = false;
+            var gyroSensitivityMultiplier = 36.0; // Default multiplier
+            var lastAngle = window.orientation || 0; // Initial device angle
 
             function handleOrientation(event) {
-                if (!gyroEnabled) return;
                 var now = Date.now();
                 if (now - lastExecution > throttleInterval) {
                     // Update last execution time
@@ -1401,47 +1404,26 @@
                         // Check rotation direction in landscape mode
                         if (angle === 90) {
                             // Device is rotated to the left
-                            targetGyroMouseX = adjustedBeta * gyroSensitivityMultiplier;
-                            targetGyroMouseY = -adjustedGamma * gyroSensitivityMultiplier;
+                            gyroMouseX = adjustedBeta * gyroSensitivityMultiplier;
+                            gyroMouseY = -adjustedGamma * gyroSensitivityMultiplier;
 
                         } else if (angle === -90 || angle === 270) {
                             // Device is rotated to the right
-                            targetGyroMouseX = -adjustedBeta * gyroSensitivityMultiplier;
-                            targetGyroMouseY = adjustedGamma * gyroSensitivityMultiplier;
+                            gyroMouseX = -adjustedBeta * gyroSensitivityMultiplier;
+                            gyroMouseY = adjustedGamma * gyroSensitivityMultiplier;
                         }
                     } else {
                         // Standard portrait mode
-                        targetGyroMouseX = adjustedGamma * gyroSensitivityMultiplier;
-                        targetGyroMouseY = adjustedBeta * gyroSensitivityMultiplier;
+                        gyroMouseX = adjustedGamma * gyroSensitivityMultiplier;
+                        gyroMouseY = adjustedBeta * gyroSensitivityMultiplier;
                     }
 
-                    // Interpolate current gyro mouse coordinates to target gyro mouse coordinates
-                    gyroMouseX += (targetGyroMouseX - gyroMouseX) * interpolationFactor;
-                    gyroMouseY += (targetGyroMouseY - gyroMouseY) * interpolationFactor;
+  
 
                     // Send the updated gyro mouse coordinates directly to the iframe
                     sendMouseEventToIframe('mousemove', {clientX: gyroMouseX, clientY: gyroMouseY});
                 }
             }
-
-
-            function enableGyro() {
-                if (!gyroEnabled) {
-                    gyroEnabled = true;
-                    window.addEventListener('deviceorientation', handleOrientation, true);
-                    console.log("Gyroscope Enabled");
-                    requestAnimationFrame(() => handleOrientation({ gamma: initialGamma, beta: initialBeta }));
-                }
-            }
-
-            function disableGyro() {
-                if (gyroEnabled) {
-                    gyroEnabled = false;
-                    window.removeEventListener('deviceorientation', handleOrientation, true);
-                    console.log("Gyroscope Disabled");
-                }
-            }
-
 
             function triggerOrientationWithoutCalibration() {
                 isCalibrated = false; // Reset calibration flag
@@ -1489,7 +1471,7 @@
 
                 if (currentAngle !== lastAngle) {
                     isCalibrated = false;
-                    console.log("Orientation change detected. Recalibration required."); // Optional: Log for debugging
+                    //console.log("Orientation change detected. Recalibration required.");
 
                     // Update the last known angle
                     lastAngle = currentAngle;
@@ -1499,13 +1481,11 @@
                 }
             }
 
-
-
-
             window.addEventListener('orientationchange', checkOrientationChange);
 
-            window.enableGyro = enableGyro;
-            window.disableGyro = disableGyro;
+
+            // Inside orientationHandler.js or wherever the function is defined
+            
 
 
 
@@ -1606,8 +1586,6 @@
                       /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
                       ('ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0);
 
-        const isGyroDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
 
         let lastScrollY = 0;
         let lenisInitialized = false;
@@ -1615,11 +1593,10 @@
         let animateRegistered = false;
         let mouseEventListenersAdded = false;
        
-        
-    
-
+       
+      
         const AnimationManager = {
-            frameCap: 60, // Increase frame cap for smoother animations
+            frameCap: 50,
             lastRender: performance.now(),
             animations: [],
             running: false,
@@ -1671,7 +1648,6 @@
             lenisInitialized = true;
             requestAnimationFrame(runLenis);
         }
-
 
         function scrollToTop() {
             if (typeof window !== 'undefined') {
@@ -1826,27 +1802,18 @@
 
             function setupObserver(iframe) {
                 if (iframeObserverAdded) {
-                    observer.disconnect();
-                    iframeObserverAdded = false;
+                    observer.disconnect(); // Disconnect the existing observer before creating a new one
+                    iframeObserverAdded = false; // Reset the flag
                 }
 
                 observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (iframe.contentWindow) {
+                            //console.log(`Iframe visibility changed: ${entry.isIntersecting ? 'visible' : 'not visible'}`);
                             iframe.contentWindow.postMessage({
                                 type: 'visibilityChange',
                                 isVisible: entry.isIntersecting
                             }, '*');
-
-                            if (entry.isIntersecting) {
-                                if (isGyroDevice) {
-                                    window.enableGyro();
-                                }
-                            } else {
-                                if (isGyroDevice) {
-                                    window.disableGyro();
-                                }
-                            }
                         }
                     });
                 }, {
@@ -1854,7 +1821,7 @@
                     threshold: 0.1
                 });
                 observer.observe(iframe);
-                iframeObserverAdded = true;
+                iframeObserverAdded = true; // Set the flag to true after adding the observer
             }
         }
 
@@ -3452,33 +3419,33 @@
 
             lastScrollY = scrollY;
 
-            const background = document.getElementById('interfaceBackground');
-            const sideLeft = document.getElementById('interfaceSideLeft');
-            const sideRight = document.getElementById('interfaceSideRight');
-            const viewerContainer = document.getElementById('interfaceViewerContainer');
-
             requestAnimationFrame(() => {
+                const background = document.getElementById('interfaceBackground');
                 if (background) {
                     const offsetBackground = scrollY * speedFactorBackground;
                     background.style.transform = `translateY(${offsetBackground}px)`;
-                    background.style.willChange = 'transform';
                 }
 
+                const sideLeft = document.getElementById('interfaceSideLeft');
+                const sideRight = document.getElementById('interfaceSideRight');
                 if (sideLeft && sideRight) {
                     const offsetSides = scrollY * speedFactorSides;
                     sideLeft.style.transform = `translateY(${offsetSides}px)`;
-                    sideLeft.style.willChange = 'transform';
                     sideRight.style.transform = `translateY(${offsetSides}px)`;
-                    sideRight.style.willChange = 'transform';
                 }
 
+                const viewerContainer = document.getElementById('interfaceViewerContainer');
                 if (viewerContainer) {
                     const offsetViewer = scrollY * speedFactorViewer;
                     viewerContainer.style.transform = `translateY(${offsetViewer}px)`;
-                    viewerContainer.style.willChange = 'transform';
                 }
             });
         }
+
+
+  
+
+
 
 /////////// ANIMATION TEXT /////
 
@@ -3545,6 +3512,7 @@
                             element.textContent = finalText;
                             element.style.opacity = '1';
                             element.style.color = `rgb(${finalColor.r}, ${finalColor.g}, ${finalColor.b})`;
+                            //console.log('Animation complete for:', element);
                             return false; // Indicate the animation is complete
                         }
                     }
@@ -3610,7 +3578,7 @@
             adjustContainerSizesBasedOnVirtualCanvas();
             let lineContainer = document.createElement('div');
             lineContainer.style.display = 'inline-block';
-            lineContainer.style.width = '1000%'; // Maintain original width setting
+            lineContainer.style.width = '1000%';
             container.appendChild(lineContainer);
             lineContainer.style.whiteSpace = 'nowrap';
             lineText.split(' ').forEach(word => {
@@ -3650,7 +3618,6 @@
                 });
             });
         }
-
 
 
 
@@ -3730,15 +3697,13 @@
             });
         }
 
-
-
  
         let observedElements = [];
         let observedElementsData = [];
 
         function observeElementsForAnimations() {
             const observerOptions = {
-                threshold: [0.01, 0.25],
+                threshold: [0.011, 0.25],
                 rootMargin: '50px'
             };
 
@@ -3763,6 +3728,7 @@
 
             const observer = new IntersectionObserver(observerCallback, observerOptions);
 
+            // Clear existing observations
             observedElements.forEach(element => observer.unobserve(element));
             observedElements = [];
 
@@ -3792,6 +3758,10 @@
             }));
         }
 
+
+
+        
+
         function getClosestElementToViewportCenter() {
             const viewportCenter = window.innerHeight / 2;
             let closestElementData = null;
@@ -3799,6 +3769,7 @@
 
             observedElementsData.forEach(data => {
                 const distanceToCenter = Math.abs(data.viewportCenter - viewportCenter);
+
                 if (distanceToCenter < minDistanceToCenter) {
                     closestElementData = data;
                     minDistanceToCenter = distanceToCenter;
@@ -3807,7 +3778,6 @@
 
             return closestElementData;
         }
-
 
         function updateAllContainersDuringScaling() {
             if (!currentSceneData) {
