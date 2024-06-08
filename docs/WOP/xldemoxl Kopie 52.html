@@ -774,7 +774,8 @@
 
     <script src="./scripts/lenis.min.js"></script>
 
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
     <script src="./scripts/index-min.js"></script>
 
 
@@ -1770,8 +1771,6 @@
             }
 
             function setupDirectIframe(src) {
-                
-               
                 //console.log('Setting up direct iframe.');
                 hideFooterInstantly();
                 const newIframe = document.createElement('iframe');
@@ -1785,14 +1784,10 @@
 
                 document.body.appendChild(newIframe); // Directly append to the body
                 hideBackground();
-                
-                iframeLoaded(newIframe);
-
-                unhideDirectIframe();
-                
-                lenis.start();
                 scrollToTop();
-
+                iframeLoaded(newIframe);
+                
+                unhideDirectIframe();
             }
 
             function iframeLoaded(iframe) {
