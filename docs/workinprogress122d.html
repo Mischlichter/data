@@ -1358,7 +1358,7 @@
 
             let gyroEnabled = false;
             let lastExecution = 0;
-            let throttleInterval = 66.67; // Throttle interval in milliseconds (15 fps)
+            let throttleInterval = 36; 
             let gyroMouseX = 0;
             let gyroMouseY = 0;
             let initialGamma = 0;
@@ -1372,6 +1372,7 @@
                 if (!gyroEnabled) return;
                 var now = Date.now();
                 if (now - lastExecution > throttleInterval) {
+                    // Update last execution time
                     lastExecution = now;
 
                     // Determine the orientation of the device
@@ -1384,7 +1385,7 @@
                         initialGamma = event.gamma;
                         initialBeta = event.beta;
                         isCalibrated = true; // Ensure calibration happens only once
-                        console.log('Calibration set: Gamma = ' + initialGamma + ', Beta = ' + initialBeta);
+                        //console.log('Calibration set: Gamma = ' + initialGamma + ', Beta = ' + initialBeta);
                     }
 
                     // Determine how to adjust the x and y coordinates based on orientation and rotation
@@ -1396,36 +1397,25 @@
                         // Check rotation direction in landscape mode
                         if (angle === 90) {
                             // Device is rotated to the left
-                            targetGyroMouseX = adjustedBeta * gyroSensitivityMultiplier;
-                            targetGyroMouseY = -adjustedGamma * gyroSensitivityMultiplier;
+                            gyroMouseX = adjustedBeta * gyroSensitivityMultiplier;
+                            gyroMouseY = -adjustedGamma * gyroSensitivityMultiplier;
+
                         } else if (angle === -90 || angle === 270) {
                             // Device is rotated to the right
-                            targetGyroMouseX = -adjustedBeta * gyroSensitivityMultiplier;
-                            targetGyroMouseY = adjustedGamma * gyroSensitivityMultiplier;
+                            gyroMouseX = -adjustedBeta * gyroSensitivityMultiplier;
+                            gyroMouseY = adjustedGamma * gyroSensitivityMultiplier;
                         }
                     } else {
                         // Standard portrait mode
-                        targetGyroMouseX = adjustedGamma * gyroSensitivityMultiplier;
-                        targetGyroMouseY = adjustedBeta * gyroSensitivityMultiplier;
+                        gyroMouseX = adjustedGamma * gyroSensitivityMultiplier;
+                        gyroMouseY = adjustedBeta * gyroSensitivityMultiplier;
                     }
+
+  
+
+                    // Send the updated gyro mouse coordinates directly to the iframe
+                    sendMouseEventToIframe('mousemove', {clientX: gyroMouseX, clientY: gyroMouseY});
                 }
-
-                // Interpolate the coordinates
-                const deltaX = (targetGyroMouseX - gyroMouseX) * 0.1;
-                const deltaY = (targetGyroMouseY - gyroMouseY) * 0.1;
-
-                gyroMouseX += deltaX;
-                gyroMouseY += deltaY;
-
-                // Ensure the coordinates are within a reasonable range (you may need to adjust these)
-                const clientX = Math.min(Math.max(gyroMouseX, 0), window.innerWidth);
-                const clientY = Math.min(Math.max(gyroMouseY, 0), window.innerHeight);
-
-                // Send the updated gyro mouse coordinates directly to the iframe
-                sendMouseEventToIframe('mousemove', { clientX: gyroMouseX, clientY: gyroMouseY });
-
-                // Request the next animation frame
-                requestAnimationFrame(() => handleOrientation(event));
             }
 
             function enableGyro() {
