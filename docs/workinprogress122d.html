@@ -1373,7 +1373,7 @@
             let targetGyroMouseX = 0;
             let targetGyroMouseY = 0;
 
-            const isGyroDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
 
             function sendMouseEventToIframe(eventType, coordinates) {
                 const iframe = document.querySelector('iframe');
@@ -1491,16 +1491,15 @@
 
             // Inside orientationHandler.js or wherever the function is defined
             function enableGyro() {
-                if (!gyroEnabled && isGyroDevice) {
+                if (!gyroEnabled) {
                     gyroEnabled = true;
                     window.addEventListener('deviceorientation', handleOrientation);
                     console.log("Gyroscope Enabled");
-                    animateGyroMouse();
                 }
             }
 
             function disableGyro() {
-                if (gyroEnabled && isGyroDevice) {
+                if (gyroEnabled) {
                     gyroEnabled = false;
                     window.removeEventListener('deviceorientation', handleOrientation);
                     console.log("Gyroscope Disabled");
