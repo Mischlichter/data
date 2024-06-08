@@ -1720,6 +1720,9 @@
 
             if (sceneKey === 'scene05') {
                 lenis.start();
+                if (typeof lenis !== 'undefined' && lenis !== null) {
+                lenis.scrollTo(0, { duration: 1 }); // Use Lenis to scroll to the top
+            }
                 // Logic for scene05 (Gallery)
                 //console.log('Setting up scene05 (Gallery).');
                 hideFooterInstantly();

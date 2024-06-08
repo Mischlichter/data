@@ -1519,10 +1519,7 @@ const galleryHTML = `
         function initializePage() {
             document.getElementById('search-bar').value = ''; // Reset the search bar value
             
-            // Check if Lenis instance is available
-            if (typeof lenis !== 'undefined' && lenis !== null) {
-                lenis.scrollTo(0, { duration: 1 }); // Use Lenis to scroll to the top
-            }
+                        
 
             createBackgroundSurface();
             initializeLoadingScreen();
