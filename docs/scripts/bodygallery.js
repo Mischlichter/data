@@ -1518,9 +1518,7 @@ const galleryHTML = `
 
         function initializePage() {
             document.getElementById('search-bar').value = ''; // Reset the search bar value
-            
-                    
-
+            window.scrollTo(0, 0); // Scroll to the top of the page
             createBackgroundSurface();
             initializeLoadingScreen();
         }
