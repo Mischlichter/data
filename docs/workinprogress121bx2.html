@@ -1599,7 +1599,7 @@
 
 
         const AnimationManager = {
-            frameCap: 90,
+            frameCap: 50,
             lastRender: performance.now(),
             animations: [],
             running: false,
@@ -1771,6 +1771,7 @@
             }
 
             function setupDirectIframe(src) {
+                scrollToTop();
                 //console.log('Setting up direct iframe.');
                 hideFooterInstantly();
                 const newIframe = document.createElement('iframe');
@@ -1784,7 +1785,7 @@
 
                 document.body.appendChild(newIframe); // Directly append to the body
                 hideBackground();
-                scrollToTop();
+                
                 iframeLoaded(newIframe);
                 
                 unhideDirectIframe();
