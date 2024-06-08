@@ -1771,8 +1771,7 @@
             }
 
             function setupDirectIframe(src) {
-                lenis.stop();
-                scrollToTop();
+                lenis.scrollTo(0, { duration: 0 });
                 //console.log('Setting up direct iframe.');
                 hideFooterInstantly();
                 const newIframe = document.createElement('iframe');
