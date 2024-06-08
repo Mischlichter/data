@@ -1518,7 +1518,7 @@ const galleryHTML = `
 
         function initializePage() {
             document.getElementById('search-bar').value = ''; // Reset the search bar value
-            lenis.scrollTo(0, { duration: 1 }); // Use Lenis to scroll to the top
+            window.scrollTo(0, 0); // Scroll to the top of the page
             createBackgroundSurface();
             initializeLoadingScreen();
         }
