@@ -1331,7 +1331,7 @@
 
             let gyroEnabled = false;
             let lastExecution = 0;
-            let throttleInterval = 36; // Throttle interval in milliseconds
+            let throttleInterval = 66.67; // Throttle interval in milliseconds (15 fps)
             let gyroMouseX = 0;
             let gyroMouseY = 0;
             let initialGamma = 0;
@@ -1374,6 +1374,8 @@
             
             
 
+            
+
             function sendMouseEventToIframe(eventType, coordinates) {
                 const iframe = document.querySelector('iframe');
                 if (iframe && iframe.contentWindow) {
@@ -1413,11 +1415,21 @@
                         targetGyroMouseX = adjustedGamma * gyroSensitivityMultiplier;
                         targetGyroMouseY = adjustedBeta * gyroSensitivityMultiplier;
                     }
-
-                    // Update coordinates
-                    document.documentElement.style.setProperty('--gyro-mouse-x', targetGyroMouseX + 'px');
-                    document.documentElement.style.setProperty('--gyro-mouse-y', targetGyroMouseY + 'px');
                 }
+            }
+
+            function animateGyroMouse() {
+                if (!gyroEnabled) return;
+
+                const deltaX = (targetGyroMouseX - gyroMouseX) * 0.1;
+                const deltaY = (targetGyroMouseY - gyroMouseY) * 0.1;
+
+                gyroMouseX += deltaX;
+                gyroMouseY += deltaY;
+
+                sendMouseEventToIframe('mousemove', {clientX: gyroMouseX, clientY: gyroMouseY});
+
+                requestAnimationFrame(animateGyroMouse);
             }
 
             function enableGyro() {
@@ -1425,6 +1437,7 @@
                     gyroEnabled = true;
                     window.addEventListener('deviceorientation', handleOrientation);
                     console.log("Gyroscope Enabled");
+                    requestAnimationFrame(animateGyroMouse);
                 }
             }
 
@@ -1435,7 +1448,6 @@
                     console.log("Gyroscope Disabled");
                 }
             }
-
 
             function triggerOrientationWithoutCalibration() {
                 isCalibrated = false; // Reset calibration flag
