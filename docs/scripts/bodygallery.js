@@ -1516,14 +1516,34 @@ const galleryHTML = `
 
 
 
-        function initializePage() {
+        async function initializePage() {
             document.getElementById('search-bar').value = ''; // Reset the search bar value
-            
-                        
+
+            if (typeof lenis !== 'undefined' && lenis !== null) {
+                await scrollToTop(); // Wait for the scroll to complete
+            }
 
             createBackgroundSurface();
             initializeLoadingScreen();
         }
+
+        function scrollToTop() {
+            return new Promise((resolve) => {
+                lenis.scrollTo(0, { duration: 1 }); // Use Lenis to scroll to the top
+
+                const checkScroll = () => {
+                    if (lenis.instance.scroll.y === 0) {
+                        resolve();
+                    } else {
+                        requestAnimationFrame(checkScroll);
+                    }
+                };
+
+                checkScroll();
+            });
+        }
+
+
 
         function showSlideshow() {
 
