@@ -1421,7 +1421,7 @@
                     }
 
   
-                    console.log(`Gyro Activity Detected: Gamma = ${event.gamma}, Beta = ${event.beta}`);
+                    //console.log(`Gyro Activity Detected: Gamma = ${event.gamma}, Beta = ${event.beta}`);
                     // Send the updated gyro mouse coordinates directly to the iframe
                     sendMouseEventToIframe('mousemove', {clientX: gyroMouseX, clientY: gyroMouseY});
                     gyroEnabled = true;
@@ -1489,7 +1489,7 @@
                 if (!gyroEnabled) {
                     gyroEnabled = true;
                     window.addEventListener('deviceorientation', handleOrientation);
-                    console.log("Gyroscope Enabled");
+                    //console.log("Gyroscope Enabled");
                 }
             }
 
@@ -1497,7 +1497,7 @@
                 if (gyroEnabled) {
                     gyroEnabled = false;
                     window.removeEventListener('deviceorientation', handleOrientation);
-                    console.log("Gyroscope Disabled");
+                    //console.log("Gyroscope Disabled");
                 }
             }
 
