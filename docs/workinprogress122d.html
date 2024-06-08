@@ -1329,19 +1329,7 @@
                 initializeMenu();
             }
 
-            let gyroEnabled = false;
-            let lastExecution = 0;
-            let throttleInterval = 66.67; // Throttle interval in milliseconds (15 fps)
-            let gyroMouseX = 0;
-            let gyroMouseY = 0;
-            let initialGamma = 0;
-            let initialBeta = 0;
-            let isCalibrated = false;
-            let gyroSensitivityMultiplier = 36.0; // Default multiplier
-            let lastAngle = window.orientation || 0; // Initial device angle
-            let targetGyroMouseX = 0;
-            let targetGyroMouseY = 0;
-
+         
             function setupMotionListener() {
                   // Your existing function to map motion to mouse (if applicable)
                 
@@ -1372,9 +1360,17 @@
             }
 
             
-            
-
-            
+            let gyroEnabled = false;
+            let lastExecution = 0;
+            let throttleInterval = 66.67; // Throttle interval in milliseconds (15 fps)
+            let gyroMouseX = 0;
+            let gyroMouseY = 0;
+            let initialGamma = 0;
+            let initialBeta = 0;
+            let isCalibrated = false;
+            let gyroSensitivityMultiplier = 36.0; // Default multiplier
+            let targetGyroMouseX = 0;
+            let targetGyroMouseY = 0;
 
             function sendMouseEventToIframe(eventType, coordinates) {
                 const iframe = document.querySelector('iframe');
@@ -1427,13 +1423,17 @@
                 gyroMouseX += deltaX;
                 gyroMouseY += deltaY;
 
-                sendMouseEventToIframe('mousemove', {clientX: gyroMouseX, clientY: gyroMouseY});
+                // Ensure the coordinates are within a reasonable range (you may need to adjust these)
+                const clientX = Math.min(Math.max(gyroMouseX, 0), window.innerWidth);
+                const clientY = Math.min(Math.max(gyroMouseY, 0), window.innerHeight);
+
+                sendMouseEventToIframe('mousemove', { clientX, clientY });
 
                 requestAnimationFrame(animateGyroMouse);
             }
 
             function enableGyro() {
-                if (!gyroEnabled && isGyroDevice) {
+                if (!gyroEnabled) {
                     gyroEnabled = true;
                     window.addEventListener('deviceorientation', handleOrientation);
                     console.log("Gyroscope Enabled");
@@ -1442,7 +1442,7 @@
             }
 
             function disableGyro() {
-                if (gyroEnabled && isGyroDevice) {
+                if (gyroEnabled) {
                     gyroEnabled = false;
                     window.removeEventListener('deviceorientation', handleOrientation);
                     console.log("Gyroscope Disabled");
