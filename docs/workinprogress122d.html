@@ -1358,7 +1358,7 @@
 
             let gyroEnabled = false;
             let lastExecution = 0;
-            let throttleInterval = 36; 
+            let throttleInterval = 72;
             let gyroMouseX = 0;
             let gyroMouseY = 0;
             let initialGamma = 0;
@@ -1367,6 +1367,9 @@
             let gyroSensitivityMultiplier = 36.0; // Default multiplier
             let targetGyroMouseX = 0;
             let targetGyroMouseY = 0;
+
+            // Interpolation parameters
+            let interpolationFactor = 0.1;
 
             function handleOrientation(event) {
                 if (!gyroEnabled) return;
@@ -1397,26 +1400,29 @@
                         // Check rotation direction in landscape mode
                         if (angle === 90) {
                             // Device is rotated to the left
-                            gyroMouseX = adjustedBeta * gyroSensitivityMultiplier;
-                            gyroMouseY = -adjustedGamma * gyroSensitivityMultiplier;
+                            targetGyroMouseX = adjustedBeta * gyroSensitivityMultiplier;
+                            targetGyroMouseY = -adjustedGamma * gyroSensitivityMultiplier;
 
                         } else if (angle === -90 || angle === 270) {
                             // Device is rotated to the right
-                            gyroMouseX = -adjustedBeta * gyroSensitivityMultiplier;
-                            gyroMouseY = adjustedGamma * gyroSensitivityMultiplier;
+                            targetGyroMouseX = -adjustedBeta * gyroSensitivityMultiplier;
+                            targetGyroMouseY = adjustedGamma * gyroSensitivityMultiplier;
                         }
                     } else {
                         // Standard portrait mode
-                        gyroMouseX = adjustedGamma * gyroSensitivityMultiplier;
-                        gyroMouseY = adjustedBeta * gyroSensitivityMultiplier;
+                        targetGyroMouseX = adjustedGamma * gyroSensitivityMultiplier;
+                        targetGyroMouseY = adjustedBeta * gyroSensitivityMultiplier;
                     }
 
-  
+                    // Interpolate current gyro mouse coordinates to target gyro mouse coordinates
+                    gyroMouseX += (targetGyroMouseX - gyroMouseX) * interpolationFactor;
+                    gyroMouseY += (targetGyroMouseY - gyroMouseY) * interpolationFactor;
 
                     // Send the updated gyro mouse coordinates directly to the iframe
                     sendMouseEventToIframe('mousemove', {clientX: gyroMouseX, clientY: gyroMouseY});
                 }
             }
+
 
             function enableGyro() {
                 if (!gyroEnabled) {
