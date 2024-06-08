@@ -802,6 +802,8 @@
     
     <link rel="stylesheet" type="text/css" href="css/bodygallery.css">
     <script src="https://kit.fontawesome.com/a258000a2d.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
     <script src="./scripts/lenis.min.js"></script>
     <script src="./scripts/index-min.js"></script>
     <script src="./scripts/fastclick.js"></script>
@@ -1843,6 +1845,7 @@
                 
                 lenis.start();
                 scrollToTop();
+                lenis.stop();
 
             }
 
@@ -1904,13 +1907,80 @@
             // Reset any fixed or absolute positioning that might be applied to body elements
             document.body.style.position = '';
 
-            // Remove event listeners that may have been added during the gallery view
-            // Example: assuming a function disableScroll() added event listeners
-            //disableScroll();
+            // Remove event listeners
+            const mouseOverlay = document.getElementById('mouseOverlay');
+            if (mouseOverlay) {
+                mouseOverlay.removeEventListener('mouseenter', handleMouseEvent);
+                mouseOverlay.removeEventListener('mouseleave', handleMouseEvent);
+                mouseOverlay.removeEventListener('mousemove', handleMouseEvent);
+            }
 
-            // Reset any additional styles or modifications
-            // This depends on what else might be manipulated during your gallery's runtime
+            if (typeof observer !== 'undefined') {
+                observer.disconnect();
+            }
+
+            // Remove resize and scroll event listeners (assuming these were added without debounce/throttle)
+            window.removeEventListener('resize', updateVirtualCanvasSize);
+            window.removeEventListener('scroll', handleScroll);
+
+            // Clear any intervals or timeouts
+            let id = window.setTimeout(function() {}, 0);
+            while (id--) {
+                window.clearTimeout(id);
+                window.clearInterval(id);
+            }
+
+            // Clear dynamically created DOM elements
+            let elements = document.querySelectorAll('.dynamic-element');
+            elements.forEach(element => element.remove());
+
+            const iframeContainer = document.getElementById('iframeContainer');
+            if (iframeContainer) {
+                iframeContainer.innerHTML = ''; // Clear iframe container
+            }
+
+            const bodyGalleryContainer = document.getElementById('bodyGalleryContainer');
+            if (bodyGalleryContainer) {
+                bodyGalleryContainer.innerHTML = ''; // Clear body gallery content
+            }
+
+            // Nullify large variables
+            currentSceneData = null;
+            scenesiData = null;
+            scenesData = null;
+
+            // Three.js cleanup
+            if (typeof renderer !== 'undefined') {
+                renderer.dispose();
+                renderer.forceContextLoss();
+                renderer.context = null;
+                renderer.domElement = null;
+                renderer = null;
+            }
+            if (typeof scene !== 'undefined') {
+                while (scene.children.length > 0) {
+                    const child = scene.children[0];
+                    scene.remove(child);
+                    if (child.geometry) child.geometry.dispose();
+                    if (child.material) {
+                        if (Array.isArray(child.material)) {
+                            child.material.forEach(material => material.dispose());
+                        } else {
+                            child.material.dispose();
+                        }
+                    }
+                }
+            }
+            if (typeof camera !== 'undefined') {
+                camera = null;
+            }
+
+            // GSAP cleanup
+            if (typeof gsap !== 'undefined') {
+                gsap.killAll();
+            }
         }
+
 
 
 
