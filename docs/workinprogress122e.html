@@ -1373,8 +1373,6 @@
             let targetGyroMouseX = 0;
             let targetGyroMouseY = 0;
 
-
-
             function sendMouseEventToIframe(eventType, coordinates) {
                 const iframe = document.querySelector('iframe');
                 if (iframe && iframe.contentWindow) {
@@ -1611,8 +1609,6 @@
                       /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
                       ('ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0);
 
-        const isGyroDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
 
         let lastScrollY = 0;
         let lenisInitialized = false;
@@ -1844,13 +1840,9 @@
                             }, '*');
 
                             if (entry.isIntersecting) {
-                                if (isGyroDevice) {
-                                    window.enableGyro();
-                                }
+                                window.enableGyro();
                             } else {
-                                if (isGyroDevice) {
-                                    window.disableGyro();
-                                }
+                                window.disableGyro();
                             }
                         }
                     });
