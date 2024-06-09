@@ -1350,7 +1350,7 @@
 
             function setupMotionListener() {
                 fadeOutOverlay();
-                enterSite();
+                handleInitialLoad();
 
                 // Check for DeviceOrientationEvent support
                 if ('DeviceOrientationEvent' in window) {
@@ -1598,7 +1598,7 @@
                 } else {
                     // Directly add event listener if not on iOS
                     
-                    init(); // Non-iOS or no permissions needed, proceed to enter the site
+                    handleInitialLoad();
                     fadeOutOverlay()
                 }
 
@@ -1642,13 +1642,15 @@
 
             // Restore state if available
             const savedState = JSON.parse(localStorage.getItem('appState'));
+            console.log("Saved state:", savedState);
+
             if (savedState && typeof savedState.currentSceneIndex === 'number') {
                 currentSceneIndex = savedState.currentSceneIndex;
             } else {
                 currentSceneIndex = 0; // Default to the first scene if no saved state
             }
-            
-            enterSite(); // Call reenterSite to initialize the site on re-entry
+
+            enterSite(); // Call enterSite to initialize the site on re-entry
 
             // Save the state before navigating away
             document.querySelectorAll('a').forEach(link => {
@@ -1664,10 +1666,13 @@
             const state = {
                 currentSceneIndex: currentSceneIndex
             };
+            console.log("Saving state:", state);
             localStorage.setItem('appState', JSON.stringify(state));
         }
 
+        // Function to handle entering the site
         function enterSite() {
+            console.log(`Entering site with scene index: ${currentSceneIndex}`);
             
             initialize();
 
@@ -1681,6 +1686,22 @@
                 console.error("Center container not found.");
             }
             initializeMenu();
+        }
+
+        // Function to handle initial load and re-entry
+        function handleInitialLoad() {
+            const isReenter = localStorage.getItem('isReenter') === 'true';
+            const navigationType = performance.getEntriesByType('navigation')[0].type;
+
+            if (isReenter && navigationType !== 'reload') {
+                console.log("Re-entering the site");
+                init(); // Call init during re-entry
+            } else {
+                console.log("Initial load");
+                localStorage.setItem('isReenter', 'true'); // Set flag for re-entry
+                currentSceneIndex = 0; // Reset to the first scene on initial load or reload
+                enterSite();
+            }
         }
         
     
