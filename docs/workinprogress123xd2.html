@@ -1584,7 +1584,11 @@
             }
 
 
-
+            window.addEventListener('pageshow', (event) => {
+                if (event.persisted) {
+                    handleInitialLoad();
+                }
+            });
 
             // Check and control the load progress visibility based on the phase of loading
             if (!localStorage.getItem(firstLoadCompleteFlag) || !localStorage.getItem(secondLoadCompleteFlag)) {
