@@ -1696,48 +1696,50 @@
             if (isReenter && navigationType !== 'reload') {
                 console.log("Re-entering the site");
                 init(); // Call init during re-entry
+                attachGlobalClickListener(saveState);
             } else {
                 console.log("Initial load");
                 localStorage.setItem('isReenter', 'true'); // Set flag for re-entry
                 currentSceneIndex = 0; // Reset to the first scene on initial load or reload
                 enterSite();
+                attachGlobalClickListener(saveState);
             }
         }
 
-        (function() {
-            let globalClickListenerAttached = false;
 
-            function attachGlobalClickListener(saveState) {
-                // Ensure saveState is defined
-                if (typeof saveState !== 'function') {
-                    console.error('saveState function is not defined.');
-                    return;
-                }
+        let globalClickListenerAttached = false;
 
-                // Check if the listener has already been attached
-                if (globalClickListenerAttached) {
-                    console.log('Global click/touch event listener is already attached.');
-                    return;
-                }
-
-                // Function to handle events and call saveState
-                function handleEvent(event) {
-                    saveState(event);
-                    console.log("Global event detected:", event.type, event.target);
-                }
-
-                // Attach global click and touch event listeners to the document
-                document.addEventListener('click', handleEvent);
-                document.addEventListener('touchstart', handleEvent);
-
-                // Set the flag to true to indicate that the listeners have been attached
-                globalClickListenerAttached = true;
-                console.log('Global click and touch event listeners attached.');
+        function attachGlobalClickListener(saveState) {
+            // Ensure saveState is defined
+            if (typeof saveState !== 'function') {
+                console.error('saveState function is not defined.');
+                return;
             }
 
-            // Example usage
-            attachGlobalClickListener(saveState);
-        })();
+            // Check if the listener has already been attached
+            if (globalClickListenerAttached) {
+                console.log('Global click/touch event listener is already attached.');
+                return;
+            }
+
+            // Function to handle events and call saveState
+            function handleEvent(event) {
+                saveState(event);
+                console.log("Global event detected:", event.type, event.target);
+            }
+
+            // Attach global click and touch event listeners to the document
+            document.addEventListener('click', handleEvent);
+            document.addEventListener('touchstart', handleEvent);
+
+            // Set the flag to true to indicate that the listeners have been attached
+            globalClickListenerAttached = true;
+            console.log('Global click and touch event listeners attached.');
+        }
+
+      
+            
+       
 
         
     
