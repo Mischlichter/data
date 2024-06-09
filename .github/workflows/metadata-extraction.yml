@@ -55,11 +55,13 @@ jobs:
       - name: List Committed HTML Files
         id: check-html-files
         run: |
-          html_changed=$(git diff --name-only HEAD^ HEAD | grep -q '\.html$'; echo $?)
-          if [ "$html_changed" -eq 0 ]; then
+          # Get the list of added or modified HTML files
+          html_changed=$(git diff --name-status HEAD^ HEAD | grep -E '^(A|M).*\.(html|HTML)$' | wc -l)
+          if [ "$html_changed" -gt 0 ]; then
             echo "html_files_exist=true" >> $GITHUB_ENV
             echo "html_files_exist=true" >> $GITHUB_OUTPUT
-            git diff --name-only HEAD^ HEAD | grep '\.html$' > html_files.txt
+            # List only added or modified HTML files
+            git diff --name-status HEAD^ HEAD | grep -E '^(A|M).*\.(html|HTML)$' | awk '{print $2}' > html_files.txt
           else
             echo "html_files_exist=false" >> $GITHUB_ENV
             echo "html_files_exist=false" >> $GITHUB_OUTPUT
