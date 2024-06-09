@@ -3340,16 +3340,20 @@
                 const container = document.getElementById(containerId);
                 container.innerHTML = '';
 
-                const containerDiv = document.createElement('div');
-                containerDiv.style.width = '100%';
-                containerDiv.style.height = `${imageHeight * 20}px`; // Adjust height based on number of tiles
-                containerDiv.style.backgroundImage = `url(${imageUrl})`;
-                containerDiv.style.backgroundRepeat = 'repeat-y';
-                containerDiv.style.backgroundSize = 'contain'; // Adjust this to fit your needs
+                const numTiles = 20;
 
-                container.appendChild(containerDiv);
+                for (let i = 0; i < numTiles; i++) {
+                    const img = document.createElement('img');
+                    img.src = imageUrl;
+                    img.style.position = 'absolute';
+                    img.style.top = `${i * imageHeight}px`;
+                    img.style.left = 0;
+                    img.style.width = '100%';
+                    img.style.height = `${imageHeight}px`;
+                    container.appendChild(img);
 
-                delayedVirtualCanvasUpdate();
+                    delayedVirtualCanvasUpdate();
+                }
 
                 resolve();
             }).then(() => {
@@ -3357,28 +3361,33 @@
             });
         }
 
+
+
         function createVerticalTiles_b(containerId, imageUrl, imageHeight) {
             return new Promise((resolve) => {
                 const container = document.getElementById(containerId);
                 container.innerHTML = '';
 
-                const containerDiv = document.createElement('div');
-                containerDiv.style.width = '100%';
-                containerDiv.style.height = `${imageHeight * 20}px`; // Adjust height based on number of tiles
-                containerDiv.style.backgroundImage = `url(${imageUrl})`;
-                containerDiv.style.backgroundRepeat = 'repeat-y';
-                containerDiv.style.backgroundSize = 'contain'; // Adjust this to fit your needs
+                const numTiles = 20;
 
-                container.appendChild(containerDiv);
+                for (let i = 0; i < numTiles; i++) {
+                    const img = document.createElement('img');
+                    img.src = imageUrl;
+                    img.style.position = 'absolute';
+                    img.style.top = `${i * imageHeight}px`;
+                    img.style.left = 0;
+                    img.style.width = '100%';
+                    img.style.height = `${imageHeight}px`;
+                    container.appendChild(img);
 
-                updateVirtualCanvasSize();
+                    updateVirtualCanvasSize();
+                }
 
                 resolve();
             }).then(() => {
                 tiles.b = true;
             });
         }
-
 
 
         function delayedVirtualCanvasUpdate() {
