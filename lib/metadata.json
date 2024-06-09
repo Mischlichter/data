@@ -3038,5 +3038,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "70205044876"
+    },
+    "64490448959.jpg": {
+        "File Name": "64490448959.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man with a black tshirt with the text \"king of memes\", wearing golden accessoirs, detailed, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, octane render photorealistic by cosmicwonder, hdr, photography by cosmicwonder, high definition, symmetrical face, volumetric lighting, dusty haze, photo, high octane render, 24mm, 4k, 24mm, DSLR, high quality, 60 fps, ultra realistic",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "64490448959"
     }
 }
