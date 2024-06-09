@@ -1672,6 +1672,7 @@
 
         // Function to handle entering the site
         function enterSite() {
+            attachGlobalClickListener(saveState);
             console.log(`Entering site with scene index: ${currentSceneIndex}`);
             
             initialize();
@@ -1696,13 +1697,13 @@
             if (isReenter && navigationType !== 'reload') {
                 console.log("Re-entering the site");
                 init(); // Call init during re-entry
-                attachGlobalClickListener(saveState);
+                
             } else {
                 console.log("Initial load");
                 localStorage.setItem('isReenter', 'true'); // Set flag for re-entry
                 currentSceneIndex = 0; // Reset to the first scene on initial load or reload
                 enterSite();
-                attachGlobalClickListener(saveState);
+                
             }
         }
 
@@ -1733,7 +1734,7 @@
             document.addEventListener('touchstart', handleEvent);
 
             // Set the flag to true to indicate that the listeners have been attached
-            globalClickListenerAttached = true;
+            globalClickListenerAttached = false;
             console.log('Global click and touch event listeners attached.');
         }
 
