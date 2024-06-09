@@ -1652,7 +1652,7 @@
     
 
         const AnimationManager = {
-            frameCap: 60, // Increase frame cap for smoother animations
+            frameCap: 60,
             lastRender: performance.now(),
             animations: [],
             running: false,
@@ -1671,28 +1671,31 @@
             runAnimations(timestamp) {
                 if (this.paused) return;
 
-                let progress = timestamp - this.lastRender;
-                if (progress > 1000 / this.frameCap) {
-                    this.lastRender = timestamp - (progress % (1000 / this.frameCap));
-                    this.animations = this.animations.filter(step => step(timestamp) !== false);
-                }
-                if (this.animations.length > 0) {
-                    requestAnimationFrame(this.runAnimations.bind(this));
-                } else {
-                    this.running = false;
+                try {
+                    let progress = timestamp - this.lastRender;
+                    if (progress > 1000 / this.frameCap) {
+                        this.lastRender = timestamp - (progress % (1000 / this.frameCap));
+                        this.animations = this.animations.filter(step => step(timestamp) !== false);
+                    }
+                    if (this.animations.length > 0) {
+                        requestAnimationFrame(this.runAnimations.bind(this));
+                    } else {
+                        this.running = false;
+                    }
+                } catch (error) {
+                    console.error('Error during animation frame:', error);
+                    this.paused = true;
                 }
             },
 
             pauseAnimations() {
-                console.log('Pausing animations');
                 this.paused = true;
-                this.running = false; // Stop the running loop
+                this.running = false;
                 this.saveState();
             },
 
             resumeAnimations() {
                 if (this.paused) {
-                    console.log('Resuming animations');
                     this.paused = false;
                     this.restoreState();
                     if (!this.running && this.animations.length > 0) {
@@ -1703,32 +1706,51 @@
             },
 
             saveState() {
-                const state = {
-                    lastRender: this.lastRender,
-                    // Store animation-related state if needed
-                };
-                localStorage.setItem('animationState', JSON.stringify(state));
+                try {
+                    const state = {
+                        lastRender: this.lastRender,
+                    };
+                    localStorage.setItem('animationState', JSON.stringify(state));
+                    if (isIOS) {
+                        localStorage.setItem('currentSceneIndex', currentSceneIndex);
+                    }
+                } catch (error) {
+                    console.error('Error saving animation state:', error);
+                }
             },
 
             restoreState() {
-                const state = JSON.parse(localStorage.getItem('animationState'));
-                if (state) {
-                    this.lastRender = state.lastRender;
-                    // Restore other animation-related state if needed
+                try {
+                    const state = JSON.parse(localStorage.getItem('animationState'));
+                    if (state) {
+                        this.lastRender = state.lastRender;
+                    }
+                    if (isIOS) {
+                        const savedSceneIndex = localStorage.getItem('currentSceneIndex');
+                        if (savedSceneIndex !== null) {
+                            currentSceneIndex = parseInt(savedSceneIndex, 10);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error restoring animation state:', error);
                 }
             }
         };
 
-        // Handle visibility change to pause/resume animations
         let visibilityChangeListenerAdded = false;
 
         function handleVisibilityChange() {
             if (document.hidden) {
-                console.log('Page hidden, pausing animations.');
                 AnimationManager.pauseAnimations();
+                if (isIOS) {
+                    AnimationManager.saveState();
+                }
             } else {
-                console.log('Page visible, resuming animations.');
-                AnimationManager.resumeAnimations();
+                if (isIOS) {
+                    window.location.reload();
+                } else {
+                    AnimationManager.resumeAnimations();
+                }
             }
         }
 
@@ -1737,7 +1759,10 @@
             visibilityChangeListenerAdded = true;
         }
 
-
+        if (isIOS) {
+            AnimationManager.restoreState();
+            console.log('Restored currentSceneIndex:', currentSceneIndex);
+        }
 
 
         const lenis = new Lenis();
