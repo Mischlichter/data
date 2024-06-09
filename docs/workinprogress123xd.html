@@ -1346,21 +1346,6 @@
                 }, 1111); // Delay should match the duration of the fade-out effect
             }
 
-            function enterSite() {
-                
-                initialize();
-
-                const centerContainer = document.querySelector('.center-container-XL');
-                if (centerContainer) {
-                    centerContainer.style.opacity = '0';
-                    setTimeout(() => {
-                        centerContainer.style.display = 'none';
-                    }, 500); // Adjust the time as needed for the fade out transition
-                } else {
-                    console.error("Center container not found.");
-                }
-                initializeMenu();
-            }
 
 
             function setupMotionListener() {
@@ -1613,7 +1598,7 @@
                 } else {
                     // Directly add event listener if not on iOS
                     
-                    enterSite(); // Non-iOS or no permissions needed, proceed to enter the site
+                    init(); // Non-iOS or no permissions needed, proceed to enter the site
                     fadeOutOverlay()
                 }
 
@@ -1642,6 +1627,7 @@
         const isGyroDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
         let currentSceneData = null;
+        let currentSceneIndex = 0;
 
         let lastScrollY = 0;
         let lenisInitialized = false;
@@ -1652,20 +1638,21 @@
 
 
         function init() {
+            console.log("Initialization during re-entry");
+
             // Restore state if available
             const savedState = JSON.parse(localStorage.getItem('appState'));
-            if (savedState && savedState.currentScene) {
-                loadScene(savedState.currentScene);
+            if (savedState && typeof savedState.currentSceneIndex === 'number') {
+                currentSceneIndex = savedState.currentSceneIndex;
             } else {
-                // Load a default scene if no saved state
-                loadScene('defaultScene');
+                currentSceneIndex = 0; // Default to the first scene if no saved state
             }
+            
+            enterSite(); // Call reenterSite to initialize the site on re-entry
 
             // Save the state before navigating away
             document.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', (event) => {
-                    saveState();
-                });
+                link.addEventListener('click', saveState);
             });
 
             // Save the state before the page is unloaded
@@ -1675,12 +1662,26 @@
         // Function to save the current state
         function saveState() {
             const state = {
-                currentScene: currentScene
+                currentSceneIndex: currentSceneIndex
             };
             localStorage.setItem('appState', JSON.stringify(state));
         }
 
-       
+        function enterSite() {
+            
+            initialize();
+
+            const centerContainer = document.querySelector('.center-container-XL');
+            if (centerContainer) {
+                centerContainer.style.opacity = '0';
+                setTimeout(() => {
+                    centerContainer.style.display = 'none';
+                }, 500); // Adjust the time as needed for the fade out transition
+            } else {
+                console.error("Center container not found.");
+            }
+            initializeMenu();
+        }
         
     
 
@@ -2690,7 +2691,7 @@
         }
 
         function initializeFirstScene() {
-            currentSceneIndex = 0; // Set to the first scene
+            //currentSceneIndex = 0; // Set to the first scene
             //loadScene(currentSceneIndex); // Load the first scene
             fadeInmenu();
 
@@ -2804,7 +2805,7 @@
 //////// SZENE LOADER /////////////////////////////////////////////////////////////////////////
 
 
-        let currentSceneIndex = 0;
+        
         let scenesData = [];
         let scenesiData = [];
 
@@ -4187,8 +4188,6 @@
 
         
 
-        window.onload = init;
-        //initialize();
     </script>
 </body>
 </html>
