@@ -1652,48 +1652,31 @@
 
 
         function init() {
-           // Restore state if available
-           const savedState = JSON.parse(localStorage.getItem('appState'));
-           if (savedState && savedState.currentScene) {
-               restoreState(savedState);
-           } else {
-               // Default initial scene
-               loadScene('defaultScene');
-           }
+            // Restore state if available
+            const savedState = JSON.parse(localStorage.getItem('appState'));
+            if (savedState && savedState.currentScene) {
+                loadScene(savedState.currentScene);
+            } else {
+                // Load a default scene if no saved state
+                loadScene('defaultScene');
+            }
 
-           // Setup Lenis for smooth scrolling
-           lenis.on('scroll', () => {
-               updateParallax();
-           });
+            // Save the state before navigating away
+            document.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', saveState);
+            });
 
-           if (!lenisInitialized) {
-               lenisInitialized = true;
-               requestAnimationFrame(runLenis);
-           }
+            // Save the state before the page is unloaded
+            window.addEventListener('beforeunload', saveState);
+        }
 
-           // Event listener for navigating away
-           document.getElementById('navigateAway').addEventListener('click', () => {
-               saveState();
-               window.location.href = 'https://www.example.com';
-           });
-
-           // Save the state before the page is unloaded
-           window.addEventListener('beforeunload', saveState);
-       }
-
-       // Function to save the current state
-       function saveState() {
-           const state = {
-               currentScene: currentScene
-           };
-           localStorage.setItem('appState', JSON.stringify(state));
-       }
-
-       // Function to restore the saved state
-       function restoreState(state) {
-           currentScene = state.currentScene;
-           loadScene(currentScene);
-       }
+        // Function to save the current state
+        function saveState() {
+            const state = {
+                currentScene: currentScene
+            };
+            localStorage.setItem('appState', JSON.stringify(state));
+        }
 
        
         
