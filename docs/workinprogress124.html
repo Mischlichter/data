@@ -1845,7 +1845,10 @@
                 
                 lenis.start();
                 scrollToTop();
-                lenis.stop();
+                setTimeout(() => {
+                    lenis.stop();
+                }, 1000); // 1000 milliseconds = 1 second
+
 
             }
 
