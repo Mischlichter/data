@@ -1656,7 +1656,6 @@
             window.addEventListener('beforeunload', saveState);
         }
 
-      
         // Function to save the current state
         function saveState(event) {
             const state = {
@@ -1701,6 +1700,37 @@
                 enterSite();
             }
         }
+
+        (function() {
+            let globalClickListenerAttached = false;
+
+            function attachGlobalClickListener(saveState) {
+                // Ensure saveState is defined
+                if (typeof saveState !== 'function') {
+                    console.error('saveState function is not defined.');
+                    return;
+                }
+
+                // Check if the listener has already been attached
+                if (globalClickListenerAttached) {
+                    console.log('Global click event listener is already attached.');
+                    return;
+                }
+
+                // Attach a global click event listener to the document
+                document.addEventListener('click', (event) => {
+                    saveState(event);
+                    console.log("Global click detected:", event.target);
+                });
+
+                // Set the flag to true to indicate that the listener has been attached
+                globalClickListenerAttached = true;
+                console.log('Global click event listener attached.');
+            }
+
+            // Example usage
+            attachGlobalClickListener(saveState);
+        })();
         
     
 
@@ -2938,14 +2968,6 @@
 
                 if (item.type === 'text') {
                     attachLinkToContainer(container, item.content.style);
-                    // Attach the saveState call to all links within the container
-                    container.querySelectorAll('a').forEach(link => {
-                        link.onclick = (event) => {
-                            saveState(event);
-                            console.log("Link clicked:", link.href); // Ensure the log is printed when the link is clicked
-                            return true; // Ensure the link navigation proceeds
-                        };
-                    });
                 }
 
                 const style = document.createElement('style');
