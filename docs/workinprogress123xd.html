@@ -1663,7 +1663,9 @@
 
             // Save the state before navigating away
             document.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', saveState);
+                link.addEventListener('click', (event) => {
+                    saveState();
+                });
             });
 
             // Save the state before the page is unloaded
