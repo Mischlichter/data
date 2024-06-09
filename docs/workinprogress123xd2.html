@@ -1640,6 +1640,9 @@
         function init() {
             console.log("Initialization during re-entry");
 
+            // Always reset tiles to initial state
+            tiles = { a: false, b: false, viewerReady: false, iframeReady: false, menuReady: true };
+
             // Restore state if available
             const savedState = JSON.parse(localStorage.getItem('appState'));
             console.log("Saved state:", savedState);
