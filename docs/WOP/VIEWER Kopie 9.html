@@ -5,11 +5,16 @@
 </head>
 <body>
     <div id="wrapper">
-        <!-- Scene Wrapper to hold the current scene -->
+        <!-- Scene Wrapper to hold both current and next scenes -->
         <div id="scene-wrapper">
             <!-- Current Scene Container -->
             <section class="container01 current-scene">
                 <!-- Depth Map Viewer Containers for the current scene will be dynamically created here -->
+            </section>
+            
+            <!-- Next Scene Container -->
+            <section class="container01 next-scene">
+                <!-- Depth Map Viewer Containers for the next scene will be dynamically created here -->
             </section>
         </div>
         
@@ -142,12 +147,12 @@
             if (cacheStatus === 'cached') {
                 const cachedResponse = await cache.match(url);
                 if (cachedResponse) {
-                    //console.log(`Serving from cache: ${url}`);
+                    console.log(`Serving from cache: ${url}`);
                     return URL.createObjectURL(await cachedResponse.blob());
                 }
             }
 
-            //console.log(`Fetching from network: ${url}`);
+            console.log(`Fetching from network: ${url}`);
             const response = await fetch(url);
             if (response.ok) {
                 await cache.put(url, response.clone());
@@ -161,7 +166,7 @@
 
         async function preloadAndCacheImage(url) {
             if (imageCache[url]) {
-                //console.log(`Image found in memory cache: ${url}`);
+                console.log(`Image found in memory cache: ${url}`);
                 return imageCache[url];
             }
 
@@ -170,23 +175,23 @@
             return blobURL;
         }
 
-        async function preloadAssetsForScene(sceneKey) {
-            const scene = assets[sceneKey];
+        async function preloadAllAssets() {
             const preloadPromises = [];
-
-            for (const number in scene) {
-                if (scene[number].image) {
-                    preloadPromises.push(preloadAndCacheImage(scene[number].image.url));
-                }
-                if (scene[number].depthmap) {
-                    preloadPromises.push(preloadAndCacheImage(scene[number].depthmap.url));
+            for (const sceneKey in assets) {
+                for (const number in assets[sceneKey]) {
+                    if (assets[sceneKey][number].image) {
+                        preloadPromises.push(preloadAndCacheImage(assets[sceneKey][number].image.url));
+                    }
+                    if (assets[sceneKey][number].depthmap) {
+                        preloadPromises.push(preloadAndCacheImage(assets[sceneKey][number].depthmap.url));
+                    }
                 }
             }
-
             await Promise.all(preloadPromises);
         }
 
         let assets;
+        let currentSceneKey = 'scene01';
         let viewerContainers = [];
 
         async function loadAssets() {
@@ -194,12 +199,14 @@
             const response = await fetch('https://raw.githubusercontent.com/Mischlichter/data/main/assets/assets.txt');
             const text = await response.text();
             const scenes = text.trim().split('\n\n');
+            
+            const preloadPromises = [];
 
             scenes.forEach(sceneText => {
                 const lines = sceneText.trim().split('\n');
                 const sceneKey = lines[0].slice(0, -1);
                 assets[sceneKey] = {};
-
+                
                 for (let i = 1; i < lines.length; i++) {
                     const [key, urlPart] = lines[i].split('=');
                     if (key && urlPart) {
@@ -218,6 +225,8 @@
                             ybase = "0";
                         }
 
+                        preloadPromises.push(preloadAndCacheImage(url));
+                        
                         const type = key.slice(0, 3);
                         const number = key.slice(3);
                         if (!assets[sceneKey][number]) {
@@ -237,12 +246,13 @@
                     }
                 }
             });
+            await Promise.all(preloadPromises);
         }
 
-        function displayScene(sceneKey) {
+        function changeScene(sceneKey) {
             const scene = assets[sceneKey];
             const currentContainer = document.querySelector('.current-scene');
-            currentContainer.innerHTML = ''; // Clear any previous content
+            const nextContainer = document.querySelector('.next-scene');
 
             viewerContainers = [];
 
@@ -252,7 +262,7 @@
                 viewerContainer.className = 'viewer';
                 viewerContainer.style.top = `${scene[key].image.xbase}%`;
                 viewerContainer.style.left = `${scene[key].image.ybase}%`;
-                currentContainer.appendChild(viewerContainer);
+                nextContainer.appendChild(viewerContainer);
 
                 const options = { pauseRender: false };
                 const viewer = new DepthyViewer(viewerContainer, {});
@@ -264,24 +274,34 @@
                 viewerContainers.push(viewer);
             });
 
-            // Update the container variable to the current scene
-            container = document.querySelector('.current-scene');
-            // Re-attach mouse listeners to the current scene
-            attachMouseListeners();
+            // Start the transition
+            currentContainer.style.opacity = '0';
+            nextContainer.style.opacity = '1';
+
+            // After the transition, swap class names and update the container variable
+            setTimeout(() => {
+                currentContainer.className = 'container01 next-scene';
+                nextContainer.className = 'container01 current-scene';
+
+                // Update the container variable to the new current scene
+                container = document.querySelector('.current-scene');
+                // Re-attach mouse listeners to the new current scene
+                attachMouseListeners();
+            }, 1000);  // Assuming 1s transition duration
         }
 
         function getSceneKeyFromURL() {
             const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get('scene') || 'scene01'; // Default to 'scene01' if no scene key is provided
+            return urlParams.get('scene') || currentSceneKey; // Use currentSceneKey as the default
         }
 
         async function setup() {
             await loadAssets();
+            await preloadAllAssets();
 
-            // Use the scene key from URL or the default scene key
+            // Use the scene key from URL or the currentSceneKey
             const sceneKey = getSceneKeyFromURL();
-            await preloadAssetsForScene(sceneKey); // Preload assets only for the current scene
-            displayScene(sceneKey); // Display the current scene
+            await changeScene(sceneKey); // Await the changeScene function
 
             // Notify the parent window that the iframe is fully ready
             window.parent.postMessage('iframeLoaded', '*');

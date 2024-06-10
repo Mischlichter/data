@@ -3356,7 +3356,7 @@
 
                 container.appendChild(containerDiv);
 
-                delayedVirtualCanvasUpdate();
+                //delayedVirtualCanvasUpdate();
 
                 resolve();
             }).then(() => {
@@ -3378,7 +3378,7 @@
 
                 container.appendChild(containerDiv);
 
-                updateVirtualCanvasSize();
+                //updateVirtualCanvasSize();
 
                 resolve();
             }).then(() => {
@@ -3388,18 +3388,13 @@
 
 
 
-        function delayedVirtualCanvasUpdate() {
-            // Delay the call to updateVirtualCanvasSize
-            
-            setTimeout(updateVirtualCanvasSize, 100); // Delay of 100 milliseconds
-        }
 
 
         async function initializeCacheStatus(urls) {
             const cacheName = 'site-assets';
             const cache = await caches.open(cacheName);
 
-            for (const url of urls) {
+            const cachePromises = urls.map(async (url) => {
                 const response = await cache.match(url);
                 const cacheKey = `cache_${url}`;
                 if (response) {
@@ -3407,8 +3402,11 @@
                 } else {
                     localStorage.setItem(cacheKey, 'not_cached');
                 }
-            }
+            });
+
+            await Promise.all(cachePromises);
         }
+
 
         // This function should be called with all the URLs you plan to use
         function initializeCacheForDynamicUrls(sceneIndices) {
@@ -3434,23 +3432,23 @@
         }
 
         // Call this function at the beginning with all possible scene indices
-        initializeCacheForDynamicUrls([00, 01, 02, 03, 04]);
+        initializeCacheForDynamicUrls([00, 01, 02, 03]);
 
 
-        function getCachedOrFetchImageSync(url) {
-            const cacheKey = `cache_${url}`;
-            const cacheStatus = localStorage.getItem(cacheKey);
+        async function getCachedOrFetchImage(url) {
+            const cacheName = 'site-assets';
+            const cache = await caches.open(cacheName);
+            let cachedResponse = await cache.match(url);
 
-            if (cacheStatus === 'cached') {
-                //console.log(`Loaded from cache: ${url}`);
-                return url;
+            if (cachedResponse) {
+                //console.log(`Serving from cache: ${url}`);
+                return URL.createObjectURL(await cachedResponse.blob()); // Create a local URL for the cached response
             } else {
                 //console.log(`Fetching from network: ${url}`);
-                let xhr = new XMLHttpRequest();
-                xhr.open('GET', url, false); // synchronous request
                 try {
-                    xhr.send();
-                    if (xhr.status === 200) {
+                    const response = await fetch(url);
+                    if (response.ok) {
+                        await cache.put(url, response.clone());
                         return url;
                     } else {
                         console.error(`Failed to fetch image at ${url}`);
@@ -3463,7 +3461,9 @@
             }
         }
 
-        function loadInterface(currentSceneIndex) {
+
+
+        async function loadInterface(currentSceneIndex) {
             function ensureWrapperExistence(wrapperClass, contentStructure) {
                 let wrapper = document.querySelector(`.${wrapperClass}`);
                 if (!wrapper) {
@@ -3480,6 +3480,8 @@
                 });
                 return;
             }
+
+            updateVirtualCanvasSize();
 
             ensureWrapperExistence('scale-wrapper-background', `
                 <div id="backgroundRoot">
@@ -3509,44 +3511,48 @@
             const viewerImageUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/v${sceneFormatted}.jpg`;
             const viewerMaskUrl = `https://raw.githubusercontent.com/Mischlichter/data/main/interface/viewer/vm${sceneFormatted}.png`;
 
-            const backgroundPromise = createVerticalTiles_a('interfaceBackground', getCachedOrFetchImageSync(backgroundUrl), imageHeight);
-            const sideLeftPromise = createVerticalTiles_b('interfaceSideLeft', getCachedOrFetchImageSync(sideImageUrl), imageHeight);
-            const sideRightPromise = createVerticalTiles_b('interfaceSideRight', getCachedOrFetchImageSync(sideImageUrl), imageHeight);
+            try {
+                const backgroundImage = await getCachedOrFetchImage(backgroundUrl);
+                const sideImage = await getCachedOrFetchImage(sideImageUrl);
+                const viewerImage = await getCachedOrFetchImage(viewerImageUrl);
+                const viewerMaskImage = await getCachedOrFetchImage(viewerMaskUrl);
 
-            const viewerImagePromise = new Promise((resolve, reject) => {
-                const viewerImageElement = document.getElementById('interfaceViewerImage');
-                if (viewerImageElement && document.body.contains(viewerImageElement)) {
-                    const tempImage = new Image();
-                    tempImage.onload = function () {
-                        viewerImageElement.src = tempImage.src;
-                        viewerImageElement.style.maskImage = `url('${viewerMaskUrl}')`;
-                        viewerImageElement.style.webkitMaskImage = `url('${viewerMaskUrl}')`;
-                        viewerImageElement.style.maskSize = '100% 100%';
-                        viewerImageElement.style.webkitMaskSize = '100% 100%';
-                        tiles.viewerReady = true; // Move this inside onload to ensure it's ready
-                        resolve();
-                    };
-                    tempImage.onerror = function () {
-                        console.error("Failed to load image at url:", viewerImageUrl);
+                const backgroundPromise = createVerticalTiles_a('interfaceBackground', backgroundImage, imageHeight);
+                const sideLeftPromise = createVerticalTiles_b('interfaceSideLeft', sideImage, imageHeight);
+                const sideRightPromise = createVerticalTiles_b('interfaceSideRight', sideImage, imageHeight);
+
+                const viewerImagePromise = new Promise((resolve, reject) => {
+                    const viewerImageElement = document.getElementById('interfaceViewerImage');
+                    if (viewerImageElement && document.body.contains(viewerImageElement)) {
+                        const tempImage = new Image();
+                        tempImage.onload = function () {
+                            viewerImageElement.src = tempImage.src;
+                            viewerImageElement.style.maskImage = `url('${viewerMaskImage}')`;
+                            viewerImageElement.style.webkitMaskImage = `url('${viewerMaskImage}')`;
+                            viewerImageElement.style.maskSize = '100% 100%';
+                            viewerImageElement.style.webkitMaskSize = '100% 100%';
+                            tiles.viewerReady = true; // Move this inside onload to ensure it's ready
+                            resolve();
+                        };
+                        tempImage.onerror = function () {
+                            console.error("Failed to load image at url:", viewerImageUrl);
+                            reject();
+                        };
+                        tempImage.src = viewerImage;
+                    } else {
+                        console.log("Viewer image element does not exist in the DOM.");
                         reject();
-                    };
-                    tempImage.src = getCachedOrFetchImageSync(viewerImageUrl);
-                } else {
-                    console.log("Viewer image element does not exist in the DOM.");
-                    reject();
-                }
-            });
-
-            Promise.all([backgroundPromise, sideLeftPromise, sideRightPromise, viewerImagePromise])
-                .then(() => {
-                    fadeInElements();
-
-
-                })
-                .catch((error) => {
-                    console.error("Error loading elements:", error);
+                    }
                 });
+
+                await Promise.all([backgroundPromise, sideLeftPromise, sideRightPromise, viewerImagePromise]);
+                fadeInElements();
+            } catch (error) {
+                console.error("Error loading elements:", error);
+            }
         }
+
+
         
 
         function updateParallax() {
@@ -3848,7 +3854,7 @@
 
         function observeElementsForAnimations() {
             const observerOptions = {
-                threshold: [0.01],  // Trigger when 25% of the element is visible
+                threshold: [0.01, 0.25],
                 rootMargin: '50px'
             };
 
@@ -3856,14 +3862,16 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         if (entry.target.classList.contains('flex-icontainer')) {
-                            requestAnimationFrame(() => {
+                            if (entry.intersectionRatio >= 0.25) {
                                 entry.target.style.opacity = 1;
-                            });
-                            observer.unobserve(entry.target);
+                                observer.unobserve(entry.target);
+                            }
                         } else if (entry.target.classList.contains('animation-container')) {
-                            startAnimationForContainer(entry.target.id);
-                            entry.target.dataset.animationStarted = 'true';
-                            observer.unobserve(entry.target);
+                            if (entry.intersectionRatio >= 0.05) {
+                                startAnimationForContainer(entry.target.id);
+                                entry.target.dataset.animationStarted = 'true';
+                                observer.unobserve(entry.target);
+                            }
                         }
                     }
                 });
@@ -3871,8 +3879,8 @@
 
             const observer = new IntersectionObserver(observerCallback, observerOptions);
 
-            // Unobserve elements to reset the observer
             observedElements.forEach(element => observer.unobserve(element));
+            observedElements = [];
 
             const elementsToObserve = [
                 ...document.querySelectorAll('.flex-icontainer'),
@@ -3883,7 +3891,6 @@
                 if (element && !element.dataset.observed) {
                     if (element.classList.contains('flex-icontainer')) {
                         element.style.opacity = 0;
-                        element.style.transition = 'opacity 1s ease-in-out';
                     } else if (!element.classList.contains('animation-container')) {
                         element.classList.add('animation-container');
                     }
