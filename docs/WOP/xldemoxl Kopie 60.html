@@ -1346,7 +1346,21 @@
                 }, 1111); // Delay should match the duration of the fade-out effect
             }
 
+            function enterSite() {
+                
+                initialize();
 
+                const centerContainer = document.querySelector('.center-container-XL');
+                if (centerContainer) {
+                    centerContainer.style.opacity = '0';
+                    setTimeout(() => {
+                        centerContainer.style.display = 'none';
+                    }, 500); // Adjust the time as needed for the fade out transition
+                } else {
+                    console.error("Center container not found.");
+                }
+                initializeMenu();
+            }
 
 
             function setupMotionListener() {
@@ -1584,7 +1598,7 @@
                 }
             }
 
-            
+
 
 
             // Check and control the load progress visibility based on the phase of loading
@@ -1620,23 +1634,6 @@
         
 //////// MOUSE SMOOTHING ////////
 
-        function enterSite() {
-            setupVisibilityChangeListener();
-            
-            initialize();
-
-            const centerContainer = document.querySelector('.center-container-XL');
-            if (centerContainer) {
-                centerContainer.style.opacity = '0';
-                setTimeout(() => {
-                    centerContainer.style.display = 'none';
-                }, 500); // Adjust the time as needed for the fade out transition
-            } else {
-                console.error("Center container not found.");
-            }
-            initializeMenu();
-        }
-
         const isIOS = /iPad|iPhone|iPod/.test(navigator.platform) || 
                       (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) ||
                       /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
@@ -1659,103 +1656,30 @@
             lastRender: performance.now(),
             animations: [],
             running: false,
-            paused: false,
 
             registerAnimation(stepFunction) {
                 if (!this.animations.includes(stepFunction)) {
                     this.animations.push(stepFunction);
                 }
-                if (!this.running && !this.paused) {
+                if (!this.running) {
                     this.running = true;
                     requestAnimationFrame(this.runAnimations.bind(this));
                 }
             },
 
             runAnimations(timestamp) {
-                if (this.paused) return;
-
-                try {
-                    let progress = timestamp - this.lastRender;
-                    if (progress > 1000 / this.frameCap) {
-                        this.lastRender = timestamp - (progress % (1000 / this.frameCap));
-                        this.animations = this.animations.filter(step => step(timestamp) !== false);
-                    }
-                    if (this.animations.length > 0) {
-                        requestAnimationFrame(this.runAnimations.bind(this));
-                    } else {
-                        this.running = false;
-                    }
-                } catch (error) {
-                    console.error('Error during animation frame:', error);
-                    this.paused = true; // Pause animations on error
+                let progress = timestamp - this.lastRender;
+                if (progress > 1000 / this.frameCap) {
+                    this.lastRender = timestamp - (progress % (1000 / this.frameCap));
+                    this.animations = this.animations.filter(step => step(timestamp) !== false);
                 }
-            },
-
-            pauseAnimations() {
-                //console.log('Pausing animations');
-                this.paused = true;
-                this.running = false; // Stop the running loop
-                this.saveState();
-            },
-
-            resumeAnimations() {
-                if (this.paused) {
-                    //console.log('Resuming animations');
-                    this.paused = false;
-                    this.restoreState();
-                    if (!this.running && this.animations.length > 0) {
-                        this.running = true;
-                        requestAnimationFrame(this.runAnimations.bind(this));
-                    }
-                }
-            },
-
-            saveState() {
-                try {
-                    const state = {
-                        lastRender: this.lastRender,
-                        // Add any other state properties needed
-                    };
-                    localStorage.setItem('animationState', JSON.stringify(state));
-                } catch (error) {
-                    console.error('Error saving animation state:', error);
-                }
-            },
-
-            restoreState() {
-                try {
-                    const state = JSON.parse(localStorage.getItem('animationState'));
-                    if (state) {
-                        this.lastRender = state.lastRender;
-                        // Restore other animation-related state if needed
-                    }
-                } catch (error) {
-                    console.error('Error restoring animation state:', error);
+                if (this.animations.length > 0) {
+                    requestAnimationFrame(this.runAnimations.bind(this));
+                } else {
+                    this.running = false;
                 }
             }
         };
-
-        let visibilityChangeListenerAdded = false;
-
-        function setupVisibilityChangeListener() {
-            function handleVisibilityChange() {
-                if (document.hidden) {
-                    //console.log('Page hidden, pausing animations.');
-                    AnimationManager.pauseAnimations();
-                } else {
-                    //console.log('Page visible, resuming animations.');
-                    AnimationManager.resumeAnimations();
-                }
-            }
-
-            if (visibilityChangeListenerAdded) {
-                document.removeEventListener('visibilitychange', handleVisibilityChange);
-            }
-
-            document.addEventListener('visibilitychange', handleVisibilityChange);
-            visibilityChangeListenerAdded = true;
-        }
-
 
         const lenis = new Lenis();
 
@@ -1765,7 +1689,6 @@
                 AnimationManager.registerAnimation(throttleUpdateParallax);
             }
             updateParallax();
-
         });
 
         function throttleUpdateParallax() {
@@ -1797,6 +1720,7 @@
                 }
             }
         }
+
 
 
 
