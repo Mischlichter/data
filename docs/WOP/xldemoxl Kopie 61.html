@@ -1681,11 +1681,7 @@
             }
         };
 
-        if (!window.lenisInstance) {
-            window.lenisInstance = new Lenis();
-        }
-        const lenis = window.lenisInstance;
-
+        const lenis = new Lenis();
 
         lenis.on('scroll', () => {
             if (!parallaxAnimationRegistered) {
@@ -3848,7 +3844,7 @@
 
         function observeElementsForAnimations() {
             const observerOptions = {
-                threshold: [0.01],  // Trigger when 25% of the element is visible
+                threshold: [0.01, 0.25],
                 rootMargin: '50px'
             };
 
@@ -3856,14 +3852,16 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         if (entry.target.classList.contains('flex-icontainer')) {
-                            requestAnimationFrame(() => {
+                            if (entry.intersectionRatio >= 0.25) {
                                 entry.target.style.opacity = 1;
-                            });
-                            observer.unobserve(entry.target);
+                                observer.unobserve(entry.target);
+                            }
                         } else if (entry.target.classList.contains('animation-container')) {
-                            startAnimationForContainer(entry.target.id);
-                            entry.target.dataset.animationStarted = 'true';
-                            observer.unobserve(entry.target);
+                            if (entry.intersectionRatio >= 0.05) {
+                                startAnimationForContainer(entry.target.id);
+                                entry.target.dataset.animationStarted = 'true';
+                                observer.unobserve(entry.target);
+                            }
                         }
                     }
                 });
@@ -3871,8 +3869,8 @@
 
             const observer = new IntersectionObserver(observerCallback, observerOptions);
 
-            // Unobserve elements to reset the observer
             observedElements.forEach(element => observer.unobserve(element));
+            observedElements = [];
 
             const elementsToObserve = [
                 ...document.querySelectorAll('.flex-icontainer'),
@@ -3883,7 +3881,6 @@
                 if (element && !element.dataset.observed) {
                     if (element.classList.contains('flex-icontainer')) {
                         element.style.opacity = 0;
-                        element.style.transition = 'opacity 1s ease-in-out';
                     } else if (!element.classList.contains('animation-container')) {
                         element.classList.add('animation-container');
                     }
