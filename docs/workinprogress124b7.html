@@ -2882,7 +2882,9 @@
                 // Open in a new window on iOS
                 linkElement.onclick = function(event) {
                     event.preventDefault();
-                    window.open(style.link, '_blank', 'noopener,noreferrer');
+                    const newWindow = window.open('', '_blank', 'noopener,noreferrer');
+                    newWindow.opener = null; // Ensures that the new window doesn't have a reference to the opener
+                    newWindow.location = style.link;
                 };
             } else {
                 // Open in a new tab on non-iOS devices
