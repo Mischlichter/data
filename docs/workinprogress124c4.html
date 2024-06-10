@@ -3441,10 +3441,10 @@
             let cachedResponse = await cache.match(url);
 
             if (cachedResponse) {
-                console.log(`Serving from cache: ${url}`);
+                //console.log(`Serving from cache: ${url}`);
                 return URL.createObjectURL(await cachedResponse.blob()); // Create a local URL for the cached response
             } else {
-                console.log(`Fetching from network: ${url}`);
+                //console.log(`Fetching from network: ${url}`);
                 try {
                     const response = await fetch(url);
                     if (response.ok) {

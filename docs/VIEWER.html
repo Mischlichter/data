@@ -150,13 +150,21 @@
                 const store = transaction.objectStore(storeName);
                 const request = store.get(url);
                 request.onsuccess = function(event) {
-                    resolve(event.target.result);
+                    if (event.target.result) {
+                        console.log(`Cache hit for URL: ${url}`);
+                        resolve(event.target.result);
+                    } else {
+                        console.log(`Cache miss for URL: ${url}`);
+                        resolve(null);
+                    }
                 };
                 request.onerror = function(event) {
+                    console.error(`Error checking cache for URL: ${url}`, event.target.error);
                     reject(event.target.error);
                 };
             });
         }
+
 
 
         async function cacheAsset(asset) {
@@ -166,16 +174,20 @@
                 const store = transaction.objectStore(storeName);
                 const request = store.put(asset);
                 request.onsuccess = function(event) {
+                    console.log(`Successfully cached asset: ${asset.url}`);
                     resolve();
                 };
                 request.onerror = function(event) {
+                    console.error(`Failed to cache asset: ${asset.url}`, event.target.error);
                     reject(event.target.error);
                 };
             });
         }
 
 
+
         async function preloadAndCacheImage(url) {
+            console.log(`Checking cache for URL: ${url}`);
             let cachedAsset = await getCachedAsset(url);
             if (cachedAsset) {
                 console.log(`Serving from cache: ${url}`);
@@ -190,12 +202,14 @@
                 imageCache[url] = blobURL;
 
                 await cacheAsset({ url, blobURL });
+                console.log(`Cached asset: ${url}`);
                 return blobURL;
             } catch (error) {
                 console.error('Failed to fetch and cache image:', error);
                 throw error;
             }
         }
+
 
         async function preloadAllAssets() {
             const preloadPromises = [];
