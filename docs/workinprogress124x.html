@@ -3345,11 +3345,7 @@
 
                 const containerDiv = document.createElement('div');
                 containerDiv.style.width = '100%';
-
-                // Calculate the container height to ensure an additional tile is added
-                const numTiles = Math.ceil(window.innerHeight / imageHeight) + 1;
-                containerDiv.style.height = `${imageHeight * numTiles}px`;
-                
+                containerDiv.style.height = `${imageHeight * 21}px`; // Adjust height based on number of tiles
                 containerDiv.style.backgroundImage = `url(${imageUrl})`;
                 containerDiv.style.backgroundRepeat = 'repeat-y';
                 containerDiv.style.backgroundSize = 'contain'; // Adjust this to fit your needs
@@ -3364,7 +3360,6 @@
             });
         }
 
-
         function createVerticalTiles_b(containerId, imageUrl, imageHeight) {
             return new Promise((resolve) => {
                 const container = document.getElementById(containerId);
@@ -3372,11 +3367,7 @@
 
                 const containerDiv = document.createElement('div');
                 containerDiv.style.width = '100%';
-
-                // Calculate the container height to ensure an additional tile is added
-                const numTiles = Math.ceil(window.innerHeight / imageHeight) + 1;
-                containerDiv.style.height = `${imageHeight * numTiles}px`;
-                
+                containerDiv.style.height = `${imageHeight * 21}px`; // Adjust height based on number of tiles
                 containerDiv.style.backgroundImage = `url(${imageUrl})`;
                 containerDiv.style.backgroundRepeat = 'repeat-y';
                 containerDiv.style.backgroundSize = 'contain'; // Adjust this to fit your needs
@@ -3390,7 +3381,6 @@
                 tiles.b = true;
             });
         }
-
 
 
 
