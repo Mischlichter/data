@@ -1644,11 +1644,15 @@
 
         const isGyroDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
+
         let lastScrollY = 0;
         let lenisInitialized = false;
         let parallaxAnimationRegistered = false;
         let animateRegistered = false;
         let mouseEventListenersAdded = false;
+       
+        
+    
 
         const AnimationManager = {
             frameCap: 60, // Increase frame cap for smoother animations
@@ -1752,15 +1756,11 @@
                 }
             }
 
-            if (visibilityChangeListenerAdded) {
-                document.removeEventListener('visibilitychange', handleVisibilityChange);
+            if (!visibilityChangeListenerAdded) {
+                document.addEventListener('visibilitychange', handleVisibilityChange);
+                visibilityChangeListenerAdded = true;
             }
-
-            document.addEventListener('visibilitychange', handleVisibilityChange);
-            visibilityChangeListenerAdded = true;
         }
-
-
 
 
         const lenis = new Lenis();
