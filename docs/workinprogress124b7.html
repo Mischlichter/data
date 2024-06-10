@@ -1692,7 +1692,7 @@
             },
 
             pauseAnimations() {
-                console.log('Pausing animations');
+                //console.log('Pausing animations');
                 this.paused = true;
                 this.running = false; // Stop the running loop
                 this.saveState();
@@ -1700,7 +1700,7 @@
 
             resumeAnimations() {
                 if (this.paused) {
-                    console.log('Resuming animations');
+                    //console.log('Resuming animations');
                     this.paused = false;
                     this.restoreState();
                     if (!this.running && this.animations.length > 0) {
@@ -1740,10 +1740,10 @@
         function setupVisibilityChangeListener() {
             function handleVisibilityChange() {
                 if (document.hidden) {
-                    console.log('Page hidden, pausing animations.');
+                    //console.log('Page hidden, pausing animations.');
                     AnimationManager.pauseAnimations();
                 } else {
-                    console.log('Page visible, resuming animations.');
+                    //console.log('Page visible, resuming animations.');
                     AnimationManager.resumeAnimations();
                 }
             }
@@ -2882,9 +2882,9 @@
                 // Open in a new window on iOS
                 linkElement.onclick = function(event) {
                     event.preventDefault();
-                    const newWindow = window.open('', '_blank', 'noopener,noreferrer');
-                    newWindow.opener = null; // Ensures that the new window doesn't have a reference to the opener
-                    newWindow.location = style.link;
+                    const newWindow = window.open();
+                    newWindow.opener = null;
+                    newWindow.location.href = style.link;
                 };
             } else {
                 // Open in a new tab on non-iOS devices
