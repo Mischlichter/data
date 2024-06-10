@@ -1681,11 +1681,7 @@
             }
         };
 
-        if (!window.lenisInstance) {
-            window.lenisInstance = new Lenis();
-        }
-        const lenis = window.lenisInstance;
-
+        const lenis = new Lenis();
 
         lenis.on('scroll', () => {
             if (!parallaxAnimationRegistered) {
