@@ -176,16 +176,22 @@
         async function preloadAndCacheImage(url) {
             let cachedAsset = await getCachedAsset(url);
             if (cachedAsset) {
+                imageCache[url] = cachedAsset.blobURL;
                 return cachedAsset.blobURL;
             }
 
-            const response = await fetch(url);
-            const blob = await response.blob();
-            const blobURL = URL.createObjectURL(blob);
-            imageCache[url] = blobURL;
+            try {
+                const response = await fetch(url);
+                const blob = await response.blob();
+                const blobURL = URL.createObjectURL(blob);
+                imageCache[url] = blobURL;
 
-            await cacheAsset({ url, blobURL });
-            return blobURL;
+                await cacheAsset({ url, blobURL });
+                return blobURL;
+            } catch (error) {
+                console.error('Failed to fetch and cache image:', error);
+                throw error;
+            }
         }
 
         async function preloadAllAssets() {
