@@ -1742,16 +1742,9 @@
                 if (document.hidden) {
                     console.log('Page hidden, pausing animations.');
                     AnimationManager.pauseAnimations();
-                    if (isIOS) {
-                        AnimationManager.saveState();
-                    }
                 } else {
                     console.log('Page visible, resuming animations.');
-                    if (isIOS) {
-                        window.location.reload(); // Reload page for iOS
-                    } else {
-                        AnimationManager.resumeAnimations();
-                    }
+                    AnimationManager.resumeAnimations();
                 }
             }
 
