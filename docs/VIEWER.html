@@ -121,77 +121,55 @@
         smoothMouseMovement();
 
         const imageCache = {};
+        const cacheName = 'site-assets';
 
-        const dbName = 'MyDatabase';
-        const storeName = 'assets';
+        async function initializeCacheStatus(urls) {
+            const cache = await caches.open(cacheName);
 
-        function openDB() {
-            return new Promise((resolve, reject) => {
-                const request = indexedDB.open(dbName, 1);
-                request.onupgradeneeded = function(event) {
-                    const db = event.target.result;
-                    if (!db.objectStoreNames.contains(storeName)) {
-                        db.createObjectStore(storeName, { keyPath: 'url' });
-                    }
-                };
-                request.onsuccess = function(event) {
-                    resolve(event.target.result);
-                };
-                request.onerror = function(event) {
-                    reject(event.target.error);
-                };
+            const cachePromises = urls.map(async (url) => {
+                const response = await cache.match(url);
+                const cacheKey = `cache_${url}`;
+                if (response) {
+                    localStorage.setItem(cacheKey, 'cached');
+                } else {
+                    localStorage.setItem(cacheKey, 'not_cached');
+                }
             });
+
+            await Promise.all(cachePromises);
         }
 
-        async function getCachedAsset(url) {
-            const db = await openDB();
-            return new Promise((resolve, reject) => {
-                const transaction = db.transaction([storeName], 'readonly');
-                const store = transaction.objectStore(storeName);
-                const request = store.get(url);
-                request.onsuccess = function(event) {
-                    resolve(event.target.result);
-                };
-                request.onerror = function(event) {
-                    reject(event.target.error);
-                };
-            });
-        }
+        async function getCachedOrFetchImage(url) {
+            const cache = await caches.open(cacheName);
+            const cacheKey = `cache_${url}`;
+            const cacheStatus = localStorage.getItem(cacheKey);
 
-        async function cacheAsset(asset) {
-            const db = await openDB();
-            return new Promise((resolve, reject) => {
-                const transaction = db.transaction([storeName], 'readwrite');
-                const store = transaction.objectStore(storeName);
-                const request = store.put(asset);
-                request.onsuccess = function(event) {
-                    resolve();
-                };
-                request.onerror = function(event) {
-                    reject(event.target.error);
-                };
-            });
+            if (cacheStatus === 'cached') {
+                const cachedResponse = await cache.match(url);
+                if (cachedResponse) {
+                    return URL.createObjectURL(await cachedResponse.blob());
+                }
+            }
+
+            const response = await fetch(url);
+            if (response.ok) {
+                await cache.put(url, response.clone());
+                localStorage.setItem(cacheKey, 'cached');
+                return URL.createObjectURL(await response.blob());
+            } else {
+                console.error(`Failed to fetch image at ${url}`);
+                return url;
+            }
         }
 
         async function preloadAndCacheImage(url) {
-            let cachedAsset = await getCachedAsset(url);
-            if (cachedAsset) {
-                imageCache[url] = cachedAsset.blobURL;
-                return cachedAsset.blobURL;
+            if (imageCache[url]) {
+                return imageCache[url];
             }
 
-            try {
-                const response = await fetch(url);
-                const blob = await response.blob();
-                const blobURL = URL.createObjectURL(blob);
-                imageCache[url] = blobURL;
-
-                await cacheAsset({ url, blobURL });
-                return blobURL;
-            } catch (error) {
-                console.error('Failed to fetch and cache image:', error);
-                throw error;
-            }
+            const blobURL = await getCachedOrFetchImage(url);
+            imageCache[url] = blobURL;
+            return blobURL;
         }
 
         async function preloadAllAssets() {
