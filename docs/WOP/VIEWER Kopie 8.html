@@ -178,12 +178,10 @@
         async function preloadAndCacheImage(url) {
             let cachedAsset = await getCachedAsset(url);
             if (cachedAsset) {
-                console.log(`Serving from cache: ${url}`);
                 return cachedAsset.blobURL;
             }
 
             try {
-                console.log(`Fetching from network: ${url}`);
                 const response = await fetch(url);
                 const blob = await response.blob();
                 const blobURL = URL.createObjectURL(blob);
@@ -221,14 +219,14 @@
             const response = await fetch('https://raw.githubusercontent.com/Mischlichter/data/main/assets/assets.txt');
             const text = await response.text();
             const scenes = text.trim().split('\n\n');
-
+            
             const preloadPromises = [];
 
             scenes.forEach(sceneText => {
                 const lines = sceneText.trim().split('\n');
                 const sceneKey = lines[0].slice(0, -1);
                 assets[sceneKey] = {};
-
+                
                 for (let i = 1; i < lines.length; i++) {
                     const [key, urlPart] = lines[i].split('=');
                     if (key && urlPart) {
@@ -248,16 +246,16 @@
                         }
 
                         preloadPromises.push(preloadAndCacheImage(url));
-
+                        
                         const type = key.slice(0, 3);
                         const number = key.slice(3);
                         if (!assets[sceneKey][number]) {
                             assets[sceneKey][number] = {};
                         }
                         const assetObj = {
-                            url: url,
-                            scaleFactor: parseFloat(scaleFactor),
-                            xbase: parseFloat(xbase),
+                            url: url, 
+                            scaleFactor: parseFloat(scaleFactor), 
+                            xbase: parseFloat(xbase), 
                             ybase: parseFloat(ybase)
                         };
                         if (type === 'IMG') {
@@ -270,7 +268,6 @@
             });
             await Promise.all(preloadPromises);
         }
-
 
         function changeScene(sceneKey) {
             const scene = assets[sceneKey];
