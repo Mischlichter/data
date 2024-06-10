@@ -3356,7 +3356,7 @@
 
                 container.appendChild(containerDiv);
 
-                delayedVirtualCanvasUpdate();
+                //delayedVirtualCanvasUpdate();
 
                 resolve();
             }).then(() => {
@@ -3378,7 +3378,7 @@
 
                 container.appendChild(containerDiv);
 
-                updateVirtualCanvasSize();
+                //updateVirtualCanvasSize();
 
                 resolve();
             }).then(() => {
@@ -3388,11 +3388,6 @@
 
 
 
-        function delayedVirtualCanvasUpdate() {
-            // Delay the call to updateVirtualCanvasSize
-            
-            setTimeout(updateVirtualCanvasSize, 100); // Delay of 100 milliseconds
-        }
 
 
         async function initializeCacheStatus(urls) {
@@ -3485,6 +3480,8 @@
                 });
                 return;
             }
+
+            updateVirtualCanvasSize();
 
             ensureWrapperExistence('scale-wrapper-background', `
                 <div id="backgroundRoot">
