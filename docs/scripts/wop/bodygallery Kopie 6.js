@@ -459,7 +459,7 @@ const galleryHTML = `
                 console.log("Your browser doesn't support IndexedDB.");
                 return;
             }
-            let request = window.indexedDB.open('MyDatabase', 1); // Use the same database name
+            let request = window.indexedDB.open('myDatabase', 1);
 
             request.onerror = function(event) {
                 console.error("Database error: ", event.target.errorCode);
@@ -467,13 +467,14 @@ const galleryHTML = `
 
             request.onsuccess = function(event) {
                 db = event.target.result;
+                //console.log('Database opened successfully');
                 fetchMetadataAndImages();
             };
 
             request.onupgradeneeded = function(event) {
                 let db = event.target.result;
-                if (!db.objectStoreNames.contains('assets')) { // Use the same store name
-                    db.createObjectStore('assets', { keyPath: 'url' }); // Use 'url' as the keyPath
+                if (!db.objectStoreNames.contains('imageData')) {
+                    db.createObjectStore('imageData', { keyPath: 'filename' });
                 }
             };
 
@@ -497,6 +498,7 @@ const galleryHTML = `
                                         loadCallCount = 0;
                                         loadedImages = 0;
 
+
                                         function loadImage(index) {
                                             if (index >= totalImages) {
                                                 return; // All images loaded
@@ -517,9 +519,9 @@ const galleryHTML = `
                                             imageContainer.appendChild(wordOverlay);
                                             img.dataset.metadata = JSON.stringify(metadata);
 
-                                            let transaction = db.transaction('assets', 'readonly');
-                                            let store = transaction.objectStore('assets');
-                                            let dbRequest = store.get(file.download_url);
+                                            let transaction = db.transaction('imageData', 'readonly');
+                                            let store = transaction.objectStore('imageData');
+                                            let dbRequest = store.get(file.name);
 
                                             dbRequest.onsuccess = function(event) {
                                                 let dbResult = event.target.result;
@@ -535,32 +537,34 @@ const galleryHTML = `
                                                     lastModifiedCurrent = new Date(0);  // Default to epoch start if no date is provided
                                                 }
 
+                                                //console.log(`Date check for ${file.name}: In DB - ${lastModifiedInDB}, Current - ${lastModifiedCurrent}`);
+
                                                 if (!dbResult || lastModifiedInDB < lastModifiedCurrent) {
+                                                    //console.log(`Image from remote needed for ${file.name}`);
                                                     fetch(file.download_url)
                                                         .then(response => response.blob())
                                                         .then(blob => {
-                                                            db.transaction('assets', 'readwrite')
-                                                                .objectStore('assets')
-                                                                .put({
-                                                                    url: file.download_url,
-                                                                    blob: blob,
-                                                                    lastModified: lastModifiedCurrent.toISOString()
-                                                                });
+                                                            let reader = new FileReader();
+                                                            reader.onloadend = function() {
+                                                                const dataUrl = reader.result;
+                                                                db.transaction('imageData', 'readwrite')
+                                                                    .objectStore('imageData')
+                                                                    .put({
+                                                                        filename: file.name,
+                                                                        imageSrc: dataUrl,
+                                                                        lastModified: lastModifiedCurrent.toISOString()
+                                                                    });
 
-                                                            const dataUrl = URL.createObjectURL(blob);
-                                                            img.src = dataUrl; // Load new image source
-                                                            dynamicImages.push(img.src); // Store the image URL
+                                                                img.src = dataUrl; // Load new image source
+                                                                dynamicImages.push(img.src); // Store the image URL
+                                                            };
+                                                            reader.readAsDataURL(blob);
                                                         })
-                                                        .catch(error => console.error(`Error loading image ${index} (${file.name}):`, error));
+                                                        .catch(error => console.error(`Error loading image ${index}:`, error));
                                                 } else {
-                                                    const blob = dbResult.blob;
-                                                    if (blob instanceof Blob) {
-                                                        img.src = URL.createObjectURL(blob); // Load image from DB
-                                                        dynamicImages.push(img.src); // Store the image URL
-                                                    } else {
-                                                        console.error(`Blob is not an instance of Blob for image ${index} (${file.name})`);
-                                                        loadImage(index + 1); // Continue loading the next image
-                                                    }
+                                                    //console.log(`Loading image from DB for ${file.name}`);
+                                                    img.src = dbResult.imageSrc; // Load image from DB
+                                                    dynamicImages.push(img.src); // Store the image URL
                                                 }
 
                                                 img.onload = () => {
@@ -569,6 +573,7 @@ const galleryHTML = `
 
                                                     img.onclick = () => onImageClick(img.src);
                                                     if (currentImageIndex !== -1) {
+
                                                         showSlideshow();
                                                     } else {
                                                         console.error("Clicked image index not found in dynamicImages array.");
@@ -582,7 +587,7 @@ const galleryHTML = `
                                                 };
 
                                                 img.onerror = () => {
-                                                    console.error(`Error loading image ${index} (${file.name})`);
+                                                    console.error(`Error loading image ${index}`);
                                                     loadImage(index + 1);
                                                 };
                                             };
@@ -601,8 +606,6 @@ const galleryHTML = `
                     .catch(error => console.error('Error fetching index data:', error));
             }
         }
-
-
 
         function updateVisibleImages() {
             // Fetch all image elements that might be in dynamicImages
