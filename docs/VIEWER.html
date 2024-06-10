@@ -147,10 +147,12 @@
             if (cacheStatus === 'cached') {
                 const cachedResponse = await cache.match(url);
                 if (cachedResponse) {
+                    console.log(`Serving from cache: ${url}`);
                     return URL.createObjectURL(await cachedResponse.blob());
                 }
             }
 
+            console.log(`Fetching from network: ${url}`);
             const response = await fetch(url);
             if (response.ok) {
                 await cache.put(url, response.clone());
@@ -164,6 +166,7 @@
 
         async function preloadAndCacheImage(url) {
             if (imageCache[url]) {
+                console.log(`Image found in memory cache: ${url}`);
                 return imageCache[url];
             }
 
