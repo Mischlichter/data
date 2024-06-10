@@ -2883,8 +2883,18 @@
         function attachLinkToContainer(container, style) {
             const linkElement = document.createElement('a');
             linkElement.href = style.link; // Assuming 'style.link' contains the URL
-            linkElement.target = '_blank'; // Open in new tab
-            linkElement.rel = 'noopener noreferrer'; // Enhance security and performance
+
+            if (isIOS) {
+                // Open in a new window on iOS
+                linkElement.onclick = function(event) {
+                    event.preventDefault();
+                    window.open(style.link, '_blank', 'noopener,noreferrer');
+                };
+            } else {
+                // Open in a new tab on non-iOS devices
+                linkElement.target = '_blank'; // Open in new tab
+                linkElement.rel = 'noopener noreferrer'; // Enhance security and performance
+            }
 
             // Assuming 'style' contains other styles to be applied to the link
             for (const property in style) {
