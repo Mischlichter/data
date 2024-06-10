@@ -2824,7 +2824,8 @@
             dynamicStyles.forEach(style => style.remove());
             dynamicStyles.length = 0; // Clear the array
             handleScroll();
-            loadInterface(index);
+            await initializeCacheForDynamicUrls([0, 1, 2, 3, 4]);
+            loadInterface(currentSceneIndex);
 
             
             //console.log('Formatted Scene Key:', formattedSceneKey);
@@ -3410,7 +3411,7 @@
             return Promise.all(cachePromises);
         }
 
-        function initializeCacheForDynamicUrls(sceneIndices) {
+        async function initializeCacheForDynamicUrls(sceneIndices) {
             const baseUrls = [
                 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/background/b',
                 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/side/s',
@@ -3429,15 +3430,13 @@
                 }
             }
 
-            return initializeCacheStatus(urls);
+            const cachePromises = urls.map(url => getCachedOrFetchImage(url));
+            await Promise.all(cachePromises);
         }
 
+        // Call this function at the beginning with all possible scene indices
+        initializeCacheForDynamicUrls([0, 1, 2, 3, 4]);
 
-
-        initializeCacheForDynamicUrls([0, 1, 2, 3, 4]).then(() => {
-            // Load interface after ensuring all URLs are cached
-            loadInterface(currentSceneIndex);
-        });
 
 
 
@@ -3451,11 +3450,10 @@
                 console.log(`Serving from cache: ${url}`);
                 return url;
             } else {
-                console.log(`Fetching from network: ${url}`);
                 try {
-                    const networkResponse = await fetch(url);
-                    if (networkResponse.ok) {
-                        await cache.put(url, networkResponse.clone());
+                    const response = await fetch(url);
+                    if (response.ok) {
+                        await cache.put(url, response.clone());
                         return url;
                     } else {
                         console.error(`Failed to fetch image at ${url}`);
@@ -3467,6 +3465,7 @@
                 }
             }
         }
+
 
 
 
@@ -3527,7 +3526,7 @@
                 const sideLeftPromise = createVerticalTiles_b('interfaceSideLeft', sideImage, imageHeight);
                 const sideRightPromise = createVerticalTiles_b('interfaceSideRight', sideImage, imageHeight);
 
-                const viewerImagePromise = new Promise(async (resolve, reject) => {
+                const viewerImagePromise = new Promise((resolve, reject) => {
                     const viewerImageElement = document.getElementById('interfaceViewerImage');
                     if (viewerImageElement && document.body.contains(viewerImageElement)) {
                         const tempImage = new Image();
@@ -3544,7 +3543,7 @@
                             console.error("Failed to load image at url:", viewerImageUrl);
                             reject();
                         };
-                        tempImage.src = await getCachedOrFetchImage(viewerImageUrl);
+                        tempImage.src = viewerImage;
                     } else {
                         console.log("Viewer image element does not exist in the DOM.");
                         reject();
@@ -3553,11 +3552,11 @@
 
                 await Promise.all([backgroundPromise, sideLeftPromise, sideRightPromise, viewerImagePromise]);
                 fadeInElements();
-
             } catch (error) {
                 console.error("Error loading elements:", error);
             }
         }
+
 
 
         
