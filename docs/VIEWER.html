@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="css/style3.css" type="text/css">
-
+    <link rel="stylesheet" href="css/style3.css">
 </head>
 <body>
     <div id="wrapper">
@@ -121,9 +120,10 @@
 
         smoothMouseMovement();
 
+        const imageCache = {};
+
         const dbName = 'MyDatabase';
         const storeName = 'assets';
-        const imageCache = {};
 
         function openDB() {
             return new Promise((resolve, reject) => {
@@ -158,23 +158,6 @@
             });
         }
 
-        async function getCachedOrFetchImage(url) {
-            const cachedAsset = await getCachedAsset(url);
-            if (cachedAsset) {
-                return cachedAsset.blobURL;
-            } else {
-                try {
-                    const response = await fetch(url);
-                    const blob = await response.blob();
-                    const blobURL = URL.createObjectURL(blob);
-                    await cacheAsset({ url, blobURL });
-                    return blobURL;
-                } catch (error) {
-                    console.error(`Error fetching image for URL ${url}:`, error);
-                    return null;
-                }
-            }
-        }
 
         async function cacheAsset(asset) {
             const db = await openDB();
@@ -191,8 +174,9 @@
             });
         }
 
+
         async function preloadAndCacheImage(url) {
-            const cachedAsset = await getCachedAsset(url);
+            let cachedAsset = await getCachedAsset(url);
             if (cachedAsset) {
                 return cachedAsset.blobURL;
             }
@@ -201,6 +185,8 @@
                 const response = await fetch(url);
                 const blob = await response.blob();
                 const blobURL = URL.createObjectURL(blob);
+                imageCache[url] = blobURL;
+
                 await cacheAsset({ url, blobURL });
                 return blobURL;
             } catch (error) {
@@ -259,7 +245,7 @@
                             ybase = "0";
                         }
 
-                        preloadPromises.push(getCachedOrFetchImage(url));
+                        preloadPromises.push(preloadAndCacheImage(url));
                         
                         const type = key.slice(0, 3);
                         const number = key.slice(3);
