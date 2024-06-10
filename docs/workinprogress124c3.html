@@ -3443,19 +3443,17 @@
         async function getCachedOrFetchImage(url) {
             const cacheName = 'site-assets';
             const cache = await caches.open(cacheName);
-            const cacheKey = `cache_${url}`;
-            const cacheStatus = localStorage.getItem(cacheKey);
+            let cachedResponse = await cache.match(url);
 
-            if (cacheStatus === 'cached') {
-                console.log(`Loaded from cache: ${url}`);
-                return url;
+            if (cachedResponse) {
+                console.log(`Serving from cache: ${url}`);
+                return URL.createObjectURL(await cachedResponse.blob()); // Create a local URL for the cached response
             } else {
                 console.log(`Fetching from network: ${url}`);
                 try {
                     const response = await fetch(url);
                     if (response.ok) {
                         await cache.put(url, response.clone());
-                        localStorage.setItem(cacheKey, 'cached');
                         return url;
                     } else {
                         console.error(`Failed to fetch image at ${url}`);
@@ -3467,6 +3465,7 @@
                 }
             }
         }
+
 
 
         async function loadInterface(currentSceneIndex) {
@@ -3555,6 +3554,7 @@
                 console.error("Error loading elements:", error);
             }
         }
+
 
         
 
