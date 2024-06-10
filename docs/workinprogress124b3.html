@@ -1346,21 +1346,7 @@
                 }, 1111); // Delay should match the duration of the fade-out effect
             }
 
-            function enterSite() {
-                
-                initialize();
 
-                const centerContainer = document.querySelector('.center-container-XL');
-                if (centerContainer) {
-                    centerContainer.style.opacity = '0';
-                    setTimeout(() => {
-                        centerContainer.style.display = 'none';
-                    }, 500); // Adjust the time as needed for the fade out transition
-                } else {
-                    console.error("Center container not found.");
-                }
-                initializeMenu();
-            }
 
 
             function setupMotionListener() {
@@ -1634,6 +1620,14 @@
         
 //////// MOUSE SMOOTHING ////////
 
+        // Set a flag in session storage to indicate a page reload
+        if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
+            sessionStorage.setItem('isReload', 'true');
+            console.log('Page reload detected, setting flag in session storage');
+        } else {
+            sessionStorage.removeItem('isReload'); // Clear the flag if not a reload
+        }
+
         const isIOS = /iPad|iPhone|iPod/.test(navigator.platform) || 
                       (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) ||
                       /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
@@ -1641,25 +1635,14 @@
 
         const isGyroDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-
         let lastScrollY = 0;
         let lenisInitialized = false;
         let parallaxAnimationRegistered = false;
         let animateRegistered = false;
         let mouseEventListenersAdded = false;
-       
-        
-    
-
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.platform) || 
-                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) ||
-                      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-                      ('ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0);
-
-        let currentSceneIndex = 0;
 
         const AnimationManager = {
-            frameCap: 60,
+            frameCap: 60, // Increase frame cap for smoother animations
             lastRender: performance.now(),
             animations: [],
             running: false,
@@ -1691,18 +1674,24 @@
                     }
                 } catch (error) {
                     console.error('Error during animation frame:', error);
-                    this.paused = true;
+                    this.paused = true; // Pause animations on error
                 }
             },
 
             pauseAnimations() {
+                if (sessionStorage.getItem('isReload')) {
+                    console.log('Reload detected, not pausing animations');
+                    return;
+                }
+                console.log('Pausing animations');
                 this.paused = true;
-                this.running = false;
+                this.running = false; // Stop the running loop
                 this.saveState();
             },
 
             resumeAnimations() {
                 if (this.paused) {
+                    console.log('Resuming animations');
                     this.paused = false;
                     this.restoreState();
                     if (!this.running && this.animations.length > 0) {
@@ -1713,14 +1702,22 @@
             },
 
             saveState() {
+                if (sessionStorage.getItem('isReload')) {
+                    console.log('Reload detected, not saving state');
+                    return;
+                }
                 try {
                     const state = {
                         lastRender: this.lastRender,
+                        // Add any other state properties needed
                     };
-                    localStorage.setItem('animationState', JSON.stringify(state));
+
                     if (isIOS) {
-                        localStorage.setItem('currentSceneIndex', currentSceneIndex);
+                        state.currentSceneIndex = currentSceneIndex;
                     }
+
+                    localStorage.setItem('animationState', JSON.stringify(state));
+                    console.log('State saved');
                 } catch (error) {
                     console.error('Error saving animation state:', error);
                 }
@@ -1731,12 +1728,14 @@
                     const state = JSON.parse(localStorage.getItem('animationState'));
                     if (state) {
                         this.lastRender = state.lastRender;
-                    }
-                    if (isIOS) {
-                        const savedSceneIndex = localStorage.getItem('currentSceneIndex');
-                        if (savedSceneIndex !== null) {
-                            currentSceneIndex = parseInt(savedSceneIndex, 10);
+                        // Restore other animation-related state if needed
+
+                        if (isIOS && state.currentSceneIndex !== undefined) {
+                            currentSceneIndex = state.currentSceneIndex;
+                            enterSite();
                         }
+
+                        console.log('State restored');
                     }
                 } catch (error) {
                     console.error('Error restoring animation state:', error);
@@ -1744,52 +1743,50 @@
             }
         };
 
-        let visibilityChangeListenerAdded = false;
+        // Handle visibility change to pause/resume animations
+        function setupVisibilityChangeListener() {
+            function handleVisibilityChange() {
+                setTimeout(() => {
+                    if (sessionStorage.getItem('isReload')) {
+                        console.log('Reload detected, not performing visibility change actions');
+                        sessionStorage.removeItem('isReload'); // Clear the reload flag after handling
+                        return;
+                    }
 
-        function handleVisibilityChange() {
-            if (document.hidden) {
-                AnimationManager.pauseAnimations();
-                if (isIOS) {
-                    AnimationManager.saveState();
-                }
-            } else {
-                if (isIOS) {
-                    AnimationManager.restoreState();
-                    console.log('Restored currentSceneIndex:', currentSceneIndex);
-                    // Optional: Trigger animations or any other actions after state restoration
-                } else {
-                    AnimationManager.resumeAnimations();
-                }
+                    if (document.hidden) {
+                        console.log('Page hidden, pausing animations.');
+                        AnimationManager.pauseAnimations();
+                        if (isIOS) {
+                            AnimationManager.saveState();
+                        }
+                    } else {
+                        console.log('Page visible, resuming animations.');
+                        AnimationManager.resumeAnimations();
+                    }
+                }, 100); // Delay in milliseconds
             }
-        }
 
-        if (!visibilityChangeListenerAdded) {
             document.addEventListener('visibilitychange', handleVisibilityChange);
-            visibilityChangeListenerAdded = true;
         }
 
-        // Register example animation (if necessary, otherwise register your own animations)
-        // Example: Registering a sample animation
-        function exampleAnimation(timestamp) {
-            try {
-                // Animation code here
-                return true; // Keep running
-            } catch (error) {
-                console.error('Error in example animation:', error);
-                return false; // Stop the animation on error
+        function enterSite() {
+            setupVisibilityChangeListener();
+            
+            initialize();
+
+            const centerContainer = document.querySelector('.center-container-XL');
+            if (centerContainer) {
+                centerContainer.style.opacity = '0';
+                setTimeout(() => {
+                    centerContainer.style.display = 'none';
+                }, 500); // Adjust the time as needed for the fade out transition
+            } else {
+                console.error("Center container not found.");
             }
+            initializeMenu();
         }
 
-        // Register the example animation (remove if not needed)
-        AnimationManager.registerAnimation(exampleAnimation);
-
-        // Restore state on page load for iOS
-        if (isIOS) {
-            AnimationManager.restoreState();
-            console.log('Restored currentSceneIndex on page load:', currentSceneIndex);
-        }
-
-
+        
 
         const lenis = new Lenis();
 
@@ -1799,6 +1796,7 @@
                 AnimationManager.registerAnimation(throttleUpdateParallax);
             }
             updateParallax();
+
         });
 
         function throttleUpdateParallax() {
