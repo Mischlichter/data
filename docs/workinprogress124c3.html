@@ -2824,8 +2824,7 @@
             dynamicStyles.forEach(style => style.remove());
             dynamicStyles.length = 0; // Clear the array
             handleScroll();
-            await initializeCacheForDynamicUrls([0, 1, 2, 3, 4]);
-            loadInterface(currentSceneIndex);
+            loadInterface(index);
 
             
             //console.log('Formatted Scene Key:', formattedSceneKey);
@@ -3399,6 +3398,7 @@
         async function initializeCacheStatus(urls) {
             const cacheName = 'site-assets';
             const cache = await caches.open(cacheName);
+
             const cachePromises = urls.map(async (url) => {
                 const response = await cache.match(url);
                 const cacheKey = `cache_${url}`;
@@ -3408,10 +3408,13 @@
                     localStorage.setItem(cacheKey, 'not_cached');
                 }
             });
-            return Promise.all(cachePromises);
+
+            await Promise.all(cachePromises);
         }
 
-        async function initializeCacheForDynamicUrls(sceneIndices) {
+
+        // This function should be called with all the URLs you plan to use
+        function initializeCacheForDynamicUrls(sceneIndices) {
             const baseUrls = [
                 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/background/b',
                 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/side/s',
@@ -3430,30 +3433,29 @@
                 }
             }
 
-            const cachePromises = urls.map(url => getCachedOrFetchImage(url));
-            await Promise.all(cachePromises);
+            initializeCacheStatus(urls);
         }
 
         // Call this function at the beginning with all possible scene indices
-        initializeCacheForDynamicUrls([0, 1, 2, 3, 4]);
-
-
-
+        initializeCacheForDynamicUrls([00, 01, 02, 03]);
 
 
         async function getCachedOrFetchImage(url) {
             const cacheName = 'site-assets';
             const cache = await caches.open(cacheName);
-            let cachedResponse = await cache.match(url);
+            const cacheKey = `cache_${url}`;
+            const cacheStatus = localStorage.getItem(cacheKey);
 
-            if (cachedResponse) {
-                console.log(`Serving from cache: ${url}`);
+            if (cacheStatus === 'cached') {
+                console.log(`Loaded from cache: ${url}`);
                 return url;
             } else {
+                console.log(`Fetching from network: ${url}`);
                 try {
                     const response = await fetch(url);
                     if (response.ok) {
                         await cache.put(url, response.clone());
+                        localStorage.setItem(cacheKey, 'cached');
                         return url;
                     } else {
                         console.error(`Failed to fetch image at ${url}`);
@@ -3465,10 +3467,6 @@
                 }
             }
         }
-
-
-
-
 
 
         async function loadInterface(currentSceneIndex) {
@@ -3521,6 +3519,7 @@
                 const backgroundImage = await getCachedOrFetchImage(backgroundUrl);
                 const sideImage = await getCachedOrFetchImage(sideImageUrl);
                 const viewerImage = await getCachedOrFetchImage(viewerImageUrl);
+                const viewerMaskImage = await getCachedOrFetchImage(viewerMaskUrl);
 
                 const backgroundPromise = createVerticalTiles_a('interfaceBackground', backgroundImage, imageHeight);
                 const sideLeftPromise = createVerticalTiles_b('interfaceSideLeft', sideImage, imageHeight);
@@ -3532,8 +3531,8 @@
                         const tempImage = new Image();
                         tempImage.onload = function () {
                             viewerImageElement.src = tempImage.src;
-                            viewerImageElement.style.maskImage = `url('${viewerMaskUrl}')`;
-                            viewerImageElement.style.webkitMaskImage = `url('${viewerMaskUrl}')`;
+                            viewerImageElement.style.maskImage = `url('${viewerMaskImage}')`;
+                            viewerImageElement.style.webkitMaskImage = `url('${viewerMaskImage}')`;
                             viewerImageElement.style.maskSize = '100% 100%';
                             viewerImageElement.style.webkitMaskSize = '100% 100%';
                             tiles.viewerReady = true; // Move this inside onload to ensure it's ready
@@ -3556,8 +3555,6 @@
                 console.error("Error loading elements:", error);
             }
         }
-
-
 
         
 
