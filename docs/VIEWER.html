@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="css/style3.css">
+    <link rel="stylesheet" href="css/style3.css" type="text/css">
+
 </head>
 <body>
     <div id="wrapper">
@@ -120,10 +121,9 @@
 
         smoothMouseMovement();
 
-        const imageCache = {};
-
         const dbName = 'MyDatabase';
         const storeName = 'assets';
+        const imageCache = {};
 
         function openDB() {
             return new Promise((resolve, reject) => {
@@ -150,22 +150,31 @@
                 const store = transaction.objectStore(storeName);
                 const request = store.get(url);
                 request.onsuccess = function(event) {
-                    if (event.target.result) {
-                        console.log(`Cache hit for URL: ${url}`);
-                        resolve(event.target.result);
-                    } else {
-                        console.log(`Cache miss for URL: ${url}`);
-                        resolve(null);
-                    }
+                    resolve(event.target.result);
                 };
                 request.onerror = function(event) {
-                    console.error(`Error checking cache for URL: ${url}`, event.target.error);
                     reject(event.target.error);
                 };
             });
         }
 
-
+        async function getCachedOrFetchImage(url) {
+            const cachedAsset = await getCachedAsset(url);
+            if (cachedAsset) {
+                return cachedAsset.blobURL;
+            } else {
+                try {
+                    const response = await fetch(url);
+                    const blob = await response.blob();
+                    const blobURL = URL.createObjectURL(blob);
+                    await cacheAsset({ url, blobURL });
+                    return blobURL;
+                } catch (error) {
+                    console.error(`Error fetching image for URL ${url}:`, error);
+                    return null;
+                }
+            }
+        }
 
         async function cacheAsset(asset) {
             const db = await openDB();
@@ -174,42 +183,31 @@
                 const store = transaction.objectStore(storeName);
                 const request = store.put(asset);
                 request.onsuccess = function(event) {
-                    console.log(`Successfully cached asset: ${asset.url}`);
                     resolve();
                 };
                 request.onerror = function(event) {
-                    console.error(`Failed to cache asset: ${asset.url}`, event.target.error);
                     reject(event.target.error);
                 };
             });
         }
 
-
-
         async function preloadAndCacheImage(url) {
-            console.log(`Checking cache for URL: ${url}`);
-            let cachedAsset = await getCachedAsset(url);
+            const cachedAsset = await getCachedAsset(url);
             if (cachedAsset) {
-                console.log(`Serving from cache: ${url}`);
                 return cachedAsset.blobURL;
             }
 
             try {
-                console.log(`Fetching from network: ${url}`);
                 const response = await fetch(url);
                 const blob = await response.blob();
                 const blobURL = URL.createObjectURL(blob);
-                imageCache[url] = blobURL;
-
                 await cacheAsset({ url, blobURL });
-                console.log(`Cached asset: ${url}`);
                 return blobURL;
             } catch (error) {
                 console.error('Failed to fetch and cache image:', error);
                 throw error;
             }
         }
-
 
         async function preloadAllAssets() {
             const preloadPromises = [];
@@ -235,14 +233,14 @@
             const response = await fetch('https://raw.githubusercontent.com/Mischlichter/data/main/assets/assets.txt');
             const text = await response.text();
             const scenes = text.trim().split('\n\n');
-
+            
             const preloadPromises = [];
 
             scenes.forEach(sceneText => {
                 const lines = sceneText.trim().split('\n');
                 const sceneKey = lines[0].slice(0, -1);
                 assets[sceneKey] = {};
-
+                
                 for (let i = 1; i < lines.length; i++) {
                     const [key, urlPart] = lines[i].split('=');
                     if (key && urlPart) {
@@ -261,17 +259,17 @@
                             ybase = "0";
                         }
 
-                        preloadPromises.push(preloadAndCacheImage(url));
-
+                        preloadPromises.push(getCachedOrFetchImage(url));
+                        
                         const type = key.slice(0, 3);
                         const number = key.slice(3);
                         if (!assets[sceneKey][number]) {
                             assets[sceneKey][number] = {};
                         }
                         const assetObj = {
-                            url: url,
-                            scaleFactor: parseFloat(scaleFactor),
-                            xbase: parseFloat(xbase),
+                            url: url, 
+                            scaleFactor: parseFloat(scaleFactor), 
+                            xbase: parseFloat(xbase), 
                             ybase: parseFloat(ybase)
                         };
                         if (type === 'IMG') {
@@ -284,7 +282,6 @@
             });
             await Promise.all(preloadPromises);
         }
-
 
         function changeScene(sceneKey) {
             const scene = assets[sceneKey];
@@ -343,8 +340,6 @@
             // Notify the parent window that the iframe is fully ready
             window.parent.postMessage('iframeLoaded', '*');
         }
-
-
 
         // Listener for message events from the parent page
         window.addEventListener('message', (event) => {
