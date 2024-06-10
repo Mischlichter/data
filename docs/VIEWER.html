@@ -179,18 +179,13 @@
                 return cachedAsset.blobURL;
             }
 
-            try {
-                const response = await fetch(url);
-                const blob = await response.blob();
-                const blobURL = URL.createObjectURL(blob);
-                imageCache[url] = blobURL;
+            const response = await fetch(url);
+            const blob = await response.blob();
+            const blobURL = URL.createObjectURL(blob);
+            imageCache[url] = blobURL;
 
-                await cacheAsset({ url, blobURL });
-                return blobURL;
-            } catch (error) {
-                console.error('Failed to fetch and cache image:', error);
-                throw error;
-            }
+            await cacheAsset({ url, blobURL });
+            return blobURL;
         }
 
         async function preloadAllAssets() {
