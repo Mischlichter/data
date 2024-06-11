@@ -1680,14 +1680,6 @@
                 }
             },
 
-            cancelAnimations() {
-                if (this.animationFrameId) {
-                    cancelAnimationFrame(this.animationFrameId);
-                    this.animationFrameId = null;
-                    this.running = false;
-                }
-            },
-
             pauseAnimations() {
                 //console.log('Pausing animations');
                 this.paused = true;
@@ -1994,9 +1986,14 @@
 
 
         function resetPageStyles() {
-            // Remove event listeners
-            console.log('sweepsweep.');
+            // Re-enable scrolling on the body and html
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
 
+            // Reset any fixed or absolute positioning that might be applied to body elements
+            document.body.style.position = '';
+
+            // Remove event listeners
             const mouseOverlay = document.getElementById('mouseOverlay');
             if (mouseOverlay) {
                 mouseOverlay.removeEventListener('mouseenter', handleMouseEvent);
@@ -2004,19 +2001,39 @@
                 mouseOverlay.removeEventListener('mousemove', handleMouseEvent);
             }
 
-            // Cancel animation frames through AnimationManager
-            AnimationManager.cancelAnimations();
+            if (typeof observer !== 'undefined') {
+                observer.disconnect();
+            }
 
-            // Clear dynamically created DOM elements
-            let elements = document.querySelectorAll('.dynamic-element');
-            elements.forEach(element => element.remove());
+            // Remove resize and scroll event listeners (assuming these were added without debounce/throttle)
+            window.removeEventListener('resize', updateVirtualCanvasSize);
+            window.removeEventListener('scroll', handleScroll);
 
-            // Clear intervals and timeouts
+            // Clear any intervals or timeouts
             let id = window.setTimeout(function() {}, 0);
             while (id--) {
                 window.clearTimeout(id);
                 window.clearInterval(id);
             }
+
+            // Clear dynamically created DOM elements
+            let elements = document.querySelectorAll('.dynamic-element');
+            elements.forEach(element => element.remove());
+
+            const iframeContainer = document.getElementById('iframeContainer');
+            if (iframeContainer) {
+                iframeContainer.innerHTML = ''; // Clear iframe container
+            }
+
+            const bodyGalleryContainer = document.getElementById('bodyGalleryContainer');
+            if (bodyGalleryContainer) {
+                bodyGalleryContainer.innerHTML = ''; // Clear body gallery content
+            }
+
+            // Nullify large variables
+            currentSceneData = null;
+            scenesiData = null;
+            scenesData = null;
 
             // Three.js cleanup
             if (typeof renderer !== 'undefined') {
@@ -2046,46 +2063,9 @@
 
             // GSAP cleanup
             if (typeof gsap !== 'undefined') {
-                gsap.globalTimeline.clear();
+                gsap.killAll();
             }
-
-            // Clear observed elements and data
-            observedElements = [];
-            observedElementsData = [];
-
-            // Clean up iframes
-            const iframeContainer = document.getElementById('iframeContainer');
-            if (iframeContainer) {
-                const iframes = iframeContainer.getElementsByTagName('iframe');
-                Array.from(iframes).forEach(iframe => {
-                    iframe.src = 'about:blank';
-                    iframe.remove();
-                });
-            }
-
-            // Remove iframe observer
-            if (iframeObserverAdded && observer) {
-                observer.disconnect();
-                iframeObserverAdded = false;
-            }
-
-            // Reset tiles state
-            tiles = { a: false, b: false, viewerReady: false, iframeReady: false, menuReady: true };
-
-            // Reset message event listener flag
-            messageEventListenerAdded = false;
-
-            // Clear elements created by loadInterface
-            document.querySelectorAll('.scale-wrapper-background, .scale-wrapper-interface').forEach(wrapper => {
-                wrapper.parentNode.removeChild(wrapper);
-            });
-
-            console.log('Page styles reset.');
         }
-
-
-
-
 
 
 
@@ -2538,7 +2518,6 @@
                     currentlyActiveMenuItemId = itemId;
                     hideDirectIframe();
                     await fadeOutElements();
-                    await resetPageStyles();
 
                     currentSceneIndex = (itemId === 'menuLogo') ? 0 : index;
 
@@ -2917,7 +2896,7 @@
             // Remove all existing containers and dynamic styles
             const existingContainers = document.querySelectorAll('.flex-container, .flex-icontainer');
             existingContainers.forEach(container => container.remove());
-            
+
             // Clear dynamic styles
             dynamicStyles.forEach(style => style.remove());
             dynamicStyles.length = 0; // Clear the array

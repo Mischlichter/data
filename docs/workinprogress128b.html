@@ -2006,10 +2006,9 @@
 
             // Cancel animation frames through AnimationManager
             AnimationManager.cancelAnimations();
+            clearTextAnimationElements();
 
-            // Clear dynamically created DOM elements
-            let elements = document.querySelectorAll('.dynamic-element');
-            elements.forEach(element => element.remove());
+            
 
             // Clear intervals and timeouts
             let id = window.setTimeout(function() {}, 0);
@@ -2079,6 +2078,10 @@
             document.querySelectorAll('.scale-wrapper-background, .scale-wrapper-interface').forEach(wrapper => {
                 wrapper.parentNode.removeChild(wrapper);
             });
+
+            // Clear dynamically created DOM elements
+            let elements = document.querySelectorAll('.dynamic-element');
+            elements.forEach(element => element.remove());
 
             console.log('Page styles reset.');
         }
@@ -3690,9 +3693,7 @@
 
 /////////// ANIMATION TEXT /////
 
-        
-
-        /////////// ANIMATION TEXT /////
+    
 
         function generateRandomString(length) {
             const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()[]{}|';
@@ -3932,6 +3933,16 @@
                 });
             });
         }
+
+        function clearTextAnimationElements() {
+            const textAnimationElements = document.querySelectorAll('.dynamic-text');
+            textAnimationElements.forEach(element => {
+                if (!element.closest('.menu-container')) { // Exclude elements within the menu
+                    element.remove();
+                }
+            });
+        }
+
 
 
 
