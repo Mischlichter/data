@@ -35,8 +35,7 @@
 
 
 
-    <meta name="referrer" content="no-referrer">
-
+    
     <meta name="robots" content="index, follow">
     
     <title>HogeAI</title>
@@ -1726,9 +1725,7 @@
             }
         };
 
-        const lenis = new Lenis({
-          lerp: 0.042
-        });
+        const lenis = new Lenis();
 
         lenis.on('scroll', () => {
             if (!parallaxAnimationRegistered) {
@@ -1739,11 +1736,8 @@
         });
 
         function throttleUpdateParallax() {
-            if (!isPaused) {
-                requestAnimationFrame(updateParallax);
-            }
+            requestAnimationFrame(updateParallax);
         }
-
 
         function runLenis(timestamp) {
             if (!isPaused) {
@@ -2993,7 +2987,7 @@
             }
         }
 
-       
+        // Attach link to container and handle click events
         function attachLinkToContainer(container, css) {
             const link = extractLinkFromCSS(css);
             if (link) {
@@ -3004,7 +2998,7 @@
                         //console.log("Link clicked: iOS detected, saving state and pausing animations.");
                         saveStateAndPause();
                     }
-                    window.open(link, '_blank', 'noopener noreferrer'); // Open link in new tab with security attributes
+                    window.open(link, '_blank');
                 });
             }
         }
@@ -3012,8 +3006,8 @@
 
 
 
+
         let scrollToTopButton = null;
-        let scrollTimeout = null;
 
         function createScrollToTopButton() {
             if (scrollToTopButton) {
@@ -3043,7 +3037,7 @@
                 z-index: 17;
                 display: none;
                 opacity: 0;
-                transition: opacity 0.5s ease; /* Smooth transition for opacity */
+                transition: opacity 1.5s ease; /* Smooth transition for opacity */
             `;
             document.body.appendChild(scrollToTopButton);
 
@@ -3076,23 +3070,17 @@
         function handleScroll() {
             if (!scrollToTopButton) return;
 
-            clearTimeout(scrollTimeout);
-
-            // Hide button during scrolling
-            scrollToTopButton.style.opacity = 0;
-
-            // Set a timeout to check if scrolling has stopped
-            scrollTimeout = setTimeout(() => {
-                if (window.scrollY > 1111) {
-                    scrollToTopButton.style.display = 'block';
-                    requestAnimationFrame(() => {
-                        scrollToTopButton.style.opacity = 1;
-                    });
-                } else {
-                    scrollToTopButton.style.display = 'none';
-                }
-            }, 500); // Reduced debounce duration for quicker response
+            if (window.scrollY > 1111) {
+                scrollToTopButton.style.display = 'block';
+                setTimeout(() => scrollToTopButton.style.opacity = 1, 1500);
+            } else {
+                scrollToTopButton.style.opacity = 0;
+                setTimeout(() => scrollToTopButton.style.display = 'none', 11);
+            }
         }
+
+
+
 
         
 
@@ -3137,26 +3125,25 @@
             footerContainer.innerHTML = `
                 <div style="display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; margin-top: -4900px;">
                     
-                    <a class="btn btn-outline-light btn-floating m-1" href="https://twitter.com/Funkybrown111" role="button" style="color: white; margin: 0 10px;" target="_blank" rel="noopener noreferrer">
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://twitter.com/Funkybrown111" role="button" style="color: white; margin: 0 10px;">
                         <i class="fa-brands fa-twitter icon-size"></i>
                     </a>
-
-                    <a class="btn btn-outline-light btn-floating m-1" href="https://www.instagram.com/hogeal_bot/" role="button" style="color: white; margin: 0 10px;" target="_blank" rel="noopener noreferrer">
+                    
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://www.instagram.com/hogeal_bot/" role="button" style="color: white; margin: 0 10px;">
                         <i class="fa-brands fa-instagram icon-size"></i>
                     </a>
 
-                    <a class="btn btn-outline-light btn-floating m-1" href="mailto:hogeai@web.de" role="button" style="color: white; margin: 0 15px;" target="_blank" rel="noopener noreferrer">
+                    <a class="btn btn-outline-light btn-floating m-1" href="mailto:hogeai@web.de" role="button" style="color: white; margin: 0 15px;">
                         <i class="fa-solid fa-envelope icon-size"></i>
                     </a>
-
-                    <a class="btn btn-outline-light btn-floating m-1" href="https://t.me/officialhogecommunity" role="button" style="color: white; margin: 0 10px;" target="_blank" rel="noopener noreferrer">
+                    
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://t.me/officialhogecommunity" role="button" style="color: white; margin: 0 10px;">
                         <i class="fa-brands fa-telegram icon-size"></i>
                     </a>
 
-                    <a class="btn btn-outline-light btn-floating m-1" href="https://www.hoge.gg/" role="button" style="color: white; margin: 0 10px;" target="_blank" rel="noopener noreferrer">
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://www.hoge.gg/" role="button" style="color: white; margin: 0 10px;">
                         <i class="fa-solid fa-bone icon-size"></i>
                     </a>
-
                 </div>
                 <div style="margin-top: 5px;">
                     © 2024 Copyright: <a class="text-white" href="https://HogeAI.com/" style="color: white;">HogeAI.com</a>
@@ -3671,8 +3658,6 @@
 
         
 
-        /////////// ANIMATION TEXT /////
-
         function generateRandomString(length) {
             const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()[]{}|';
             let randomString = '';
@@ -3743,6 +3728,14 @@
                 AnimationManager.registerAnimation(step);
             }, delay);
         }
+
+
+
+
+
+
+
+
 
         function createSpansForContainer(containerId, text) {
             const container = document.getElementById(containerId);
@@ -3835,7 +3828,6 @@
 
 
 
-
 ////////ANIMATION SCALING
 
         let preparedContainers = {};
@@ -3915,7 +3907,6 @@
 
 
  
- 
         let observedElements = [];
         let observedElementsData = [];
 
@@ -3929,12 +3920,12 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         if (entry.target.classList.contains('flex-icontainer')) {
-                            if (entry.intersectionRatio >= 0.25 && entry.target.style.opacity !== '1') {
+                            if (entry.intersectionRatio >= 0.25) {
                                 entry.target.style.opacity = 1;
                                 observer.unobserve(entry.target);
                             }
                         } else if (entry.target.classList.contains('animation-container')) {
-                            if (entry.intersectionRatio >= 0.05 && !entry.target.dataset.animationStarted) {
+                            if (entry.intersectionRatio >= 0.05) {
                                 startAnimationForContainer(entry.target.id);
                                 entry.target.dataset.animationStarted = 'true';
                                 observer.unobserve(entry.target);
@@ -3946,7 +3937,6 @@
 
             const observer = new IntersectionObserver(observerCallback, observerOptions);
 
-            // Unobserve previous elements
             observedElements.forEach(element => observer.unobserve(element));
             observedElements = [];
 
@@ -3957,7 +3947,7 @@
 
             elementsToObserve.forEach(element => {
                 if (element && !element.dataset.observed) {
-                    if (element.classList.contains('flex-icontainer') && element.style.opacity !== '0') {
+                    if (element.classList.contains('flex-icontainer')) {
                         element.style.opacity = 0;
                     } else if (!element.classList.contains('animation-container')) {
                         element.classList.add('animation-container');
@@ -3968,7 +3958,6 @@
                 }
             });
         }
-
 
         function saveElementsViewportPosition() {
             observedElementsData = observedElements.map(element => ({
