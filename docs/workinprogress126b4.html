@@ -35,7 +35,8 @@
 
 
 
-    
+    <meta name="referrer" content="no-referrer">
+
     <meta name="robots" content="index, follow">
     
     <title>HogeAI</title>
@@ -1791,13 +1792,11 @@
         if (isIOS) {
             document.addEventListener('visibilitychange', () => {
                 if (document.visibilityState === 'visible') {
+                    //console.log("Visibility change detected, restoring state and resuming animations.");
                     restoreStateAndResume();
-                } else if (document.visibilityState === 'hidden') {
-                    saveStateAndPause();
                 }
-            });
+            }, { once: true }); // Ensuring the listener is only installed once
         }
-
 
 
 
@@ -2995,13 +2994,7 @@
             if (link) {
                 //console.log("Attaching link", link, "to container", container.id);
                 container.style.cursor = 'pointer'; // Changes the cursor to pointer to indicate it's clickable
-                container.addEventListener('click', (event) => {
-                    if (isIOS2) {
-                        //console.log("Link clicked: iOS detected, saving state and pausing animations.");
-                        saveStateAndPause();
-                    }
-                    window.open(link, '_blank');
-                });
+                
             }
         }
 
@@ -3127,25 +3120,26 @@
             footerContainer.innerHTML = `
                 <div style="display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; margin-top: -4900px;">
                     
-                    <a class="btn btn-outline-light btn-floating m-1" href="https://twitter.com/Funkybrown111" role="button" style="color: white; margin: 0 10px;">
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://twitter.com/Funkybrown111" role="button" style="color: white; margin: 0 10px;" target="_blank" rel="noopener noreferrer">
                         <i class="fa-brands fa-twitter icon-size"></i>
                     </a>
-                    
-                    <a class="btn btn-outline-light btn-floating m-1" href="https://www.instagram.com/hogeal_bot/" role="button" style="color: white; margin: 0 10px;">
+
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://www.instagram.com/hogeal_bot/" role="button" style="color: white; margin: 0 10px;" target="_blank" rel="noopener noreferrer">
                         <i class="fa-brands fa-instagram icon-size"></i>
                     </a>
 
-                    <a class="btn btn-outline-light btn-floating m-1" href="mailto:hogeai@web.de" role="button" style="color: white; margin: 0 15px;">
+                    <a class="btn btn-outline-light btn-floating m-1" href="mailto:hogeai@web.de" role="button" style="color: white; margin: 0 15px;" target="_blank" rel="noopener noreferrer">
                         <i class="fa-solid fa-envelope icon-size"></i>
                     </a>
-                    
-                    <a class="btn btn-outline-light btn-floating m-1" href="https://t.me/officialhogecommunity" role="button" style="color: white; margin: 0 10px;">
+
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://t.me/officialhogecommunity" role="button" style="color: white; margin: 0 10px;" target="_blank" rel="noopener noreferrer">
                         <i class="fa-brands fa-telegram icon-size"></i>
                     </a>
 
-                    <a class="btn btn-outline-light btn-floating m-1" href="https://www.hoge.gg/" role="button" style="color: white; margin: 0 10px;">
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://www.hoge.gg/" role="button" style="color: white; margin: 0 10px;" target="_blank" rel="noopener noreferrer">
                         <i class="fa-solid fa-bone icon-size"></i>
                     </a>
+
                 </div>
                 <div style="margin-top: 5px;">
                     © 2024 Copyright: <a class="text-white" href="https://HogeAI.com/" style="color: white;">HogeAI.com</a>
