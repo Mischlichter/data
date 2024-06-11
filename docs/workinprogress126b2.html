@@ -1679,19 +1679,22 @@
                 }
             },
 
-            pause() {
-                this.running = false;
-                isPaused = true;
+            pauseAnimations() {
+                console.log('Pausing animations');
+                this.paused = true;
+                this.running = false; // Stop the running loop
                 this.saveState();
-                console.log('Animations paused.');
             },
 
-            resume() {
-                if (!this.running && this.animations.length > 0) {
-                    this.running = true;
-                    isPaused = false;
-                    requestAnimationFrame(this.runAnimations.bind(this));
-                    console.log('Animations resumed.');
+            resumeAnimations() {
+                if (this.paused) {
+                    console.log('Resuming animations');
+                    this.paused = false;
+                    this.restoreState();
+                    if (!this.running && this.animations.length > 0) {
+                        this.running = true;
+                        requestAnimationFrame(this.runAnimations.bind(this));
+                    }
                 }
             },
 
@@ -1765,12 +1768,9 @@
 
         // Save state and pause animations before navigation
         function saveStateAndPause() {
-            isPaused = true;
-            AnimationManager.pause();
-            savedState = {
-                scrollY: window.scrollY,
-                animations: [...AnimationManager.animations],
-            };
+         
+            AnimationManager.pauseAnimations();
+            AnimationManager.saveState();
             console.log('State saved and animations paused.');
         }
 
@@ -1778,12 +1778,10 @@
         function restoreStateAndResume() {
             if (savedState) {
                 console.log('Restoring state...');
-                window.scrollTo(0, savedState.scrollY);
-                AnimationManager.animations = savedState.animations;
-                isPaused = false;
+             
                 AnimationManager.restoreState();
                 console.log('State restored, resuming animations...');
-                AnimationManager.resume();
+                AnimationManager.resumeAnimations();
             } else {
                 console.log('No saved state to restore.');
             }
