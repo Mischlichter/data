@@ -1760,9 +1760,9 @@
         }
 
         // Handle pageshow event to resume animations when coming back
-        window.addEventListener('pageshow', (event) => {
-            if (isIOS && event.persisted) { // event.persisted is true when coming back from bfcache
-                console.log("Pageshow event detected, restoring state and resuming animations.");
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+                console.log("Visibility change detected, restoring state and resuming animations.");
                 restoreStateAndResume();
             }
         });
