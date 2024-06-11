@@ -739,7 +739,7 @@
             overflow: hidden;
         }
 
-
+        
     </style>
 
     
@@ -2991,7 +2991,7 @@
         function attachLinkToContainer(container, css) {
             const link = extractLinkFromCSS(css);
             if (link) {
-                console.log("Attaching link", link, "to container", container.id);
+                //console.log("Attaching link", link, "to container", container.id);
                 container.style.cursor = 'pointer'; // Changes the cursor to pointer to indicate it's clickable
                 container.addEventListener('click', (event) => {
                     if (isIOS) {
