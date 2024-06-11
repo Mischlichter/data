@@ -739,7 +739,7 @@
             overflow: hidden;
         }
 
-        
+
     </style>
 
     
@@ -1641,13 +1641,15 @@
 
         const isGyroDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
+
         let lastScrollY = 0;
         let lenisInitialized = false;
         let parallaxAnimationRegistered = false;
         let animateRegistered = false;
         let mouseEventListenersAdded = false;
-        let savedState = null;
-        let isPaused = false;
+       
+        
+    
 
         const AnimationManager = {
             frameCap: 60, // Increase frame cap for smoother animations
@@ -1666,7 +1668,6 @@
             },
 
             runAnimations(timestamp) {
-                if (isPaused) return;
                 let progress = timestamp - this.lastRender;
                 if (progress > 1000 / this.frameCap) {
                     this.lastRender = timestamp - (progress % (1000 / this.frameCap));
@@ -1676,51 +1677,6 @@
                     requestAnimationFrame(this.runAnimations.bind(this));
                 } else {
                     this.running = false;
-                }
-            },
-
-            pauseAnimations() {
-                //console.log('Pausing animations');
-                this.paused = true;
-                this.running = false; // Stop the running loop
-                this.saveState();
-            },
-
-            resumeAnimations() {
-                if (this.paused) {
-                    //console.log('Resuming animations');
-                    this.paused = false;
-                    this.restoreState();
-                    if (!this.running && this.animations.length > 0) {
-                        this.running = true;
-                        requestAnimationFrame(this.runAnimations.bind(this));
-                    }
-                }
-            },
-
-            saveState() {
-                try {
-                    const state = {
-                        lastRender: this.lastRender,
-                        // Add any other state properties needed
-                    };
-                    localStorage.setItem('animationState', JSON.stringify(state));
-                    //console.log('Animation state saved.');
-                } catch (error) {
-                    console.error('Error saving animation state:', error);
-                }
-            },
-
-            restoreState() {
-                try {
-                    const state = JSON.parse(localStorage.getItem('animationState'));
-                    if (state) {
-                        this.lastRender = state.lastRender;
-                        // Restore other animation-related state if needed
-                        //console.log('Animation state restored.');
-                    }
-                } catch (error) {
-                    console.error('Error restoring animation state:', error);
                 }
             }
         };
@@ -1740,16 +1696,15 @@
         }
 
         function runLenis(timestamp) {
-            if (!isPaused) {
-                lenis.raf(timestamp);
-                requestAnimationFrame(runLenis);
-            }
+            lenis.raf(timestamp);
+            requestAnimationFrame(runLenis);
         }
 
         if (!lenisInitialized) {
             lenisInitialized = true;
             requestAnimationFrame(runLenis);
         }
+
 
         function scrollToTop() {
             if (typeof window !== 'undefined') {
@@ -1765,38 +1720,6 @@
                 }
             }
         }
-
-        // Save state and pause animations before navigation
-        function saveStateAndPause() {
-            if (isIOS) {
-                AnimationManager.pauseAnimations();
-                savedState = AnimationManager.saveState(); // Assuming saveState returns the state
-                //console.log('State saved and animations paused.');
-            }
-        }
-
-        function restoreStateAndResume() {
-            if (isIOS) {
-                if (savedState) {
-                    //console.log('Restoring state...');
-                    AnimationManager.restoreState(savedState);
-                    //console.log('State restored, resuming animations...');
-                    AnimationManager.resumeAnimations();
-                } else {
-                    console.log('No saved state to restore.');
-                }
-            }
-        }
-
-        if (isIOS) {
-            document.addEventListener('visibilitychange', () => {
-                if (document.visibilityState === 'visible') {
-                    //console.log("Visibility change detected, restoring state and resuming animations.");
-                    restoreStateAndResume();
-                }
-            }, { once: true }); // Ensuring the listener is only installed once
-        }
-
 
 
 
@@ -2882,6 +2805,8 @@
             let formattedSceneKey = scene.sceneKey.length === 6 ? `scene0${scene.sceneKey.charAt(5)}` : scene.sceneKey;
             lenis.stop();
 
+
+            
             // Update the iframe with the new scene
             updateIframe(formattedSceneKey);
 
@@ -2897,6 +2822,10 @@
             handleScroll();
             loadInterface(index);
 
+            
+            //console.log('Formatted Scene Key:', formattedSceneKey);
+            
+            
             // Merge and sort text and image containers
             let combinedData = [];
             Object.keys(scene.containers).forEach(key => {
@@ -2918,23 +2847,38 @@
             // Function to get the image from the cache
             async function getCachedImage(url) {
                 try {
+                    // Open the specified cache
                     const cache = await caches.open('site-assets');
+                    
+                    // Try to find a match for the URL in the cache
                     const response = await cache.match(url);
+                    
                     if (response) {
+                        // If a match is found, convert the response to a Blob
                         const blob = await response.blob();
+                        
+                        // Create a local URL for the Blob object
                         const objectURL = URL.createObjectURL(blob);
+                        
+                        // Log that the cached file is being used
+                        //console.log(`Using cached file for URL: ${url}`);
+                        
+                        // Return the local URL for use in your application
                         return objectURL;
                     } else {
+                        // Log that the cached file was not found
                         console.log(`Cached file not found for URL: ${url}, downloading...`);
                     }
                 } catch (error) {
                     console.error(`Error fetching cached image for URL ${url}:`, error);
                 }
+                
+                // Log that the original URL is being used as fallback
+                console.log(`Falling back to original URL: ${url}`);
                 return url;
             }
 
             triggerOrientationWithoutCalibration();
-
             // Create containers in sorted order
             combinedData.forEach(async (item) => {
                 const container = document.createElement('div');
@@ -2943,7 +2887,6 @@
                 document.body.appendChild(container);
 
                 if (item.type === 'text') {
-                    //console.log('Processing text item:', item.key);
                     attachLinkToContainer(container, item.content.style);
                 }
 
@@ -2955,7 +2898,10 @@
                 if (item.type === 'image') {
                     const image = document.createElement('img');
                     const cachedImage = await getCachedImage(item.content.src);
+
                     image.src = cachedImage;
+                    //console.log(`Loaded image from cache or network: ${item.content.src}`);
+
                     container.appendChild(image);
                 }
             });
@@ -2968,41 +2914,13 @@
             // Update containers when loading a new scene
             updateAllContainers(scene);
 
+            
             observeElementsForAnimations();
             createScrollToTopButton();
             highlightActiveMenuItem(`menuContainer${index}`);
+
+
         }
-
-
-
-        function extractLinkFromCSS(css) {
-            const linkPattern = /\/\* link: (.*) \*\//; // Pattern to extract URL from comment
-            const match = css.match(linkPattern);
-            if (match) {
-                //console.log("Extracted link:", match[1].trim());
-                return match[1].trim();
-            } else {
-                //console.log("No link found in CSS.");
-                return null;
-            }
-        }
-
-        // Attach link to container and handle click events
-        function attachLinkToContainer(container, css) {
-            const link = extractLinkFromCSS(css);
-            if (link) {
-                //console.log("Attaching link", link, "to container", container.id);
-                container.style.cursor = 'pointer'; // Changes the cursor to pointer to indicate it's clickable
-                container.addEventListener('click', (event) => {
-                    if (isIOS) {
-                        //console.log("Link clicked: iOS detected, saving state and pausing animations.");
-                        saveStateAndPause();
-                    }
-                    window.open(link, '_blank');
-                });
-            }
-        }
-
 
 
 
@@ -3082,7 +3000,27 @@
 
 
 
-        
+        function extractLinkFromCSS(css) {
+            const linkPattern = /\/\* link: (.*) \*\//; // Pattern to extract URL from comment
+            const match = css.match(linkPattern);
+            if (match) {
+                //console.log("Extracted link:", match[1].trim());
+                return match[1].trim();
+            } else {
+                //console.log("No link found in CSS.");
+                return null;
+            }
+        }
+
+        function attachLinkToContainer(container, css) {
+            const link = extractLinkFromCSS(css);
+            if (link) {
+                //console.log("Attaching link", link, "to container", container.id);
+                container.style.cursor = 'pointer'; // Changes the cursor to pointer to indicate it's clickable
+                container.onclick = () => window.open(link, '_blank'); // Opens the link in a new tab when clicked
+            }
+        }
+
 
 
 
