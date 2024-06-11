@@ -1680,7 +1680,7 @@
             },
 
             pauseAnimations() {
-                console.log('Pausing animations');
+                //console.log('Pausing animations');
                 this.paused = true;
                 this.running = false; // Stop the running loop
                 this.saveState();
@@ -1688,7 +1688,7 @@
 
             resumeAnimations() {
                 if (this.paused) {
-                    console.log('Resuming animations');
+                    //console.log('Resuming animations');
                     this.paused = false;
                     this.restoreState();
                     if (!this.running && this.animations.length > 0) {
@@ -1705,7 +1705,7 @@
                         // Add any other state properties needed
                     };
                     localStorage.setItem('animationState', JSON.stringify(state));
-                    console.log('Animation state saved.');
+                    //console.log('Animation state saved.');
                 } catch (error) {
                     console.error('Error saving animation state:', error);
                 }
@@ -1717,7 +1717,7 @@
                     if (state) {
                         this.lastRender = state.lastRender;
                         // Restore other animation-related state if needed
-                        console.log('Animation state restored.');
+                        //console.log('Animation state restored.');
                     }
                 } catch (error) {
                     console.error('Error restoring animation state:', error);
@@ -1771,16 +1771,16 @@
             if (isIOS) {
                 AnimationManager.pauseAnimations();
                 savedState = AnimationManager.saveState(); // Assuming saveState returns the state
-                console.log('State saved and animations paused.');
+                //console.log('State saved and animations paused.');
             }
         }
 
         function restoreStateAndResume() {
             if (isIOS) {
                 if (savedState) {
-                    console.log('Restoring state...');
+                    //console.log('Restoring state...');
                     AnimationManager.restoreState(savedState);
-                    console.log('State restored, resuming animations...');
+                    //console.log('State restored, resuming animations...');
                     AnimationManager.resumeAnimations();
                 } else {
                     console.log('No saved state to restore.');
@@ -1791,7 +1791,7 @@
         if (isIOS) {
             document.addEventListener('visibilitychange', () => {
                 if (document.visibilityState === 'visible') {
-                    console.log("Visibility change detected, restoring state and resuming animations.");
+                    //console.log("Visibility change detected, restoring state and resuming animations.");
                     restoreStateAndResume();
                 }
             }, { once: true }); // Ensuring the listener is only installed once
