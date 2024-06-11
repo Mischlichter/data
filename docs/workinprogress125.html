@@ -2798,23 +2798,29 @@
         const dynamicStyles = [];
 
         function attachLinkToContainer(container, style) {
-            const links = container.querySelectorAll('a');
+            // Use event delegation to handle link clicks
+            container.innerHTML = style;
+            const parentElement = document.body; // Choose an appropriate parent element
 
-            links.forEach(link => {
-                link.addEventListener('click', function (event) {
-                    event.preventDefault();
-                    event.stopPropagation();
+            // Ensure the event listener is attached only once
+            if (!parentElement.hasEventListener) {
+                parentElement.hasEventListener = true;
 
-                    // Handle the link click as needed
-                    const href = link.getAttribute('href');
-                    console.log(`Link clicked: ${href}`);
-                    
-                    // Assuming you have a custom handler for link navigation
-                    handleLinkNavigation(href);
+                parentElement.addEventListener('click', function(event) {
+                    const target = event.target.closest('a');
+                    if (target && container.contains(target)) {
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                        // Handle the link click as needed
+                        const href = target.getAttribute('href');
+                        console.log(`Link clicked: ${href}`);
+                        
+                        // Assuming you have a custom handler for link navigation
+                        handleLinkNavigation(href);
+                    }
                 });
-            });
-
-            container.innerHTML = style; // Insert the style content
+            }
         }
 
         function handleLinkNavigation(href) {
@@ -2823,6 +2829,7 @@
             // For example, you could use window.location or a custom router
             window.location.href = href;
         }
+
 
 
   
