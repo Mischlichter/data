@@ -1641,15 +1641,12 @@
 
         const isGyroDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-
         let lastScrollY = 0;
         let lenisInitialized = false;
         let parallaxAnimationRegistered = false;
         let animateRegistered = false;
         let mouseEventListenersAdded = false;
-       
-        
-    
+        let savedState = null;
 
         const AnimationManager = {
             frameCap: 60, // Increase frame cap for smoother animations
@@ -1678,6 +1675,17 @@
                 } else {
                     this.running = false;
                 }
+            },
+
+            pause() {
+                this.running = false;
+            },
+
+            resume() {
+                if (!this.running && this.animations.length > 0) {
+                    this.running = true;
+                    requestAnimationFrame(this.runAnimations.bind(this));
+                }
             }
         };
 
@@ -1705,7 +1713,6 @@
             requestAnimationFrame(runLenis);
         }
 
-
         function scrollToTop() {
             if (typeof window !== 'undefined') {
                 window.scrollTo({
@@ -1720,6 +1727,44 @@
                 }
             }
         }
+
+        // Save state and pause animations before navigation
+        function saveStateAndPause() {
+            savedState = {
+                scrollY: window.scrollY,
+                animations: [...AnimationManager.animations],
+                lenisState: lenis // Assuming Lenis has a state that can be saved
+            };
+            AnimationManager.pause();
+            lenis.stop(); // Assuming Lenis has a stop method
+        }
+
+        // Restore state and resume animations upon returning
+        function restoreStateAndResume() {
+            if (savedState) {
+                window.scrollTo(0, savedState.scrollY);
+                AnimationManager.animations = savedState.animations;
+                lenis.start(); // Assuming Lenis has a start method
+                AnimationManager.resume();
+            }
+        }
+
+        // Add event listeners for link clicks
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', (event) => {
+                if (isIOS) {
+                    saveStateAndPause();
+                }
+            });
+        });
+
+        // Resume animations when coming back
+        window.addEventListener('pageshow', (event) => {
+            if (isIOS && event.persisted) { // event.persisted is true when coming back from bfcache
+                restoreStateAndResume();
+            }
+        });
+
 
 
 
