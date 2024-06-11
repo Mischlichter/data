@@ -3017,7 +3017,7 @@
             if (link) {
                 //console.log("Attaching link", link, "to container", container.id);
                 container.style.cursor = 'pointer'; // Changes the cursor to pointer to indicate it's clickable
-                window.open(link, '_blank', 'noopener noreferrer'); // Opens the link in a new tab when clicked
+                container.onclick = () => window.open(link, '_blank', 'noopener noreferrer'); // Opens the link in a new tab when clicked
             }
         }
 
