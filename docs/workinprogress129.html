@@ -560,7 +560,7 @@
 
         #backgroundInterfaceContainer {
             position: absolute;
-            top: 0;
+            top: 1096px;
             left: calc((100% - var(--viewer-width)) / 2); /* Center the viewer */
             width: var(--viewer-width);
             height: 100%;
@@ -1668,7 +1668,7 @@
 
             runAnimations(timestamp) {
                 if (isPaused) return;
-                let progress = timestamp - this.lastRender;
+                const progress = timestamp - this.lastRender;
                 if (progress > 1000 / this.frameCap) {
                     this.lastRender = timestamp - (progress % (1000 / this.frameCap));
                     this.animations = this.animations.filter(step => step(timestamp) !== false);
@@ -1989,7 +1989,6 @@
 
 
         function resetPageStyles() {
-            // Remove event listeners
             console.log('sweepsweep.');
 
             const mouseOverlay = document.getElementById('mouseOverlay');
@@ -1999,21 +1998,19 @@
                 mouseOverlay.removeEventListener('mousemove', handleMouseEvent);
             }
 
-            // Cancel animation frames through AnimationManager
             AnimationManager.cancelAnimations();
+            clearTextAnimationElements();
 
-            // Clear dynamically created DOM elements
-            let elements = document.querySelectorAll('.dynamic-element');
-            elements.forEach(element => element.remove());
+            if (typeof gsap !== 'undefined') {
+                gsap.globalTimeline.clear();
+            }
 
-            // Clear intervals and timeouts
             let id = window.setTimeout(function() {}, 0);
             while (id--) {
                 window.clearTimeout(id);
                 window.clearInterval(id);
             }
 
-            // Three.js cleanup
             if (typeof renderer !== 'undefined') {
                 renderer.dispose();
                 renderer.forceContextLoss();
@@ -2039,16 +2036,18 @@
                 camera = null;
             }
 
-            // GSAP cleanup
             if (typeof gsap !== 'undefined') {
                 gsap.globalTimeline.clear();
             }
 
-            // Clear observed elements and data
             observedElements = [];
             observedElementsData = [];
 
-            // Clean up iframes
+            if (iframeObserverAdded && observer) {
+                observer.disconnect();
+                iframeObserverAdded = false;
+            }
+
             const iframeContainer = document.getElementById('iframeContainer');
             if (iframeContainer) {
                 const iframes = iframeContainer.getElementsByTagName('iframe');
@@ -2058,27 +2057,17 @@
                 });
             }
 
-            // Remove iframe observer
-            if (iframeObserverAdded && observer) {
-                observer.disconnect();
-                iframeObserverAdded = false;
-            }
-
-            // Reset tiles state
             tiles = { a: false, b: false, viewerReady: false, iframeReady: false, menuReady: true };
-
-            // Reset message event listener flag
             messageEventListenerAdded = false;
 
-            // Clear elements created by loadInterface
             document.querySelectorAll('.scale-wrapper-background, .scale-wrapper-interface').forEach(wrapper => {
                 wrapper.parentNode.removeChild(wrapper);
             });
 
+            document.querySelectorAll('.dynamic-element').forEach(element => element.remove());
+
             console.log('Page styles reset.');
         }
-
-
 
 
 
@@ -2204,6 +2193,7 @@
             mouseOverlay.addEventListener('mouseenter', (e) => handleMouseEvent(e, 'enter'));
             mouseOverlay.addEventListener('mouseleave', (e) => handleMouseEvent(e, 'leave'));
             mouseOverlay.addEventListener('mousemove', (e) => handleMouseEvent(e, 'move'));
+            
             mouseEventListenersAdded = true; // Set the flag to true after adding the listeners
         }
 
@@ -3107,7 +3097,7 @@
                 } else {
                     scrollToTopButton.style.display = 'none';
                 }
-            }, 250); // Reduced debounce duration for quicker response
+            }, 500); // Reduced debounce duration for quicker response
         }
 
         
@@ -3443,7 +3433,7 @@
 
                 container.appendChild(containerDiv);
 
-                //delayedVirtualCanvasUpdate();
+                delayedVirtualCanvasUpdate();
 
                 resolve();
             }).then(() => {
@@ -3473,7 +3463,11 @@
             });
         }
 
-
+        function delayedVirtualCanvasUpdate() {
+            // Delay the call to updateVirtualCanvasSize
+            
+            setTimeout(updateVirtualCanvasSize, 100); // Delay of 100 milliseconds
+        }
 
 
 
@@ -3683,11 +3677,10 @@
             });
         }
 
+
 /////////// ANIMATION TEXT /////
 
-        
-
-        /////////// ANIMATION TEXT /////
+    
 
         function generateRandomString(length) {
             const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()[]{}|';
@@ -3927,6 +3920,16 @@
                 });
             });
         }
+
+        function clearTextAnimationElements() {
+            const textAnimationElements = document.querySelectorAll('.dynamic-text');
+            textAnimationElements.forEach(element => {
+                if (!element.closest('.menu-container')) { // Exclude elements within the menu
+                    element.remove();
+                }
+            });
+        }
+
 
 
 

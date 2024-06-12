@@ -1040,8 +1040,6 @@ PIXI.DepthPerspectiveFilter = function(texture, quality, sprite)
         canvas.style.position = 'absolute';
         canvas.style.transform = size.transform;
         canvas.style.top = size.top;  // Set top based on the orientation
-        canvas.style.border = '50px solid black'; // Add border dynamically
-        canvas.style.background = 'black'; // Add border dynamically
 
         if (renderer && (renderer.width !== stageSize.width || renderer.height !== stageSize.height)) {
             renderer.resize(stageSize.width, stageSize.height);

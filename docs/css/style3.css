@@ -58,7 +58,7 @@ html, body {
     
     top: 0;
     left: 0;
-    background-color: black;
+    
     
 }
 
@@ -66,3 +66,9 @@ html, body {
     top: 0;
     left: 0;
 }
+
+.canvas {
+
+    border: 50px solid black;
+}
+
