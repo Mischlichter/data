@@ -4259,7 +4259,8 @@
             }
         }, { passive: false });
 
-        // Prevent double-tap zoom on iOS
+    
+        // Prevent double-ttap zoom and horizontal scroll
         let lastTouchEnd = 0;
         document.addEventListener('touchend', function(event) {
             let now = (new Date()).getTime();
@@ -4267,7 +4268,14 @@
                 event.preventDefault();
             }
             lastTouchEnd = now;
+
+            if (window.scrollX > 0) {
+                lenis.scrollTo(0, {
+                    duration: 0 // Instant scroll
+                });
+            }
         }, { passive: false });
+
 
 
         // Prevent scroll-zoom in desktop browsers
