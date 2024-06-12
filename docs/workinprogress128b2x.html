@@ -3663,11 +3663,7 @@
             const speedFactorBackground = 0.3;
             const speedFactorSides = -1.2;
             const speedFactorViewer = -0.3;
-
-            const devicePixelRatio = window.devicePixelRatio || 1;
-            const adjustedSpeedFactorBackground = speedFactorBackground / devicePixelRatio;
-            const adjustedSpeedFactorSides = speedFactorSides / devicePixelRatio;
-            const adjustedSpeedFactorViewer = speedFactorViewer / devicePixelRatio;
+            const backgroundSpeedMultiplier = isIOS ? 2 : 1; // Increased multiplier for faster background speed on iOS
 
             const scrollY = window.scrollY;
 
@@ -3680,22 +3676,14 @@
             const sideRight = document.getElementById('interfaceSideRight');
             const viewerContainer = document.getElementById('interfaceViewerContainer');
 
-            if (isIOS) {
-                requestAnimationFrame(() => {
-                    if (background) {
-                        const offsetBackground = scrollY * adjustedSpeedFactorBackground;
-                        background.style.transform = `translateY(${offsetBackground}px)`;
-                        background.style.willChange = 'transform';
-                    }
-                });
-            } else {
-                requestAnimationFrame(() => {
-                    if (background) {
-                        const offsetBackground = scrollY * speedFactorBackground;
-                        background.style.transform = `translateY(${offsetBackground}px)`;
-                        background.style.willChange = 'transform';
-                    }
+            requestAnimationFrame(() => {
+                if (background) {
+                    const offsetBackground = scrollY * speedFactorBackground * backgroundSpeedMultiplier;
+                    background.style.transform = `translateY(${offsetBackground}px)`;
+                    background.style.willChange = 'transform';
+                }
 
+                if (!isIOS) {
                     if (sideLeft && sideRight) {
                         const offsetSides = scrollY * speedFactorSides;
                         sideLeft.style.transform = `translateY(${offsetSides}px)`;
@@ -3709,9 +3697,10 @@
                         viewerContainer.style.transform = `translateY(${offsetViewer}px)`;
                         viewerContainer.style.willChange = 'transform';
                     }
-                });
-            }
+                }
+            });
         }
+
 
 
 
