@@ -1651,7 +1651,7 @@
         let isPaused = false;
 
         const AnimationManager = {
-            frameCap: 60,
+            frameCap: 60, // Increase frame cap for smoother animations
             lastRender: performance.now(),
             animations: [],
             running: false,
@@ -1689,13 +1689,15 @@
             },
 
             pauseAnimations() {
+                //console.log('Pausing animations');
                 this.paused = true;
-                this.running = false;
+                this.running = false; // Stop the running loop
                 this.saveState();
             },
 
             resumeAnimations() {
                 if (this.paused) {
+                    //console.log('Resuming animations');
                     this.paused = false;
                     this.restoreState();
                     if (!this.running && this.animations.length > 0) {
@@ -1709,8 +1711,10 @@
                 try {
                     const state = {
                         lastRender: this.lastRender,
+                        // Add any other state properties needed
                     };
                     localStorage.setItem('animationState', JSON.stringify(state));
+                    //console.log('Animation state saved.');
                 } catch (error) {
                     console.error('Error saving animation state:', error);
                 }
@@ -1721,13 +1725,14 @@
                     const state = JSON.parse(localStorage.getItem('animationState'));
                     if (state) {
                         this.lastRender = state.lastRender;
+                        // Restore other animation-related state if needed
+                        //console.log('Animation state restored.');
                     }
                 } catch (error) {
                     console.error('Error restoring animation state:', error);
                 }
             }
         };
-
 
         const lenis = new Lenis({
           lerp: 0.042
