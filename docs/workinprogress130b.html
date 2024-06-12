@@ -282,6 +282,7 @@
             box-sizing: border-box;
             background-color: black;
             pointer-events: none;
+            touch-action: none;
 
         }
 
@@ -295,6 +296,7 @@
             transform: translate(-50%, -50%); /* Center the image */
             object-fit: cover; /* Ensure the image covers the container */
             pointer-events: none;
+            touch-action: none;
         }
 
 
@@ -4239,88 +4241,21 @@
 
 
         (function() {
-            // Check if the device is iOS
-            if (isIOS) {
-                document.documentElement.style.touchAction = 'pan-y';
+            let lastTouchEnd = 0;
 
-                const evCache = [];
-                let prevDiff = -1;
-
-                function pointerdownHandler(ev) {
-                    evCache.push(ev);
+            function handleTouchEnd(event) {
+                const now = (new Date()).getTime();
+                if (now - lastTouchEnd <= 1000) {
+                    event.preventDefault();
                 }
+                lastTouchEnd = now;
+            }
 
-                function pointermoveHandler(ev) {
-                    const index = evCache.findIndex(cachedEv => cachedEv.pointerId === ev.pointerId);
-                    evCache[index] = ev;
-                    if (evCache.length === 2) {
-                        const curDiff = Math.abs(evCache[0].clientX - evCache[1].clientX);
-                        if (prevDiff > 0) {
-                            if (curDiff !== prevDiff) {
-                                ev.preventDefault();
-                            }
-                        }
-                        prevDiff = curDiff;
-                    }
-                }
-
-                function pointerupHandler(ev) {
-                    const index = evCache.findIndex(cachedEv => cachedEv.pointerId === ev.pointerId);
-                    evCache.splice(index, 1);
-                    if (evCache.length < 2) {
-                        prevDiff = -1;
-                    }
-                }
-
-                // Gesture event handlers to prevent pinch zoom
-                function handleGestureStart(e) {
-                    e.preventDefault();
-                }
-
-                function handleGestureChange(e) {
-                    e.preventDefault();
-                }
-
-                function handleGestureEnd(e) {
-                    e.preventDefault();
-                }
-
-                // Touchend event handler to prevent double tap zoom
-                let lastTouchEnd = 0;
-
-                function handleTouchEnd(event) {
-                    const now = (new Date()).getTime();
-                    if (now - lastTouchEnd <= 1000) {
-                        event.preventDefault();
-                    }
-                    lastTouchEnd = now;
-                }
-
-                // Self-installing script to add event listeners only once
-                if (!document.touchEndListenerAdded) {
-                    document.addEventListener('touchend', handleTouchEnd, { passive: false });
-                    document.touchEndListenerAdded = true;
-                }
-
-                if (!document.pointerListenerAdded) {
-                    document.addEventListener('pointerdown', pointerdownHandler);
-                    document.addEventListener('pointermove', pointermoveHandler);
-                    document.addEventListener('pointerup', pointerupHandler);
-                    document.addEventListener('pointercancel', pointerupHandler);
-                    document.addEventListener('pointerout', pointerupHandler);
-                    document.addEventListener('pointerleave', pointerupHandler);
-                    document.pointerListenerAdded = true;
-                }
-
-                if (!document.gestureListenerAdded) {
-                    document.addEventListener('gesturestart', handleGestureStart);
-                    document.addEventListener('gesturechange', handleGestureChange);
-                    document.addEventListener('gestureend', handleGestureEnd);
-                    document.gestureListenerAdded = true;
-                }
+            if (!document.touchEndListenerAdded) {
+                document.addEventListener('touchend', handleTouchEnd, { passive: false });
+                document.touchEndListenerAdded = true;
             }
         })();
-
 
 
 
