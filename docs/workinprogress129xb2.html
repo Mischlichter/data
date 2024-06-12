@@ -1735,8 +1735,10 @@
         };
 
         const lenis = new Lenis({
-          lerp: 0.042
+            lerp: 0.042,
+            smoothTouch: true
         });
+
 
         lenis.on('scroll', () => {
             if (!parallaxAnimationRegistered) {
@@ -4265,10 +4267,8 @@
         });
 
         
-  
-        // Event listener for touchend
-        function getMaxScrollLeft() {
-            return document.documentElement.scrollWidth - window.innerWidth;
+        function getMinScrollLeft() {
+            return 0;
         }
 
         // Event listener for touchend
@@ -4278,9 +4278,12 @@
             
             // First timeout to introduce a delay after stopping Lenis
             setTimeout(() => {
-                // Only reset horizontal scroll if it's not already at the leftmost position
-                if (window.scrollX !== 0) {
-                    window.scrollTo(0, window.scrollY);
+                // Calculate the minimum scroll left position
+                const minScrollLeft = getMinScrollLeft();
+                
+                // Only reset horizontal scroll if it's not already at the minimum scroll left position
+                if (window.scrollX !== minScrollLeft) {
+                    window.scrollTo(minScrollLeft, window.scrollY);
                 }
                 
                 // Second timeout to introduce a delay before starting Lenis again
