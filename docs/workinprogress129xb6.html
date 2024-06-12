@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/Mischlichter/data/main/gallerycom/65411740980.jpg">
@@ -187,9 +187,11 @@
             padding: 0;
             transition: color 0.3s ease;
             max-width: 100vw;
-            overflow-x: hidden;
-           
-            touch-action: none;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+            touch-action: pan-y; /* Allow vertical panning, disable everything else */
+            -webkit-user-select: none; /* Prevent text selection */
+            -ms-user-select: none;
+            user-select: none;
             
         }
 
