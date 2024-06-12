@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=1, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/Mischlichter/data/main/gallerycom/65411740980.jpg">
@@ -187,11 +187,8 @@
             padding: 0;
             transition: color 0.3s ease;
             max-width: 100vw;
-            overflow-x: hidden; /* Prevent horizontal scrolling */
-            touch-action: pan-y; /* Allow vertical panning, disable everything else */
-            -webkit-user-select: none; /* Prevent text selection */
-            -ms-user-select: none;
-            user-select: none;
+            overflow-x: hidden;
+            touch-action: pan-y;
             
         }
 
@@ -281,7 +278,6 @@
             overflow: hidden; /* Ensures nothing spills outside the rounded corners */
             box-sizing: border-box;
             background-color: black;
-            pointer-events: none;
 
         }
 
@@ -294,7 +290,6 @@
             height: 100%;
             transform: translate(-50%, -50%); /* Center the image */
             object-fit: cover; /* Ensure the image covers the container */
-            pointer-events: none;
         }
 
 
@@ -322,7 +317,6 @@
             background-color: black;
             
             
-            
         }
 
 
@@ -331,20 +325,17 @@
             white-space: nowrap;
             display: inline-block;
             margin: 0 5px 5px 0;
-            pointer-events: none;
             
         }
 
         #mainpage .dynamic-text { 
             opacity: 0;
-            pointer-events: none;
             
         }
 
         
         #bodygallery .dynamic-text {
             z-index: 2;
-            pointer-events: none;
         }
             
         
@@ -1743,13 +1734,9 @@
             }
         };
 
-        const lenisOptions = isIOS 
-            ? { smoothTouch: true }  // Enable smoothTouch only for touch devices
-            : { lerp: 0.042 };       // Use lerp for desktop
-
-        // Initialize Lenis with the configured options
-        const lenis = new Lenis(lenisOptions);
-
+        const lenis = new Lenis({
+          lerp: 0.042
+        });
 
         lenis.on('scroll', () => {
             if (!parallaxAnimationRegistered) {
@@ -1794,23 +1781,13 @@
         }
 
         // Save state and pause animations before navigation
-        function saveStateAndPause(callback) {
-            try {
+        function saveStateAndPause() {
+            if (isIOS) {
                 AnimationManager.pauseAnimations();
-                savedState = AnimationManager.saveState(); // Save the state
-                // Assume saveState is synchronous. If it is asynchronous, ensure to handle it accordingly.
-
-                if (typeof callback === 'function') {
-                    callback();
-                }
-            } catch (error) {
-                console.error('Error in saveStateAndPause:', error);
-                if (typeof callback === 'function') {
-                    callback(); // Proceed to open the link even if there's an error
-                }
+                savedState = AnimationManager.saveState(); // Assuming saveState returns the state
+                //console.log('State saved and animations paused.');
             }
         }
-
 
         function restoreStateAndResume() {
             if (isIOS) {
@@ -3049,20 +3026,17 @@
         function attachLinkToContainer(container, css) {
             const link = extractLinkFromCSS(css);
             if (link) {
+                //console.log("Attaching link", link, "to container", container.id);
                 container.style.cursor = 'pointer'; // Changes the cursor to pointer to indicate it's clickable
                 container.addEventListener('click', (event) => {
                     if (isIOS) {
-                        event.preventDefault(); // Prevent the default action to ensure saveStateAndPause completes first
-                        saveStateAndPause(() => {
-                            window.open(link, '_blank', 'noopener noreferrer'); // Open link in new tab with security attributes
-                        });
-                    } else {
-                        window.open(link, '_blank', 'noopener noreferrer'); // Open link in new tab with security attributes
+                        //console.log("Link clicked: iOS detected, saving state and pausing animations.");
+                        saveStateAndPause();
                     }
+                    window.open(link, '_blank', 'noopener noreferrer'); // Open link in new tab with security attributes
                 });
             }
         }
-
 
 
 
@@ -3729,7 +3703,7 @@
 
 /////////// ANIMATION TEXT /////
 
-        
+    
 
         function generateRandomString(length) {
             const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()[]{}|';
@@ -3801,14 +3775,6 @@
                 AnimationManager.registerAnimation(step);
             }, delay);
         }
-
-
-
-
-
-
-
-
 
         function createSpansForContainer(containerId, text) {
             const container = document.getElementById(containerId);
@@ -3899,7 +3865,8 @@
         }
 
 
-        
+
+
 
 ////////ANIMATION SCALING
 
@@ -4235,73 +4202,33 @@
         }
 
 
-
-
-
-
         document.addEventListener('touchend', function() {
-            // Stop Lenis scrolling
-            if (!isIOS) {
-                // Disable Lenis smooth scrolling for non-iOS devices
-                lenis.stop();
-            }
-
-            // If the user scrolls beyond the minimum X position, smoothly scroll them back to the minimum X position
-            window.scrollTo({
-                left: minScrollX,
-                behavior: 'smooth'
-            });
-
-            if (!isIOS) {
-                // Wait for the smooth scroll to finish
-                setTimeout(() => {
-                    // Re-enable Lenis smooth scrolling for non-iOS devices
-                    lenis.start();
-                }, 500); // Adjust the timeout duration according to your smooth scroll duration
-            }
-        });
-
-   
-  
-        
+            setTimeout(() => {
+                // Only reset horizontal scroll if it's greater than a certain threshold
+                if (window.scrollX > 0) {
+                    window.scrollTo(0, window.scrollY);
+                }
+            }, 100); // Delay in milliseconds
+        }, { passive: true });
 
 
-        let lastTouchEnd = 0;
-        document.addEventListener('touchend', function(event) {
-            const now = (new Date()).getTime();
-            if (now - lastTouchEnd <= 300) {
-                event.preventDefault();
-            }
-            lastTouchEnd = now;
+        // Prevent pinch-zoom in mobile browsers
+        document.addEventListener('touchmove', function(event) {
+          if (event.scale !== 1) { event.preventDefault(); }
         }, { passive: false });
 
+        // Prevent scroll-zoom in desktop browsers
+        document.addEventListener('wheel', function(event) {
+          if (event.ctrlKey) { event.preventDefault(); }
+        }, { passive: false });
 
+        document.addEventListener('touchstart', function(event) {
+          if (event.touches.length > 1) {
+            event.preventDefault();
+          }
+        }, { passive: false });
 
-
-
-
-        let isScrollDisabled = false;
-        let isResizeListenerAdded = false;
-        let isWheelListenerAdded = false;
-
-        function preventScrollZoom(event) {
-            if (event.ctrlKey) {
-                event.preventDefault();
-            }
-        }
-
-        if (!isResizeListenerAdded) {
-            window.addEventListener('resize', handleResize);
-            isResizeListenerAdded = true;
-        }
-
-        if (!isWheelListenerAdded) {
-            document.addEventListener('wheel', preventScrollZoom, { passive: false });
-            isWheelListenerAdded = true;
-        }
-
-
-        function handleResize() {
+        window.addEventListener('resize', function() {
             // Always call these functions on resize
             updateVirtualCanvasSize();
             updateLogoVisibility();
@@ -4322,28 +4249,22 @@
             // Call these functions if not on an iOS device
             updateAllContainersDuringScaling();
             shuffleMenu();
-        }
+        });
 
         function preventDefault(e) {
             e.preventDefault();
         }
 
         function disableScroll() {
-            if (!isScrollDisabled) {
-                // Add event listeners to prevent scrolling
-                window.addEventListener('wheel', preventDefault, { passive: false });
-                window.addEventListener('touchmove', preventDefault, { passive: false });
-                isScrollDisabled = true;
-            }
+            // Add event listeners to prevent scrolling
+            window.addEventListener('wheel', preventDefault, { passive: false });
+            window.addEventListener('touchmove', preventDefault, { passive: false });
         }
 
         function enableScroll() {
-            if (isScrollDisabled) {
-                // Remove event listeners to re-enable scrolling
-                window.removeEventListener('wheel', preventDefault);
-                window.removeEventListener('touchmove', preventDefault);
-                isScrollDisabled = false;
-            }
+            // Remove event listeners to re-enable scrolling
+            window.removeEventListener('wheel', preventDefault);
+            window.removeEventListener('touchmove', preventDefault);
         }
 
         
