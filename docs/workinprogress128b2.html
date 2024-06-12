@@ -3660,8 +3660,6 @@
         
 
         function updateParallax() {
-            if (isIOS) return;
-
             const speedFactorBackground = 0.3;
             const speedFactorSides = -1.2;
             const speedFactorViewer = -0.3;
@@ -3677,28 +3675,39 @@
             const sideRight = document.getElementById('interfaceSideRight');
             const viewerContainer = document.getElementById('interfaceViewerContainer');
 
-            requestAnimationFrame(() => {
-                if (background) {
-                    const offsetBackground = scrollY * speedFactorBackground;
-                    background.style.transform = `translateY(${offsetBackground}px)`;
-                    background.style.willChange = 'transform';
-                }
+            if (isIOS) {
+                requestAnimationFrame(() => {
+                    if (background) {
+                        const offsetBackground = scrollY * speedFactorBackground;
+                        background.style.transform = `translateY(${offsetBackground}px)`;
+                        background.style.willChange = 'transform';
+                    }
+                });
+            } else {
+                requestAnimationFrame(() => {
+                    if (background) {
+                        const offsetBackground = scrollY * speedFactorBackground;
+                        background.style.transform = `translateY(${offsetBackground}px)`;
+                        background.style.willChange = 'transform';
+                    }
 
-                if (sideLeft && sideRight) {
-                    const offsetSides = scrollY * speedFactorSides;
-                    sideLeft.style.transform = `translateY(${offsetSides}px)`;
-                    sideLeft.style.willChange = 'transform';
-                    sideRight.style.transform = `translateY(${offsetSides}px)`;
-                    sideRight.style.willChange = 'transform';
-                }
+                    if (sideLeft && sideRight) {
+                        const offsetSides = scrollY * speedFactorSides;
+                        sideLeft.style.transform = `translateY(${offsetSides}px)`;
+                        sideLeft.style.willChange = 'transform';
+                        sideRight.style.transform = `translateY(${offsetSides}px)`;
+                        sideRight.style.willChange = 'transform';
+                    }
 
-                if (viewerContainer) {
-                    const offsetViewer = scrollY * speedFactorViewer;
-                    viewerContainer.style.transform = `translateY(${offsetViewer}px)`;
-                    viewerContainer.style.willChange = 'transform';
-                }
-            });
+                    if (viewerContainer) {
+                        const offsetViewer = scrollY * speedFactorViewer;
+                        viewerContainer.style.transform = `translateY(${offsetViewer}px)`;
+                        viewerContainer.style.willChange = 'transform';
+                    }
+                });
+            }
         }
+
 
 
 /////////// ANIMATION TEXT /////
