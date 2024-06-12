@@ -4241,20 +4241,25 @@
 
         document.addEventListener('touchend', function() {
             // Stop Lenis scrolling
-            lenis.stop();
-            
-            // First timeout to introduce a delay after stopping Lenis
-            setTimeout(() => {
-                // Scroll to the very left
-                window.scrollTo(0, window.scrollY);
-                
-                // Second timeout to introduce a delay before starting Lenis again
+            if (!isIOS) {
+                // Disable Lenis smooth scrolling for non-iOS devices
+                lenis.stop();
+            }
+
+            // If the user scrolls beyond the minimum X position, smoothly scroll them back to the minimum X position
+            window.scrollTo({
+                left: minScrollX,
+                behavior: 'smooth'
+            });
+
+            if (!isIOS) {
+                // Wait for the smooth scroll to finish
                 setTimeout(() => {
-                    // Start Lenis scrolling
+                    // Re-enable Lenis smooth scrolling for non-iOS devices
                     lenis.start();
-                }, 250); // Second delay in milliseconds (adjust as needed)
-            }, 250); // First delay in milliseconds (adjust as needed)
-        }, { passive: true });
+                }, 500); // Adjust the timeout duration according to your smooth scroll duration
+            }
+        });
 
    
   
