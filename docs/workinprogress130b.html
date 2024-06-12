@@ -4258,6 +4258,29 @@
         })();
 
 
+        document.querySelectorAll('img').forEach(img => {
+            img.style.touchAction = 'none';
+
+            img.addEventListener('gesturestart', function(e) {
+                e.preventDefault();
+            });
+
+            img.addEventListener('gesturechange', function(e) {
+                e.preventDefault();
+            });
+
+            img.addEventListener('gestureend', function(e) {
+                e.preventDefault();
+            });
+
+            img.addEventListener('touchend', function(e) {
+                const now = (new Date()).getTime();
+                if (now - lastTouchEnd <= 1000) {
+                    e.preventDefault();
+                }
+                lastTouchEnd = now;
+            });
+        });
 
 
 
