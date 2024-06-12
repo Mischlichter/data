@@ -4223,46 +4223,28 @@
 
 
 
-
-
-        function getMinScrollLeft() {
-            return 0;
-        }
-
-        // Event listener for touchend
-        document.addEventListener('touchend', function() {
-            // Stop Lenis scrolling
-            lenis.stop();
-            
-            // First timeout to introduce a delay after stopping Lenis
-            setTimeout(() => {
-                // Calculate the minimum scroll left position
-                const minScrollLeft = getMinScrollLeft();
-                
-                // Only reset horizontal scroll if it's not already at the minimum scroll left position
-                if (window.scrollX !== minScrollLeft) {
-                    window.scrollTo(minScrollLeft, window.scrollY);
-                }
-                
-                // Second timeout to introduce a delay before starting Lenis again
-                setTimeout(() => {
-                    // Start Lenis scrolling
-                    lenis.start();
-                }, 11); // Second delay in milliseconds (adjust as needed)
-            }, 11); // First delay in milliseconds (adjust as needed)
-        }, { passive: true });
-
         // Prevent pinch-zoom in mobile browsers
         document.addEventListener('touchmove', function(event) {
           if (event.scale !== 1) { event.preventDefault(); }
-        }, { passive: false });        
+        }, { passive: false });
 
-        
+        // Prevent scroll-zoom in desktop browsers
+        document.addEventListener('wheel', function(event) {
+          if (event.ctrlKey) { event.preventDefault(); }
+        }, { passive: false });
+
         document.addEventListener('touchstart', function(event) {
           if (event.touches.length > 1) {
             event.preventDefault();
           }
         }, { passive: false });
+
+        
+
+
+        
+
+
 
 
 
