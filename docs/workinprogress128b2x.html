@@ -3660,10 +3660,9 @@
         
 
         function updateParallax() {
-            const speedFactorBackground = 0.3;
+            const speedFactorBackground = isIOS ? 0.45 : 0.3; // Discrete speed factors for iOS and non-iOS
             const speedFactorSides = -1.2;
             const speedFactorViewer = -0.3;
-            const iosBackgroundMultiplier = 0.5; // General multiplier for iOS background speed
 
             const scrollY = window.scrollY;
 
@@ -3678,7 +3677,7 @@
 
             requestAnimationFrame(() => {
                 if (background) {
-                    const offsetBackground = scrollY * speedFactorBackground * (isIOS ? iosBackgroundMultiplier : 1);
+                    const offsetBackground = scrollY * speedFactorBackground;
                     background.style.transform = `translateY(${offsetBackground}px)`;
                     background.style.willChange = 'transform';
                 }
