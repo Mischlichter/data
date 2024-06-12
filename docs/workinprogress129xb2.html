@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=1, user-scalable=no">
-
-
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/Mischlichter/data/main/gallerycom/65411740980.jpg">
@@ -4217,7 +4215,31 @@
         }
 
 
-  
+        document.addEventListener('touchend', function() {
+            setTimeout(() => {
+                // Only reset horizontal scroll if it's greater than a certain threshold
+                if (window.scrollX > 0) {
+                    window.scrollTo(0, window.scrollY);
+                }
+            }, 100); // Delay in milliseconds
+        }, { passive: true });
+
+
+        // Prevent pinch-zoom in mobile browsers
+        document.addEventListener('touchmove', function(event) {
+          if (event.scale !== 1) { event.preventDefault(); }
+        }, { passive: false });
+
+        // Prevent scroll-zoom in desktop browsers
+        document.addEventListener('wheel', function(event) {
+          if (event.ctrlKey) { event.preventDefault(); }
+        }, { passive: false });
+
+        document.addEventListener('touchstart', function(event) {
+          if (event.touches.length > 1) {
+            event.preventDefault();
+          }
+        }, { passive: false });
 
         window.addEventListener('resize', function() {
             // Always call these functions on resize
@@ -4242,9 +4264,33 @@
             shuffleMenu();
         });
 
-
-
         
+        function getMaxScrollLeft() {
+            return document.documentElement.scrollWidth - window.innerWidth;
+        }
+
+        // Event listener for touchend
+        document.addEventListener('touchend', function() {
+            // Stop Lenis scrolling
+            lenis.stop();
+            
+            // First timeout to introduce a delay after stopping Lenis
+            setTimeout(() => {
+                // Calculate the maximum scroll left position
+                const maxScrollLeft = getMaxScrollLeft();
+                
+                // Only reset horizontal scroll if it's not already at the maximum scroll left position
+                if (window.scrollX !== maxScrollLeft) {
+                    window.scrollTo(maxScrollLeft, window.scrollY);
+                }
+                
+                // Second timeout to introduce a delay before starting Lenis again
+                setTimeout(() => {
+                    // Start Lenis scrolling
+                    lenis.start();
+                }, 500); // Second delay in milliseconds (adjust as needed)
+            }, 500); // First delay in milliseconds (adjust as needed)
+        }, { passive: true });
 
         document.addEventListener('touchstart', function(event) {
             if (event.touches.length > 1) {
@@ -4259,18 +4305,6 @@
             }
         }, { passive: false });
 
-        // Prevent double-tap zoom on iOS
-        let lastTouchEnd = 0;
-
-        document.addEventListener('touchend', function(event) {
-            let now = (new Date()).getTime();
-            if (now - lastTouchEnd <= 300) {
-                event.preventDefault();
-            }
-            lastTouchEnd = now;
-        }, { passive: false });
-
-
         // Prevent scroll-zoom in desktop browsers
         document.addEventListener('wheel', function(event) {
             if (event.ctrlKey) { 
@@ -4278,37 +4312,9 @@
             }
         }, { passive: false });
 
-
-        function handleScroll() {
-            if (isIOS) {
-                if (window.scrollX !== 0) {
-                    // Disable Lenis smooth scrolling
-                    lenis.stop();
-                    
-                    // Smoothly scroll back to the left (x=0)
-                    window.scrollTo({
-                        left: 0,
-                        behavior: 'smooth'
-                    });
-                    
-                    // Wait for the smooth scroll to finish, then re-enable Lenis smooth scrolling
-                    setTimeout(() => {
-                        lenis.start();
-                    }, 500); // Adjust the timeout duration according to your smooth scroll duration
-                }
-            }
-        }
-
-        // Add the scroll event listener
-        window.addEventListener('scroll', handleScroll, { passive: false });
-
-        // Initial check in case the scrollX is already incorrect on load
-        if (isIOS) {
-            handleScroll();
-        }
-
-
         
+
+
 
         function preventDefault(e) {
             e.preventDefault();
@@ -4325,7 +4331,7 @@
             window.removeEventListener('wheel', preventDefault);
             window.removeEventListener('touchmove', preventDefault);
         }
-     
+        }
 
         
 
