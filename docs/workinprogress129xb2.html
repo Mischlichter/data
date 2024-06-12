@@ -4219,14 +4219,6 @@
         }
 
 
-        document.addEventListener('touchend', function() {
-            setTimeout(() => {
-                // Only reset horizontal scroll if it's greater than a certain threshold
-                if (window.scrollX > 0) {
-                    window.scrollTo(0, window.scrollY);
-                }
-            }, 100); // Delay in milliseconds
-        }, { passive: true });
 
 
         // Prevent pinch-zoom in mobile browsers
@@ -4240,9 +4232,9 @@
         }, { passive: false });
 
         document.addEventListener('touchstart', function(event) {
-          if (event.touches.length > 1) {
-            event.preventDefault();
-          }
+            if (event.touches.length > 1) {
+                event.preventDefault(); // Prevent multi-touch interactions
+            }
         }, { passive: false });
 
         window.addEventListener('resize', function() {
@@ -4296,46 +4288,72 @@
             }, 500); // First delay in milliseconds (adjust as needed)
         }, { passive: true });
 
-        document.addEventListener('touchstart', function(event) {
-            if (event.touches.length > 1) {
-                event.preventDefault(); // Prevent multi-touch interactions
-            }
-        }, { passive: false });
+        
 
-        // Prevent pinch-zoom in mobile browsers
-        document.addEventListener('touchmove', function(event) {
-            if (event.scale !== 1) { 
-                event.preventDefault(); 
-            }
-        }, { passive: false });
-
-        // Prevent scroll-zoom in desktop browsers
-        document.addEventListener('wheel', function(event) {
-            if (event.ctrlKey) { 
-                event.preventDefault(); 
-            }
-        }, { passive: false });
 
         
 
 
+
+
+
+
+        let isScrollDisabled = false;
 
         function preventDefault(e) {
             e.preventDefault();
         }
 
         function disableScroll() {
-            // Add event listeners to prevent scrolling
-            window.addEventListener('wheel', preventDefault, { passive: false });
-            window.addEventListener('touchmove', preventDefault, { passive: false });
+            if (!isScrollDisabled) {
+                // Add event listeners to prevent scrolling
+                window.addEventListener('wheel', preventDefault, { passive: false });
+                window.addEventListener('touchmove', preventDefault, { passive: false });
+                isScrollDisabled = true;
+            }
         }
 
         function enableScroll() {
-            // Remove event listeners to re-enable scrolling
-            window.removeEventListener('wheel', preventDefault);
-            window.removeEventListener('touchmove', preventDefault);
+            if (isScrollDisabled) {
+                // Remove event listeners to re-enable scrolling
+                window.removeEventListener('wheel', preventDefault);
+                window.removeEventListener('touchmove', preventDefault);
+                isScrollDisabled = false;
+            }
         }
-  
+
+        let isResizeListenerAdded = false;
+
+        function handleResize() {
+            // Always call these functions on resize
+            updateVirtualCanvasSize();
+            updateLogoVisibility();
+
+            // Check if the device is iOS
+            var iOS = /iPad|iPhone|iPod/.test(navigator.platform) || 
+                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+            // Exclude the following code from running on iOS devices
+            if(iOS) {
+                return; // Exit the function if on an iOS device
+            }
+
+            if (isAnimating) {
+                return; // Exit the function if an animation is already happening
+            }
+
+            // Call these functions if not on an iOS device
+            updateAllContainersDuringScaling();
+            shuffleMenu();
+        }
+
+        // Add the resize event listener if it hasn't been added yet
+        if (!isResizeListenerAdded) {
+            window.addEventListener('resize', handleResize);
+            isResizeListenerAdded = true;
+        }
+
+
 
         
 
