@@ -4238,33 +4238,37 @@
 
 
 
-        // Prevent horizontal scrolling and swiping
-        document.addEventListener('touchmove', function(event) {
-            if (event.touches.length === 1) {
-                var touch = event.touches[0];
-                if (Math.abs(touch.pageX - touch.clientX) > 5) {
-                    event.preventDefault();
-                }
-            }
-        }, { passive: false });
 
-        // Prevent pinch-to-zoom
-        document.addEventListener('touchstart', function(event) {
-            if (event.touches.length > 1) {
-                event.preventDefault();
-            }
-        }, { passive: false });
+        document.addEventListener('touchend', function() {
+            // Stop Lenis scrolling
+            lenis.stop();
+            
+            // First timeout to introduce a delay after stopping Lenis
+            setTimeout(() => {
+                // Scroll to the very left
+                window.scrollTo(0, window.scrollY);
+                
+                // Second timeout to introduce a delay before starting Lenis again
+                setTimeout(() => {
+                    // Start Lenis scrolling
+                    lenis.start();
+                }, 250); // Second delay in milliseconds (adjust as needed)
+            }, 250); // First delay in milliseconds (adjust as needed)
+        }, { passive: true });
 
-        // Prevent gestures like pinch-to-zoom
-        document.addEventListener('gesturestart', function(event) {
-            event.preventDefault();
-        });
-
+   
   
         
 
 
-        
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, { passive: false });
 
 
 
