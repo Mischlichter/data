@@ -3660,7 +3660,7 @@
         
 
         function updateParallax() {
-            if (!isIOS) return;
+            if (isIOS) return;
 
             const speedFactorBackground = 0.3;
             const speedFactorSides = -1.2;
