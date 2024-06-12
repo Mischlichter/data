@@ -3663,7 +3663,7 @@
             const speedFactorBackground = 0.3;
             const speedFactorSides = -1.2;
             const speedFactorViewer = -0.3;
-            const iosSpeedMultiplier = 1; // General multiplier for iOS for all relevant elements
+            const iosBackgroundMultiplier = 0.5; // General multiplier for iOS background speed
 
             const scrollY = window.scrollY;
 
@@ -3678,18 +3678,12 @@
 
             requestAnimationFrame(() => {
                 if (background) {
-                    const offsetBackground = scrollY * speedFactorBackground * (isIOS ? iosSpeedMultiplier : 1);
+                    const offsetBackground = scrollY * speedFactorBackground * (isIOS ? iosBackgroundMultiplier : 1);
                     background.style.transform = `translateY(${offsetBackground}px)`;
                     background.style.willChange = 'transform';
                 }
 
-                if (isIOS) {
-                    if (viewerContainer) {
-                        const offsetViewer = scrollY * speedFactorViewer * iosSpeedMultiplier;
-                        viewerContainer.style.transform = `translateY(${offsetViewer}px)`;
-                        viewerContainer.style.willChange = 'transform';
-                    }
-                } else {
+                if (!isIOS) {
                     if (sideLeft && sideRight) {
                         const offsetSides = scrollY * speedFactorSides;
                         sideLeft.style.transform = `translateY(${offsetSides}px)`;
@@ -3706,6 +3700,7 @@
                 }
             });
         }
+
 
 
 
