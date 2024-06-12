@@ -4267,12 +4267,13 @@
             if (now - lastTouchEnd <= 300) {
                 event.preventDefault();
             }
+            
             lastTouchEnd = now;
 
-            if (window.scrollX > 0) {
-                lenis.scrollTo(0, {
-                    duration: 0 // Instant scroll
-                });
+            if (window.pageXOffset !== 0) {
+                setTimeout(() => {
+                    window.scrollTo(0, window.pageYOffset);
+                }, 111);
             }
         }, { passive: false });
 
