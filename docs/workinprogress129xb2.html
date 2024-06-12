@@ -4265,6 +4265,8 @@
         });
 
         
+  
+        // Event listener for touchend
         function getMaxScrollLeft() {
             return document.documentElement.scrollWidth - window.innerWidth;
         }
@@ -4276,12 +4278,9 @@
             
             // First timeout to introduce a delay after stopping Lenis
             setTimeout(() => {
-                // Calculate the maximum scroll left position
-                const maxScrollLeft = getMaxScrollLeft();
-                
-                // Only reset horizontal scroll if it's not already at the maximum scroll left position
-                if (window.scrollX !== maxScrollLeft) {
-                    window.scrollTo(maxScrollLeft, window.scrollY);
+                // Only reset horizontal scroll if it's not already at the leftmost position
+                if (window.scrollX !== 0) {
+                    window.scrollTo(0, window.scrollY);
                 }
                 
                 // Second timeout to introduce a delay before starting Lenis again
