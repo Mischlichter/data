@@ -4246,64 +4246,83 @@
 
         
 
-        document.addEventListener('touchstart', function(event) {
-            if (event.touches.length > 1) {
-                event.preventDefault(); // Prevent multi-touch interactions
+
+        (function() {
+            let lastTouchEnd = 0;
+            let generalListenersAdded = false;
+            let iosListenersAdded = false;
+
+            function preventDefault(e) {
+                e.preventDefault();
             }
-        }, { passive: false });
 
-        // Prevent pinch-zoom in mobile browsers
-        document.addEventListener('touchmove', function(event) {
-            if (event.scale !== 1) { 
-                event.preventDefault(); 
+            function disableScroll() {
+                if (!generalListenersAdded) {
+                    window.addEventListener('wheel', preventDefault, { passive: false });
+                    window.addEventListener('touchmove', preventDefault, { passive: false });
+                    generalListenersAdded = true;
+                }
             }
-        }, { passive: false });
 
-    
-        // Prevent double-ttap zoom and horizontal scroll
-        let lastTouchEnd = 0;
-        document.addEventListener('touchend', function(event) {
-            let now = (new Date()).getTime();
-            if (now - lastTouchEnd <= 300) {
-                event.preventDefault();
+            function enableScroll() {
+                if (generalListenersAdded) {
+                    window.removeEventListener('wheel', preventDefault);
+                    window.removeEventListener('touchmove', preventDefault);
+                    generalListenersAdded = false;
+                }
             }
-            
-            lastTouchEnd = now;
 
-            if (window.pageXOffset !== 0) {
-                setTimeout(() => {
-                    window.scrollTo(0, window.pageYOffset);
-                }, 111);
+            function handleTouchStart(event) {
+                if (event.touches.length > 1) {
+                    event.preventDefault(); // Prevent multi-touch interactions
+                }
             }
-        }, { passive: false });
 
-
-
-        // Prevent scroll-zoom in desktop browsers
-        document.addEventListener('wheel', function(event) {
-            if (event.ctrlKey) { 
-                event.preventDefault(); 
+            function handleTouchMove(event) {
+                if (event.scale !== 1) {
+                    event.preventDefault(); // Prevent pinch-zoom
+                }
             }
-        }, { passive: false });
 
-        function preventDefault(e) {
-            e.preventDefault();
-        }
+            function handleTouchEnd(event) {
+                let now = (new Date()).getTime();
+                if (now - lastTouchEnd <= 300) {
+                    event.preventDefault(); // Prevent double-tap zoom
+                }
+                lastTouchEnd = now;
+            }
 
-        function disableScroll() {
-            // Add event listeners to prevent scrolling
-            window.addEventListener('wheel', preventDefault, { passive: false });
-            window.addEventListener('touchmove', preventDefault, { passive: false });
-        }
+            function handleWheel(event) {
+                if (event.ctrlKey) {
+                    event.preventDefault(); // Prevent scroll-zoom in desktop browsers
+                }
+            }
 
-        function enableScroll() {
-            // Remove event listeners to re-enable scrolling
-            window.removeEventListener('wheel', preventDefault);
-            window.removeEventListener('touchmove', preventDefault);
-        }
-     
+            function handleScroll() {
+                if (window.scrollX > 0) {
+                    window.scrollTo({
+                        left: 0,
+                        behavior: 'instant'
+                    });
+                }
+            }
 
-        
+            // General listeners
+            if (!generalListenersAdded) {
+                document.addEventListener('wheel', handleWheel, { passive: false });
+                window.addEventListener('scroll', handleScroll);
+                generalListenersAdded = true;
+            }
+
+            // iOS-specific listeners
+            if (isIOS && !iosListenersAdded) {
+                document.addEventListener('touchstart', handleTouchStart, { passive: false });
+                document.addEventListener('touchmove', handleTouchMove, { passive: false });
+                document.addEventListener('touchend', handleTouchEnd, { passive: false });
+                iosListenersAdded = true;
+            }
+        })();
+
 
 
         //initialize();
