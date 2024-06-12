@@ -4235,34 +4235,6 @@
         }
 
 
-
-
-
-
-        document.addEventListener('touchend', function() {
-            // Stop Lenis scrolling
-            if (!isIOS) {
-                // Disable Lenis smooth scrolling for non-iOS devices
-                lenis.stop();
-            }
-
-            // If the user scrolls beyond the minimum X position, smoothly scroll them back to the minimum X position
-            window.scrollTo({
-                left: minScrollX,
-                behavior: 'smooth'
-            });
-
-            if (!isIOS) {
-                // Wait for the smooth scroll to finish
-                setTimeout(() => {
-                    // Re-enable Lenis smooth scrolling for non-iOS devices
-                    lenis.start();
-                }, 500); // Adjust the timeout duration according to your smooth scroll duration
-            }
-        });
-
-   
-  
         
 
 
