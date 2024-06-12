@@ -1734,10 +1734,12 @@
             }
         };
 
-        const lenis = new Lenis({
-            lerp: 0.042,
-            smoothTouch: true
-        });
+        const lenisOptions = isIOS 
+            ? { smoothTouch: true }  // Enable smoothTouch only for touch devices
+            : { lerp: 0.042 };       // Use lerp for desktop
+
+        // Initialize Lenis with the configured options
+        const lenis = new Lenis(lenisOptions);
 
 
         lenis.on('scroll', () => {
