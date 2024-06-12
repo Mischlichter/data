@@ -560,7 +560,7 @@
 
         #backgroundInterfaceContainer {
             position: absolute;
-            top: 1111px;
+            top: 0;
             left: calc((100% - var(--viewer-width)) / 2); /* Center the viewer */
             width: var(--viewer-width);
             height: 100%;
@@ -3456,7 +3456,7 @@
 
                 container.appendChild(containerDiv);
 
-                delayedVirtualCanvasUpdate();
+                //delayedVirtualCanvasUpdate();
 
                 resolve();
             }).then(() => {
@@ -3486,11 +3486,7 @@
             });
         }
 
-        function delayedVirtualCanvasUpdate() {
-            // Delay the call to updateVirtualCanvasSize
-            
-            setTimeout(updateVirtualCanvasSize, 100); // Delay of 100 milliseconds
-        }
+
 
 
 
@@ -3699,7 +3695,6 @@
                 }
             });
         }
-
 
 /////////// ANIMATION TEXT /////
 
