@@ -895,21 +895,30 @@
                 
             });
 
+            let isScrollDisabled = false;
+
             function preventDefault(e) {
                 e.preventDefault();
             }
 
             function disableScroll() {
-                // Add event listeners to prevent scrolling
-                window.addEventListener('wheel', preventDefault, { passive: false });
-                window.addEventListener('touchmove', preventDefault, { passive: false });
+                if (!isScrollDisabled) {
+                    // Add event listeners to prevent scrolling
+                    window.addEventListener('wheel', preventDefault, { passive: false });
+                    window.addEventListener('touchmove', preventDefault, { passive: false });
+                    isScrollDisabled = true;
+                }
             }
 
             function enableScroll() {
-                // Remove event listeners to re-enable scrolling
-                window.removeEventListener('wheel', preventDefault);
-                window.removeEventListener('touchmove', preventDefault);
+                if (isScrollDisabled) {
+                    // Remove event listeners to re-enable scrolling
+                    window.removeEventListener('wheel', preventDefault);
+                    window.removeEventListener('touchmove', preventDefault);
+                    isScrollDisabled = false;
+                }
             }
+
             
             function hideAllAsciiLinesXL() {
                 const firstLoadCompleteFlag = 'firstLoadComplete';
@@ -4245,7 +4254,7 @@
 
 
 
-        let isScrollDisabled = false;
+        
         let isResizeListenerAdded = false;
         let isWheelListenerAdded = false;
 
@@ -4288,6 +4297,8 @@
             updateAllContainersDuringScaling();
             shuffleMenu();
         }
+
+        let isScrollDisabled = false;
 
         function preventDefault(e) {
             e.preventDefault();
