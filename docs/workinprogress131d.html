@@ -272,7 +272,7 @@
         /* Individual image containers */
         .flex-icontainer {
             opacity: 0; /* Initially hidden */
-             /* Smooth fade-in transition */
+            transition: opacity 1s ease-in-out; /* Smooth fade-in transition */
             position: relative; /* Essential for absolute child positioning */
             padding-top: 38%; /* Same as width for a 1:1 aspect ratio */
             margin: 50px auto; /* Center horizontally */
@@ -282,7 +282,6 @@
             box-sizing: border-box;
             background-color: black;
             pointer-events: none;
-            touch-action: none;
 
         }
 
@@ -3037,7 +3036,7 @@
 
             // Update containers when loading a new scene
             updateAllContainers(scene);
-            installObserver();
+       
             observeElementsForAnimations();
             createScrollToTopButton();
             highlightActiveMenuItem(`menuContainer${index}`);
@@ -3998,7 +3997,6 @@
  
         let observedElements = [];
         let observedElementsData = [];
-        let containerIds = []; // Assume you will populate this with relevant IDs
 
         function observeElementsForAnimations() {
             const observerOptions = {
@@ -4009,7 +4007,12 @@
             const observerCallback = (entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        if (entry.target.classList.contains('animation-container')) {
+                        if (entry.target.classList.contains('flex-icontainer')) {
+                            if (entry.intersectionRatio >= 0.25 && entry.target.style.opacity !== '1') {
+                                entry.target.style.opacity = 1;
+                                observer.unobserve(entry.target);
+                            }
+                        } else if (entry.target.classList.contains('animation-container')) {
                             if (entry.intersectionRatio >= 0.05 && !entry.target.dataset.animationStarted) {
                                 startAnimationForContainer(entry.target.id);
                                 entry.target.dataset.animationStarted = 'true';
@@ -4026,11 +4029,16 @@
             observedElements.forEach(element => observer.unobserve(element));
             observedElements = [];
 
-            const elementsToObserve = containerIds.map(id => document.getElementById(id)).filter(Boolean);
+            const elementsToObserve = [
+                ...document.querySelectorAll('.flex-icontainer'),
+                ...containerIds.map(id => document.getElementById(id)).filter(Boolean)
+            ];
 
             elementsToObserve.forEach(element => {
                 if (element && !element.dataset.observed) {
-                    if (!element.classList.contains('animation-container')) {
+                    if (element.classList.contains('flex-icontainer') && element.style.opacity !== '0') {
+                        element.style.opacity = 0;
+                    } else if (!element.classList.contains('animation-container')) {
                         element.classList.add('animation-container');
                     }
                     observer.observe(element);
@@ -4063,41 +4071,7 @@
             return closestElementData;
         }
 
-        let observedFlexContainers = [];
 
-        function installObserver() {
-            const observerOptions = {
-                threshold: 0.25,
-                rootMargin: '50px'
-            };
-
-            const observerCallback = (entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting && entry.intersectionRatio >= 0.25 && entry.target.style.opacity !== '1') {
-                        entry.target.style.transition = 'opacity 0.7s ease-in-out'; // Add CSS transition for smooth fade-in
-                        entry.target.style.opacity = '1'; // Fade in
-                        // observer.unobserve(entry.target); // Stop observing after fade-in if needed
-                    }
-                });
-            };
-
-            const observer = new IntersectionObserver(observerCallback, observerOptions);
-
-            // Unobserve previous elements
-            observedFlexContainers.forEach(element => observer.unobserve(element));
-            observedFlexContainers = [];
-
-            const elementsToObserve = document.querySelectorAll('.flex-icontainer');
-
-            elementsToObserve.forEach(element => {
-                if (element && !element.dataset.observed) {
-                    element.style.opacity = '0';
-                    observer.observe(element);
-                    element.dataset.observed = 'true';
-                    observedFlexContainers.push(element);
-                }
-            });
-        }
 
 
 
