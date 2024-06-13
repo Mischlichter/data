@@ -320,21 +320,15 @@ const galleryHTML = `
             }
 
             function disableScroll() {
-                if (!isScrollDisabled) {
-                    // Add event listeners to prevent scrolling
-                    window.addEventListener('wheel', preventDefault, { passive: false });
-                    window.addEventListener('touchmove', preventDefault, { passive: false });
-                    isScrollDisabled = true;
-                }
+                // Add event listeners to prevent scrolling
+                window.addEventListener('wheel', preventDefault, { passive: false });
+                window.addEventListener('touchmove', preventDefault, { passive: false });
             }
 
             function enableScroll() {
-                if (isScrollDisabled) {
-                    // Remove event listeners to re-enable scrolling
-                    window.removeEventListener('wheel', preventDefault);
-                    window.removeEventListener('touchmove', preventDefault);
-                    isScrollDisabled = false;
-                }
+                // Remove event listeners to re-enable scrolling
+                window.removeEventListener('wheel', preventDefault);
+                window.removeEventListener('touchmove', preventDefault);
             }
             
 
