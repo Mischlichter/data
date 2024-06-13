@@ -272,7 +272,7 @@
         /* Individual image containers */
         .flex-icontainer {
             opacity: 0; /* Initially hidden */
-            transition: opacity 0.7s ease-out; /* Smooth fade-in transition */
+            transition: opacity 1s ease-out; /* Smooth fade-in transition */
             position: relative; /* Essential for absolute child positioning */
             padding-top: 38%; /* Same as width for a 1:1 aspect ratio */
             margin: 50px auto; /* Center horizontally */
@@ -282,7 +282,6 @@
             box-sizing: border-box;
             background-color: black;
             pointer-events: none;
-            touch-action: none;
 
         }
 
@@ -296,7 +295,6 @@
             transform: translate(-50%, -50%); /* Center the image */
             object-fit: cover; /* Ensure the image covers the container */
             pointer-events: none;
-            touch-action: none;
         }
 
 
@@ -895,30 +893,21 @@
                 
             });
 
-            let isScrollDisabled = false;
-
             function preventDefault(e) {
                 e.preventDefault();
             }
 
             function disableScroll() {
-                if (!isScrollDisabled) {
-                    // Add event listeners to prevent scrolling
-                    window.addEventListener('wheel', preventDefault, { passive: false });
-                    window.addEventListener('touchmove', preventDefault, { passive: false });
-                    isScrollDisabled = true;
-                }
+                // Add event listeners to prevent scrolling
+                window.addEventListener('wheel', preventDefault, { passive: false });
+                window.addEventListener('touchmove', preventDefault, { passive: false });
             }
 
             function enableScroll() {
-                if (isScrollDisabled) {
-                    // Remove event listeners to re-enable scrolling
-                    window.removeEventListener('wheel', preventDefault);
-                    window.removeEventListener('touchmove', preventDefault);
-                    isScrollDisabled = false;
-                }
+                // Remove event listeners to re-enable scrolling
+                window.removeEventListener('wheel', preventDefault);
+                window.removeEventListener('touchmove', preventDefault);
             }
-
             
             function hideAllAsciiLinesXL() {
                 const firstLoadCompleteFlag = 'firstLoadComplete';
@@ -2560,7 +2549,6 @@
                 logoImg.style.marginRight = '20px';
                 logoImg.id = 'menuLogo';
                 menuBar.appendChild(logoImg);
-                updateLogoVisibility();
 
                 menuContainerIds = [];
                 let currentlyActiveMenuItemId = 'menuContainer0';
@@ -2646,7 +2634,7 @@
                 resolve();
 
             }).then(() => {
-                
+                updateLogoVisibility();
                 updateMenu(menuData);
                 //triggerOrientationWithoutCalibration();
                 isMenuLoaded = true;
@@ -4247,15 +4235,52 @@
         }
 
 
+
+
+
+
+        document.addEventListener('touchend', function() {
+            // Stop Lenis scrolling
+            if (!isIOS) {
+                // Disable Lenis smooth scrolling for non-iOS devices
+                lenis.stop();
+            }
+
+            // If the user scrolls beyond the minimum X position, smoothly scroll them back to the minimum X position
+            window.scrollTo({
+                left: minScrollX,
+                behavior: 'smooth'
+            });
+
+            if (!isIOS) {
+                // Wait for the smooth scroll to finish
+                setTimeout(() => {
+                    // Re-enable Lenis smooth scrolling for non-iOS devices
+                    lenis.start();
+                }, 500); // Adjust the timeout duration according to your smooth scroll duration
+            }
+        });
+
+   
+  
         
 
 
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, { passive: false });
 
 
 
 
 
-        
+
+        let isScrollDisabled = false;
         let isResizeListenerAdded = false;
         let isWheelListenerAdded = false;
 
@@ -4298,8 +4323,6 @@
             updateAllContainersDuringScaling();
             shuffleMenu();
         }
-
-        let isScrollDisabled = false;
 
         function preventDefault(e) {
             e.preventDefault();
