@@ -3070,5 +3070,13 @@
         "Model": "Unknown",
         "Creator": "@Mischlichter",
         "Seed": "73527824819"
+    },
+    "45120335282.jpg": {
+        "File Name": "45120335282.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "siamese cat",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "45120335282"
     }
 }
