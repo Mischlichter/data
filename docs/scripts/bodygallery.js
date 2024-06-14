@@ -148,7 +148,7 @@ const galleryHTML = `
 
         
         // Recalculate on window resize
-        window.addEventListener('resize', calculateAspectRatio);
+        //window.addEventListener('resize', calculateAspectRatio);
 
         function adjustNavButtonsForAspectRatio(isSquare) {
             const btnPrev = document.getElementById('btn-prev');
