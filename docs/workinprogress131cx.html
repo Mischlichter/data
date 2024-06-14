@@ -1546,9 +1546,14 @@
                     lastAngle = currentAngle;
 
                     // Adjust the scroll position to re-center the content after the layout changes
-                    setTimeout(simulateTap, 100); // Delay to allow the browser to reflow layout
+                    setTimeout(function() {
+                        simulateTap();
+                        // Scroll to the left side without changing the top position
+                        window.scrollTo({ left: 0, behavior: 'smooth' });
+                    }, 111); // Delay to allow the browser to reflow layout
                 }
             }
+
 
 
 
