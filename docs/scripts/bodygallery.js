@@ -146,14 +146,14 @@ const galleryHTML = `
         }
 
 
-        // Initial calculation on page load
-        
+        let lastHeight = window.innerHeight;
+        const heightChangeThreshold = 50;
 
         // Recalculate on window resize
         window.addEventListener('resize', function() {
             const currentHeight = window.innerHeight;
             console.log(`Current Height: ${currentHeight}, Last Height: ${lastHeight}`);
-            if (isIOS()) {
+            if (isIOS) {
                 const heightDifference = Math.abs(currentHeight - lastHeight);
                 console.log(`Height Difference: ${heightDifference}`);
                 if (heightDifference > heightChangeThreshold) {
