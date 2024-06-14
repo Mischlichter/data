@@ -1546,14 +1546,9 @@
                     lastAngle = currentAngle;
 
                     // Adjust the scroll position to re-center the content after the layout changes
-                    setTimeout(function() {
-                        simulateTap();
-                        // Scroll to the left side without changing the top position
-                        window.scrollTo({ left: 0, behavior: 'smooth' });
-                    }, 111); // Delay to allow the browser to reflow layout
+                    setTimeout(simulateTap, 100); // Delay to allow the browser to reflow layout
                 }
             }
-
 
 
 
@@ -4347,6 +4342,7 @@
             // Always call these functions on resize
             updateVirtualCanvasSize();
             updateLogoVisibility();
+            scrollAllTheWayLeft();
 
                   // Exclude the following code from running on iOS devices
             if(isIOS) {
@@ -4384,6 +4380,10 @@
                 window.removeEventListener('touchmove', preventDefault);
                 isScrollDisabled = false;
             }
+        }
+
+        function scrollAllTheWayLeft() {
+            window.scrollTo({ left: 0, behavior: 'smooth' });
         }
 
         
