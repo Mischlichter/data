@@ -133,8 +133,7 @@ const galleryHTML = `
             const screenHeight = window.innerHeight;
             const aspectRatio = screenWidth / screenHeight;
             
-            console.log(`Screen Width: ${screenWidth}, Screen Height: ${screenHeight}, Aspect Ratio: ${aspectRatio}`);
-
+        
             // Check if the aspect ratio is less than or equal to 1 (square or nearly square)
             if (aspectRatio <= 1) {
                 document.body.classList.add('square-aspect-ratio');
@@ -157,20 +156,20 @@ const galleryHTML = `
             if (isIOS) {
                 const heightDifference = Math.abs(currentHeight - lastHeight);
                 if (heightDifference > heightChangeThresholdG) {
-                    console.log('Height change is significant.');
+                    //console.log('Height change is significant.');
                     if (currentOrientation !== lastOrientation) {
-                        console.log('Orientation change detected, scrolling to the left.');
+                        //console.log('Orientation change detected, scrolling to the left.');
                         window.scrollTo({ left: 0 });
                         lastOrientation = currentOrientation;
                     }
-                    console.log('Recalculating aspect ratio.');
+                    //console.log('Recalculating aspect ratio.');
                     calculateAspectRatio();
                     lastHeight = currentHeight;
                 } else {
-                    console.log('Height change is not significant, skipping recalculation.');
+                    //console.log('Height change is not significant, skipping recalculation.');
                 }
             } else {
-                console.log('Non-iOS device, recalculating aspect ratio.');
+                //console.log('Non-iOS device, recalculating aspect ratio.');
                 calculateAspectRatio();
             }
         });
