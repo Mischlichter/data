@@ -147,16 +147,16 @@ const galleryHTML = `
 
 
         let lastHeight = window.innerHeight;
-        const heightChangeThreshold = 96;
+        const heightChangeThresholdG = 96;
 
         // Recalculate on window resize
         window.addEventListener('resize', function() {
             const currentHeight = window.innerHeight;
-            console.log(`Current Height: ${currentHeight}, Last Height: ${lastHeight}`);
+            //console.log(`Current Height: ${currentHeight}, Last Height: ${lastHeight}`);
             if (isIOS) {
                 const heightDifference = Math.abs(currentHeight - lastHeight);
-                console.log(`Height Difference: ${heightDifference}`);
-                if (heightDifference > heightChangeThreshold) {
+                //console.log(`Height Difference: ${heightDifference}`);
+                if (heightDifference > heightChangeThresholdG) {
                     console.log('Height change is significant, recalculating aspect ratio.');
                     calculateAspectRatio();
                     lastHeight = currentHeight;
@@ -164,7 +164,7 @@ const galleryHTML = `
                     console.log('Height change is not significant, skipping recalculation.');
                 }
             } else {
-                console.log('Non-iOS device, recalculating aspect ratio.');
+                //console.log('Non-iOS device, recalculating aspect ratio.');
                 calculateAspectRatio();
             }
         });

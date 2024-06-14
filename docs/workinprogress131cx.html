@@ -4293,8 +4293,13 @@
 
 
         
-        let isResizeListenerAdded = false;
+        
         let isWheelListenerAdded = false;
+
+        if (!isWheelListenerAdded) {
+            document.addEventListener('wheel', preventScrollZoom, { passive: false });
+            isWheelListenerAdded = true;
+        }
 
         function preventScrollZoom(event) {
             if (event.ctrlKey) {
@@ -4302,15 +4307,40 @@
             }
         }
 
+
+
+
+        let isResizeListenerAdded = false;
+
         if (!isResizeListenerAdded) {
-            window.addEventListener('resize', handleResize);
+            let lastHeight = window.innerHeight;
+            const heightChangeThreshold = 96;
+
+            // Recalculate on window resize
+            window.addEventListener('resize', function() {
+                const currentHeight = window.innerHeight;
+                console.log(`Current Height: ${currentHeight}, Last Height: ${lastHeight}`);
+
+                if (isIOS) {
+                    const heightDifference = Math.abs(currentHeight - lastHeight);
+                    console.log(`Height Difference: ${heightDifference}`);
+                    if (heightDifference > heightChangeThreshold) {
+                        console.log('Height change is significant, recalculating aspect ratio.');
+                        handleResize();
+                        lastHeight = currentHeight;
+                    } else {
+                        console.log('Height change is not significant, skipping recalculation.');
+                    }
+                } else {
+                    console.log('Non-iOS device, recalculating aspect ratio.');
+                    handleResize();
+                }
+            });
             isResizeListenerAdded = true;
         }
 
-        if (!isWheelListenerAdded) {
-            document.addEventListener('wheel', preventScrollZoom, { passive: false });
-            isWheelListenerAdded = true;
-        }
+
+        
 
 
         function handleResize() {
@@ -4318,10 +4348,8 @@
             updateVirtualCanvasSize();
             updateLogoVisibility();
 
-             
-
-            // Exclude the following code from running on iOS devices
-            if(iOS) {
+                  // Exclude the following code from running on iOS devices
+            if(isIOS) {
                 return; // Exit the function if on an iOS device
             }
 
