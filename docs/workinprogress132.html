@@ -2615,8 +2615,12 @@
                             menuContainer.addEventListener('touchend', () => animateTextDuringHover(menuContainer));
 
                             if (index === 0) {
-                                setTimeout(() => animateTextDuringHover(menuContainer), 5000);
+                                setTimeout(() => {
+                                    animateTextDuringHover(menuContainer);
+                                    highlightActiveMenuItem(menuContainer.id); // Highlight the first menu item
+                                }, 5000);
                             }
+
 
                             menuContainerIds.push(menuContainer.id);
                         });
