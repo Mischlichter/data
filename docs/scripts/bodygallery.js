@@ -147,27 +147,34 @@ const galleryHTML = `
 
 
         let lastHeight = window.innerHeight;
+        let lastOrientation = window.innerWidth > window.innerHeight ? 'landscape' : 'portrait';
         const heightChangeThresholdG = 96;
 
-        // Recalculate on window resize
         window.addEventListener('resize', function() {
             const currentHeight = window.innerHeight;
-            //console.log(`Current Height: ${currentHeight}, Last Height: ${lastHeight}`);
+            const currentOrientation = window.innerWidth > window.innerHeight ? 'landscape' : 'portrait';
+
             if (isIOS) {
                 const heightDifference = Math.abs(currentHeight - lastHeight);
-                //console.log(`Height Difference: ${heightDifference}`);
                 if (heightDifference > heightChangeThresholdG) {
-                    console.log('Height change is significant, recalculating aspect ratio.');
+                    console.log('Height change is significant.');
+                    if (currentOrientation !== lastOrientation) {
+                        console.log('Orientation change detected, scrolling to the left.');
+                        window.scrollTo(0, 0);
+                        lastOrientation = currentOrientation;
+                    }
+                    console.log('Recalculating aspect ratio.');
                     calculateAspectRatio();
                     lastHeight = currentHeight;
                 } else {
                     console.log('Height change is not significant, skipping recalculation.');
                 }
             } else {
-                //console.log('Non-iOS device, recalculating aspect ratio.');
+                console.log('Non-iOS device, recalculating aspect ratio.');
                 calculateAspectRatio();
             }
         });
+
 
         function adjustNavButtonsForAspectRatio(isSquare) {
             const btnPrev = document.getElementById('btn-prev');
