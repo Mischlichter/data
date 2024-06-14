@@ -325,7 +325,6 @@ html {
     transition: transform 0.3s ease;
 }
 
-
 #gallery-container img {
     width: 100%;
     height: auto;
@@ -335,6 +334,9 @@ html {
     transition: opacity 0.1s ease, transform 0.1s ease-out;
     position: relative;
     overflow: hidden;
+    transform: translateZ(0); /* Enable GPU acceleration for images */
+    backface-visibility: hidden; /* Help with performance for non-GPU */
+    will-change: transform; /* Hint the browser that transform will change */
 }
 
 #gallery-container .image-container {
@@ -343,27 +345,32 @@ html {
     cursor: pointer;
     border-radius: 8px;
     transition: transform 0.3s ease; /* Added hover transition to the container */
+    transform: translateZ(0); /* Enable GPU acceleration */
+    backface-visibility: hidden; /* Help with performance for non-GPU */
+    will-change: transform; /* Hint the browser that transform will change */
 }
 
 @media (hover: hover) and (pointer: fine) {
     #gallery-container .image-container:hover {
-        transform: scale(1.1);
+        transform: scale(1.11) translateZ(0); /* Apply both scale and GPU acceleration on hover */
+        will-change: transform; /* Hint the browser that transform will change */
     }
 }
 
-
 .hidden-image {
     opacity: 0;
-
     pointer-events: none; /* Prevent interaction with hidden images */
-    display: none
+    display: none;
 }
 
 .image-container {
     position: relative;
     overflow: hidden;
-    /* Other styles remain unchanged */
+    transform: translateZ(0); /* Enable GPU acceleration */
+    backface-visibility: hidden; /* Help with performance for non-GPU */
+    will-change: transform; /* Hint the browser that transform will change */
 }
+
 
 .word-overlay {
     font-family: 'JetBrainsMono-ExtraBold', sans-serif;
