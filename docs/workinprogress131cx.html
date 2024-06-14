@@ -4318,9 +4318,7 @@
             updateVirtualCanvasSize();
             updateLogoVisibility();
 
-            // Check if the device is iOS
-            var iOS = /iPad|iPhone|iPod/.test(navigator.platform) || 
-                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+             
 
             // Exclude the following code from running on iOS devices
             if(iOS) {
