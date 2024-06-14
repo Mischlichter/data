@@ -137,9 +137,11 @@ const galleryHTML = `
             if (aspectRatio <= 1) {
                 document.body.classList.add('square-aspect-ratio');
                 adjustNavButtonsForAspectRatio(true);
+                window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
             } else {
                 document.body.classList.remove('square-aspect-ratio');
                 adjustNavButtonsForAspectRatio(false);
+                window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
             }
         }
 
