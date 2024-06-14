@@ -271,7 +271,7 @@
      
         /* Individual image containers */
         .flex-icontainer {
-        
+            opacity: 0; /* Initially hidden */
              /* Smooth fade-in transition */
             position: relative; /* Essential for absolute child positioning */
             padding-top: 38%; /* Same as width for a 1:1 aspect ratio */
@@ -2945,7 +2945,7 @@
         const dynamicStyles = [];
 
   
-        async function loadScene(index) {
+        function loadScene(index) {
             const scene = scenesData[index];
             const sceneImages = scenesiData[index]; // Assuming scenesiData is structured similarly
 
@@ -3010,26 +3010,17 @@
                 const container = document.createElement('div');
                 container.id = item.key;
                 container.className = item.type === 'text' ? 'flex-container' : 'flex-icontainer';
-                
-                                
-                
                 document.body.appendChild(container);
 
                 if (item.type === 'text') {
+                    //console.log('Processing text item:', item.key);
                     attachLinkToContainer(container, item.content.style);
                 }
-
-                if (container.className === 'flex-icontainer') {
-                    container.style.opacity = '0.01';
-                }
-
 
                 const style = document.createElement('style');
                 style.innerHTML = item.content.style;
                 document.head.appendChild(style);
                 dynamicStyles.push(style);
-
-
 
                 if (item.type === 'image') {
                     const image = document.createElement('img');
@@ -3051,6 +3042,7 @@
             createScrollToTopButton();
             highlightActiveMenuItem(`menuContainer${index}`);
         }
+
 
 
         function extractLinkFromCSS(css) {
@@ -4099,16 +4091,15 @@
 
             elementsToObserve.forEach(element => {
                 if (element && !element.dataset.observed) {
-                    // Ensure the initial opacity remains 50% if already set
-                    if (element.style.opacity === '' || element.style.opacity === '0') {
-                        element.style.opacity = '0.01';
-                    }
+                    element.style.opacity = '0';
                     observer.observe(element);
                     element.dataset.observed = 'true';
                     observedFlexContainers.push(element);
                 }
             });
         }
+
+
 
 
 
