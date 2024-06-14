@@ -4335,22 +4335,19 @@
         }
 
 
-        function scrollAllTheWayLeft() {
-            setTimeout(function() {
-                window.scrollTo({ left: 0, behavior: 'smooth' });
-            }, 111); // Delay of 100 milliseconds
-        }
 
 
 
+
+        let resizeListenerAdded = false; // Flag to ensure only one event listener is added
+  
         function handleResize() {
             // Always call these functions on resize
             updateVirtualCanvasSize();
             updateLogoVisibility();
-            scrollAllTheWayLeft();
 
-                  // Exclude the following code from running on iOS devices
-            if(isIOS) {
+            // Exclude the following code from running on iOS devices
+            if (isIOS) {
                 return; // Exit the function if on an iOS device
             }
 
@@ -4362,6 +4359,12 @@
             updateAllContainersDuringScaling();
             shuffleMenu();
         }
+
+        if (!resizeListenerAdded) {
+            window.addEventListener('resize', handleResize);
+            resizeListenerAdded = true;
+        }
+
 
         let isScrollDisabled = false;
 
