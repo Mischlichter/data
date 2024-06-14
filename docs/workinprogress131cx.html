@@ -1475,6 +1475,8 @@
 
                     // Send the updated gyro mouse coordinates directly to the iframe
                     sendMouseEventToIframe('mousemove', {clientX: gyroMouseX, clientY: gyroMouseY});
+
+                    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
                 }
             }
 
