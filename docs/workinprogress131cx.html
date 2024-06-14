@@ -4335,7 +4335,12 @@
         }
 
 
-        
+        function scrollAllTheWayLeft() {
+            setTimeout(function() {
+                window.scrollTo({ left: 0, behavior: 'smooth' });
+            }, 111); // Delay of 100 milliseconds
+        }
+
 
 
         function handleResize() {
@@ -4382,9 +4387,7 @@
             }
         }
 
-        function scrollAllTheWayLeft() {
-            window.scrollTo({ left: 0, behavior: 'smooth' });
-        }
+        
 
         
 
