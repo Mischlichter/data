@@ -160,8 +160,7 @@ const galleryHTML = `
                     console.log('Height change is significant.');
                     if (currentOrientation !== lastOrientation) {
                         console.log('Orientation change detected, scrolling to the left.');
-                        const currentScrollY = window.scrollY;
-                        window.scrollTo(0, currentScrollY);
+                        window.scrollTo({ left: 0 });
                         lastOrientation = currentOrientation;
                     }
                     console.log('Recalculating aspect ratio.');
