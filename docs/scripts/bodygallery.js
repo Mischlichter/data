@@ -133,6 +133,8 @@ const galleryHTML = `
             const screenHeight = window.innerHeight;
             const aspectRatio = screenWidth / screenHeight;
             
+            console.log(`Screen Width: ${screenWidth}, Screen Height: ${screenHeight}, Aspect Ratio: ${aspectRatio}`);
+
             // Check if the aspect ratio is less than or equal to 1 (square or nearly square)
             if (aspectRatio <= 1) {
                 document.body.classList.add('square-aspect-ratio');
@@ -142,6 +144,7 @@ const galleryHTML = `
                 adjustNavButtonsForAspectRatio(false);
             }
         }
+
 
         // Initial calculation on page load
         
