@@ -96,7 +96,7 @@ const galleryHTML = `
             if (bodyGalleryContainer) {
                 bodyGalleryContainer.innerHTML = galleryHTML; // Inject the gallery HTML
                 initializePage(); // Initialize the gallery components
-                calculateAspectRatio();
+                //calculateAspectRatio();
                 
             }
             document.getElementById('search-bar').addEventListener('input', toggleOverlayContainers);
