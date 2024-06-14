@@ -818,7 +818,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
     <script src="./scripts/lenis.min.js"></script>
     <script src="./scripts/index-min.js"></script>
-
+    <script src="./scripts/fastclick.js"></script>
+    <script>
+        window.addEventListener('load', function() {
+            FastClick.attach(document.body);
+        }, false);
+    </script>
 
     <script src="scripts/bodygallery.js"></script>
     
@@ -1470,8 +1475,6 @@
 
                     // Send the updated gyro mouse coordinates directly to the iframe
                     sendMouseEventToIframe('mousemove', {clientX: gyroMouseX, clientY: gyroMouseY});
-
-                    //window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
                 }
             }
 
@@ -2547,102 +2550,106 @@
                 }
 
                 const logoImg = document.createElement('img');
+                getCachedImage('https://raw.githubusercontent.com/Mischlichter/data/main/interface/logo5.png')
+                    .then(url => {
+                        logoImg.src = url;
+                    })
+                    .catch(() => {
+                        logoImg.src = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logo5.png'; // Fallback URL
+                    });
                 logoImg.style.marginRight = '20px';
                 logoImg.id = 'menuLogo';
                 menuBar.appendChild(logoImg);
+                updateLogoVisibility();
 
-                updateLogoVisibility()
-                    .then(() => {
-                        menuContainerIds = [];
-                        let currentlyActiveMenuItemId = 'menuContainer0';
+                menuContainerIds = [];
+                let currentlyActiveMenuItemId = 'menuContainer0';
 
-                        const handleInteraction = async (itemId, index) => {
-                            if (blockMenuInteractions) return;
-                            if ((currentlyActiveMenuItemId === 'menuLogo' && itemId === 'menuContainer0') ||
-                                (currentlyActiveMenuItemId === 'menuContainer0' && itemId === 'menuLogo')) {
-                                window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-                                return;
-                            }
+                const handleInteraction = async (itemId, index) => {
+                    if (blockMenuInteractions) return;
+                    if ((currentlyActiveMenuItemId === 'menuLogo' && itemId === 'menuContainer0') ||
+                        (currentlyActiveMenuItemId === 'menuContainer0' && itemId === 'menuLogo')) {
+                        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+                        return;
+                    }
 
-                            if (currentlyActiveMenuItemId === itemId) {
-                                window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-                                return;
-                            }
+                    if (currentlyActiveMenuItemId === itemId) {
+                        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+                        return;
+                    }
 
-                            currentlyActiveMenuItemId = itemId;
-                            hideDirectIframe();
-                            await fadeOutElements();
-                            await resetPageStyles();
+                    currentlyActiveMenuItemId = itemId;
+                    hideDirectIframe();
+                    await fadeOutElements();
+                    await resetPageStyles();
 
-                            currentSceneIndex = (itemId === 'menuLogo') ? 0 : index;
+                    currentSceneIndex = (itemId === 'menuLogo') ? 0 : index;
 
-                            // Load the selected scene
-                            loadScene(currentSceneIndex);
+                    // Load the selected scene
+                    loadScene(currentSceneIndex);
 
-                            // Always highlight the first menu item when the logo is clicked
-                            if (itemId === 'menuLogo') {
-                                highlightActiveMenuItem('menuContainer0'); // Highlight the first menu item when the logo is clicked
-                            } else {
-                                highlightActiveMenuItem(itemId); // Otherwise, highlight the current menu item
-                            }
+                    // Always highlight the first menu item when the logo is clicked
+                    if (itemId === 'menuLogo') {
+                        highlightActiveMenuItem('menuContainer0'); // Highlight the first menu item when the logo is clicked
+                    } else {
+                        highlightActiveMenuItem(itemId); // Otherwise, highlight the current menu item
+                    }
 
-                            //triggerOrientationWithoutCalibration();
-                        };
+                    //triggerOrientationWithoutCalibration();
+                };
 
-                        logoImg.addEventListener('click', () => handleInteraction('menuLogo', 0));
-                        logoImg.addEventListener('touchend', () => handleInteraction('menuLogo', 0));
+                logoImg.addEventListener('click', () => handleInteraction('menuLogo', 0));
+                logoImg.addEventListener('touchend', () => handleInteraction('menuLogo', 0));
 
-                        menuData.forEach((menuItem, index) => {
-                            const menuContainer = document.createElement('div');
-                            menuContainer.id = `menuContainer${index}`;
-                            menuContainer.className = 'menu-container';
-                            menuContainer.innerText = menuItem.label;
-                            menuBar.appendChild(menuContainer);
+                menuData.forEach((menuItem, index) => {
+                    const menuContainer = document.createElement('div');
+                    menuContainer.id = `menuContainer${index}`;
+                    menuContainer.className = 'menu-container';
+                    menuContainer.innerText = menuItem.label;
+                    menuBar.appendChild(menuContainer);
 
-                            let isTouch = false;
+                    let isTouch = false;
 
-                            const handleMenuInteraction = async (event) => {
-                                if (isTouch && event.type === 'click') return;
-                                isTouch = event.type === 'touchend';
-                                handleInteraction(menuContainer.id, index);
-                                // Update the state of the scroll to top button
-                            };
+                    const handleMenuInteraction = async (event) => {
+                        if (isTouch && event.type === 'click') return;
+                        isTouch = event.type === 'touchend';
+                        handleInteraction(menuContainer.id, index);
+                        // Update the state of the scroll to top button
 
-                            menuContainer.addEventListener('click', handleMenuInteraction);
-                            menuContainer.addEventListener('click', () => animateTextDuringHover(menuContainer));
 
-                            menuContainer.addEventListener('touchend', handleMenuInteraction);
-                            menuContainer.addEventListener('touchend', () => animateTextDuringHover(menuContainer));
+                    };
 
-                            if (index === 0) {
-                                setTimeout(() => animateTextDuringHover(menuContainer), 5000);
-                            }
+                    menuContainer.addEventListener('click', handleMenuInteraction);
+                    menuContainer.addEventListener('click', () => animateTextDuringHover(menuContainer));
 
-                            menuContainerIds.push(menuContainer.id);
-                        });
+                    menuContainer.addEventListener('touchend', handleMenuInteraction);
+                    menuContainer.addEventListener('touchend', () => animateTextDuringHover(menuContainer));
 
-                        const fakeMenuItem1 = document.createElement('div');
-                        fakeMenuItem1.className = 'menu-container';
-                        fakeMenuItem1.setAttribute('data-fake', 'true');
-                        menuBar.insertBefore(fakeMenuItem1, menuBar.children[1]);
+                    if (index === 0) {
+                        setTimeout(() => animateTextDuringHover(menuContainer), 5000);
+                    }
 
-                        const fakeMenuItem2 = document.createElement('div');
-                        fakeMenuItem2.className = 'menu-container';
-                        fakeMenuItem2.setAttribute('data-fake', 'true');
-                        menuBar.insertBefore(fakeMenuItem2, menuBar.children[5]);
+                    menuContainerIds.push(menuContainer.id);
+                });
 
-                        resolve();
 
-                    })
-                    .then(() => {
-                        updateMenu(menuData);
-                        //triggerOrientationWithoutCalibration();
-                        isMenuLoaded = true;
-                    })
-                    .catch(error => {
-                        console.error('Error updating logo visibility:', error);
-                        reject(error);
-                    });
+                const fakeMenuItem1 = document.createElement('div');
+                fakeMenuItem1.className = 'menu-container';
+                fakeMenuItem1.setAttribute('data-fake', 'true');
+                menuBar.insertBefore(fakeMenuItem1, menuBar.children[1]);
+
+                const fakeMenuItem2 = document.createElement('div');
+                fakeMenuItem2.className = 'menu-container';
+                fakeMenuItem2.setAttribute('data-fake', 'true');
+                menuBar.insertBefore(fakeMenuItem2, menuBar.children[5]);
+
+                resolve();
+
+            }).then(() => {
+                
+                updateMenu(menuData);
+                //triggerOrientationWithoutCalibration();
+                isMenuLoaded = true;
             });
         }
 
@@ -2682,7 +2689,6 @@
                 }
             }
         }
-
 
 
 
@@ -4278,14 +4284,15 @@
 
         
 
-        
-        
-        let isWheelListenerAdded = false;
 
-        if (!isWheelListenerAdded) {
-            document.addEventListener('wheel', preventScrollZoom, { passive: false });
-            isWheelListenerAdded = true;
-        }
+
+
+
+
+
+        
+        let isResizeListenerAdded = false;
+        let isWheelListenerAdded = false;
 
         function preventScrollZoom(event) {
             if (event.ctrlKey) {
@@ -4293,52 +4300,28 @@
             }
         }
 
-
-
-
-        let isResizeListenerAdded = false;
-
         if (!isResizeListenerAdded) {
-            let lastHeight = window.innerHeight;
-            const heightChangeThreshold = 96;
-
-            // Recalculate on window resize
-            window.addEventListener('resize', function() {
-                const currentHeight = window.innerHeight;
-                
-
-                if (isIOS) {
-                    const heightDifference = Math.abs(currentHeight - lastHeight);
-                    //console.log(`Height Difference: ${heightDifference}`);
-                    if (heightDifference > heightChangeThreshold) {
-                        //console.log('Height change is significant, recalculating aspect ratio.');
-                        handleResize();
-                        lastHeight = currentHeight;
-                    } else {
-                        //console.log('Height change is not significant, skipping recalculation.');
-                    }
-                } else {
-                    //console.log('Non-iOS device, recalculating aspect ratio.');
-                    handleResize();
-                }
-            });
+            window.addEventListener('resize', handleResize);
             isResizeListenerAdded = true;
         }
 
+        if (!isWheelListenerAdded) {
+            document.addEventListener('wheel', preventScrollZoom, { passive: false });
+            isWheelListenerAdded = true;
+        }
 
 
-
-
-
-        let resizeListenerAdded = false; // Flag to ensure only one event listener is added
-  
         function handleResize() {
             // Always call these functions on resize
             updateVirtualCanvasSize();
             updateLogoVisibility();
 
+            // Check if the device is iOS
+            var iOS = /iPad|iPhone|iPod/.test(navigator.platform) || 
+                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
             // Exclude the following code from running on iOS devices
-            if (isIOS) {
+            if(iOS) {
                 return; // Exit the function if on an iOS device
             }
 
@@ -4350,12 +4333,6 @@
             updateAllContainersDuringScaling();
             shuffleMenu();
         }
-
-        if (!resizeListenerAdded) {
-            window.addEventListener('resize', handleResize);
-            resizeListenerAdded = true;
-        }
-
 
         let isScrollDisabled = false;
 
@@ -4380,8 +4357,6 @@
                 isScrollDisabled = false;
             }
         }
-
-        
 
         
 
