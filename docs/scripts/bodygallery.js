@@ -147,7 +147,7 @@ const galleryHTML = `
 
 
         let lastHeight = window.innerHeight;
-        const heightChangeThreshold = 50;
+        const heightChangeThreshold = 96;
 
         // Recalculate on window resize
         window.addEventListener('resize', function() {
