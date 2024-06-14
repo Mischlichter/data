@@ -150,7 +150,24 @@ const galleryHTML = `
         
 
         // Recalculate on window resize
-        window.addEventListener('resize', calculateAspectRatio);
+        window.addEventListener('resize', function() {
+            const currentHeight = window.innerHeight;
+            console.log(`Current Height: ${currentHeight}, Last Height: ${lastHeight}`);
+            if (isIOS()) {
+                const heightDifference = Math.abs(currentHeight - lastHeight);
+                console.log(`Height Difference: ${heightDifference}`);
+                if (heightDifference > heightChangeThreshold) {
+                    console.log('Height change is significant, recalculating aspect ratio.');
+                    calculateAspectRatio();
+                    lastHeight = currentHeight;
+                } else {
+                    console.log('Height change is not significant, skipping recalculation.');
+                }
+            } else {
+                console.log('Non-iOS device, recalculating aspect ratio.');
+                calculateAspectRatio();
+            }
+        });
 
         function adjustNavButtonsForAspectRatio(isSquare) {
             const btnPrev = document.getElementById('btn-prev');
