@@ -96,7 +96,7 @@ const galleryHTML = `
             if (bodyGalleryContainer) {
                 bodyGalleryContainer.innerHTML = galleryHTML; // Inject the gallery HTML
                 initializePage(); // Initialize the gallery components
-                //calculateAspectRatio();
+                calculateAspectRatio();
                 
             }
             document.getElementById('search-bar').addEventListener('input', toggleOverlayContainers);
@@ -132,9 +132,6 @@ const galleryHTML = `
             const screenWidth = window.innerWidth;
             const screenHeight = window.innerHeight;
             const aspectRatio = screenWidth / screenHeight;
-
-            window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-                        
             
             // Check if the aspect ratio is less than or equal to 1 (square or nearly square)
             if (aspectRatio <= 1) {
@@ -146,9 +143,11 @@ const galleryHTML = `
             }
         }
 
+        // Initial calculation on page load
         
+
         // Recalculate on window resize
-        //window.addEventListener('resize', calculateAspectRatio);
+        window.addEventListener('resize', calculateAspectRatio);
 
         function adjustNavButtonsForAspectRatio(isSquare) {
             const btnPrev = document.getElementById('btn-prev');
