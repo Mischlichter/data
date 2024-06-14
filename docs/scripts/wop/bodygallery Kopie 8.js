@@ -132,8 +132,6 @@ const galleryHTML = `
             const screenWidth = window.innerWidth;
             const screenHeight = window.innerHeight;
             const aspectRatio = screenWidth / screenHeight;
-
-            scrollToLeftViewport();
             
             // Check if the aspect ratio is less than or equal to 1 (square or nearly square)
             if (aspectRatio <= 1) {
@@ -146,12 +144,7 @@ const galleryHTML = `
         }
 
         // Initial calculation on page load
-        function scrollToLeftViewport() {
-            window.scrollTo({
-                left: 0,
-                behavior: 'instant' // You can use 'smooth' for a smooth scroll
-            });
-        }
+        
 
         // Recalculate on window resize
         window.addEventListener('resize', calculateAspectRatio);
