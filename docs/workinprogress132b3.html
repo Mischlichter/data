@@ -4289,7 +4289,7 @@
                 if (isIOS) {
                     if (heightDifference > heightChangeThreshold) {
                         handleResize(currentSceneIndex);
-                        handleGalleryResize();
+
                         lastHeight = currentHeight;
                     } else {
                         return;
@@ -4390,7 +4390,7 @@
             ignoreSaveScroll = true;
             setTimeout(() => {
               ignoreSaveScroll = false;
-            }, 5000);
+            }, 3000);
           }
         }
 

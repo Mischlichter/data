@@ -1506,34 +1506,7 @@
   
 
 
-            function simulateTap() {
-                // Create the touch point at the center of the screen
-                var touchPoint = { clientX: window.innerWidth / 2, clientY: window.innerHeight / 2 };
-
-                // Create a touchstart event
-                var touchStartEvent = new TouchEvent('touchstart', {
-                    bubbles: true,
-                    cancelable: true,
-                    changedTouches: [new Touch({ identifier: Date.now(), target: document.body, ...touchPoint })],
-                    targetTouches: [],
-                    touches: [new Touch({ identifier: Date.now(), target: document.body, ...touchPoint })]
-                });
-
-                // Create a touchend event
-                var touchEndEvent = new TouchEvent('touchend', {
-                    bubbles: true,
-                    cancelable: true,
-                    changedTouches: [new Touch({ identifier: Date.now(), target: document.body, ...touchPoint })],
-                    targetTouches: [],
-                    touches: []
-                });
-
-                // Dispatch the touchstart event
-                document.body.dispatchEvent(touchStartEvent);
-
-                // Dispatch the touchend event shortly after to mimic a tap
-                setTimeout(() => document.body.dispatchEvent(touchEndEvent), 100);
-            }
+ 
 
             function checkOrientationChange() {
                 var currentAngle = window.orientation || 0;
@@ -4408,23 +4381,34 @@
         }
 
         function handleGalleryResize() {
-          if (savedElement) {
-            const newRect = savedElement.getBoundingClientRect();
-            const newTop = newRect.top + window.scrollY;
-            const newSavedPosition = savedPosition + (newTop - savedPosition);
+            // Determine the orientation and set variableori
+            let variableori;
+            if (window.innerWidth > window.innerHeight) {
+                // Landscape orientation
+                variableori = 75;
+            } else {
+                // Portrait orientation
+                variableori = 98;
+            }
 
-            window.scrollTo({
-              top: newSavedPosition,
-              behavior: 'instant'
-            });
-            console.log(`Scrolled to new position: ${newSavedPosition}`);
+            if (savedElement) {
+                const newRect = savedElement.getBoundingClientRect();
+                const newTop = newRect.top + window.scrollY - variableori;
+                const newSavedPosition = savedPosition + (newTop - savedPosition);
 
-            ignoreSaveScroll = true;
-            setTimeout(() => {
-              ignoreSaveScroll = false;
-            }, 5000);
-          }
+                window.scrollTo({
+                    top: newSavedPosition,
+                    behavior: 'instant'
+                });
+                console.log(`Scrolled to new position: ${newSavedPosition}`);
+
+                ignoreSaveScroll = true;
+                setTimeout(() => {
+                    ignoreSaveScroll = false;
+                }, 3000);
+            }
         }
+
 
         window.handleGalleryResize = handleGalleryResize;
         // Add event listener for the scroll event with debouncing and condition
