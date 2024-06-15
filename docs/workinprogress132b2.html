@@ -4289,20 +4289,22 @@
                     if (heightDifference > heightChangeThreshold) {
                         handleResize(currentSceneIndex);
                         lastHeight = currentHeight;
-                    } else {
-                        return;
+
+                        if (currentSceneIndex === 4) {
+                            handleGalleryResize();
+                        }
                     }
                 } else {
                     handleResize(currentSceneIndex);
                     lastHeight = currentHeight; // Update lastHeight after handling resize for non-iOS
-                }
-
-                if (currentSceneIndex === 4) {
-                    handleGalleryResize();
+                    if (currentSceneIndex === 4) {
+                        handleGalleryResize();
+                    }
                 }
             });
             isResizeListenerAdded = true;
         }
+
 
         function handleResize(sceneIndex) {
             // Always call these functions on resize
