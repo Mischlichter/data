@@ -4301,42 +4301,37 @@
 
 
         let isResizeListenerAdded = false;
+        const heightChangeThreshold = 96;
+
 
         if (!isResizeListenerAdded) {
-            let lastHeight = window.innerHeight;
-            const heightChangeThreshold = 96;
-
             // Recalculate on window resize
             window.addEventListener('resize', function() {
                 const currentHeight = window.innerHeight;
-                
+                const heightDifference = Math.abs(currentHeight - lastHeight);
+
+                const galleryContainer = document.getElementById('gallery-container');
 
                 if (isIOS) {
-                    const heightDifference = Math.abs(currentHeight - lastHeight);
-                    //console.log(`Height Difference: ${heightDifference}`);
                     if (heightDifference > heightChangeThreshold) {
-                        //console.log('Height change is significant, recalculating aspect ratio.');
-                        handleResize();
+                        handleResize(currentSceneIndex);
                         lastHeight = currentHeight;
                     } else {
-                        //console.log('Height change is not significant, skipping recalculation.');
+                        return;
                     }
                 } else {
-                    //console.log('Non-iOS device, recalculating aspect ratio.');
-                    handleResize();
+                    handleResize(currentSceneIndex);
+                    lastHeight = currentHeight; // Update lastHeight after handling resize for non-iOS
+                }
+
+                if (currentSceneIndex === 4 && galleryContainer) {
+                    handleGalleryResize();
                 }
             });
             isResizeListenerAdded = true;
         }
 
-
-
-
-
-
-        let resizeListenerAdded = false; // Flag to ensure only one event listener is added
-  
-        function handleResize() {
+        function handleResize(sceneIndex) {
             // Always call these functions on resize
             updateVirtualCanvasSize();
             updateLogoVisibility();
@@ -4353,14 +4348,81 @@
             // Call these functions if not on an iOS device
             updateAllContainersDuringScaling();
             shuffleMenu();
+
+            // If in the gallery scene, call handleGalleryResize
+            if (sceneIndex === 4) {
+                handleGalleryResize();
+            }
         }
 
-        if (!resizeListenerAdded) {
-            window.addEventListener('resize', handleResize);
-            resizeListenerAdded = true;
+
+
+        function debounce(func, wait) {
+          let timeout;
+          return function() {
+            const context = this, args = arguments;
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(context, args), wait);
+          };
         }
 
 
+
+        let savedElement = null;
+        let savedPosition = 0;
+
+        function saveScrollPosition() {
+          const galleryContainer = document.getElementById('gallery-container');
+          if (currentSceneIndex === 4 && galleryContainer) {
+            //console.log("Saving scroll position...");
+
+            const imageContainers = Array.from(galleryContainer.getElementsByClassName('image-container'));
+            const viewportTop = window.scrollY;
+            let closestImageContainer = null;
+            let closestDistance = Infinity;
+
+            for (let imageContainer of imageContainers) {
+              const rect = imageContainer.getBoundingClientRect();
+              const distance = Math.abs(rect.top);
+              if (distance < closestDistance) {
+                closestDistance = distance;
+                closestImageContainer = imageContainer;
+              }
+            }
+
+            if (closestImageContainer) {
+              savedElement = closestImageContainer;
+              savedPosition = closestImageContainer.getBoundingClientRect().top + viewportTop;
+              //console.log(`Saved position: ${savedPosition}`);
+            }
+          }
+        }
+
+        function handleGalleryResize() {
+          if (savedElement) {
+            const newRect = savedElement.getBoundingClientRect();
+            const newTop = newRect.top + window.scrollY;
+            const newSavedPosition = savedPosition + (newTop - savedPosition);
+
+            window.scrollTo({
+              top: newSavedPosition,
+              behavior: 'instant'
+            });
+            //console.log(`Scrolled to new position: ${newSavedPosition}`);
+          }
+        }
+
+        // Add event listener for the scroll event with debouncing and condition
+        window.addEventListener('scroll', debounce(() => {
+          if (currentSceneIndex === 4) {
+            saveScrollPosition();
+          }
+        }, 200));
+
+    
+
+
+       
         let isScrollDisabled = false;
 
         function preventDefault(e) {
