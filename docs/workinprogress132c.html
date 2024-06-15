@@ -4300,37 +4300,41 @@
 
 
 
-        let isResizeListenerAdded = false;
-        const heightChangeThreshold = 96;
 
+
+        let isResizeListenerAdded = false;
 
         if (!isResizeListenerAdded) {
+            let lastHeight = window.innerHeight;
+            const heightChangeThreshold = 96;
+
             // Recalculate on window resize
             window.addEventListener('resize', function() {
                 const currentHeight = window.innerHeight;
-                const heightDifference = Math.abs(currentHeight - lastHeight);
-
-                const galleryContainer = document.getElementById('gallery-container');
+                
 
                 if (isIOS) {
+                    const heightDifference = Math.abs(currentHeight - lastHeight);
+                    //console.log(`Height Difference: ${heightDifference}`);
                     if (heightDifference > heightChangeThreshold) {
-                        handleResize(currentSceneIndex);
-                        handleGalleryResize();
+                        //console.log('Height change is significant, recalculating aspect ratio.');
+                        handleResize();
                         lastHeight = currentHeight;
                     } else {
-                        return;
+                        //console.log('Height change is not significant, skipping recalculation.');
                     }
                 } else {
-                    handleResize(currentSceneIndex);
-                    lastHeight = currentHeight; // Update lastHeight after handling resize for non-iOS
-                }
-
-                if (currentSceneIndex === 4) {
-                    handleGalleryResize();
+                    //console.log('Non-iOS device, recalculating aspect ratio.');
+                    handleResize();
                 }
             });
             isResizeListenerAdded = true;
         }
+
+
+
+
+
 
         function handleResize(sceneIndex) {
             // Always call these functions on resize
