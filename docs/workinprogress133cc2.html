@@ -1991,7 +1991,7 @@
 
         function resetPageStyles() {
             // Remove event listeners
-            console.log('sweepsweep.');
+            //console.log('sweepsweep.');
 
             const mouseOverlay = document.getElementById('mouseOverlay');
             if (mouseOverlay) {
@@ -2085,7 +2085,7 @@
             let elements = document.querySelectorAll('.dynamic-element');
             elements.forEach(element => element.remove());
 
-            console.log('Page styles reset.');
+            //console.log('Page styles reset.');
         }
 
  
@@ -2639,7 +2639,7 @@
             }
 
             if (currentLogoName !== newLogoName) {
-                console.log(`Updating logo to ${newLogoName}: ${newLogoUrl}`);
+                //console.log(`Updating logo to ${newLogoName}: ${newLogoUrl}`);
                 logoImg.src = newLogoUrl;
                 logoImg.onload = () => {
                     if (newLogoName === 'logoS.png') {
@@ -2662,7 +2662,7 @@
                     }
                 };
             } else {
-                console.log(`Logo already set to ${newLogoName}`);
+                //console.log(`Logo already set to ${newLogoName}`);
                 document.body.classList.add('logo-updated'); // Add class if no update needed
 
                 // Update menu bar styles based on current conditions
@@ -2683,17 +2683,17 @@
                 const cache = await caches.open('site-assets');
                 const response = await cache.match(url);
                 if (response) {
-                    console.log(`Found cached file for URL: ${url}`);
+                    //console.log(`Found cached file for URL: ${url}`);
                     const blob = await response.blob();
                     const objectURL = URL.createObjectURL(blob);
                     return objectURL;
                 } else {
-                    console.log(`Cached file not found for URL: ${url}, downloading...`);
+                    //console.log(`Cached file not found for URL: ${url}, downloading...`);
                 }
             } catch (error) {
                 console.error(`Error fetching cached image for URL ${url}:`, error);
             }
-            console.log(`Falling back to original URL: ${url}`);
+            //console.log(`Falling back to original URL: ${url}`);
             return url;
         }
 
