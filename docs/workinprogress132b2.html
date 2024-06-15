@@ -2249,7 +2249,7 @@
 
                 sendMouseEventToIframe('mousemove', { clientX: mouseX, clientY: mouseY });
             } else {
-                console.log('Animation is disabled on this device.');
+                console.log('Animation Mouse is disabled on this device.');
             }
             return !isIOS;  // Return false if the animation should be excluded, to remove it from the animation list
         }
@@ -4402,16 +4402,19 @@
           }
         }, 200));
 
+        
+
         let isOrientationChangeListenerAdded = false;
 
-        if (isIOS && !isOrientationChangeListenerAdded) {
+        if (!isOrientationChangeListenerAdded) {
             window.addEventListener('orientationchange', function() {
-                if (currentSceneIndex === 4) {
-                    handleGalleryResize();
-                }
+                console.log('oritrigger');
+                handleGalleryResize();
             });
             isOrientationChangeListenerAdded = true;
         }
+
+
 
 
     
