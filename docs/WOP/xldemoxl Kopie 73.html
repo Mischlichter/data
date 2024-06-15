@@ -1506,7 +1506,34 @@
   
 
 
- 
+            function simulateTap() {
+                // Create the touch point at the center of the screen
+                var touchPoint = { clientX: window.innerWidth / 2, clientY: window.innerHeight / 2 };
+
+                // Create a touchstart event
+                var touchStartEvent = new TouchEvent('touchstart', {
+                    bubbles: true,
+                    cancelable: true,
+                    changedTouches: [new Touch({ identifier: Date.now(), target: document.body, ...touchPoint })],
+                    targetTouches: [],
+                    touches: [new Touch({ identifier: Date.now(), target: document.body, ...touchPoint })]
+                });
+
+                // Create a touchend event
+                var touchEndEvent = new TouchEvent('touchend', {
+                    bubbles: true,
+                    cancelable: true,
+                    changedTouches: [new Touch({ identifier: Date.now(), target: document.body, ...touchPoint })],
+                    targetTouches: [],
+                    touches: []
+                });
+
+                // Dispatch the touchstart event
+                document.body.dispatchEvent(touchStartEvent);
+
+                // Dispatch the touchend event shortly after to mimic a tap
+                setTimeout(() => document.body.dispatchEvent(touchEndEvent), 100);
+            }
 
             function checkOrientationChange() {
                 var currentAngle = window.orientation || 0;
@@ -1519,7 +1546,7 @@
                     lastAngle = currentAngle;
 
                     // Adjust the scroll position to re-center the content after the layout changes
-                    //setTimeout(simulateTap, 100); // Delay to allow the browser to reflow layout
+                    setTimeout(simulateTap, 100); // Delay to allow the browser to reflow layout
                 }
             }
 
@@ -1828,7 +1855,6 @@
         let observer; // Declare a global variable to store the observer instance
         let messageEventListenerAdded = false;
         let iframeObserverAdded = false;
-        let sceneKey = null;
 
         function updateIframe(sceneKey) {
             const iframeContainer = document.getElementById('iframeContainer');
@@ -3117,7 +3143,7 @@
             });
 
             // Show and hide button with fade effects when scrolling
-            
+            window.addEventListener('scroll', handleScroll);
         }
 
         function handleScroll() {
@@ -3145,85 +3171,37 @@
 
 
 
-        function preventScrollBeyondFooter() {
-            const footerContainer = document.getElementById('customStyledFooter');
-            if (!footerContainer) return;
-
-            const maxScrollY = document.body.offsetHeight - window.innerHeight - footerContainer.offsetHeight + 111;
-
-            if (window.scrollY > maxScrollY) {
-                if (!isIOS) {
-                    lenis.stop();
-                }
-
-                window.scrollTo({
-                    top: maxScrollY,
-                    behavior: 'smooth'
-                });
-
-                if (!isIOS) {
-                    setTimeout(() => {
-                        lenis.start();
-                    }, 500);
-                }
-            }
-        }
-
-        function combinedScrollHandler() {
-            preventScrollBeyondFooter();
-
-            debounce(() => {
-                if (currentSceneIndex === 4) {
-                    saveScrollPosition();
-                }
-            }, 200)();
-
-            handleScroll();
-        }
-
-        function addScrollListener() {
-            if (!isScrollListenerAdded) {
-                window.addEventListener('scroll', combinedScrollHandler);
-                isScrollListenerAdded = true;
-            }
-        }
-
-        function debounce(func, wait) {
-            let timeout;
-            return function() {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => func.apply(this, arguments), wait);
-            };
-        }
-
         function createStyledFooter() {
             removeStyledFooter();
             const footerContainer = document.createElement('div');
             footerContainer.id = 'customStyledFooter';
-            footerContainer.style.width = '100vw';
-            footerContainer.style.height = '5000px';
-            footerContainer.style.backgroundColor = 'black';
-            footerContainer.style.color = 'white';
-            footerContainer.style.display = 'flex';
-            footerContainer.style.flexDirection = 'column';
-            footerContainer.style.alignItems = 'center';
-            footerContainer.style.justifyContent = 'center';
-            footerContainer.style.position = 'relative';
-            footerContainer.style.zIndex = '16';
-            footerContainer.style.marginTop = '256px';
+            footerContainer.style.width = '100vw'; // Width of the viewport
+            footerContainer.style.height = '5000px'; // Footer height
+            footerContainer.style.backgroundColor = 'black'; // Footer background color
+            footerContainer.style.color = 'white'; // Text color
+            footerContainer.style.display = 'flex'; // Use flexbox for layout
+            footerContainer.style.flexDirection = 'column'; // Stack items vertically
+            footerContainer.style.alignItems = 'center'; // Center items horizontally
+            footerContainer.style.justifyContent = 'center'; // Center items vertically
+            footerContainer.style.position = 'relative'; // To apply z-index
+            footerContainer.style.zIndex = '16'; // Ensure it's on top
+            footerContainer.style.marginTop = '256px'; // Space before the footer
             footerContainer.style.boxShadow = '0px -50px 30px -20px rgba(0, 0, 0, 0.5)';
 
+            // Create a style block for the icon size
             const styleBlock = document.createElement('style');
             styleBlock.innerHTML = `
                 .icon-size {
-                    font-size: 18px;
+                    font-size: 18px; /* Default size */
                 }
+
                 @media (max-width: 768px) {
                     .icon-size {
-                        font-size: 20px;
+                        font-size: 20px; /* Larger size for small devices */
                     }
+
                     .btn-floating {
-                        padding: 10px;
+                        padding: 10px; /* Larger clickable area */
                     }
                 }
             `;
@@ -3231,21 +3209,27 @@
 
             footerContainer.innerHTML = `
                 <div style="display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; margin-top: -4900px;">
+                    
                     <a class="btn btn-outline-light btn-floating m-1" href="https://twitter.com/Funkybrown111" role="button" style="color: white; margin: 0 10px;" target="_blank" rel="noopener noreferrer">
                         <i class="fa-brands fa-twitter icon-size"></i>
                     </a>
+
                     <a class="btn btn-outline-light btn-floating m-1" href="https://www.instagram.com/hogeal_bot/" role="button" style="color: white; margin: 0 10px;" target="_blank" rel="noopener noreferrer">
                         <i class="fa-brands fa-instagram icon-size"></i>
                     </a>
+
                     <a class="btn btn-outline-light btn-floating m-1" href="mailto:hogeai@web.de" role="button" style="color: white; margin: 0 15px;" target="_blank" rel="noopener noreferrer">
                         <i class="fa-solid fa-envelope icon-size"></i>
                     </a>
+
                     <a class="btn btn-outline-light btn-floating m-1" href="https://t.me/officialhogecommunity" role="button" style="color: white; margin: 0 10px;" target="_blank" rel="noopener noreferrer">
                         <i class="fa-brands fa-telegram icon-size"></i>
                     </a>
+
                     <a class="btn btn-outline-light btn-floating m-1" href="https://www.hoge.gg/" role="button" style="color: white; margin: 0 10px;" target="_blank" rel="noopener noreferrer">
                         <i class="fa-solid fa-bone icon-size"></i>
                     </a>
+
                 </div>
                 <div style="margin-top: 5px;">
                     © 2024 Copyright: <a class="text-white" href="https://HogeAI.com/" style="color: white;">HogeAI.com</a>
@@ -3253,11 +3237,39 @@
             `;
             document.body.appendChild(footerContainer);
 
+            function preventScrollBeyondFooter() {
+                // Calculate the maximum Y position users should be able to scroll to
+                const maxScrollY = document.body.offsetHeight - window.innerHeight - footerContainer.offsetHeight + 111; // Adjust according to your footer margin
+
+                if (window.scrollY > maxScrollY) {
+                    if (!isIOS) {
+                        // Disable Lenis smooth scrolling for non-iOS devices
+                        lenis.stop();
+                    }
+
+                    // If the user scrolls beyond the max Y position, smoothly scroll them back to the max Y position
+                    window.scrollTo({
+                        top: maxScrollY,
+                        behavior: 'smooth'
+                    });
+
+                    if (!isIOS) {
+                        // Wait for the smooth scroll to finish
+                        setTimeout(() => {
+                            // Re-enable Lenis smooth scrolling for non-iOS devices
+                            lenis.start();
+                        }, 500); // Adjust the timeout duration according to your smooth scroll duration
+                    }
+                }
+            }
+
+
+            // Call the function right away in case the page is already scrolled beyond the footer
             preventScrollBeyondFooter();
-            addScrollListener();
+
+            // Add a 'scroll' event listener to the window to invoke the function whenever the user scrolls
+            window.addEventListener('scroll', preventScrollBeyondFooter);
         }
-
-
 
 
         // Flag to control the activation of footer removal
@@ -3374,12 +3386,10 @@
                             element.style.opacity = 1; // Set opacity to 1
                             if (isIOS) {
                                 element.style.transition = 'none'; // Remove transitions for iOS
-                                initializeScrollHandling();
                                 //lenis.start();
                                 //disableScroll()
                             } else {
                                 element.style.transition = 'opacity 1s ease-in-out'; // Apply transitions for non-iOS
-                                initializeScrollHandling();
                                 //lenis.start();
                                 //disableScroll()
                             }
@@ -4290,8 +4300,6 @@
 
 
 
-
-
         let isResizeListenerAdded = false;
 
         if (!isResizeListenerAdded) {
@@ -4301,21 +4309,21 @@
             // Recalculate on window resize
             window.addEventListener('resize', function() {
                 const currentHeight = window.innerHeight;
+                
 
                 if (isIOS) {
                     const heightDifference = Math.abs(currentHeight - lastHeight);
+                    //console.log(`Height Difference: ${heightDifference}`);
                     if (heightDifference > heightChangeThreshold) {
+                        //console.log('Height change is significant, recalculating aspect ratio.');
                         handleResize();
-                        if (currentSceneIndex === 4) {
-                            handleGalleryResize();
-                        }
                         lastHeight = currentHeight;
+                    } else {
+                        //console.log('Height change is not significant, skipping recalculation.');
                     }
                 } else {
+                    //console.log('Non-iOS device, recalculating aspect ratio.');
                     handleResize();
-                    if (currentSceneIndex === 4) {
-                        handleGalleryResize();
-                    }
                 }
             });
             isResizeListenerAdded = true;
@@ -4326,12 +4334,12 @@
 
 
 
-
-        function handleResize(sceneIndex) {
+        let resizeListenerAdded = false; // Flag to ensure only one event listener is added
+  
+        function handleResize() {
             // Always call these functions on resize
             updateVirtualCanvasSize();
             updateLogoVisibility();
-
 
             // Exclude the following code from running on iOS devices
             if (isIOS) {
@@ -4345,121 +4353,11 @@
             // Call these functions if not on an iOS device
             updateAllContainersDuringScaling();
             shuffleMenu();
-
-            // If in the gallery scene, call handleGalleryResize
-            
         }
 
-
-
-        function debounce(func, wait) {
-          let timeout;
-          return function() {
-            const context = this, args = arguments;
-            clearTimeout(timeout);
-            timeout = setTimeout(() => func.apply(context, args), wait);
-          };
-        }
-
-
-
-        let savedElement = null;
-        let savedPosition = 0;
-        let ignoreSaveScroll = false;
-
-        function saveScrollPosition() {
-          if (ignoreSaveScroll) return;
-
-          const galleryContainer = document.getElementById('gallery-container');
-          if (currentSceneIndex === 4 && galleryContainer) {
-            //console.log("Saving scroll position...");
-
-            const imageContainers = Array.from(galleryContainer.getElementsByClassName('image-container'));
-            const viewportTop = window.scrollY;
-            let closestImageContainer = null;
-            let closestDistance = Infinity;
-
-            for (let imageContainer of imageContainers) {
-              const rect = imageContainer.getBoundingClientRect();
-              const distance = Math.abs(rect.top);
-              if (distance < closestDistance) {
-                closestDistance = distance;
-                closestImageContainer = imageContainer;
-              }
-            }
-
-            if (closestImageContainer) {
-              savedElement = closestImageContainer;
-              savedPosition = closestImageContainer.getBoundingClientRect().top + viewportTop;
-              //console.log(`Saved position: ${savedPosition}`);
-            }
-          }
-        }
-
-        function handleGalleryResize() {
-            // Determine the orientation and set variableori
-            let variableori;
-            if (window.innerWidth > window.innerHeight) {
-                // Landscape orientation
-                variableori = 75;
-            } else {
-                // Portrait orientation
-                variableori = 98;
-            }
-
-            if (savedElement) {
-                const newRect = savedElement.getBoundingClientRect();
-                const newTop = newRect.top + window.scrollY - variableori;
-                const newSavedPosition = savedPosition + (newTop - savedPosition);
-
-                window.scrollTo({
-                    top: newSavedPosition,
-                    behavior: 'instant'
-                });
-                //console.log(`Scrolled to new position: ${newSavedPosition}`);
-
-                ignoreSaveScroll = true;
-                setTimeout(() => {
-                    ignoreSaveScroll = false;
-                }, 3000);
-            }
-        }
-
-
-        let isScrollListenerAdded = false;
-
-        function combinedScrollHandler() {
-            preventScrollBeyondFooter();
-
-            // Debounced saveScrollPosition only for scene index 4
-            debounce(() => {
-                if (currentSceneIndex === 4) {
-                    saveScrollPosition();
-                }
-            }, 200)();
-
-            handleScroll();
-        }
-
-        function addScrollListener() {
-            if (!isScrollListenerAdded) {
-                window.addEventListener('scroll', combinedScrollHandler);
-                isScrollListenerAdded = true;
-            }
-        }
-
-        function debounce(func, wait) {
-            let timeout;
-            return function() {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => func.apply(this, arguments), wait);
-            };
-        }
-
-        // Call this function when all the elements are constructed
-        function initializeScrollHandling() {
-            // Ensure any construction logic here
-            addScrollListener();
+        if (!resizeListenerAdded) {
+            window.addEventListener('resize', handleResize);
+            resizeListenerAdded = true;
         }
 
 
@@ -4486,7 +4384,6 @@
                 isScrollDisabled = false;
             }
         }
-
 
         
 
