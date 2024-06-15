@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
-
+    <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/Mischlichter/data/main/gallerycom/65411740980.jpg">
@@ -33,11 +32,6 @@
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#000000">
     <meta name="msapplication-TileColor" content="#000000">
     <meta name="theme-color" content="#000000">
-
-
-    <link rel="preconnect" href="https://raw.githubusercontent.com">
-    <link rel="dns-prefetch" href="https://raw.githubusercontent.com">
-
 
 
 
@@ -372,38 +366,78 @@
             padding: 10px 30px;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
             z-index: 1000; /* Ensures it stays on top of other content */
-        }
 
-        /* General styles for the menu container */
+        }
+        
         .menu-container {
             font-family: 'JetBrainsMono-Bold';
             font-size: 16px;
+            margin: 0; /* Adjust as needed */
+            /* Additional styles for your menu items */
+        }
+        .menu-container {
             margin: 0; /* Adjust as needed */
             cursor: default; /* Or 'pointer' if you want a hand cursor */
             user-select: none;
             -webkit-user-select: none; /* Safari */
             -moz-user-select: none; /* Firefox */
             -ms-user-select: none;
+
+        }
+        
+        @media screen and (max-width: 768px), screen and (orientation: portrait) {
+            .menu-bar {
+                display: flex; /* Enable flexbox */
+                flex-wrap: wrap; /* Allow wrapping into new lines */
+                padding: 5px; /* Adjust padding for mobile */
+                justify-content: space-evenly; /* Space items evenly */
+            }
+
+            .menu-container {
+                flex: 1 1 25%; /* Each item takes up to 25% of the width */
+                box-sizing: border-box; /* Include padding and border in the width */
+                text-align: left; /* Center text in each container */
+                padding: 5px; /* Adjust padding for items */
+                
+            }
+            
+            .logo-small {
+                position: absolute;
+                left: 13.5%; /* 25% of the container's width is the first quarter */
+                top: 50%;
+                transform: translate(-50%, -50%); /* Center horizontally and vertically */
+            }
         }
 
-        /* Active menu item */
-        .active-menu-item {
-            font-family: 'JetBrainsMono-Bold'; /* Bold font */
-            color: #fff; /* Change color if needed */
+        @media screen and (min-width: 769px) and (orientation: landscape) {
+            .menu-bar {
+                display: flex;
+                justify-content: space-evenly; /* Evenly spaces the menu items */
+                align-items: center;
+                background-color: black; /* 20% grey color */
+                border: 2px solid #00ffcc;
+                border-radius: 20px;
+                position: fixed; /* Fixed to the top */
+                top: 0;
+                left: 0;
+                width: 100%;
+                padding: 10px 30px;
+                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+                z-index: 1000; /* Ensures it stays on top of other content */
+            }
+            
+            .menu-container {
+                font-family: 'JetBrainsMono-Bold';
+                font-size: 16px;
+                margin: 0; /* Adjust as needed                 cursor: default; /* Or 'pointer' if you want a hand cursor */
+                user-select: none; /* Prevent text selection */
+                -webkit-user-select: none; /* Safari */
+                -moz-user-select: none; /* Firefox */
+                -ms-user-select: none; /* Internet Explorer/Edge */
+            }
         }
 
-        /* Hover effect */
-        .menu-container:hover {
-            transform: scale(1.1); /* Slightly enlarges the hovered item */
-        }
 
-        /* .logo-small class will be toggled dynamically by JS */
-        .logo-small {
-            position: absolute;
-            left: 13.5%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-        }
 
 
         .active-menu-item {
@@ -780,8 +814,8 @@
     
     <link rel="stylesheet" type="text/css" href="css/bodygallery.css">
     <script src="https://kit.fontawesome.com/a258000a2d.js" crossorigin="anonymous"></script>
-    <script src="./scripts/three.min.js"></script>
-    <script src="./scripts/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
     <script src="./scripts/lenis.min.js"></script>
     <script src="./scripts/index-min.js"></script>
 
@@ -2490,7 +2524,6 @@
                 const logoImg = document.createElement('img');
                 logoImg.style.marginRight = '20px';
                 logoImg.id = 'menuLogo';
-                logoImg.alt = 'Menu Logo'; // Add this line
                 menuBar.appendChild(logoImg);
 
                 updateLogoVisibility()
@@ -2591,10 +2624,6 @@
                     });
             });
         }
-        
-
-        let currentLogoName = '';
-        let callCount = 0;
 
         async function updateLogoVisibility() {
             const logoImg = document.getElementById('menuLogo');
@@ -2607,89 +2636,32 @@
             const isPortrait = width - 1 < height; // Add a buffer to ensure width is definitely less than height
 
             try {
-                let newLogoUrl, newLogoName;
                 if (width <= 768 || isPortrait) {
-                    newLogoUrl = await getCachedImage('https://raw.githubusercontent.com/Mischlichter/data/main/interface/logoS.jpg');
-                    newLogoName = 'logoS.png';
-                    if (currentLogoName !== newLogoName || callCount === 0) {
-                        logoImg.src = newLogoUrl;
-                        logoImg.classList.add('logo-small');
-                        fakeMenuItems.forEach(item => item.style.display = '');
-                        if (callCount > 0) {
-                            currentLogoName = newLogoName;
-                        }
-                    }
+                    const logoSUrl = await getCachedImage('https://raw.githubusercontent.com/Mischlichter/data/main/interface/logoS.png');
+                    logoImg.src = logoSUrl;
+                    logoImg.classList.add('logo-small');
+                    fakeMenuItems.forEach(item => item.style.display = '');
                 } else {
-                    newLogoUrl = await getCachedImage('https://raw.githubusercontent.com/Mischlichter/data/main/interface/logo5.jpg');
-                    newLogoName = 'logo5.png';
-                    if (currentLogoName !== newLogoName || callCount === 0) {
-                        logoImg.src = newLogoUrl;
-                        logoImg.classList.remove('logo-small');
-                        fakeMenuItems.forEach(item => item.style.display = 'none');
-                        if (callCount > 0) {
-                            currentLogoName = newLogoName;
-                        }
-                    }
+                    const logo5Url = await getCachedImage('https://raw.githubusercontent.com/Mischlichter/data/main/interface/logo5.png');
+                    logoImg.src = logo5Url;
+                    logoImg.classList.remove('logo-small');
+                    fakeMenuItems.forEach(item => item.style.display = 'none');
                 }
             } catch (error) {
+                console.error('Error fetching logo from cache:', error);
                 // Fallback to original URLs if there is an error
-                let fallbackUrl, fallbackName;
                 if (width <= 768 || isPortrait) {
-                    fallbackUrl = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logoS.jpg';
-                    fallbackName = 'logoS.png';
-                    if (currentLogoName !== fallbackName || callCount === 0) {
-                        logoImg.src = fallbackUrl;
-                        logoImg.classList.add('logo-small');
-                        fakeMenuItems.forEach(item => item.style.display = '');
-                        if (callCount > 0) {
-                            currentLogoName = fallbackName;
-                        }
-                    }
+                    logoImg.src = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logoS.png';
+                    logoImg.classList.add('logo-small');
+                    fakeMenuItems.forEach(item => item.style.display = '');
                 } else {
-                    fallbackUrl = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logo5.jpg';
-                    fallbackName = 'logo5.png';
-                    if (currentLogoName !== fallbackName || callCount === 0) {
-                        logoImg.src = fallbackUrl;
-                        logoImg.classList.remove('logo-small');
-                        fakeMenuItems.forEach(item => item.style.display = 'none');
-                        if (callCount > 0) {
-                            currentLogoName = fallbackName;
-                        }
-                    }
+                    logoImg.src = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logo5.png';
+                    logoImg.classList.remove('logo-small');
+                    fakeMenuItems.forEach(item => item.style.display = 'none');
                 }
             }
-
-            updateCssBasedOnOrientation(width, height, isPortrait);
-
-            // Increment call count
-            callCount++;
         }
 
-
-        function updateCssBasedOnOrientation(width, height, isPortrait) {
-            const menuBar = document.querySelector('.menu-bar');
-            const menuContainers = document.querySelectorAll('.menu-container');
-            
-            if (width <= 768 || isPortrait) {
-                menuBar.style.flexWrap = 'wrap';
-                menuBar.style.padding = '5px';
-                menuContainers.forEach(container => {
-                    container.style.flex = '1 1 25%';
-                    container.style.boxSizing = 'border-box';
-                    container.style.textAlign = 'left';
-                    container.style.padding = '5px';
-                });
-            } else {
-                menuBar.style.flexWrap = 'nowrap';
-                menuBar.style.padding = '10px 30px';
-                menuContainers.forEach(container => {
-                    container.style.flex = 'none';
-                    container.style.boxSizing = 'content-box';
-                    container.style.textAlign = 'center';
-                    container.style.padding = '0';
-                });
-            }
-        }
 
 
 
@@ -3036,10 +3008,8 @@
                     const image = document.createElement('img');
                     const cachedImage = await getCachedImage(item.content.src);
                     image.src = cachedImage;
-                    image.alt = 'Scene Image'; // Add this line
                     container.appendChild(image);
                 }
-
             });
 
             // Create and style the footer
