@@ -2594,9 +2594,8 @@
         
 
         let currentLogoName = '';
-        let isFirstCall = true;
+        let callCount = 0;
 
-    
         async function updateLogoVisibility() {
             const logoImg = document.getElementById('menuLogo');
             const fakeMenuItems = document.querySelectorAll('.menu-container[data-fake="true"]');
@@ -2612,22 +2611,22 @@
                 if (width <= 768 || isPortrait) {
                     newLogoUrl = await getCachedImage('https://raw.githubusercontent.com/Mischlichter/data/main/interface/logoS.jpg');
                     newLogoName = 'logoS.png';
-                    if (currentLogoName !== newLogoName || isFirstCall) {
+                    if (currentLogoName !== newLogoName || callCount === 0) {
                         logoImg.src = newLogoUrl;
                         logoImg.classList.add('logo-small');
                         fakeMenuItems.forEach(item => item.style.display = '');
-                        if (!isFirstCall) {
+                        if (callCount > 0) {
                             currentLogoName = newLogoName;
                         }
                     }
                 } else {
                     newLogoUrl = await getCachedImage('https://raw.githubusercontent.com/Mischlichter/data/main/interface/logo5.jpg');
                     newLogoName = 'logo5.png';
-                    if (currentLogoName !== newLogoName || isFirstCall) {
+                    if (currentLogoName !== newLogoName || callCount === 0) {
                         logoImg.src = newLogoUrl;
                         logoImg.classList.remove('logo-small');
                         fakeMenuItems.forEach(item => item.style.display = 'none');
-                        if (!isFirstCall) {
+                        if (callCount > 0) {
                             currentLogoName = newLogoName;
                         }
                     }
@@ -2638,32 +2637,32 @@
                 if (width <= 768 || isPortrait) {
                     fallbackUrl = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logoS.jpg';
                     fallbackName = 'logoS.png';
-                    if (currentLogoName !== fallbackName || isFirstCall) {
+                    if (currentLogoName !== fallbackName || callCount === 0) {
                         logoImg.src = fallbackUrl;
                         logoImg.classList.add('logo-small');
                         fakeMenuItems.forEach(item => item.style.display = '');
-                        if (!isFirstCall) {
+                        if (callCount > 0) {
                             currentLogoName = fallbackName;
                         }
                     }
                 } else {
                     fallbackUrl = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logo5.jpg';
                     fallbackName = 'logo5.png';
-                    if (currentLogoName !== fallbackName || isFirstCall) {
+                    if (currentLogoName !== fallbackName || callCount === 0) {
                         logoImg.src = fallbackUrl;
                         logoImg.classList.remove('logo-small');
                         fakeMenuItems.forEach(item => item.style.display = 'none');
-                        if (!isFirstCall) {
+                        if (callCount > 0) {
                             currentLogoName = fallbackName;
                         }
                     }
                 }
             }
-            
+
             updateCssBasedOnOrientation(width, height, isPortrait);
 
-            // Reset isFirstCall after the first execution
-            isFirstCall = false;
+            // Increment call count
+            callCount++;
         }
 
 
