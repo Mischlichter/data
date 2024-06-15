@@ -4370,11 +4370,14 @@
 
         let savedElement = null;
         let savedPosition = 0;
+        let ignoreSaveScroll = false;
 
         function saveScrollPosition() {
+          if (ignoreSaveScroll) return;
+
           const galleryContainer = document.getElementById('gallery-container');
           if (currentSceneIndex === 4 && galleryContainer) {
-            //console.log("Saving scroll position...");
+            console.log("Saving scroll position...");
 
             const imageContainers = Array.from(galleryContainer.getElementsByClassName('image-container'));
             const viewportTop = window.scrollY;
@@ -4408,9 +4411,15 @@
               top: newSavedPosition,
               behavior: 'instant'
             });
-            //console.log(`Scrolled to new position: ${newSavedPosition}`);
+            console.log(`Scrolled to new position: ${newSavedPosition}`);
+
+            ignoreSaveScroll = true;
+            setTimeout(() => {
+              ignoreSaveScroll = false;
+            }, 5000);
           }
         }
+
 
         // Add event listener for the scroll event with debouncing and condition
         window.addEventListener('scroll', debounce(() => {
