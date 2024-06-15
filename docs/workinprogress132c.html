@@ -4319,6 +4319,7 @@
                     if (heightDifference > heightChangeThreshold) {
                         //console.log('Height change is significant, recalculating aspect ratio.');
                         handleResize();
+                        handleGalleryResize();
                         lastHeight = currentHeight;
                     } else {
                         //console.log('Height change is not significant, skipping recalculation.');
@@ -4326,6 +4327,7 @@
                 } else {
                     //console.log('Non-iOS device, recalculating aspect ratio.');
                     handleResize();
+                    handleGalleryResize();
                 }
             });
             isResizeListenerAdded = true;
