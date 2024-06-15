@@ -208,16 +208,21 @@
         }
 
         html, body {
+            /*background-color: black;*/
             color: #00ffcc; /* Green color */
+            /*height: 100vh;*/
             margin: 0;
             padding: 0;
-            scrollbar-width: none; /* Firefox */
-            scrollbar-color: transparent transparent; /* Firefox */
+            scrollbar-width: none;
+            scrollbar-color: transparent transparent;
+        }
+
+        body {
+            -webkit-overflow-scrolling: auto; /* Disable momentum scrolling on iOS */
         }
 
         body::-webkit-scrollbar {
-            width: 0; /* Remove scrollbar space for WebKit-based browsers */
-            height: 0; /* Remove horizontal scrollbar space */
+            width: 12px;
         }
 
         body::-webkit-scrollbar-track {
@@ -229,7 +234,6 @@
             background: transparent;
             pointer-events: none; /* Disable interactivity */
         }
-
 
         #iframeContainer {
             width: 100%;
