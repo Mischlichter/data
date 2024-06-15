@@ -4402,6 +4402,15 @@
           }
         }, 200));
 
+        let isOrientationChangeListenerAdded = false;
+
+        if (isIOS && !isOrientationChangeListenerAdded) {
+            window.addEventListener('orientationchange', function() {
+                handleGalleryResize();
+            });
+            isOrientationChangeListenerAdded = true;
+        }
+
     
 
 
