@@ -996,23 +996,14 @@ const galleryHTML = `
                 Array.from(spans).forEach((span, wordIndex) => {
                     // Calculate the delay based on both word and line position
                     let delay = baseDelay * (totalWordIndex++);
-
-                    AnimationManager.registerAnimation((currentTime) => {
-                        // Calculate the time to start the animation
-                        let startTime = performance.now() + delay;
-                        return (timestamp) => {
-                            if (timestamp >= startTime) {
-                                const finalText = span.getAttribute('data-final-text');
-                                animateText3(span, finalText, duration);
-                                return false; // Stop this animation after it starts
-                            }
-                            return true; // Keep the animation in the manager until it starts
-                        };
-                    }(performance.now()));
+                    
+                    setTimeout(() => {
+                        const finalText = span.getAttribute('data-final-text');
+                        animateText3(span, finalText, duration);
+                    }, delay);
                 });
             });
         }
-
 
 
         function animateText3(span, finalText, duration) {
