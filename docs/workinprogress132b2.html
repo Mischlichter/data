@@ -4406,10 +4406,13 @@
 
         if (isIOS && !isOrientationChangeListenerAdded) {
             window.addEventListener('orientationchange', function() {
-                handleGalleryResize();
+                if (currentSceneIndex === 4) {
+                    handleGalleryResize();
+                }
             });
             isOrientationChangeListenerAdded = true;
         }
+
 
     
 
