@@ -1506,34 +1506,7 @@
   
 
 
-            function simulateTap() {
-                // Create the touch point at the center of the screen
-                var touchPoint = { clientX: window.innerWidth / 2, clientY: window.innerHeight / 2 };
-
-                // Create a touchstart event
-                var touchStartEvent = new TouchEvent('touchstart', {
-                    bubbles: true,
-                    cancelable: true,
-                    changedTouches: [new Touch({ identifier: Date.now(), target: document.body, ...touchPoint })],
-                    targetTouches: [],
-                    touches: [new Touch({ identifier: Date.now(), target: document.body, ...touchPoint })]
-                });
-
-                // Create a touchend event
-                var touchEndEvent = new TouchEvent('touchend', {
-                    bubbles: true,
-                    cancelable: true,
-                    changedTouches: [new Touch({ identifier: Date.now(), target: document.body, ...touchPoint })],
-                    targetTouches: [],
-                    touches: []
-                });
-
-                // Dispatch the touchstart event
-                document.body.dispatchEvent(touchStartEvent);
-
-                // Dispatch the touchend event shortly after to mimic a tap
-                setTimeout(() => document.body.dispatchEvent(touchEndEvent), 100);
-            }
+            
 
             function checkOrientationChange() {
                 var currentAngle = window.orientation || 0;
@@ -4336,6 +4309,10 @@
             updateVirtualCanvasSize();
             updateLogoVisibility();
 
+            if (sceneIndex === 4) {
+                handleGalleryResize();
+            }
+
             // Exclude the following code from running on iOS devices
             if (isIOS) {
                 return; // Exit the function if on an iOS device
@@ -4350,9 +4327,7 @@
             shuffleMenu();
 
             // If in the gallery scene, call handleGalleryResize
-            if (sceneIndex === 4) {
-                handleGalleryResize();
-            }
+            
         }
 
 
