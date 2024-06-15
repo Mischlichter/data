@@ -1526,7 +1526,8 @@
 
 
 
-            window.addEventListener('orientationchange', checkOrientationChange);
+            window.addEventListener('orientationchange', function() { console.log('oritrigger'); handleGalleryResize(); }); handleGalleryResize();
+
 
             window.enableGyro = enableGyro;
             window.disableGyro = disableGyro;
@@ -4393,7 +4394,7 @@
           }
         }
 
-
+        window.handleGalleryResize = handleGalleryResize;
         // Add event listener for the scroll event with debouncing and condition
         window.addEventListener('scroll', debounce(() => {
           if (currentSceneIndex === 4) {
