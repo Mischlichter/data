@@ -2711,14 +2711,27 @@
             const height = window.innerHeight;
             const isPortrait = width - 1 < height;
 
+            let newLogoName = '';
+
             if (width <= 768 || isPortrait) {
                 logoImgSmall.style.display = 'block';
                 logoImgLarge.style.display = 'none';
                 fakeMenuItems.forEach(item => item.style.display = '');
+                newLogoName = 'small';
+                console.log('Displaying small logo');
             } else {
                 logoImgSmall.style.display = 'none';
                 logoImgLarge.style.display = 'block';
                 fakeMenuItems.forEach(item => item.style.display = 'none');
+                newLogoName = 'large';
+                //console.log('Displaying large logo');
+            }
+
+            if (callCount > 0 && currentLogoName !== newLogoName) {
+                currentLogoName = newLogoName;
+                //console.log(`Updated currentLogoName to: ${currentLogoName}`);
+            } else if (callCount === 0) {
+                //console.log('First call, currentLogoName not updated');
             }
 
             updateCssBasedOnOrientation(width, height, isPortrait);

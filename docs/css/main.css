@@ -1,0 +1,578 @@
+
+        @font-face {
+            font-family: 'JetBrainsMono-Regular';
+            src: url('https://www.hogeai.com/fonts/JetBrainsMono-Regular.woff2') format('woff2'), /* Modern Browsers */
+                 url('https://www.hogeai.com/fonts/JetBrainsMono-Regular.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 400; /* Regular font weight */
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-Bold';
+            src: url('https://www.hogeai.com/fonts/JetBrainsMono-Bold.woff2') format('woff2'), /* Modern Browsers */
+                 url('https://www.hogeai.com/fonts/JetBrainsMono-Bold.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 700; /* Bold font weight */
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-BoldItalic';
+            src: url('https://www.hogeai.com/fonts/JetBrainsMono-BoldItalic.woff2') format('woff2'), /* Modern Browsers */
+                 url('https://www.hogeai.com/fonts/JetBrainsMono-BoldItalic.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 700; /* Bold font weight */
+            font-style: italic;
+        }
+
+        @font-face {
+            font-family: 'JetBrainsMono-ExtraBold';
+            src: url('https://www.hogeai.com/fonts/JetBrainsMono-ExtraBold.woff2') format('woff2'), /* Modern Browsers */
+                 url('https://www.hogeai.com/fonts/JetBrainsMono-ExtraBold.ttf') format('truetype'); /* Safari, Android, iOS */
+            font-weight: 800; /* Extra-bold font weight */
+            font-style: normal;
+        }
+
+  
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            -webkit-font-smoothing: antialiased;
+            
+            -moz-osx-font-smoothing: grayscale;
+            font-family: 'JetBrainsMono-Regular', sans-serif;
+            background-color: black;
+            color: #00ffcc;
+            margin: 0;
+            padding: 0;
+            transition: color 0.3s ease;
+            max-width: 100vw;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+            touch-action: pan-y; /* Allow vertical panning, disable everything else */
+            -webkit-user-select: none; /* Prevent text selection */
+            -ms-user-select: none;
+            user-select: none;
+            
+        }
+
+
+        html {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            
+            
+        }
+
+        html, body {
+            /*background-color: black;*/
+            color: #00ffcc; /* Green color */
+            /*height: 100vh;*/
+            margin: 0;
+            padding: 0;
+    
+    
+            scrollbar-width: none;
+            scrollbar-color: transparent transparent;
+            
+        }
+
+        body::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        body::-webkit-scrollbar-track {
+            background: transparent;
+            border-left: 6px solid transparent; /* Adjust the border width to match the thumb's width */
+        }
+
+        body::-webkit-scrollbar-thumb {
+            background: transparent;
+            pointer-events: none; /* Disable interactivity */
+        }
+
+        #iframeContainer {
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            position: relative;
+
+            
+        }
+        #mouseOverlay {
+            pointer-events: auto;
+            z-index: 1;
+
+        }
+
+        #iframeContainer iframe {
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index:1;
+        }
+
+        @media (orientation: portrait) {
+            #iframeContainer iframe {
+                transform: scale(0.9);
+            }
+        }
+
+        /* Ensure the iframe is at normal size when in landscape mode */
+        @media (orientation: landscape) {
+            #iframeContainer iframe {
+                transform: scale(1.0);
+            }
+        }
+
+
+        
+
+        
+        
+     
+        /* Individual image containers */
+        .flex-icontainer {
+        
+             /* Smooth fade-in transition */
+            position: relative; /* Essential for absolute child positioning */
+            padding-top: 38%; /* Same as width for a 1:1 aspect ratio */
+            margin: 50px auto; /* Center horizontally */
+            border: 2px solid #00ffcc; /* Green border */
+            border-radius: 20px; /* Rounded corners */
+            overflow: hidden; /* Ensures nothing spills outside the rounded corners */
+            box-sizing: border-box;
+            background-color: black;
+            pointer-events: none;
+            touch-action: none;
+
+        }
+
+
+        .flex-icontainer img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%; /* Ensure the image covers the container */
+            height: 100%;
+            transform: translate(-50%, -50%); /* Center the image */
+            object-fit: cover; /* Ensure the image covers the container */
+            pointer-events: none;
+            touch-action: none;
+        }
+
+
+
+
+
+
+        .flex-container {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 50px auto; /* Center horizontally */
+            /*position: relative;
+            bottom: 800px; */
+            border: none;
+            box-sizing: border-box;
+            font-family: 'JetBrainsMono-Bold', sans-serif;
+            text-transform: uppercase;
+           
+            z-index: 2;
+        
+            
+            border: 2px solid #00ffcc; /* Green border */
+            border-radius: 20px; /* Rounded corners */
+            padding: 8px 15px; /* Adjust padding as needed */
+            background-color: black;
+            
+            
+            
+        }
+
+
+        
+        .flex-container span {
+            white-space: nowrap;
+            display: inline-block;
+            margin: 0 5px 5px 0;
+            pointer-events: none;
+            
+        }
+
+        #mainpage .dynamic-text { 
+            opacity: 0;
+            pointer-events: none;
+            
+        }
+
+        
+        #bodygallery .dynamic-text {
+            z-index: 2;
+            pointer-events: none;
+        }
+            
+        
+    
+
+        .menu-bar {
+            display: flex;
+            justify-content: space-evenly; /* Evenly spaces the menu items */
+            align-items: center;
+            background-color: black; /* 20% grey color */
+            border: 2px solid #00ffcc;
+            border-radius: 20px;
+            position: fixed; /* Fixed to the top */
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px 30px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000; /* Ensures it stays on top of other content */
+        }
+
+        /* General styles for the menu container */
+        .menu-container {
+            font-family: 'JetBrainsMono-Bold';
+            font-size: 16px;
+            margin: 0; /* Adjust as needed */
+            cursor: default; /* Or 'pointer' if you want a hand cursor */
+            user-select: none;
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none;
+        }
+
+        /* Active menu item */
+        .active-menu-item {
+            font-family: 'JetBrainsMono-Bold'; /* Bold font */
+            color: #fff; /* Change color if needed */
+        }
+
+        /* Hover effect */
+        .menu-container:hover {
+            transform: scale(1.1); /* Slightly enlarges the hovered item */
+        }
+
+        /* .logo-small class will be toggled dynamically by JS */
+        .logo-small {
+            position: absolute;
+            left: 13.5%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+
+        .active-menu-item {
+            font-family: 'JetBrainsMono-Bold'; /* Bold font */
+            color: #fff; /* Change color if needed */
+            /* Other styles to highlight the active item */
+        }
+        .menu-container {
+            transition: transform 0.3s ease;
+        }
+        .menu-container:hover {
+            transform: scale(1.1); /* Slightly enlarges the hovered item */
+        }
+        .content-above-iframe {
+            padding: 20px;
+        }
+        .content-below-iframe {
+            padding: 20px;
+        }
+
+
+        .foreground-image-container {
+            position: absolute; /* or absolute, depending on your layout needs */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Ensures it is above all other content */
+            pointer-events: none; /* Allows clicks to pass through to elements below */
+        }
+
+        .foreground-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Adjust this as necessary to fit your design */
+        }
+
+
+
+
+
+
+
+        :root {
+            --viewer-width: 1024px;
+            --viewer-height: 2048px;
+            --total-width: 3072px; /* New variable for total width */
+        }
+
+        #interfaceContainer {
+            position: absolute; /* or 'fixed' depending on use case */
+            top: 50%;
+            left: 50%;
+            z-index: 15;
+            transform: translate(-50%, -50%);
+            width: var(--total-width); /* Assuming this is set to 3072px or as needed */
+            height: var(--viewer-height); /* Assuming this is set to 2048px */
+            margin: 0 auto; /* Center the container */
+            
+            pointer-events: none;
+        }
+
+        .sideImageContainer {
+            background-size: cover;
+            background-repeat: no-repeat;
+            z-index: 15;
+            
+        }
+
+        #interfaceSideLeft, #interfaceSideRight {
+            position: absolute;
+            top: 0;
+            width: calc((var(--total-width) - var(--viewer-width)) / 2); /* Adjust width for side containers */
+            height: 100%;
+            
+        }
+
+        #interfaceSideLeft {
+            left: 0;
+            
+        }
+
+        #interfaceSideRight {
+            right: 0;
+            
+        }
+
+        #interfaceViewerContainer {
+            position: absolute;
+            top: 0;
+            left: calc((100% - var(--viewer-width)) / 2); /* Center the viewer */
+            width: var(--viewer-width);
+            height: 100%;
+            z-index: 15;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+            
+        }
+
+        #interfaceViewerImage {
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            
+        }
+
+        :root {
+            --background-total-width: 4096px;
+            --background-total-height: 3072px;
+        }
+
+        #backgroundRoot {
+            --viewer-width: 1024px;
+            --viewer-height: 2048px;
+            --total-width: 3072px; /* New variable for total width */
+        }
+
+        #backgroundContainer {
+            position: absolute; /* or 'fixed' depending on use case */
+            top: 50%;
+            left: 50%;
+            z-index: -2;
+            transform: translate(-50%, -50%);
+            width: var(--total-width); /* Assuming this is set to 3072px or as needed */
+            height: var(--viewer-height); /* Assuming this is set to 2048px */
+            margin: 0 auto; /* Center the container */
+            
+        }
+
+        #backgroundInterfaceContainer {
+            position: absolute;
+            top: 1096px;
+            left: calc((100% - var(--viewer-width)) / 2); /* Center the viewer */
+            width: var(--viewer-width);
+            height: 100%;
+            z-index: -2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+           
+        }
+
+        #interfaceBackground {
+            width: 100%;
+            height: auto;
+            
+        }
+
+        .scale-wrapper-background, .scale-wrapper-interface {
+            position: absolute; /* Or 'fixed' if they should stay in place during scroll */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%; /* Or an explicit height if necessary */
+            pointer-events: none; /* To allow interaction with elements below */
+        }
+
+        .scale-wrapper-background {
+            pointer-events: none;
+            position: absolute; /* Switched to absolute for stronger positioning control */
+            top: -15%;
+            left: 50%;
+            transform-origin: center center; /* Ensures scaling occurs from the element's center */
+            width: fit-content; /* Ensures the wrapper fits the scaled content */
+            height: fit-content; /* Ensures the wrapper fits the scaled content */
+            transform: translate(-50%, -50%) scale(0.8); /* Centers and then scales the content */
+            
+        }
+
+        .scale-wrapper-interface {
+            pointer-events: none;
+            position: absolute; /* Switched to absolute for stronger positioning control */
+            top: 50%;
+            left: 50%;
+            transform-origin: center center; /* Ensures scaling occurs from the element's center */
+            width: fit-content; /* Ensures the wrapper fits the scaled content */
+            height: fit-content; /* Ensures the wrapper fits the scaled content */
+            transform: translate(-50%, -50%) scale(0.8); /* Centers and then scales the content */
+            
+        }
+
+        .scale-wrapper-background {
+            z-index: -2; /* Ensures the background is placed behind other content */
+        }
+
+        .scale-wrapper-interface {
+            z-index: 15; /* Ensures the interface is placed above the background */
+        }
+
+        #interfaceContainer, #backgroundContainer, #iframeContainer, #bodyGalleryContainer, .flex-icontainer, .flex-container {
+            transition: opacity 1s ease-in-out;
+            opacity: 0;  /* Initially hidden, ensure this is your intent */
+            
+        }
+
+        .menu-bar, .menu-container {
+            transition: opacity 0.5s ease-in-out;
+            opacity: 0;  /* Initially hidden, ensure this is your intent */
+            
+        }
+
+
+
+
+
+
+
+        .center-container-XL {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1000vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 70;
+            background-color: rgba(0, 0, 0, 0);
+            transition: opacity 1.5s ease-out; /* Smooth transition for opacity */
+        }
+
+        #ascii-art-container-XL {
+            width: 370px;
+            height: 170px;
+            overflow: hidden;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 3;
+            font-size: 16px;
+        }
+
+        .ascii-line-XL {
+            white-space: pre;
+            font-family: monospace;
+            color: #00ffcc;
+            transition: opacity 1s ease-out;
+
+        }
+
+        .hidden-char-XL {
+            visibility: hidden;
+        }
+
+
+        #permissionOverlay {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            opacity: 0; 
+            visibility: hidden;
+            transition: opacity 0.5s ease-in-out; 
+            z-index: 1111111;
+        }
+
+
+
+
+        #enableButton {
+            padding: 10px 20px;
+            font-family: 'JetBrainsMono-Bold';  /* Consistent with the menu */
+            font-size: 16px;                    /* Size from the menu */
+            background-color: black;            /* Background color like the menu */
+            color: #00ffcc;                     /* Highlight color for the text, matching the menu border */
+            border: 2px solid #00ffcc;          /* Border color to match the menu */
+            border-radius: 20px;                /* Rounded corners like the menu */
+            cursor: pointer;
+            outline: none;
+            z-index: 1111111;
+            position: relative;                 /* Ensure positioning context is correct */
+            top: auto;
+            left: auto;
+            width: auto;                        /* Auto width to fit content */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0); /* Slight shadow for depth */
+            opacity: 0;
+            visibility: hidden;
+        }
+
+
+        html.lenis, html.lenis body {
+          height: auto;
+        }
+
+        .lenis.lenis-smooth {
+          scroll-behavior: auto !important;
+        }
+
+        .lenis.lenis-smooth [data-lenis-prevent] {
+          overscroll-behavior: contain;
+        }
+
+        .lenis.lenis-stopped {
+          overflow: hidden;
+        }
+
+        .lenis.lenis-smooth iframe {
+          pointer-events: none;
+        }
+
+        /* Add this CSS to your stylesheet */
+        .no-scroll {
+            overflow: hidden;
+        }
+
+        
