@@ -2566,193 +2566,169 @@
                     menuBar.innerHTML = '';
                 }
 
-                const logoImg = document.createElement('img');
-                logoImg.style.marginRight = '20px';
-                logoImg.id = 'menuLogo';
-                logoImg.alt = 'Menu Logo'; // Add this line
-                menuBar.appendChild(logoImg);
+                const logoImgSmall = document.createElement('img');
+                logoImgSmall.style.marginRight = '20px';
+                logoImgSmall.id = 'menuLogoSmall';
+                logoImgSmall.alt = 'Menu Logo Small';
+                logoImgSmall.classList.add('logo', 'logo-small');
+                logoImgSmall.style.display = 'none'; // Initially hidden
+                menuBar.appendChild(logoImgSmall);
 
-                updateLogoVisibility()
-                    .then(() => {
-                        menuContainerIds = [];
-                        let currentlyActiveMenuItemId = 'menuContainer0';
+                const logoImgLarge = document.createElement('img');
+                logoImgLarge.style.marginRight = '20px';
+                logoImgLarge.id = 'menuLogoLarge';
+                logoImgLarge.alt = 'Menu Logo Large';
+                logoImgLarge.classList.add('logo');
+                logoImgLarge.style.display = 'none'; // Initially hidden
+                menuBar.appendChild(logoImgLarge);
 
-                        const handleInteraction = async (itemId, index) => {
-                            if (blockMenuInteractions) return;
-                            if ((currentlyActiveMenuItemId === 'menuLogo' && itemId === 'menuContainer0') ||
-                                (currentlyActiveMenuItemId === 'menuContainer0' && itemId === 'menuLogo')) {
-                                window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-                                return;
-                            }
+                fetchLogos().then(() => {
+                    updateLogoVisibility();
+                }).then(() => {
+                    menuContainerIds = [];
+                    let currentlyActiveMenuItemId = 'menuContainer0';
 
-                            if (currentlyActiveMenuItemId === itemId) {
-                                window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-                                return;
-                            }
+                    const handleInteraction = async (itemId, index) => {
+                        if (blockMenuInteractions) return;
+                        if ((currentlyActiveMenuItemId === 'menuLogo' && itemId === 'menuContainer0') ||
+                            (currentlyActiveMenuItemId === 'menuContainer0' && itemId === 'menuLogo')) {
+                            window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+                            return;
+                        }
 
-                            currentlyActiveMenuItemId = itemId;
-                            hideDirectIframe();
-                            await fadeOutElements();
-                            await resetPageStyles();
+                        if (currentlyActiveMenuItemId === itemId) {
+                            window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+                            return;
+                        }
 
-                            currentSceneIndex = (itemId === 'menuLogo') ? 0 : index;
+                        currentlyActiveMenuItemId = itemId;
+                        hideDirectIframe();
+                        await fadeOutElements();
+                        await resetPageStyles();
 
-                            // Load the selected scene
-                            loadScene(currentSceneIndex);
+                        currentSceneIndex = (itemId === 'menuLogo') ? 0 : index;
 
-                            // Always highlight the first menu item when the logo is clicked
-                            if (itemId === 'menuLogo') {
-                                highlightActiveMenuItem('menuContainer0'); // Highlight the first menu item when the logo is clicked
-                            } else {
-                                highlightActiveMenuItem(itemId); // Otherwise, highlight the current menu item
-                            }
+                        // Load the selected scene
+                        loadScene(currentSceneIndex);
 
-                            //triggerOrientationWithoutCalibration();
+                        // Always highlight the first menu item when the logo is clicked
+                        if (itemId === 'menuLogo') {
+                            highlightActiveMenuItem('menuContainer0'); // Highlight the first menu item when the logo is clicked
+                        } else {
+                            highlightActiveMenuItem(itemId); // Otherwise, highlight the current menu item
+                        }
+                    };
+
+                    logoImgSmall.addEventListener('click', () => handleInteraction('menuLogo', 0));
+                    logoImgSmall.addEventListener('touchend', () => handleInteraction('menuLogo', 0));
+                    logoImgLarge.addEventListener('click', () => handleInteraction('menuLogo', 0));
+                    logoImgLarge.addEventListener('touchend', () => handleInteraction('menuLogo', 0));
+
+                    menuData.forEach((menuItem, index) => {
+                        const menuContainer = document.createElement('div');
+                        menuContainer.id = `menuContainer${index}`;
+                        menuContainer.className = 'menu-container';
+                        menuContainer.innerText = menuItem.label;
+                        menuBar.appendChild(menuContainer);
+
+                        let isTouch = false;
+
+                        const handleMenuInteraction = async (event) => {
+                            if (isTouch && event.type === 'click') return;
+                            isTouch = event.type === 'touchend';
+                            handleInteraction(menuContainer.id, index);
                         };
 
-                        logoImg.addEventListener('click', () => handleInteraction('menuLogo', 0));
-                        logoImg.addEventListener('touchend', () => handleInteraction('menuLogo', 0));
+                        menuContainer.addEventListener('click', handleMenuInteraction);
+                        menuContainer.addEventListener('click', () => animateTextDuringHover(menuContainer));
 
-                        menuData.forEach((menuItem, index) => {
-                            const menuContainer = document.createElement('div');
-                            menuContainer.id = `menuContainer${index}`;
-                            menuContainer.className = 'menu-container';
-                            menuContainer.innerText = menuItem.label;
-                            menuBar.appendChild(menuContainer);
+                        menuContainer.addEventListener('touchend', handleMenuInteraction);
+                        menuContainer.addEventListener('touchend', () => animateTextDuringHover(menuContainer));
 
-                            let isTouch = false;
+                        if (index === 0) {
+                            setTimeout(() => {
+                                animateTextDuringHover(menuContainer);
+                                highlightActiveMenuItem(menuContainer.id); // Highlight the first menu item
+                            }, 5000);
+                        }
 
-                            const handleMenuInteraction = async (event) => {
-                                if (isTouch && event.type === 'click') return;
-                                isTouch = event.type === 'touchend';
-                                handleInteraction(menuContainer.id, index);
-                                // Update the state of the scroll to top button
-                            };
-
-                            menuContainer.addEventListener('click', handleMenuInteraction);
-                            menuContainer.addEventListener('click', () => animateTextDuringHover(menuContainer));
-
-                            menuContainer.addEventListener('touchend', handleMenuInteraction);
-                            menuContainer.addEventListener('touchend', () => animateTextDuringHover(menuContainer));
-
-                            if (index === 0) {
-                                setTimeout(() => {
-                                    animateTextDuringHover(menuContainer);
-                                    highlightActiveMenuItem(menuContainer.id); // Highlight the first menu item
-                                }, 5000);
-                            }
-
-
-                            menuContainerIds.push(menuContainer.id);
-                        });
-
-                        const fakeMenuItem1 = document.createElement('div');
-                        fakeMenuItem1.className = 'menu-container';
-                        fakeMenuItem1.setAttribute('data-fake', 'true');
-                        menuBar.insertBefore(fakeMenuItem1, menuBar.children[1]);
-
-                        const fakeMenuItem2 = document.createElement('div');
-                        fakeMenuItem2.className = 'menu-container';
-                        fakeMenuItem2.setAttribute('data-fake', 'true');
-                        menuBar.insertBefore(fakeMenuItem2, menuBar.children[5]);
-
-                        resolve();
-
-                    })
-                    .then(() => {
-                        updateMenu(menuData);
-                        //triggerOrientationWithoutCalibration();
-                        isMenuLoaded = true;
-                    })
-                    .catch(error => {
-                        console.error('Error updating logo visibility:', error);
-                        reject(error);
+                        menuContainerIds.push(menuContainer.id);
                     });
+
+                    const fakeMenuItem1 = document.createElement('div');
+                    fakeMenuItem1.className = 'menu-container';
+                    fakeMenuItem1.setAttribute('data-fake', 'true');
+                    menuBar.insertBefore(fakeMenuItem1, menuBar.children[1]);
+
+                    const fakeMenuItem2 = document.createElement('div');
+                    fakeMenuItem2.className = 'menu-container';
+                    fakeMenuItem2.setAttribute('data-fake', 'true');
+                    menuBar.insertBefore(fakeMenuItem2, menuBar.children[6]);
+
+                    resolve();
+                }).then(() => {
+                    updateMenu(menuData);
+                    isMenuLoaded = true;
+                }).catch(error => {
+                    console.error('Error updating logo visibility:', error);
+                    reject(error);
+                });
             });
         }
-        
+
+        async function fetchLogos() {
+
+
+            const smallLogoUrl = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logoS.jpg';
+            const largeLogoUrl = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logo5.jpg';
+
+            const [smallLogo, largeLogo] = await Promise.all([
+                getCachedImage(smallLogoUrl),
+                getCachedImage(largeLogoUrl)
+            ]);
+
+            const logoImgSmall = document.getElementById('menuLogoSmall');
+            const logoImgLarge = document.getElementById('menuLogoLarge');
+
+            logoImgSmall.src = smallLogo;
+            logoImgLarge.src = largeLogo;
+        }
 
         let currentLogoName = '';
         let callCount = 0;
 
         async function updateLogoVisibility() {
-            const logoImg = document.getElementById('menuLogo');
+            const logoImgSmall = document.getElementById('menuLogoSmall');
+            const logoImgLarge = document.getElementById('menuLogoLarge');
             const fakeMenuItems = document.querySelectorAll('.menu-container[data-fake="true"]');
 
-            if (!logoImg) return; // Exit the function early if the logo image does not exist
+            logoImgSmall.classList.add('keep');
+            logoImgLarge.classList.add('keep');
 
-            // Ensure the logo image has the 'keep' class to prevent it from being removed during cleanup
-            logoImg.classList.add('keep');
+            if (!logoImgSmall || !logoImgLarge) return;
 
             const width = window.innerWidth;
             const height = window.innerHeight;
-            const isPortrait = width - 1 < height; // Add a buffer to ensure width is definitely less than height
+            const isPortrait = width - 1 < height;
 
-            try {
-                let newLogoUrl, newLogoName;
-                if (width <= 768 || isPortrait) {
-                    newLogoUrl = await getCachedImage('https://raw.githubusercontent.com/Mischlichter/data/main/interface/logoS.jpg');
-                    newLogoName = 'logoS.png';
-                    if (currentLogoName !== newLogoName || callCount === 0) {
-                        logoImg.src = newLogoUrl;
-                        logoImg.classList.add('logo-small');
-                        fakeMenuItems.forEach(item => item.style.display = '');
-                        if (callCount > 0) {
-                            currentLogoName = newLogoName;
-                        }
-                    }
-                } else {
-                    newLogoUrl = await getCachedImage('https://raw.githubusercontent.com/Mischlichter/data/main/interface/logo5.jpg');
-                    newLogoName = 'logo5.png';
-                    if (currentLogoName !== newLogoName || callCount === 0) {
-                        logoImg.src = newLogoUrl;
-                        logoImg.classList.remove('logo-small');
-                        fakeMenuItems.forEach(item => item.style.display = 'none');
-                        if (callCount > 0) {
-                            currentLogoName = newLogoName;
-                        }
-                    }
-                }
-            } catch (error) {
-                // Fallback to original URLs if there is an error
-                let fallbackUrl, fallbackName;
-                if (width <= 768 || isPortrait) {
-                    fallbackUrl = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logoS.jpg';
-                    fallbackName = 'logoS.png';
-                    if (currentLogoName !== fallbackName || callCount === 0) {
-                        logoImg.src = fallbackUrl;
-                        logoImg.classList.add('logo-small');
-                        fakeMenuItems.forEach(item => item.style.display = '');
-                        if (callCount > 0) {
-                            currentLogoName = fallbackName;
-                        }
-                    }
-                } else {
-                    fallbackUrl = 'https://raw.githubusercontent.com/Mischlichter/data/main/interface/logo5.jpg';
-                    fallbackName = 'logo5.png';
-                    if (currentLogoName !== fallbackName || callCount === 0) {
-                        logoImg.src = fallbackUrl;
-                        logoImg.classList.remove('logo-small');
-                        fakeMenuItems.forEach(item => item.style.display = 'none');
-                        if (callCount > 0) {
-                            currentLogoName = fallbackName;
-                        }
-                    }
-                }
+            if (width <= 768 || isPortrait) {
+                logoImgSmall.style.display = 'block';
+                logoImgLarge.style.display = 'none';
+                fakeMenuItems.forEach(item => item.style.display = '');
+            } else {
+                logoImgSmall.style.display = 'none';
+                logoImgLarge.style.display = 'block';
+                fakeMenuItems.forEach(item => item.style.display = 'none');
             }
 
             updateCssBasedOnOrientation(width, height, isPortrait);
-
-            // Increment call count
             callCount++;
         }
-
-
 
         function updateCssBasedOnOrientation(width, height, isPortrait) {
             const menuBar = document.querySelector('.menu-bar');
             const menuContainers = document.querySelectorAll('.menu-container');
-            
+
             if (width <= 768 || isPortrait) {
                 menuBar.style.flexWrap = 'wrap';
                 menuBar.style.padding = '5px';
@@ -2774,6 +2750,10 @@
             }
         }
 
+
+
+
+   
 
 
 //////// ANIMATION MENU ///////
