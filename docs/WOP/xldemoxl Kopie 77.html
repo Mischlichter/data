@@ -2055,17 +2055,9 @@
                 AnimationManager.cancelAnimations();
             }
 
+            // Clear the gallery container
             const galleryContainer = document.getElementById('gallery-container');
             if (galleryContainer) {
-                // Remove event listeners and clear inner HTML
-                const images = galleryContainer.querySelectorAll('img');
-                images.forEach(img => {
-                    img.onload = null;
-                    img.onerror = null;
-                    if (img.src.startsWith('blob:')) {
-                        URL.revokeObjectURL(img.src); // Revoke the object URL
-                    }
-                });
                 galleryContainer.innerHTML = ''; // Remove all children
             }
 
