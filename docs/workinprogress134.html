@@ -1968,16 +1968,22 @@
         function resetPageStyles() {
             console.log('sweepsweep.');
 
+            // Utility function to remove all event listeners
+            function removeAllEventListeners(element) {
+                const clone = element.cloneNode(true);
+                element.parentNode.replaceChild(clone, element);
+            }
+
             // Remove event listeners from mouseOverlay
             const mouseOverlay = document.getElementById('mouseOverlay');
             if (mouseOverlay) {
-                mouseOverlay.removeEventListener('mouseenter', handleMouseEvent);
-                mouseOverlay.removeEventListener('mouseleave', handleMouseEvent);
-                mouseOverlay.removeEventListener('mousemove', handleMouseEvent);
+                removeAllEventListeners(mouseOverlay);
             }
 
             // Cancel animation frames through AnimationManager
-            AnimationManager.cancelAnimations();
+            if (typeof AnimationManager !== 'undefined') {
+                AnimationManager.cancelAnimations();
+            }
 
             // Clear dynamically created spans for text animations
             document.querySelectorAll('.animating-span').forEach(span => span.remove());
@@ -1990,6 +1996,9 @@
             document.querySelectorAll('.scale-wrapper-background, .scale-wrapper-interface').forEach(wrapper => {
                 wrapper.parentNode.removeChild(wrapper);
             });
+
+            // Remove images not marked with 'keep-image' class
+            document.querySelectorAll('img:not(.keep-image)').forEach(img => img.remove());
 
             // Clear GSAP global timeline
             if (typeof gsap !== 'undefined') {
@@ -2024,14 +2033,10 @@
                         }
                     }
                 }
+                scene = null; // Set scene to null to ensure it's garbage collected
             }
             if (typeof camera !== 'undefined') {
                 camera = null;
-            }
-
-            // Clear GSAP timelines again if needed
-            if (typeof gsap !== 'undefined') {
-                gsap.globalTimeline.clear();
             }
 
             // Clear observed elements and data
@@ -2062,6 +2067,8 @@
 
             console.log('Page styles reset.');
         }
+
+
 
 
 
@@ -2600,6 +2607,7 @@
             const fakeMenuItems = document.querySelectorAll('.menu-container[data-fake="true"]');
 
             if (!logoImg) return; // Exit the function early if the logo image does not exist
+            logoImg.classList.add('keep-image');
 
             const width = window.innerWidth;
             const height = window.innerHeight;
