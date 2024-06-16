@@ -482,13 +482,7 @@ const galleryHTML = `
         
         //GALLERY CODE
         
-        let abortController = new AbortController();
-
         function fetchImageFilenames() {
-            // Create a new AbortController instance for each fetch
-            abortController = new AbortController();
-            const signal = abortController.signal;
-
             let imageMetadata = {};
             const galleryContainer = document.getElementById('gallery-container');
             let db; // Reference for IndexedDB database
@@ -516,15 +510,15 @@ const galleryHTML = `
             };
 
             function fetchMetadataAndImages() {
-                fetch('https://raw.githubusercontent.com/Mischlichter/data/main/index.json', { signal })
+                fetch('https://raw.githubusercontent.com/Mischlichter/data/main/index.json')
                     .then(response => response.json())
                     .then(indexData => {
-                        fetch('https://raw.githubusercontent.com/Mischlichter/data/main/lib/metadata.json', { signal })
+                        fetch('https://raw.githubusercontent.com/Mischlichter/data/main/lib/metadata.json')
                             .then(response => response.json())
                             .then(data => {
                                 imageMetadata = data;
 
-                                fetch('https://api.github.com/repos/Mischlichter/data/contents/gallerycom', { signal })
+                                fetch('https://api.github.com/repos/Mischlichter/data/contents/gallerycom')
                                     .then(response => response.json())
                                     .then(files => {
                                         const totalImages = files.length;
@@ -547,6 +541,7 @@ const galleryHTML = `
                                             const img = document.createElement('img');
                                             img.classList.add('grid-image');
                                             img.alt = 'Scene Image'; // Add this line
+
 
                                             const metadata = imageMetadata[file.name] || {};
                                             const wordOverlay = document.createElement('div');
@@ -575,7 +570,7 @@ const galleryHTML = `
                                                 }
 
                                                 if (!dbResult || lastModifiedInDB < lastModifiedCurrent) {
-                                                    fetch(file.download_url, { signal })
+                                                    fetch(file.download_url)
                                                         .then(response => response.blob())
                                                         .then(blob => {
                                                             db.transaction('assets', 'readwrite')
@@ -590,13 +585,7 @@ const galleryHTML = `
                                                             img.src = dataUrl; // Load new image source
                                                             dynamicImages.push(img.src); // Store the image URL
                                                         })
-                                                        .catch(error => {
-                                                            if (error.name === 'AbortError') {
-                                                                //console.log('Image fetch aborted.');
-                                                            } else {
-                                                                console.error(`Error loading image ${index} (${file.name}):`, error);
-                                                            }
-                                                        });
+                                                        .catch(error => console.error(`Error loading image ${index} (${file.name}):`, error));
                                                 } else {
                                                     const blob = dbResult.blob;
                                                     if (blob instanceof Blob) {
@@ -639,32 +628,13 @@ const galleryHTML = `
 
                                         loadImage(0); // Start loading images
                                     })
-                                    .catch(error => {
-                                        if (error.name === 'AbortError') {
-                                            //console.log('Gallery fetch aborted.');
-                                        } else {
-                                            console.error('Error fetching file names:', error);
-                                        }
-                                    });
+                                    .catch(error => console.error('Error fetching file names:', error));
                             })
-                            .catch(error => {
-                                if (error.name === 'AbortError') {
-                                    //console.log('Metadata fetch aborted.');
-                                } else {
-                                    console.error('Error fetching metadata:', error);
-                                }
-                            });
+                            .catch(error => console.error('Error fetching metadata:', error));
                     })
-                    .catch(error => {
-                        if (error.name === 'AbortError') {
-                            //console.log('Index fetch aborted.');
-                        } else {
-                            console.error('Error fetching index data:', error);
-                        }
-                    });
+                    .catch(error => console.error('Error fetching index data:', error));
             }
         }
-
 
 
 

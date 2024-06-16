@@ -2050,13 +2050,6 @@
                 AnimationManager.cancelAnimations();
             }
 
-            // Clear the gallery container
-            const galleryContainer = document.getElementById('gallery-container');
-            if (galleryContainer) {
-                galleryContainer.innerHTML = ''; // Remove all children
-            }
-
-
             // Clear dynamically created spans for text animations, excluding keep spans
             document.querySelectorAll('span:not(.keep)').forEach(span => span.remove());
 
