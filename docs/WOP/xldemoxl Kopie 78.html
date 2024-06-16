@@ -1949,7 +1949,6 @@
                 newIframe.style.height = '100vh';
                 newIframe.style.border = 'none';
                 newIframe.src = src;
-                newIframe.setAttribute('aria-label', 'Scene Viewer');
 
                 if (!messageEventListenerAdded) {
                     window.addEventListener('message', (event) => {
@@ -1980,7 +1979,6 @@
                 newIframe.style.display = 'none'; // Make iframe invisible on load
                 newIframe.style.opacity = '0'; // Set initial opacity to 0
                 newIframe.src = src;
-                newIframe.setAttribute('aria-label', 'Scene Viewer');
 
                 document.body.appendChild(newIframe); // Directly append to the body
                 hideBackground();
