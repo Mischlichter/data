@@ -1800,14 +1800,11 @@
             const iframeContainer = document.getElementById('iframeContainer');
             const mouseOverlay = document.getElementById('mouseOverlay');
             const bodyGalleryContainer = document.getElementById('bodyGalleryContainer');
-            
-            // Remove existing iframe and clear body gallery content
-            let existingIframe = document.getElementById('sceneIframe');
-            if (existingIframe) {
-                //console.log('Removing existing iframe.');
-                existingIframe.src = 'about:blank';
-                existingIframe.remove(); // Remove the old iframe
-            }
+
+            // Remove existing iframe
+            removeExistingIframe('sceneIframe');
+
+            // Clear body gallery content
             if (bodyGalleryContainer) {
                 resetLoadingStatus();
                 bodyGalleryContainer.innerHTML = ''; // Clear body gallery content
@@ -1820,8 +1817,6 @@
                     lenis.scrollTo(0, { duration: 0.1 }); // Use Lenis to scroll to the top
                 }
                 // Logic for scene05 (Gallery)
-                //console.log('Setting up scene05 (Gallery).');
-                
                 toggleRemoveFooterActivation();
                 resetRemoveStyledFooterCounter();
                 iframeContainer.style.display = 'none';
@@ -1835,24 +1830,20 @@
                     console.error('bodyGalleryContainer not found in the DOM');
                 }
                 bodyGalleryContainer.style.display = 'block';
-                
+
                 loadGallery(); // Load the gallery for scene05
                 unhideBackground();
-                
-                
+
             } else if (sceneKey === 'scene06') {
                 // Logic for scene06 (Clipz)
-                //console.log('Setting up scene06 (Clipz).');
                 setupDirectIframe('frames/clipz2.html'); // Load clipz2.html for scene06 directly into the body
-                
+
             } else {
                 // Logic for other scenes
-                //console.log(`Setting up other scene: ${sceneKey}.`);
                 setupIframe(`VIEWER.html?scene=${sceneKey}`);
             }
 
             function setupIframe(src) {
-                //console.log('Setting up iframe.');
                 iframeContainer.style.display = 'block';
                 if (mouseOverlay) {
                     mouseOverlay.style.display = 'block';
@@ -1886,9 +1877,6 @@
             }
 
             function setupDirectIframe(src) {
-                
-               
-                //console.log('Setting up direct iframe.');
                 hideFooterInstantly();
                 const newIframe = document.createElement('iframe');
                 newIframe.id = 'sceneIframe';
@@ -1901,26 +1889,21 @@
 
                 document.body.appendChild(newIframe); // Directly append to the body
                 hideBackground();
-                
+
                 iframeLoaded(newIframe);
 
                 unhideDirectIframe();
-                
+
                 lenis.start();
                 scrollToTop();
                 setTimeout(() => {
                     lenis.stop();
                 }, 111); // 1000 milliseconds = 1 second
-
-
             }
 
             function iframeLoaded(iframe) {
-                //console.log('Iframe loaded, setting up observer.');
-                // Wait for the iframe to load completely before setting up the observer
                 iframe.onload = function() {
                     if (iframe.contentWindow) {
-                        //console.log('Iframe contentWindow is available, setting up observer.');
                         setupObserver(iframe);
                     } else {
                         console.error('Iframe contentWindow is not available after load!');
@@ -1929,7 +1912,7 @@
             }
 
             function setupObserver(iframe) {
-                if (iframeObserverAdded) {
+                if (iframeObserverAdded && observer) {
                     observer.disconnect();
                     iframeObserverAdded = false;
                 }
@@ -1960,9 +1943,80 @@
                 observer.observe(iframe);
                 iframeObserverAdded = true;
             }
+
+            function removeExistingIframe(iframeId) {
+                let existingIframe = document.getElementById(iframeId);
+                if (existingIframe) {
+                    console.log('Removing existing iframe:', iframeId);
+
+                    // Clear iframe content and event listeners
+                    clearIframe(existingIframe);
+
+                    // Set src to 'about:blank' to stop any running scripts
+                    existingIframe.src = 'about:blank';
+
+                    // Remove the iframe element from the DOM
+                    existingIframe.remove();
+                    console.log('Iframe removed:', iframeId);
+                }
+            }
+
+            function clearIframe(iframe) {
+                if (iframe) {
+                    try {
+                        console.log('Clearing iframe contents:', iframe.id);
+
+                        // Get the iframe's content window
+                        const iframeWindow = iframe.contentWindow;
+
+                        // Attempt to lose the WebGL context if it exists
+                        const webGLContexts = findWebGLContexts(iframe.contentDocument);
+                        webGLContexts.forEach(gl => {
+                            const ext = gl.getExtension('WEBGL_lose_context');
+                            if (ext) {
+                                ext.loseContext();
+                                console.log('Lost WebGL context:', gl);
+                            }
+                        });
+
+                        // Remove all event listeners within the iframe
+                        iframe.contentDocument.querySelectorAll('*').forEach(element => {
+                            const clone = element.cloneNode(true);
+                            element.parentNode.replaceChild(clone, element);
+                        });
+                        console.log('Event listeners removed within iframe:', iframe.id);
+
+                        // Clear intervals and timeouts within the iframe
+                        let id = iframeWindow.setTimeout(function() {}, 0);
+                        while (id--) {
+                            iframeWindow.clearTimeout(id);
+                            iframeWindow.clearInterval(id);
+                        }
+                        console.log('Intervals and timeouts cleared within iframe:', iframe.id);
+
+                        // Optionally clear the iframe's content
+                        iframe.contentDocument.body.innerHTML = '';
+                        console.log('Iframe content cleared:', iframe.id);
+                    } catch (e) {
+                        console.warn("Could not clear iframe contents:", e);
+                    }
+                }
+            }
+
+            function findWebGLContexts(doc) {
+                const contexts = [];
+                doc.querySelectorAll('canvas').forEach(canvas => {
+                    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+                    if (gl) {
+                        contexts.push(gl);
+                    }
+                });
+                return contexts;
+            }
         }
 
 
+        
 
 
         function resetPageStyles() {
