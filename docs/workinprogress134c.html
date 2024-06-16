@@ -1800,11 +1800,25 @@
             const iframeContainer = document.getElementById('iframeContainer');
             const mouseOverlay = document.getElementById('mouseOverlay');
             const bodyGalleryContainer = document.getElementById('bodyGalleryContainer');
+            let viewerContainers = [];
 
             // Enhanced cleanup function for existing iframe
             function cleanupIframe(iframe) {
                 if (iframe) {
                     console.log('Cleaning up existing iframe.');
+
+                    // Lose WebGL context if possible
+                    try {
+                        const gl = iframe.contentWindow.document.querySelector('canvas')?.getContext('webgl');
+                        if (gl) {
+                            const ext = gl.getExtension('WEBGL_lose_context');
+                            if (ext) {
+                                ext.loseContext();
+                            }
+                        }
+                    } catch (e) {
+                        console.warn('Error losing WebGL context:', e);
+                    }
 
                     // Disconnect the observer if it exists
                     if (observer) {
@@ -1819,7 +1833,10 @@
                             // Only try to access these properties if the iframe is same-origin
                             if (iframe.contentWindow.location.origin === window.location.origin) {
                                 iframe.contentWindow.onunload = null;
-                                iframe.contentWindow.removeEventListener('message', messageHandler);
+                                // Remove event listener if messageHandler is defined
+                                if (typeof messageHandler !== 'undefined') {
+                                    iframe.contentWindow.removeEventListener('message', messageHandler);
+                                }
                             }
                         }
                     } catch (e) {
@@ -1834,6 +1851,15 @@
                 }
             }
 
+            function cleanupViewerContainers() {
+                viewerContainers.forEach(viewer => {
+                    if (viewer.destroy) {
+                        viewer.destroy();
+                    }
+                });
+                viewerContainers = [];
+            }
+
             // Remove existing iframe and clear body gallery content
             let existingIframe = document.getElementById('sceneIframe');
             if (existingIframe) {
@@ -1843,6 +1869,8 @@
                 resetLoadingStatus();
                 bodyGalleryContainer.innerHTML = ''; // Clear body gallery content
             }
+
+            cleanupViewerContainers(); // Clean up any existing viewer containers
 
             if (sceneKey === 'scene05') {
                 hideFooterInstantly();
@@ -1987,6 +2015,7 @@
                 iframeObserverAdded = true;
             }
         }
+
 
 
         function resetPageStyles() {
