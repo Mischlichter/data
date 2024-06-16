@@ -1800,18 +1800,99 @@
             const iframeContainer = document.getElementById('iframeContainer');
             const mouseOverlay = document.getElementById('mouseOverlay');
             const bodyGalleryContainer = document.getElementById('bodyGalleryContainer');
-            
+            let viewerContainers = [];
+
+            // Enhanced cleanup function for existing iframe
+            function cleanupIframe(iframe) {
+                if (iframe) {
+                    //console.log('Cleaning up existing iframe.');
+
+                    // Lose WebGL context if possible
+                    try {
+                        const gl = iframe.contentWindow?.document.querySelector('canvas')?.getContext('webgl');
+                        if (gl) {
+                            const ext = gl.getExtension('WEBGL_lose_context');
+                            if (ext) {
+                                ext.loseContext();
+                            }
+                        }
+                    } catch (e) {
+                        // Suppress cross-origin errors
+                        if (e instanceof DOMException && e.message.includes('Permission denied to access property')) {
+                            // Silently handle specific cross-origin error
+                        } else {
+                            console.warn('Error losing WebGL context:', e);
+                        }
+                    }
+
+                    // Disconnect the observer if it exists
+                    try {
+                        if (observer) {
+                            observer.disconnect();
+                            observer = null;
+                        }
+                    } catch (e) {
+                        console.warn('Error disconnecting observer:', e);
+                    }
+
+                    // Attempt to safely remove event listeners and properties
+                    try {
+                        iframe.onload = null;
+                        if (iframe.contentWindow) {
+                            // Only try to access these properties if the iframe is same-origin
+                            try {
+                                if (iframe.contentWindow.location.origin === window.location.origin) {
+                                    iframe.contentWindow.onunload = null;
+                                    // Remove event listener if messageHandler is defined
+                                    if (typeof messageHandler !== 'undefined') {
+                                        iframe.contentWindow.removeEventListener('message', messageHandler);
+                                    }
+                                }
+                            } catch (e) {
+                                // Suppress cross-origin errors
+                                if (e instanceof DOMException && e.message.includes('Permission denied to access property')) {
+                                    // Silently handle specific cross-origin error
+                                } else {
+                                    console.warn('Error accessing iframe content properties:', e);
+                                }
+                            }
+                        }
+                    } catch (e) {
+                        console.warn('Error cleaning up iframe:', e);
+                    }
+
+                    // Remove the iframe and set it to null
+                    try {
+                        iframe.src = 'about:blank';
+                        iframe.remove();
+                        iframe = null;
+                        //console.log('Existing iframe cleaned up successfully.');
+                    } catch (e) {
+                        console.warn('Error removing iframe:', e);
+                    }
+                }
+            }
+
+            function cleanupViewerContainers() {
+                viewerContainers.forEach(viewer => {
+                    if (viewer.destroy) {
+                        viewer.destroy();
+                    }
+                });
+                viewerContainers = [];
+            }
+
             // Remove existing iframe and clear body gallery content
             let existingIframe = document.getElementById('sceneIframe');
             if (existingIframe) {
-                //console.log('Removing existing iframe.');
-                existingIframe.src = 'about:blank';
-                existingIframe.remove(); // Remove the old iframe
+                cleanupIframe(existingIframe);
             }
             if (bodyGalleryContainer) {
                 resetLoadingStatus();
                 bodyGalleryContainer.innerHTML = ''; // Clear body gallery content
             }
+
+            cleanupViewerContainers(); // Clean up any existing viewer containers
 
             if (sceneKey === 'scene05') {
                 hideFooterInstantly();
@@ -1821,7 +1902,7 @@
                 }
                 // Logic for scene05 (Gallery)
                 //console.log('Setting up scene05 (Gallery).');
-                
+
                 toggleRemoveFooterActivation();
                 resetRemoveStyledFooterCounter();
                 iframeContainer.style.display = 'none';
@@ -1835,16 +1916,15 @@
                     console.error('bodyGalleryContainer not found in the DOM');
                 }
                 bodyGalleryContainer.style.display = 'block';
-                
+
                 loadGallery(); // Load the gallery for scene05
                 unhideBackground();
-                
-                
+
             } else if (sceneKey === 'scene06') {
                 // Logic for scene06 (Clipz)
                 //console.log('Setting up scene06 (Clipz).');
                 setupDirectIframe('frames/clipz2.html'); // Load clipz2.html for scene06 directly into the body
-                
+
             } else {
                 // Logic for other scenes
                 //console.log(`Setting up other scene: ${sceneKey}.`);
@@ -1886,8 +1966,6 @@
             }
 
             function setupDirectIframe(src) {
-                
-               
                 //console.log('Setting up direct iframe.');
                 hideFooterInstantly();
                 const newIframe = document.createElement('iframe');
@@ -1901,35 +1979,33 @@
 
                 document.body.appendChild(newIframe); // Directly append to the body
                 hideBackground();
-                
+
                 iframeLoaded(newIframe);
 
                 unhideDirectIframe();
-                
+
                 lenis.start();
                 scrollToTop();
                 setTimeout(() => {
                     lenis.stop();
                 }, 111); // 1000 milliseconds = 1 second
-
-
             }
 
             function iframeLoaded(iframe) {
                 //console.log('Iframe loaded, setting up observer.');
                 // Wait for the iframe to load completely before setting up the observer
-                iframe.onload = function() {
+                iframe.onload = function () {
                     if (iframe.contentWindow) {
                         //console.log('Iframe contentWindow is available, setting up observer.');
                         setupObserver(iframe);
                     } else {
-                        console.error('Iframe contentWindow is not available after load!');
+                        //console.error('Iframe contentWindow is not available after load!');
                     }
                 };
             }
 
             function setupObserver(iframe) {
-                if (iframeObserverAdded) {
+                if (iframeObserverAdded && observer) {
                     observer.disconnect();
                     iframeObserverAdded = false;
                 }
@@ -1964,27 +2040,35 @@
 
 
 
-
         function resetPageStyles() {
-            // Remove event listeners
             console.log('sweepsweep.');
 
-            const mouseOverlay = document.getElementById('mouseOverlay');
-            if (mouseOverlay) {
-                mouseOverlay.removeEventListener('mouseenter', handleMouseEvent);
-                mouseOverlay.removeEventListener('mouseleave', handleMouseEvent);
-                mouseOverlay.removeEventListener('mousemove', handleMouseEvent);
-            }
+            // Ensure you manage event listeners for mouseOverlay properly outside this function if needed.
 
             // Cancel animation frames through AnimationManager
-            AnimationManager.cancelAnimations();
-            clearTextAnimationElements();
+            if (typeof AnimationManager !== 'undefined') {
+                AnimationManager.cancelAnimations();
+            }
 
+            // Clear dynamically created spans for text animations, excluding keep spans
+            document.querySelectorAll('span:not(.keep)').forEach(span => span.remove());
 
+            // Remove other dynamically created elements
+            document.querySelectorAll('.hidden-char-XL').forEach(span => span.remove());
+            document.querySelectorAll('.ascii-line-XL').forEach(div => div.remove());
+            document.querySelectorAll('.flex-container.animation-container').forEach(div => div.remove());
+            document.querySelectorAll('.flex-icontainer').forEach(div => div.remove());
+            document.querySelectorAll('.scale-wrapper-background, .scale-wrapper-interface').forEach(wrapper => {
+                wrapper.parentNode.removeChild(wrapper);
+            });
+
+            // Remove images not marked with 'keep' class
+            document.querySelectorAll('img:not(.keep)').forEach(img => img.remove());
+
+            // Clear GSAP global timeline
             if (typeof gsap !== 'undefined') {
                 gsap.globalTimeline.clear();
             }
-            
 
             // Clear intervals and timeouts
             let id = window.setTimeout(function() {}, 0);
@@ -2014,57 +2098,29 @@
                         }
                     }
                 }
+                scene = null; // Set scene to null to ensure it's garbage collected
             }
             if (typeof camera !== 'undefined') {
                 camera = null;
-            }
-
-            // GSAP cleanup
-            if (typeof gsap !== 'undefined') {
-                gsap.globalTimeline.clear();
             }
 
             // Clear observed elements and data
             observedElements = [];
             observedElementsData = [];
 
-            // Remove iframe observer
-            if (iframeObserverAdded && observer) {
-                observer.disconnect();
-                iframeObserverAdded = false;
-            }
-
-            // Clean up iframes
-            const iframeContainer = document.getElementById('iframeContainer');
-            if (iframeContainer) {
-                const iframes = iframeContainer.getElementsByTagName('iframe');
-                Array.from(iframes).forEach(iframe => {
-                    iframe.src = 'about:blank';
-                    iframe.remove();
-                });
-            }
-
-            
-
+         
             // Reset tiles state
             tiles = { a: false, b: false, viewerReady: false, iframeReady: false, menuReady: true };
 
             // Reset message event listener flag
             messageEventListenerAdded = false;
 
-            // Clear elements created by loadInterface
-            document.querySelectorAll('.scale-wrapper-background, .scale-wrapper-interface').forEach(wrapper => {
-                wrapper.parentNode.removeChild(wrapper);
-            });
-
-            // Clear dynamically created DOM elements
-            let elements = document.querySelectorAll('.dynamic-element');
-            elements.forEach(element => element.remove());
-
             console.log('Page styles reset.');
         }
 
- 
+
+
+
 
 
 
@@ -2602,6 +2658,9 @@
 
             if (!logoImg) return; // Exit the function early if the logo image does not exist
 
+            // Ensure the logo image has the 'keep' class to prevent it from being removed during cleanup
+            logoImg.classList.add('keep');
+
             const width = window.innerWidth;
             const height = window.innerHeight;
             const isPortrait = width - 1 < height; // Add a buffer to ensure width is definitely less than height
@@ -2664,6 +2723,7 @@
             // Increment call count
             callCount++;
         }
+
 
 
         function updateCssBasedOnOrientation(width, height, isPortrait) {
@@ -2762,6 +2822,7 @@
 
         function createLineContainerForMenu(container, lineText) {
             let lineContainer = document.createElement('div');
+            lineContainer.classList.add('keep'); // Add class to line container
             lineContainer.style.display = 'inline-block';
             lineContainer.style.width = '100%';
             container.appendChild(lineContainer);
@@ -2771,7 +2832,7 @@
             lineText.split(' ').forEach(word => {
                 if (word.trim() !== '') {
                     var wordSpan = document.createElement('span');
-                    wordSpan.className = 'dynamic-text';
+                    wordSpan.className = 'dynamic-text keep'; // Add keep class
                     wordSpan.setAttribute('data-final-text', word);
                     wordSpan.style.opacity = '0';
                     lineContainer.appendChild(wordSpan);
@@ -2779,8 +2840,9 @@
             });
 
             return lineContainer;
-
         }
+
+
 
         function startAnimationForMenuContainer(containerId) {
             ///console.log("Starting animation for container:", containerId);
@@ -2927,17 +2989,14 @@
         let scenesiData = [];
 
         async function initialize() {
+            
             scenesData = await fetchAndParseData();
-            if (scenesData && scenesData.length > 0) {
-                loadScene(currentSceneIndex);
-            
-            }
             scenesiData = await fetchImage();
-            if (scenesiData && scenesiData.length > 0) {
-                loadScene(currentSceneIndex);
-            
-            }
 
+            
+            if ((scenesData && scenesData.length > 0) && (scenesiData && scenesiData.length > 0)) {
+                loadScene(currentSceneIndex);
+            }
         }
 
 
@@ -3101,7 +3160,7 @@
 
             scrollToTopButton = document.createElement('button');
             scrollToTopButton.id = 'scrollToTopButton';
-            scrollToTopButton.innerHTML = '<span style="position: relative; top: -5px;">▲</span>'; // Triangle symbol adjusted
+            scrollToTopButton.innerHTML = '<span class="keep" style="position: relative; top: -5px;">▲</span>'; // Triangle symbol adjusted
             scrollToTopButton.style.cssText = `
                 position: fixed; 
                 bottom: 30px; 
