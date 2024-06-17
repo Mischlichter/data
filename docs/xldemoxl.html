@@ -594,6 +594,551 @@
         overflow: hidden;
     }
 
+
+
+
+
+    /*GALLERYINJECTION*/
+
+
+
+
+    #bodygallery {
+        
+        font-family: 'JetBrainsMono-Bold', sans-serif;
+       
+        background-color: black;
+        color: #00ffcc; /* Green color */
+        margin: 0;
+        padding: 0;
+        overflow: auto;
+
+    }
+
+    .centered-container {
+        display: none; /* Hide the centered-container initially */
+
+    /* other styles... */
+    }
+
+
+    .hover-effect-wrapper {
+        max-width: 100%;
+        max-height: 100vh;
+        position: relative;
+        /* Preserving aspect ratio (1:1 in this case) */
+        width: 100vmin;
+        height: 100vmin;
+        margin: auto; /* Centering the wrapper */
+        z-index: 1
+
+    }  
+    .square-aspect-ratio .hover-effect-wrapper {
+        top: -100vh;
+        position: absolute;
+
+    }
+
+
+
+    .hover-effect-container {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        z-index: 1;
+    }
+
+
+
+    .square-aspect-ratio .hover-effect-container {
+        top: 107vh;        /* Adjust this value for space from the top */
+        left: 0;
+        right: 0;
+        width: 100%;
+
+    }
+
+    .fade-out {
+        animation: fadeOut 0.555s forwards;
+    }
+
+    @keyframes fadeOut {
+        to { opacity: 0; }
+    }
+
+
+
+
+
+    .btn-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        
+        border: none;
+        cursor: pointer;
+        padding: 10px;
+        font-size: 24px;
+        border-radius: 50%;
+        opacity: 0.7;
+        z-index: 5010;
+        color: white
+
+
+    }
+
+    #btn-prev { 
+        left: 30px;
+        font-size: 42px;
+        user-select: none;
+        z-index: 11010;
+    }
+    #btn-next { 
+        right: 30px;
+        font-size: 42px;
+        user-select: none;
+        z-index: 11010;
+    }
+
+
+
+    #button-overlay {
+        position: fixed; /* Fixed positioning */
+        top: 65px; /* Fixed space from the top */
+        left: 50%; /* Centered horizontally */
+        transform: translateX(-50%); /* Adjust horizontal centering */
+        max-width: 1024px; /* Maximum width */
+        max-height: 1024px; /* Maximum height, same as width for square shape */
+        width: 100vmin; /* Responsive width, 80% of the viewport's smaller dimension */
+        height: 100vmin; /* Responsive height, same as width */
+        z-index: 1111010; /* Above other elements */
+        display: flex; /* Flexbox for inner alignment */
+        justify-content: center; /* Centering horizontally */
+        align-items: center; /* Centering vertically */
+        pointer-events: none; /* Allows click-through */
+        
+    }
+
+    #button-overlay > .btn-nav {
+        pointer-events: auto; /* Button interactions enabled */
+    }
+
+
+
+
+
+
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 30px;
+        color: white;
+        cursor: pointer;
+        z-index: 1010;
+        user-select: none;
+    }
+
+    .button-container {
+        position: absolute;
+        top: 20px; /* Adjust the top position as needed */
+        left: 20px; /* Adjust the left position as needed */
+        z-index: 1010;
+    }
+
+    /* Toggle Button Styles */
+    .toggle-button {
+        cursor: pointer;
+        font-family: 'JetBrainsMono-Bold', sans-serif;
+        font-size: 14px; /* Adjust font size as needed */
+        color: white; /* White font color */
+        user-select: none;
+    }
+
+    .image-wrap {
+        position: relative;
+        width: 100%; /* This will be relative to the grid column width */
+        padding-top: 100%; /* This creates a square aspect ratio */
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .image-wrap canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 8px;
+        object-fit: cover; /* Adjust this as needed */
+    }
+
+    .center-container {
+        top: -10%;
+
+        position: absolute; /* Use absolute positioning */
+        width: 100%; /* Full width of the viewport */
+        height: 10000%; /* Full viewport height */
+        display: flex; /* Use flexbox for centering */
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        z-index: 70; /* Place the center-container above the gallery container */
+        background-color: rgba(0, 0, 0, 1); /* Semi-transparent black background */
+    }
+
+    #ascii-art-container {
+        width: 370px;
+        height: 170px;
+        overflow: hidden;
+        position: fixed; /* Use fixed positioning */
+        top: 50%; /* Position from the center vertically */
+        left: 50%; /* Position from the center horizontally */
+        transform: translate(-50%, -50%); /* Center the element */
+        z-index: 3; /* Place the ascii-art-container above the center-container */
+        /* Rest of your styles for #ascii-art-container */
+    }
+
+    #ascii-art-container {
+
+            font-size: 16px;
+
+    }
+
+    .ascii-line {
+        white-space: pre;
+        font-family: monospace;
+        color: #00ffcc;
+    }
+
+    .hidden-char {
+        visibility: hidden;
+    }
+
+
+    .no-scroll-keys {
+        overflow: hidden;
+    }
+
+    #search-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 97px; /* Default top margin */
+        margin-bottom: 30px; /* Bottom margin */
+    }
+
+    @media screen and (orientation: portrait) {
+        #search-container {
+            margin-top: 120px; /* Increased top margin for portrait mode */
+        }
+    }
+
+    @media screen and (orientation: landscape) {
+        #search-container {
+            margin-top: 97px; /* Reduced top margin for landscape mode */
+        }
+    }
+
+    #notification-popup {
+        position: fixed; /* Keeps the notification at a fixed point on the screen */
+        bottom: 50%; /* Distance from the bottom */
+        left: 50%; /* Center horizontally */
+        transform: translateX(-50%); /* Adjust horizontal centering */
+        font-family: 'JetBrainsMono-Bold', sans-serif;
+        font-size: 16px;
+        border: 2px solid #00ffcc; /* Styled border */
+        border-radius: 20px; /* Rounded corners */
+        padding: 8px 15px;
+        background: rgba(0, 0, 0, 0.7);
+        color: #00ffcc;
+        text-align: center;
+        z-index: 5000; /* Makes sure the popup is on top */
+        display: none; /* Start with hidden */
+        opacity: 0; /* Start transparent */
+        transition: opacity 0.5s ease-in-out;
+    }
+
+    #notification-popup2 {
+        position: fixed; /* Keeps the notification at a fixed point on the screen */
+        bottom: 50%; /* Distance from the bottom */
+        left: 50%; /* Center horizontally */
+        transform: translateX(-50%); /* Adjust horizontal centering */
+        font-family: 'JetBrainsMono-Bold', sans-serif;
+        font-size: 16px;
+        border: 2px solid #00ffcc; /* Styled border */
+        border-radius: 20px; /* Rounded corners */
+        padding: 8px 15px;
+        background: rgba(0, 0, 0, 0.7);
+        color: #00ffcc;
+        text-align: center;
+        z-index: 5000; /* Makes sure the popup is on top */
+        display: none; /* Start with hidden */
+        opacity: 0; /* Start transparent */
+        transition: opacity 0.5s ease-in-out;
+    }
+
+    #search-bar {
+        font-family: 'JetBrainsMono-Bold', sans-serif; /* Use the custom font */
+        font-size: 16px; /* Adjust as needed */
+        border: 2px solid #00ffcc; /* Green border */
+        border-radius: 20px; /* Rounded corners */
+        padding: 8px 15px; /* Adjust padding as needed */
+        outline: none; /* Removes the default focus outline */
+        transition: border-color 0.3s;
+        background-color: black; /* Matches the body background */
+        color: #00ffcc; /* Green text color */
+        width: 50%; /* Adjust width as needed */
+    }
+    /* Add this CSS to your stylesheet */
+    #search-bar {
+      transition: opacity 0.5s ease-in-out;
+      opacity: 0.5; /* Adjust based on your initial visibility requirement */
+    }
+
+
+    #search-bar::placeholder {
+        color: rgba(0, 255, 204, 0.5); /* Light green placeholder */
+    }
+
+    #search-bar:focus {
+        border-color: #fff; /* White color on focus */
+    }
+
+    /* Blinking cursor effect */
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+    }
+
+    #search-bar:not(:focus)::placeholder {
+        content: ''; /* Remove placeholder text when not focused */
+        animation: blink 1s step-end infinite;
+    }
+
+
+
+    #gallery-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(187px, 1fr));
+        gap: 20px;
+        padding: 20px;
+        transition: transform 0.3s ease;
+    }
+
+    #gallery-container img {
+        width: 100%;
+        height: auto;
+        cursor: pointer;
+        border-radius: 8px;
+        border: 2px solid #00ffcc;
+        transition: opacity 0.1s ease, transform 0.1s ease-out;
+        position: relative;
+        overflow: hidden;
+        transform: translateZ(0); /* Enable GPU acceleration for images */
+        backface-visibility: hidden; /* Help with performance for non-GPU */
+        will-change: transform; /* Hint the browser that transform will change */
+    }
+
+    #gallery-container .image-container {
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: transform 0.3s ease; /* Added hover transition to the container */
+        transform: translateZ(0); /* Enable GPU acceleration */
+        backface-visibility: hidden; /* Help with performance for non-GPU */
+        will-change: transform; /* Hint the browser that transform will change */
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        #gallery-container .image-container:hover {
+            transform: scale(1.11) translateZ(0); /* Apply both scale and GPU acceleration on hover */
+            will-change: transform; /* Hint the browser that transform will change */
+        }
+    }
+
+    .hidden-image {
+        opacity: 0;
+        pointer-events: none; /* Prevent interaction with hidden images */
+        display: none;
+    }
+
+    .image-container {
+        position: relative;
+        overflow: hidden;
+        transform: translateZ(0); /* Enable GPU acceleration */
+        backface-visibility: hidden; /* Help with performance for non-GPU */
+        will-change: transform; /* Hint the browser that transform will change */
+    }
+
+
+    .word-overlay {
+        font-family: 'JetBrainsMono-ExtraBold', sans-serif;
+        position: absolute;
+        bottom: 10%; /* Adjust this value as needed for vertical positioning */
+        left: 50%;
+        transform: translateX(-50%); /* Center both horizontally and vertically */
+        overflow: visible; /* Allows text to overflow outside of the container */
+        white-space: nowrap; /* Prevents automatic line breaks */
+        text-align: center;
+        font-size: 12px;
+        background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+        color: #7cfc05; /* Text color */
+        padding: 0px;
+        /* No width set so it takes the width of its content */
+
+    }
+
+
+
+    .hidden-overlay {
+        display: none;
+    }
+
+    #text-info {
+        font-family: 'JetBrainsMono-Bold', sans-serif;
+        position: absolute;
+        width: 800px; /* Fixed width */
+        height: auto; /* Fixed height */
+        bottom: 3%;
+        left: 50%;
+        transform: translateX(-50%);
+     
+        color: white;
+        text-align: center;
+        z-index: 1010;
+        background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+        padding: 15px;
+        border-radius: 8px;
+
+        transition: opacity 0.5s ease-in-out;
+        overflow: hidden; /* To handle content overflow */
+        display: block;
+        text-shadow: 2px 2px 3px rgba(0, 0, 0, 1);
+        pointer-events: none; /* Ignore mouse events */
+        user-select: none;
+
+    }
+    .square-aspect-ratio #text-info {
+        width: 100%; /* Full width for square screens */
+        max-width: 400px; /* You can adjust the maximum width as needed */
+    }
+
+    #text-info p {
+        margin: 5px 0;
+        font-size: 14px;
+        /* Additional styling */
+    }
+
+    #text-prompt,
+    #text-seed,
+    #text-creator {
+        display: inline-block;
+        pointer-events: none;
+        
+    }
+
+    #text-seed::before,
+    #text-creator::before {
+        content: "\A"; /* Add a line break before Seed and Creator */
+        pointer-events: none;
+        
+    }
+
+     #text-info2 {
+        font-family: 'JetBrainsMono-Bold', sans-serif;
+        position: absolute;
+        width: 800px; /* Fixed width */
+        height: auto; /* Fixed height */
+        bottom: 3%;
+        left: 50%;
+        transform: translateX(-50%);
+     
+        color: rgba(0, 0, 0, 0.0000000001);
+        text-align: center;
+        z-index: 1010;
+        background: rgba(0, 0, 0, 0.0000000001); /* Semi-transparent background */
+        padding: 15px;
+        border-radius: 8px;
+        transition: opacity 0.3s ease-in-out;
+        overflow: hidden; /* To handle content overflow */
+        display: block;
+        z-index: 2020
+        margin: 5px 0;
+        font-size: 14px;
+    }
+    #text-prompt2,
+    #text-seed2,
+    #text-creator2 {
+        display: inline-block;
+        
+    }
+
+    #text-seed2::before,
+    #text-creator2::before {
+        content: "\A"; /* Add a line break before Seed and Creator */
+        
+    }
+    .square-aspect-ratio #text-info2 {
+        width: 100%; /* Full width for square screens */
+        max-width: 400px; /* You can adjust the maximum width as needed */
+    }
+
+    #text-info2 p {
+        margin: 5px 0;
+        font-size: 14px;
+        /* Additional styling */
+    }
+    #loading-progress-container {
+        position: absolute;
+        top: 96px;
+        right: 30px;
+        width: 45px;
+        height: 50px;
+        transition: opacity 1s ease-out;
+        opacity: 1;
+        z-index: 50;
+    }
+
+    @media screen and (orientation: portrait) {
+        #loading-progress-container {
+            top: 118.5px; /* Increased top for portrait mode */
+        }
+    }
+
+    @media screen and (orientation: landscape) {
+        #loading-progress-container {
+            top: 96px; /* Adjusted top for landscape mode */
+        }
+    }
+
+
+
+    .circular-chart {
+        display: block;
+        max-width: 100%; /* Adjust if needed */
+        max-height: 100%; /* Adjust if needed */
+    }
+
+    .circle-bg {
+        fill: none;
+        stroke: #000000;
+        stroke-width: 1;
+    }
+
+    .circle {
+        fill: none;
+        stroke-width: 1.6;
+        stroke-linecap: round;
+        animation: progress 1s ease-out forwards;
+    }
+
+    @keyframes progress {
+        0% {
+            stroke-dasharray: 0 100;
+        }
+    }
+
     
 </style>
 
@@ -651,7 +1196,7 @@
     <script src="./scripts/three.min.js"></script>
     <script src="./scripts/gsap.min.js"></script>
     <script src="scripts/bodygallery.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/bodygallery.css">
+    
     
     <script>
         document.addEventListener("DOMContentLoaded",async function(){let b="firstLoadComplete",E="secondLoadComplete",I=0,o=(localStorage.getItem(b)&&!localStorage.getItem(E)&&(I=111),["                 /^ ^\\                ","                / 111 \\               ","                V\\ Y /V               ","                 / - \\                ","                /    |                ","               V__) ||                ","**************************************","**** LOADING HOGEAI WEBSITE FILES ****","**************************************"]);var e=document.createElement("div");e.style.position="absolute",e.style.top="0",e.style.left="0",e.style.width="100%",e.style.height="50000vh",e.style.zIndex="-2",e.style.backgroundColor="rgba(0, 0, 0, 0)",document.body.insertBefore(e,document.body.firstChild);let r=document.getElementById("ascii-art-container-XL"),n=o[0].length;o.forEach((e,t)=>{let n=document.createElement("div");n.className="ascii-line-XL",e.split("").forEach((e,t)=>{var o=document.createElement("span");o.setAttribute("data-original-char",e)," "!==e&&""!==e||o.classList.add("hidden-char-XL"),n.appendChild(o)}),r.appendChild(n),localStorage.getItem("firstLoadComplete")&&document.querySelectorAll(".ascii-line-XL").forEach(function(e){e.style.visibility="hidden"})});function i(){var e="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()[]{}|";return e.charAt(Math.floor(Math.random()*e.length))}function a(){return`hsl(${Math.floor(360*Math.random())}, 100%, 50%)`}let t=0,s=setInterval(function(){document.querySelectorAll(".ascii-line-XL").forEach(t=>{for(let e=0;e<n;e++){var o=t.childNodes[e];o&&(100===I?(o.textContent=o.getAttribute("data-original-char"),o.style.color="",o.classList.remove("hidden-char-XL")):e>=I&&e<I+7?(o.textContent=i(),o.style.color=a()):e>=I-7&&e<I&&(o.textContent=o.getAttribute("data-original-char"),o.style.color=""))}})},30);setInterval(function(){t<I&&(t=I),I++},1e5);let l=setInterval(function(){if(45<=I){{let r=Array.from(document.querySelectorAll("span")).filter(e=>"1"===e.getAttribute("data-original-char"));r.forEach((n,e)=>{setTimeout(()=>{{var o=n;r.length;let e=0,t=setInterval(()=>{11100<=e?(clearInterval(t),o.textContent="1",o.style.color=""):(o.textContent=i(),o.style.color=a(),e+=1e3/420)},1e3/420)}},50*e)})}clearInterval(l),clearInterval(s)}},10);async function c(){var e="indexedDB"in window?(console.log("This browser supports IndexedDB"),!0):(console.log("This browser does not support IndexedDB"),!1);console.log("Loading");let o;if(e)for(let t=1;t<=5;t++)try{o=await function(e,r){return new Promise((t,o)=>{let n=setTimeout(()=>{o(new Error("Timeout"))},r);e.then(e=>{clearTimeout(n),t(e)}).catch(e=>{clearTimeout(n),o(e)})})}(idb.openDB("MyDatabase",1,{upgrade(e,t,o,n){e.objectStoreNames.contains("assets")||e.createObjectStore("assets",{keyPath:"url"})}}),3e3);break}catch(e){if(console.error(`Error opening database on attempt ${t}:`,e),!(t<5)){o=null;break}await new Promise(e=>setTimeout(e,1e3))}let n;try{n=await caches.open("site-assets")}catch(e){return void console.error("Error opening cache:",e)}let t,r;try{[t,r]=await Promise.all([fetch("https://raw.githubusercontent.com/Mischlichter/data/main/index.json").then(e=>e.json()),fetch("https://raw.githubusercontent.com/Mischlichter/data/main/assets/pagesi.txt").then(e=>e.text())])}catch(e){return void console.error("Error fetching assets or extra assets:",e)}let i=[];!function t(o,n){for(var r in o)if(o.hasOwnProperty(r)&&(r.startsWith("Viewer")||r.startsWith("interface"))){let e=o[r];if("object"!=typeof e){let t=S(e);if(t){let e={url:"https://raw.githubusercontent.com/Mischlichter/data/main/"+r,lastModified:t.toISOString()};n.push(e)}else console.error("Failed to standardize date for key:",r,"value:",e)}else t(e,n)}}(t,i);var a=function(e,o){var n=[],e=e.split("\n");for(var r of e){r=r.trim();if(r.startsWith("https://")){let t=new URL(r).pathname.split("/").pop();var i,a=Object.keys(o).find(e=>e.endsWith(t));a?(a=o[a],(i=S(a))?(r={url:r,lastModified:i.toISOString()},n.push(r)):console.error("Invalid date for filename:",t,"value:",a)):console.log("No manifest entry found for filename: "+t)}}return n}(r,t);i.push(...a);let s=0;var l,c,d,u,m,h,f=[];for({url:l,lastModified:c}of i){let t=!0;if(e&&o)try{var g=await o.transaction("assets").objectStore("assets").get(l);g&&new Date(g.lastModified)>=new Date(c)&&(t=!1)}catch(e){console.error("Error checking IndexedDB for url:",l,e),t=!0}if(t)try{(h=await fetch(l)).ok?(d=h.clone(),await n.put(l,d),e&&o&&(u=await h.blob(),m=h.headers.get("last-modified")||new Date(c).toISOString(),f.push({url:l,blob:u,lastModified:m}))):console.error("HTTP error! Status: "+h.status)}catch(e){console.error("Error fetching url:",l,e)}s++,requestAnimationFrame(()=>{if(s<i.length)I=Math.floor(s/i.length*90);else{I=90;let o=performance.now(),n=1e3;requestAnimationFrame(function e(t){t-=o,t=Math.min(t/n,1);I=90+10*t,t<1?requestAnimationFrame(e):I=100})}}),await new Promise(e=>setTimeout(e,11))}if(e&&o)try{var y=f;try{var v,w=(await idb.openDB("MyDatabase",1,{upgrade(e,t,o,n){e.objectStoreNames.contains("assets")||e.createObjectStore("assets",{keyPath:"url"})}})).transaction("assets","readwrite"),p=w.objectStore("assets");for(v of y)await p.put({url:v.url,blob:v.blob,lastModified:v.lastModified});await w.done,console.log("All assets are stored in IndexedDB")}catch(e){console.error("Error storing assets in IndexedDB:",e)}await 0}catch(e){console.error("Error storing assets in IndexedDB:",e)}localStorage.getItem(b)||localStorage.setItem(b,"true"),localStorage.getItem(E)||localStorage.setItem(E,"true"),document.querySelectorAll(".ascii-line-XL").forEach(function(e){e.style.transition="opacity 1s ease-out",e.style.opacity="0"}),setTimeout(()=>{window.location.reload()},1111)}function S(e){var t=e.replace(" ","T")+"Z";let o=new Date(t);return!isNaN(o.getTime())||(t=e.match(/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/))&&(o=new Date(`${t[1]}-${t[2]}-${t[3]}T${t[4]}:${t[5]}:${t[6]}Z`),!isNaN(o.getTime()))?o:(console.error("Unable to parse date:",e),null)}function d(){initialize();let e=document.querySelector(".center-container-XL");e?(e.style.opacity="0",setTimeout(()=>{e.style.display="none"},500)):console.error("Center container not found."),initializeMenu();var t=[...o];t[7]="***** WELCOME TO HOGEAI WEBSPACE *****",console.log(t.join("\n"))}let u=!1,m=0,h=32,f=0,g=0,y=0,v=0,w=!1,p=36,L=0,D=0,M=window.orientation||0,O=.7;function T(e){var t,o,n;u&&(t=Date.now())-m>h&&(m=t,t=window.innerWidth>window.innerHeight,o=window.orientation||0,w||(y=e.gamma,v=e.beta,w=!0),n=e.gamma-y,e=e.beta-v,t?90===o?(L=e*p,D=-n*p):-90!==o&&270!==o||(L=-e*p,D=n*p):(L=n*p,D=e*p),f+=(L-f)*O,g+=(D-g)*O,sendMouseEventToIframe("mousemove",{clientX:f,clientY:g}))}function A(){var e=document.getElementById("permissionOverlay");e?(e.style.opacity="0",setTimeout(()=>{e.style.visibility="hidden"},500)):console.log("Overlay not found.")}function B(){var e=document.getElementById("permissionOverlay"),o=document.getElementById("enableButton");e&&(e.style.visibility="visible",e.style.opacity="0",setTimeout(()=>e.style.opacity="1",10)),o&&(o.style.visibility="visible",o.style.opacity="0",setTimeout(()=>{var t;o.style.opacity="1",(t=document.getElementById("enableButton"))?(t.addEventListener("touchstart",function(e){e.preventDefault(),t.style.backgroundColor="lightblue"}),t.addEventListener("touchend",function(e){e.preventDefault(),t.style.backgroundColor="",A(),d(),"DeviceOrientationEvent"in window?"function"==typeof DeviceOrientationEvent.requestPermission?DeviceOrientationEvent.requestPermission().then(e=>{"granted"===e?window.addEventListener("deviceorientation",T,!0):console.error("Permission denied by user.")}).catch(e=>{console.error("Error requesting permission: "+e)}):window.addEventListener("deviceorientation",T,!0):console.error("Your device does not support gyroscope.")})):console.log("Enable button not found.")},10))}window.triggerOrientationWithoutCalibration=function(){w=!1},window.addEventListener("orientationchange",function(){var e=window.orientation||0;e!==M&&(w=!1,console.log("Orientation change detected. Recalibration required."),M=e)}),window.enableGyro=function(){u||(u=!0,window.addEventListener("deviceorientation",T,!0),console.log("Gyroscope Enabled"),requestAnimationFrame(()=>T({gamma:y,beta:v})))},window.disableGyro=function(){u&&(u=!1,window.removeEventListener("deviceorientation",T,!0),console.log("Gyroscope Disabled"))},localStorage.getItem(b)&&localStorage.getItem(E)?((/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)?B:(d(),A))(),localStorage.removeItem(b),localStorage.removeItem(E)):c()});
