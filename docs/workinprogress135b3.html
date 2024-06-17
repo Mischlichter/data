@@ -4480,10 +4480,12 @@
 
             // Exclude the following code from running on iOS devices
             if (isIOS) {
+                adjustContainerSizesBasedOnVirtualCanvas();
                 return; // Exit the function if on an iOS device
             }
 
             if (isAnimating) {
+                adjustContainerSizesBasedOnVirtualCanvas();
                 return; // Exit the function if an animation is already happening
             }
 
