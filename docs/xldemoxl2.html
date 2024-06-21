@@ -4360,9 +4360,10 @@
                 return; // Exit the function if an animation is already happening
             }
 
+            shouldUpdateAllContainers = true;
             // Call these functions if not on an iOS device
             updateVirtualCanvasSize();
-            shouldUpdateAllContainers = true;
+            
             updateLogoVisibility();
             shuffleMenu();
 
