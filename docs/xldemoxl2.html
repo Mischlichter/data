@@ -4304,6 +4304,8 @@
 
         function handleResize(sceneIndex) {
             // Always call these functions on resize
+            adjustContainerSizesOnce();
+
             updateVirtualCanvasSize();
             shouldUpdateAllContainers = true;
             updateLogoVisibility();
@@ -4312,7 +4314,7 @@
 
             // Exclude the following code from running on iOS devices
             if (isIOS) {
-                adjustContainerSizes();
+                adjustContainerSizesOnce();
                 return; // Exit the function if on an iOS device
             }
 
