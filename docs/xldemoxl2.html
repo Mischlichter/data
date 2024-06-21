@@ -4312,8 +4312,9 @@
 
             // Exclude the following code from running on iOS devices
             if (isIOS) {
+                resizeCallCount = 0
                 updateAllContainersDuringScaling();
-                updateAllContainersDuringScaling();
+
                 
                 return; // Exit the function if on an iOS device
             }
