@@ -4305,6 +4305,7 @@
 
             // Save the viewport positions of observed elements
             saveElementsViewportPosition();
+            clearTextAnimationElements();
 
             // Use currentSceneData for scaling animation
             Object.keys(currentSceneData.containers).forEach(containerId => {
@@ -4342,17 +4343,17 @@
             // Always call these functions on resize
             
 
-            
-        
+            updateVirtualCanvasSize();
+            updateLogoVisibility();
 
 
             // Exclude the following code from running on iOS devices
             if (isIOS) {
-                updateVirtualCanvasSize();
-                updateAllContainersDuringScalingIOS();
-                adjustContainerSizesOnce();
                 
-                updateLogoVisibility();
+                updateAllContainersDuringScalingIOS();
+                
+                
+                
                 return; // Exit the function if on an iOS device
             }
 
@@ -4362,7 +4363,7 @@
 
             shouldUpdateAllContainers = true;
             // Call these functions if not on an iOS device
-            updateVirtualCanvasSize();
+            
             
             updateLogoVisibility();
             shuffleMenu();
