@@ -4295,7 +4295,43 @@
         }
 
 
-    
+        function updateAllContainersDuringScalingIOS() {
+            if (!currentSceneData) {
+                return; // Exit if not set
+            }
+
+            // Save the initial height of the document
+            const initialHeight = document.body.scrollHeight;
+
+            // Save the viewport positions of observed elements
+            saveElementsViewportPosition();
+
+            // Use currentSceneData for scaling animation
+            Object.keys(currentSceneData.containers).forEach(containerId => {
+                let containerData = currentSceneData.containers[containerId];
+                let textLines = containerData.text.split('\n');
+                let lineSpans = createSpansForContainer(containerId, textLines.join(' '));
+                startScalingAnimation(lineSpans);
+            });
+
+            // Calculate the new height and adjust the scroll position immediately
+            const newHeight = document.body.scrollHeight;
+            const heightDifference = newHeight - initialHeight;
+
+            // Adjust the scroll position by the height difference
+            window.scrollTo(0, window.scrollY + heightDifference);
+
+            // Find the element closest to the viewport center
+            const closestElementData = getClosestElementToViewportCenter();
+            if (closestElementData) {
+                const { element, viewportCenter } = closestElementData;
+                const currentViewportCenter = (element.getBoundingClientRect().top + element.getBoundingClientRect().bottom) / 2;
+                const adjustment = currentViewportCenter - viewportCenter;
+
+                // Directly set the scroll position to match the recorded relative position
+                window.scrollTo(0, window.scrollY + adjustment);
+            }
+        }
 
 
       
@@ -4306,15 +4342,17 @@
             // Always call these functions on resize
             
 
-            updateVirtualCanvasSize();
-            shouldUpdateAllContainers = true;
-            updateLogoVisibility();
+            
         
 
 
             // Exclude the following code from running on iOS devices
             if (isIOS) {
-                updateAllContainersDuringScaling();
+                updateVirtualCanvasSize();
+                updateAllContainersDuringScalingIOS();
+                adjustContainerSizesOnce();
+                
+                updateLogoVisibility();
                 return; // Exit the function if on an iOS device
             }
 
@@ -4323,7 +4361,9 @@
             }
 
             // Call these functions if not on an iOS device
-            
+            updateVirtualCanvasSize();
+            shouldUpdateAllContainers = true;
+            updateLogoVisibility();
             shuffleMenu();
 
             // If in the gallery scene, call handleGalleryResize
