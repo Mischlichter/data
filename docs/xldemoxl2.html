@@ -4312,8 +4312,8 @@
 
             // Exclude the following code from running on iOS devices
             if (isIOS) {
-                  
-                
+                updateAllContainersDuringScaling();
+                shouldUpdateAllContainers = true;
                 return; // Exit the function if on an iOS device
             }
 
