@@ -4305,7 +4305,7 @@
         function handleResize(sceneIndex) {
             // Always call these functions on resize
             
-
+            shouldUpdateAllContainers = true;
             updateVirtualCanvasSize();
             updateLogoVisibility();
 
@@ -4313,7 +4313,7 @@
             // Exclude the following code from running on iOS devices
             if (isIOS) {
                 updateAllContainersDuringScaling();
-                shouldUpdateAllContainers = true;
+                
                 return; // Exit the function if on an iOS device
             }
 
@@ -4321,11 +4321,11 @@
                 return; // Exit the function if an animation is already happening
             }
 
-            shouldUpdateAllContainers = true;
-            // Call these functions if not on an iOS device
             
             
-            updateLogoVisibility();
+            
+            
+         
             shuffleMenu();
 
             // If in the gallery scene, call handleGalleryResize
