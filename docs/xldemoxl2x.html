@@ -3980,8 +3980,26 @@
             resizeCallCount++;
             //console.log(`resizeCallCount: ${resizeCallCount}`);
             if (resizeCallCount === 1 || resizeCallCount % resizeThreshold === 0) {
-                // console.log("Executing getClosestElementToViewportCenter logic.");
-                lastClosestElementData = getClosestElementToViewportCenter();
+                
+                
+                if (isIOS) {
+                    // Use the lastClosestElementData directly for iOS
+                    // Make sure lastClosestElementData is defined
+                    if (lastClosestElementData) {
+                        
+                        // Your logic using lastClosestElementData
+                    } else {
+                        // Fallback logic in case lastClosestElementData is not defined
+                        
+                        lastClosestElementData = getClosestElementToViewportCenter();
+                        // Your logic using lastClosestElementData
+                    }
+                } else {
+                    // For non-iOS, call the getClosestElementToViewportCenter function
+                    
+                    lastClosestElementData = getClosestElementToViewportCenter();
+                    // Your logic using lastClosestElementData
+                }
             }
             
 
