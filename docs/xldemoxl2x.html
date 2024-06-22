@@ -4318,10 +4318,10 @@
                         updateVirtualCanvasSize();
                         updateLogoVisibility();
 
-                        if (iteration < 2) { // Execute 3 times
+                        if (iteration < 3) { // Execute 3 times
                             executeWithDelay(iteration + 1);
                         }
-                    }, 500); // 0.5-second delay
+                    }, 1000); // 0.5-second delay
                 };
 
                 // Start the first execution
