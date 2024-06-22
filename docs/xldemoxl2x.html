@@ -2936,9 +2936,6 @@
 
             currentSceneData = scene;
 
-            if (isIOS) {
-                startContinuousUpdate();
-            }
             // Update containers when loading a new scene
             updateAllContainers(scene);
             installObserver();
@@ -3946,7 +3943,7 @@
                 return; // Exit if not set
             }
             isscaling = true;
-            //lenis.stop();
+            lenis.stop();
 
 
             // Save the initial height of the document
@@ -3980,26 +3977,8 @@
             resizeCallCount++;
             //console.log(`resizeCallCount: ${resizeCallCount}`);
             if (resizeCallCount === 1 || resizeCallCount % resizeThreshold === 0) {
-                
-                
-                if (isIOS) {
-                    // Use the lastClosestElementData directly for iOS
-                    // Make sure lastClosestElementData is defined
-                    if (lastClosestElementData) {
-                        
-                        // Your logic using lastClosestElementData
-                    } else {
-                        // Fallback logic in case lastClosestElementData is not defined
-                        
-                        lastClosestElementData = getClosestElementToViewportCenter();
-                        // Your logic using lastClosestElementData
-                    }
-                } else {
-                    // For non-iOS, call the getClosestElementToViewportCenter function
-                    
-                    lastClosestElementData = getClosestElementToViewportCenter();
-                    // Your logic using lastClosestElementData
-                }
+                // console.log("Executing getClosestElementToViewportCenter logic.");
+                lastClosestElementData = getClosestElementToViewportCenter();
             }
             
 
@@ -4030,7 +4009,7 @@
                 resizeCallCount = 0;
                 lastClosestElementData = null;
                 isscaling = false;
-                //lenis.start();
+                lenis.start();
             }, resizeTimeoutDuration);
 
 
@@ -4335,15 +4314,13 @@
 
             // Exclude the following code from running on iOS devices
             if (isIOS) {
-                
+                crollElementToViewportCenter();
                 return; // Exit the function if on an iOS device
             }
 
             if (isAnimating) {
                 return; // Exit the function if an animation is already happening
             }
-
-            
 
             // Call these functions if not on an iOS device
             
@@ -4353,30 +4330,25 @@
             
         }
 
-        let updateIntervalId = null;
+        function scrollElementToViewportCenter() {
+            const element = getClosestElementToViewportCenter();
+            
+            if (element) {
+                const elementRect = element.getBoundingClientRect();
+                const elementCenter = elementRect.top + (elementRect.height / 2);
+                const viewportCenter = window.innerHeight / 2;
+                const scrollOffset = elementCenter - viewportCenter;
 
-        function startContinuousUpdate() {
-            if (isIOS && !updateIntervalId) {
-                updateIntervalId = setInterval(() => {
-                    lastClosestElementData = getClosestElementToViewportCenter();
-                    if (lastClosestElementData) {
-                        console.log('Closest element:', lastClosestElementData.element);
-                    }
-                }, 500); // Adjust the interval as needed (in milliseconds)
-                console.log('Continuous update started for iOS');
+                setTimeout(() => {
+                    window.scrollTo({
+                        top: window.scrollY + scrollOffset,
+                        behavior: 'smooth'
+                    });
+                }, 500); // 0.5 second delay
             }
         }
 
 
-        function stopContinuousUpdate() {
-            if (updateIntervalId) {
-                clearInterval(updateIntervalId);
-                updateIntervalId = null;
-                console.log('Continuous update stopped');
-            }
-        }
-
-      
 
 
         function handleGalleryResize() {
