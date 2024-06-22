@@ -34,14 +34,7 @@
     <meta name="theme-color" content="#000000">
 
     <link rel="preconnect" href="https://raw.githubusercontent.com">
-    <link rel="preconnect" href="https://kit.fontawesome.com">
-    <link rel="preload" href="https://www.hogeai.com/fonts/free-fa-brands-400.woff2" as="font" type="font/woff2">
-    <link rel="preload" href="https://www.hogeai.com/fonts/free-fa-solid-900.woff2" as="font" type="font/woff2">
-    <link rel="preload" href="https://www.hogeai.com/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-    <link rel="preload" href="https://www.hogeai.com/fonts/JetBrainsMono-Bold.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-    <link rel="preload" href="https://www.hogeai.com/fonts/JetBrainsMono-BoldItalic.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-    <link rel="preload" href="https://www.hogeai.com/fonts/JetBrainsMono-ExtraBold.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-        
+    <link rel="preconnect" href="https://kit.fontawesome.com">   
 
     <link rel="dns-prefetch" href="https://raw.githubusercontent.com">
 
@@ -232,6 +225,7 @@
         border-radius: 20px; /* Rounded corners */
         padding: 8px 15px; /* Adjust padding as needed */
         background-color: black;
+       
      
     }
     
@@ -240,6 +234,8 @@
         display: inline-block;
         margin: 0 5px 5px 0;
         pointer-events: none;
+
+        
         
     }
 
@@ -496,9 +492,6 @@
         opacity: 0;  /* Initially hidden, ensure this is your intent */
         
     }
-
-
-
 
 
 
@@ -1151,6 +1144,9 @@
             stroke-dasharray: 0 100;
         }
     }
+
+    
+
 
     
 </style>
@@ -2291,8 +2287,11 @@
                             return;
                         }
 
-                        isAnimating = false;
-                        startGif();
+                        
+                        isAnimating = false; // Reset the animation state
+                        clearTimeout(gifTimeoutId); // Clear any existing timeout to stop the current GIF
+                        startGif(); // Start the new GIF
+
                         currentlyActiveMenuItemId = itemId;
                         hideDirectIframe();
                         await fadeOutElements();
@@ -2400,18 +2399,20 @@
         }
 
         let currentLogoName = '';
+        let currentMediaType = '';
         let callCount = 0;
 
         async function updateLogoVisibility() {
             const logoImgSmall = document.getElementById('menuLogoSmall');
             const logoImgLarge = document.getElementById('menuLogoLarge');
-            const logoContainerSmall = logoImgSmall.parentElement;
-            const logoContainerLarge = logoImgLarge.parentElement;
             const gifSmall = document.getElementById('menuGifSmall');
             const gifLarge = document.getElementById('menuGifLarge');
             const fakeMenuItems = document.querySelectorAll('.menu-container[data-fake="true"]');
 
-            if (!logoImgSmall || !logoImgLarge) return;
+            if (!logoImgSmall || !logoImgLarge || !gifSmall || !gifLarge) return;
+
+            const logoContainerSmall = logoImgSmall.parentElement;
+            const logoContainerLarge = logoImgLarge.parentElement;
 
             logoImgSmall.classList.add('keep');
             logoImgLarge.classList.add('keep');
@@ -2423,31 +2424,56 @@
             let newLogoName = '';
 
             if (width <= 768 || isPortrait) {
-                logoContainerSmall.style.display = 'block';
-                logoContainerLarge.style.display = 'none';
-                fakeMenuItems.forEach(item => item.style.display = '');
                 newLogoName = 'small';
             } else {
-                logoContainerSmall.style.display = 'none';
-                logoContainerLarge.style.display = 'block';
-                fakeMenuItems.forEach(item => item.style.display = 'none');
                 newLogoName = 'large';
             }
 
             if (callCount > 0 && currentLogoName !== newLogoName) {
                 currentLogoName = newLogoName;
+                switchLogoAndGif(currentLogoName);
             }
 
-            // Ensure GIFs are hidden initially
-            if (!isIOS) {
-                gifSmall.style.display = 'none';
-                gifLarge.style.display = 'none';
+            if (width <= 768 || isPortrait) {
+                logoContainerSmall.style.display = 'block';
+                logoContainerLarge.style.display = 'none';
+                fakeMenuItems.forEach(item => item.style.display = '');
+            } else {
+                logoContainerSmall.style.display = 'none';
+                logoContainerLarge.style.display = 'block';
+                fakeMenuItems.forEach(item => item.style.display = 'none');
             }
-            logoImgSmall.style.display = 'block';
-            logoImgLarge.style.display = 'block';
 
             updateCssBasedOnOrientation(width, height, isPortrait);
             callCount++;
+        }
+
+
+        function switchLogoAndGif(newLogoName) {
+            const logoImgSmall = document.getElementById('menuLogoSmall');
+            const logoImgLarge = document.getElementById('menuLogoLarge');
+            const gifSmall = document.getElementById('menuGifSmall');
+            const gifLarge = document.getElementById('menuGifLarge');
+
+            if (newLogoName === 'small') {
+                updateMediaVisibility(logoImgSmall, gifSmall);
+                logoImgLarge.style.display = 'none';
+                gifLarge.style.display = 'none';
+            } else {
+                updateMediaVisibility(logoImgLarge, gifLarge);
+                logoImgSmall.style.display = 'none';
+                gifSmall.style.display = 'none';
+            }
+        }
+
+        function updateMediaVisibility(logoElement, gifElement) {
+            if (currentMediaType === 'gif') {
+                gifElement.style.display = 'block';
+                logoElement.style.display = 'none';
+            } else {
+                logoElement.style.display = 'block';
+                gifElement.style.display = 'none';
+            }
         }
 
         function updateCssBasedOnOrientation(width, height, isPortrait) {
@@ -2517,6 +2543,7 @@
                     // Play the GIF in an endless loop
                     gifElement.loop = true;
                     isStoppingGif = false; // Reset stopping flag
+                    currentMediaType = 'gif';
                 });
             } else {
                 console.error('Logo or GIF element not found');
@@ -2570,6 +2597,7 @@
                         isStoppingGif = false; // Reset stopping flag
                     }, gifDuration * 1000);
                 }, remainingTime * 1000); // Convert remaining time to milliseconds
+                currentMediaType = 'jpg';
             } else {
                 console.error('Logo or GIF element not found');
             }
@@ -2700,6 +2728,7 @@
         }
 
         function initializeFirstScene() {
+            document.querySelectorAll('.ascii-line-XL').forEach(div => div.remove());
             currentSceneIndex = 0; // Set to the first scene
             //loadScene(currentSceneIndex); // Load the first scene
             fadeInmenu();
@@ -3174,7 +3203,7 @@
             document.body.appendChild(footerContainer);
 
             preventScrollBeyondFooter();
-            addScrollListener();
+            //addScrollListener();
         }
 
 
@@ -3624,101 +3653,119 @@
      
     
      
-        let lastUpdate = 0;
-        const throttleDelay = 1280; // Adjust this value for optimal performance
-        const transitionDuration = 320; // Duration of the smooth transition in milliseconds
+        let frameCount = 0;
+        let lastUpdateTimeout = null;
+ 
+     
 
-        let currentPositions = {
-            background: 0,
-            sides: 0,
-            viewer: 0
-        };
-        let targetPositions = {
-            background: 0,
-            sides: 0,
-            viewer: 0
-        };
+        const transitionDuration = 320; // Duration of the smooth transition in milliseconds
+        let wasScaling = false; // Flag to detect transition from scaling to not scaling
 
         function updateParallax() {
             if (isIOS) return;
 
-            const speedFactorBackground = 0.3;
-            const speedFactorSides = -1.2;
-            const speedFactorViewer = -0.3;
-
-            const scrollY = window.scrollY;
-
-            if (scrollY === lastScrollY) return;
-
-            lastScrollY = scrollY;
-
-            targetPositions.background = scrollY * speedFactorBackground;
-            targetPositions.sides = scrollY * speedFactorSides;
-            targetPositions.viewer = scrollY * speedFactorViewer;
-
             if (isscaling) {
-                const now = Date.now();
-                if (now - lastUpdate < throttleDelay) {
+                wasScaling = true;
+                frameCount++;
+                if (frameCount % 320 !== 0) {
+                    // Schedule the final update if no consecutive updates follow
+                    clearTimeout(lastUpdateTimeout);
+                    lastUpdateTimeout = setTimeout(() => {
+                        if (isscaling) {
+                            executeParallaxUpdate(true);
+                        }
+                    }, 320); // Adjust the delay as needed for optimal performance
                     return;
                 }
-                lastUpdate = now;
-
-                const initialPositions = { ...currentPositions };
-                const startTime = performance.now();
-
-                function smoothTransition(time) {
-                    const elapsed = time - startTime;
-                    const progress = Math.min(elapsed / transitionDuration, 1);
-
-                    currentPositions.background = interpolate(initialPositions.background, targetPositions.background, progress);
-                    currentPositions.sides = interpolate(initialPositions.sides, targetPositions.sides, progress);
-                    currentPositions.viewer = interpolate(initialPositions.viewer, targetPositions.viewer, progress);
-
-                    applyTransforms();
-
-                    if (progress < 1) {
-                        requestAnimationFrame(smoothTransition);
-                    }
-                }
-
-                requestAnimationFrame(smoothTransition);
             } else {
-                currentPositions.background = targetPositions.background;
-                currentPositions.sides = targetPositions.sides;
-                currentPositions.viewer = targetPositions.viewer;
-
-                applyTransforms();
+                if (wasScaling) {
+                    // Trigger smooth transition for the final update
+                    wasScaling = false;
+                    executeParallaxUpdate(true);
+                } else {
+                    frameCount = 0; // Reset frame count when not scaling
+                    executeParallaxUpdate(false);
+                }
             }
         }
 
+        function executeParallaxUpdate(applySmoothTransition) {
+            const speedFactorBackground = 0.3;
+            const speedFactorSides = -1.2;
+            const speedFactorViewer = -0.3;
+            const scrollY = window.scrollY;
 
-        function interpolate(start, end, progress) {
-            return start + (end - start) * progress;
-        }
+            if (scrollY === lastScrollY) {
+                isScrolling = false;
+                cancelAnimationFrame(scrollAnimationFrame);
+                scrollAnimationFrame = null;
+                return;
+            }
 
-        function applyTransforms() {
+            lastScrollY = scrollY;
+
             const background = document.getElementById('interfaceBackground');
             const sideLeft = document.getElementById('interfaceSideLeft');
             const sideRight = document.getElementById('interfaceSideRight');
             const viewerContainer = document.getElementById('interfaceViewerContainer');
 
-            if (background) {
-                background.style.transform = `translateY(${currentPositions.background}px)`;
-                background.style.willChange = 'transform';
+            if (applySmoothTransition) {
+                addSmoothTransition();
+                
+            } else {
+                removeSmoothTransition();
+                
             }
 
-            if (sideLeft && sideRight) {
-                sideLeft.style.transform = `translateY(${currentPositions.sides}px)`;
-                sideLeft.style.willChange = 'transform';
-                sideRight.style.transform = `translateY(${currentPositions.sides}px)`;
-                sideRight.style.willChange = 'transform';
-            }
+            requestAnimationFrame(() => {
+                if (background) {
+                    const offsetBackground = scrollY * speedFactorBackground;
+                    background.style.transform = `translateY(${offsetBackground}px)`;
+                }
 
-            if (viewerContainer) {
-                viewerContainer.style.transform = `translateY(${currentPositions.viewer}px)`;
-                viewerContainer.style.willChange = 'transform';
-            }
+                if (sideLeft && sideRight) {
+                    const offsetSides = scrollY * speedFactorSides;
+                    sideLeft.style.transform = `translateY(${offsetSides}px)`;
+                    sideRight.style.transform = `translateY(${offsetSides}px)`;
+                }
+
+                if (viewerContainer) {
+                    const offsetViewer = scrollY * speedFactorViewer;
+                    viewerContainer.style.transform = `translateY(${offsetViewer}px)`;
+                }
+
+                isScrolling = false;
+                scrollAnimationFrame = null;
+
+                // If we applied a smooth transition, remove it after the transition duration
+                if (applySmoothTransition) {
+                    setTimeout(removeSmoothTransition, transitionDuration);
+                }
+            });
         }
+
+        function addSmoothTransition() {
+            const elements = document.querySelectorAll('#interfaceBackground, #interfaceSideLeft, #interfaceSideRight, #interfaceViewerContainer');
+            elements.forEach(element => {
+                if (!element.classList.contains('smooth-transition')) {
+                    element.classList.add('smooth-transition');
+                }
+            });
+        }
+
+        function removeSmoothTransition() {
+            const elements = document.querySelectorAll('#interfaceBackground, #interfaceSideLeft, #interfaceSideRight, #interfaceViewerContainer');
+            elements.forEach(element => {
+                if (element.classList.contains('smooth-transition')) {
+                    element.classList.remove('smooth-transition');
+                }
+            });
+        }
+
+
+           
+     
+
 
 
 
@@ -3904,8 +3951,7 @@
         function updateAllContainers(Scene) {
             // Remove old spans before creating new ones
             clearTextAnimationElements();
-            adjustContainerSizesOnce();
-
+            adjustContainerSizesBasedOnVirtualCanvas();
             preparedContainers = {}; // Resetting for the new Scene
             Object.keys(Scene.containers).forEach(containerId => {
                 let containerData = Scene.containers[containerId];
@@ -3945,12 +3991,12 @@
             isscaling = true;
             lenis.stop();
 
-            saveElementsViewportPosition();
+
             // Save the initial height of the document
             const initialHeight = document.body.scrollHeight;
 
             // Save the viewport positions of observed elements
-            
+            saveElementsViewportPosition();
             clearTextAnimationElements();
 
         
@@ -3995,7 +4041,9 @@
                     const adjustment = currentViewportCenter - viewportCenter;
 
                     window.scrollTo(0, window.scrollY + adjustment);
+                    
               
+
                     
                 } else {
                     //console.log("Skipping scroll adjustment because the current scroll position is close to the top of the page.");
@@ -4128,7 +4176,7 @@
 
 
         let lastUpdate2 = 0;
-        let targetFPS2 = 20; // Adjust this value to change the update rate for updateVirtualCanvasSize
+        let targetFPS2 = 25; // Adjust this value to change the update rate for updateVirtualCanvasSize
         let interval2 = 1000 / targetFPS2;
 
         
@@ -4197,46 +4245,33 @@
             adjustContainerSizesBasedOnVirtualCanvas();
         }
 
-     
+        function setTargetFPS2(newFPS) {
+            targetFPS2 = newFPS;
+            interval2 = 1000 / targetFPS2;
+        }
+
+
         let lastUpdate3 = 0;
-        let targetFPS3 = 20; // Adjust this value to change the update rate for adjustContainerSizesBasedOnVirtualCanvas
+        let targetFPS3 = 4; // Adjust this value to change the update rate for adjustContainerSizesBasedOnVirtualCanvas
         let interval3 = 1000 / targetFPS3;
-        let lastCallScheduled = null;
+        let initialCallCount = 0; // Counter to track the number of initial calls
+        let initialCallLimit = 2; // Number of initial calls to allow without throttling
 
         // Throttling for adjustContainerSizesBasedOnVirtualCanvas
         function adjustContainerSizesBasedOnVirtualCanvas() {
             const now = performance.now();
-            if (now - lastUpdate3 < interval3) {
-                if (lastCallScheduled) {
-                    clearTimeout(lastCallScheduled);
-                }
-                lastCallScheduled = setTimeout(() => {
-                    lastUpdate3 = performance.now();
-                    adjustContainerSizes();
-                }, interval3 - (now - lastUpdate3));
+            if (initialCallCount < initialCallLimit) {
+                initialCallCount++;
+            } else if (now - lastUpdate3 < interval3) {
                 return;
             }
             lastUpdate3 = now;
-            adjustContainerSizes();
-        }
 
-        function setTargetFPS3(newFPS) {
-            targetFPS3 = newFPS;
-            interval3 = 1000 / targetFPS3;
-        }
+            // Set a timeout to reset the initial call counter after one second
+            setTimeout(() => {
+                initialCallCount = 0;
+            }, 1000);
 
-
-        // One-time immediate call function
-        function adjustContainerSizesOnce() {
-            adjustContainerSizes();
-        }
-
-
-
-        // Core functionality to adjust container sizes
-        let shouldUpdateAllContainers = false;
-
-        function adjustContainerSizes() {
             const virtualCanvas = document.getElementById('virtualcanvas');
             if (!virtualCanvas) return;
 
@@ -4263,14 +4298,10 @@
                 }
             });
 
-            // If the flag is set, call updateAllContainersDuringScaling
             if (shouldUpdateAllContainers) {
                 updateAllContainersDuringScaling();
             }
         }
-
-        
-
 
         function getSmoothBaseWidthPercent(viewportWidth, viewportHeight) {
             const startWidthPercent = 48;
@@ -4288,14 +4319,12 @@
             }
         }
 
-        // Function to adjust the target FPS dynamically for updateVirtualCanvasSize
-        function setTargetFPS2(newFPS) {
-            targetFPS2 = newFPS;
-            interval2 = 1000 / targetFPS2;
+        function setTargetFPS3(newFPS) {
+            targetFPS3 = newFPS;
+            interval3 = 1000 / targetFPS3;
         }
 
 
-    
 
 
       
@@ -4303,13 +4332,12 @@
         
 
         function handleResize(sceneIndex) {
-            
             // Always call these functions on resize
             shouldUpdateAllContainers = true;
             updateVirtualCanvasSize();
             
             updateLogoVisibility();
-        
+            
 
 
             // Exclude the following code from running on iOS devices
@@ -4323,8 +4351,8 @@
             }
 
             // Call these functions if not on an iOS device
-            
             shuffleMenu();
+            
 
             // If in the gallery scene, call handleGalleryResize
             
@@ -4350,7 +4378,6 @@
                 console.error("getClosestElementToViewportCenter did not return valid element data.");
             }
         }
-
 
 
 
@@ -4462,7 +4489,6 @@
 
             return closestElementData;
         }
-
 
         let observedFlexContainers = [];
 

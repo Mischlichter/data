@@ -1,10 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="css/viewer.css">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: transparent;
+            overflow: hidden;  /* This line hides the scrollbar */
+        }
+        .hidden {
+            display: none;
+        }
+
+
+        #scene-wrapper {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+
+        .container01 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: opacity 1s; /* Transition effect for fading */
+        }
+
+        .current-scene {
+            opacity: 1; /* Fully visible */
+            z-index: 1; /* Above the next scene */
+        }
+
+        .next-scene {
+            opacity: 0; /* Fully transparent */
+            z-index: 0; /* Below the current scene */
+        }
+
+        #next-button {
+            position: absolute;
+            top: 2%;
+            right: 2%;
+            z-index: 1000;
+        }
+
+        .info-text {
+            position: absolute;
+            bottom: 2%;
+            left: 2%;
+        }
+
+        .viewer {
+            position: absolute;
+            top: 0%;
+            left: 0;
+            width: 100vw;  /* 100% of the viewport width */
+            height: 100vh;  /* 100% of the viewport height */
+        }
+
+        #depth-viewer0 {
+            
+            top: 0;
+            left: 0;
+            
+            
+        }
+
+        #depth-viewer1 {
+            top: 0;
+            left: 0;
+        }
+
+        .canvas {
+
+            border: 50px solid black;
+        }
+
+    </style>
 </head>
 <body>
-    <div id="wrapper">
+    <div id="wrapper" class="hidden">
+
         <!-- Scene Wrapper to hold the current scene -->
         <div id="scene-wrapper">
             <!-- Current Scene Container -->
@@ -24,5 +104,11 @@
     <script>
         var isVisible=!1,mouseX=0,mouseY=0,scaleMFactor=5e-4,container=document.querySelector(".current-scene"),isMouseInArea=!1,smoothingFactor=0,options={pauseRender:!1},initialContainerWidth=(window.addEventListener("message",event=>{if(event.data&&event.data.type)switch(event.data.type){case"mousemove":case"click":mouseX=event.data.mouseX*scaleMFactor,mouseY=event.data.mouseY*scaleMFactor}}),container.offsetWidth);function handleMouseEnter(e){isMouseInArea=!0,smoothingFactor=.8;var interval=setInterval(function(){(smoothingFactor-=.02)<=0&&(smoothingFactor=0,clearInterval(interval))},20)}function handleMouseLeave(e){isMouseInArea=!1}function handleMouseMove(e){var currentContainerWidth=container.offsetWidth,scale=initialContainerWidth/currentContainerWidth,rect=container.getBoundingClientRect(),normalizedMouseX=e.clientX-rect.left-currentContainerWidth/2,e=e.clientY-rect.top-currentContainerWidth/(16/9)/2;mouseX=scaleMFactor*scale*normalizedMouseX,mouseY=scaleMFactor*scale*e}function attachMouseListeners(){container.removeEventListener("mouseenter",handleMouseEnter),container.removeEventListener("mouseleave",handleMouseLeave),container.removeEventListener("mousemove",handleMouseMove),container.addEventListener("mouseenter",handleMouseEnter),container.addEventListener("mouseleave",handleMouseLeave),container.addEventListener("mousemove",handleMouseMove)}attachMouseListeners();var targetMouseX=0,targetMouseY=0;function smoothMouseMovement(){isMouseInArea&&(mouseX+=(targetMouseX-mouseX)*smoothingFactor,mouseY+=(targetMouseY-mouseY)*smoothingFactor),targetMouseX=mouseX,targetMouseY=mouseY,requestAnimationFrame(smoothMouseMovement)}smoothMouseMovement();let imageCache={},cacheName="site-assets";async function initializeCacheStatus(urls){let cache=await caches.open(cacheName);urls=urls.map(async url=>{var cacheKey="cache_"+url;await cache.match(url)?localStorage.setItem(cacheKey,"cached"):localStorage.setItem(cacheKey,"not_cached")});await Promise.all(urls)}async function getCachedOrFetchImage(url){var cache=await caches.open(cacheName),cacheKey="cache_"+url;if("cached"===localStorage.getItem(cacheKey)){var cachedResponse=await cache.match(url);if(cachedResponse)return URL.createObjectURL(await cachedResponse.blob())}cachedResponse=await fetch(url);return cachedResponse.ok?(await cache.put(url,cachedResponse.clone()),localStorage.setItem(cacheKey,"cached"),URL.createObjectURL(await cachedResponse.blob())):url}async function preloadAndCacheImage(url){var blobURL;return imageCache[url]||(blobURL=await getCachedOrFetchImage(url),imageCache[url]=blobURL)}async function preloadAssetsForScene(sceneKey){var number,scene=assets[sceneKey],preloadPromises=[];for(number in scene)scene[number].image&&preloadPromises.push(preloadAndCacheImage(scene[number].image.url)),scene[number].depthmap&&preloadPromises.push(preloadAndCacheImage(scene[number].depthmap.url));await Promise.all(preloadPromises)}let assets,viewerContainers=[];async function loadAssets(){assets={},(await(await fetch("https://raw.githubusercontent.com/Mischlichter/data/main/assets/assets.txt")).text()).trim().split("\n\n").forEach(sceneText=>{var lines=sceneText.trim().split("\n"),sceneKey=lines[0].slice(0,-1);assets[sceneKey]={};for(let i=1;i<lines.length;i++){var[key,urlPart]=lines[i].split("=");if(key&&urlPart){var colons=[...urlPart.matchAll(/:/g)].map(match=>match.index);let url,scaleFactor,xbase,ybase;ybase=3<=colons.length?(url=urlPart.slice(0,colons[colons.length-3]),scaleFactor=urlPart.slice(colons[colons.length-3]+1,colons[colons.length-2])||"1",xbase=urlPart.slice(colons[colons.length-2]+1,colons[colons.length-1])||"0",urlPart.slice(colons[colons.length-1]+1)||"0"):(url=urlPart,scaleFactor="1",xbase="0");colons=key.slice(0,3),urlPart=key.slice(3),key=(assets[sceneKey][urlPart]||(assets[sceneKey][urlPart]={}),{url:url,scaleFactor:parseFloat(scaleFactor),xbase:parseFloat(xbase),ybase:parseFloat(ybase)});"IMG"===colons?assets[sceneKey][urlPart].image=key:"DMP"===colons&&(assets[sceneKey][urlPart].depthmap=key)}}})}function displayScene(sceneKey){let scene=assets[sceneKey],currentContainer=document.querySelector(".current-scene");currentContainer.innerHTML="",viewerContainers=[],Object.keys(scene).forEach((key,index)=>{var viewerContainer=document.createElement("div"),index=(viewerContainer.id="depth-viewer"+index,viewerContainer.className="viewer",viewerContainer.style.top=scene[key].image.xbase+"%",viewerContainer.style.left=scene[key].image.ybase+"%",currentContainer.appendChild(viewerContainer),new DepthyViewer(viewerContainer,{}));index.setImage(imageCache[scene[key].image.url]||scene[key].image.url),index.setDepthmap(imageCache[scene[key].depthmap.url]||scene[key].depthmap.url),index.setScaleFactor(scene[key].image.scaleFactor),index.setxbase(scene[key].image.xbase),index.setybase(scene[key].image.ybase),viewerContainers.push(index)}),container=document.querySelector(".current-scene"),attachMouseListeners()}function getSceneKeyFromURL(){return new URLSearchParams(window.location.search).get("scene")||"scene01"}async function setup(){await loadAssets();var sceneKey=getSceneKeyFromURL();await preloadAssetsForScene(sceneKey),displayScene(sceneKey),window.parent.postMessage("iframeLoaded","*")}function handleVisibilityChange(isVisible){viewerContainers.forEach(viewer=>{viewer.setPauseRender(!isVisible)})}window.addEventListener("message",event=>{event.origin===window.location.origin&&"visibilityChange"===event.data.type&&handleVisibilityChange(event.data.isVisible)}),setup();
     </script>
+    <script>
+        window.addEventListener('load', function() {
+            document.getElementById('wrapper').classList.remove('hidden');
+        });
+    </script>
+
 </body>
 </html>
