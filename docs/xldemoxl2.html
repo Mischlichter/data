@@ -3944,7 +3944,7 @@
             }
             isscaling = true;
             
-            lenis.stop();
+            
 
 
             // Save the initial height of the document
@@ -4010,7 +4010,7 @@
                 resizeCallCount = 0;
                 lastClosestElementData = null;
                 isscaling = false;
-                lenis.start();
+                
 
             }, resizeTimeoutDuration);
 
@@ -4312,6 +4312,7 @@
 
             // Exclude the following code from running on iOS devices
             if (isIOS) {
+                saveElementsViewportPosition();
                 updateLogoVisibility();
                 updateAllContainersDuringScaling();
                 
