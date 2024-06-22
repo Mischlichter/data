@@ -4341,23 +4341,32 @@
         }
 
 
-        function scrollElementToViewportCenter() {
-            const element = getClosestElementToViewportCenter();
+        function scrollClosestElementToViewportCenter() {
+            const lastClosestElementData = getClosestElementToViewportCenter();
             
-            if (element) {
-                const elementRect = element.getBoundingClientRect();
-                const elementCenter = elementRect.top + (elementRect.height / 2);
-                const viewportCenter = window.innerHeight / 2;
-                const scrollOffset = elementCenter - viewportCenter;
+            if (lastClosestElementData) {
+                const { element, viewportCenter } = lastClosestElementData;
+                const initialHeight = document.body.scrollHeight;
 
                 setTimeout(() => {
-                    window.scrollTo({
-                        top: window.scrollY + scrollOffset,
-                        behavior: 'instant'
-                    });
+                    const newHeight = document.body.scrollHeight;
+                    const heightDifference = newHeight - initialHeight;
+                    if (window.scrollY > 0) {
+                        // Adjust the scroll position by the height difference
+                        window.scrollTo(0, window.scrollY + heightDifference);
+
+                        const currentViewportCenter = (element.getBoundingClientRect().top + element.getBoundingClientRect().bottom) / 2;
+                        const adjustment = currentViewportCenter - viewportCenter;
+
+                        window.scrollTo({
+                            top: window.scrollY + adjustment,
+                            behavior: 'smooth'
+                        });
+                    }
                 }, 500); // 0.5 second delay
             }
         }
+
 
         function handleGalleryResize() {
             // Determine the orientation and set variableori
