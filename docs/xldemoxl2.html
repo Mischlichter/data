@@ -4319,6 +4319,10 @@
                     updateVirtualCanvasSize();
                 }, 100); // Adjust the delay time (500ms) as needed
 
+                setTimeout(function() {
+                    updateAllContainersDuringScaling();
+                }, 100);
+
                 updateLogoVisibility();
                 
                 return; // Exit the function if on an iOS device
