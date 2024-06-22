@@ -4331,9 +4331,10 @@
         }
 
         function scrollElementToViewportCenter() {
-            const element = getClosestElementToViewportCenter();
-            
-            if (element) {
+            const closestElementData = getClosestElementToViewportCenter();
+
+            if (closestElementData && closestElementData.element instanceof HTMLElement) {
+                const element = closestElementData.element;
                 const elementRect = element.getBoundingClientRect();
                 const elementCenter = elementRect.top + (elementRect.height / 2);
                 const viewportCenter = window.innerHeight / 2;
@@ -4345,8 +4346,11 @@
                         behavior: 'smooth'
                     });
                 }, 500); // 0.5 second delay
+            } else {
+                console.error("getClosestElementToViewportCenter did not return valid element data.");
             }
         }
+
 
 
 
