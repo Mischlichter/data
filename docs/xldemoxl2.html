@@ -4312,16 +4312,18 @@
 
             // Exclude the following code from running on iOS devices
             if (isIOS) {
+                updateAllContainersDuringScaling();
+                
+                // Add a delay before calling updateVirtualCanvasSize
+                setTimeout(function() {
+                    updateVirtualCanvasSize();
+                }, 100); // Adjust the delay time (500ms) as needed
 
-                scrollClosestElementToViewportCenter();
-                updateVirtualCanvasSize();
                 updateLogoVisibility();
-                
-                
-
                 
                 return; // Exit the function if on an iOS device
             }
+
 
             if (isAnimating) {
                 return; // Exit the function if an animation is already happening
@@ -4341,32 +4343,7 @@
         }
 
 
-        function scrollClosestElementToViewportCenter() {
-            const lastClosestElementData = getClosestElementToViewportCenter();
-            
-            if (lastClosestElementData) {
-                const { element, viewportCenter } = lastClosestElementData;
-                const initialHeight = document.body.scrollHeight;
-
-                setTimeout(() => {
-                    const newHeight = document.body.scrollHeight;
-                    const heightDifference = newHeight - initialHeight;
-                    if (window.scrollY > 0) {
-                        // Adjust the scroll position by the height difference
-                        window.scrollTo(0, window.scrollY + heightDifference);
-
-                        const currentViewportCenter = (element.getBoundingClientRect().top + element.getBoundingClientRect().bottom) / 2;
-                        const adjustment = currentViewportCenter - viewportCenter;
-
-                        window.scrollTo({
-                            top: window.scrollY + adjustment,
-                            behavior: 'instant'
-                        });
-                    }
-                }, 500); // 0.5 second delay
-            }
-        }
-
+      
 
         function handleGalleryResize() {
             // Determine the orientation and set variableori
