@@ -4321,7 +4321,10 @@
                 setTimeout(function() {
                     updateVirtualCanvasSize();
                 }, 100); // Adjust the delay time (500ms) as needed
-        
+                setTimeout(function() {
+                    adjustScrollPosition();
+                }, 500);
+
                 
                 return; // Exit the function if on an iOS device
             }
@@ -4342,6 +4345,21 @@
 
             // If in the gallery scene, call handleGalleryResize
             
+        }
+
+        function adjustScrollPosition() {
+            if (lastClosestElementData) {
+                const element = lastClosestElementData.element;
+                const elementRect = element.getBoundingClientRect();
+                const currentElementCenter = (elementRect.top + elementRect.bottom) / 2;
+
+                // Calculate the adjustment to align the viewport center with the element's center
+                const adjustment = currentElementCenter - (window.innerHeight / 2);
+
+                if (window.scrollY > scrollTopThreshold) {
+                    window.scrollTo(0, window.scrollY + adjustment);
+                }
+            }
         }
 
 
