@@ -4347,32 +4347,22 @@
             if (lastClosestElementData) {
                 const { element, viewportCenter } = lastClosestElementData;
                 const initialHeight = document.body.scrollHeight;
-                const initialScrollY = window.scrollY;
-
-                console.log('Initial document height:', initialHeight);
-                console.log('Initial scroll Y position:', initialScrollY);
-                console.log('Viewport center of closest element:', viewportCenter);
 
                 setTimeout(() => {
                     const newHeight = document.body.scrollHeight;
                     const heightDifference = newHeight - initialHeight;
+                    if (window.scrollY > 0) {
+                        // Adjust the scroll position by the height difference
+                        window.scrollTo(0, window.scrollY + heightDifference);
 
-                    console.log('New document height:', newHeight);
-                    console.log('Height difference due to reflow:', heightDifference);
+                        const currentViewportCenter = (element.getBoundingClientRect().top + element.getBoundingClientRect().bottom) / 2;
+                        const adjustment = currentViewportCenter - viewportCenter;
 
-                    // Adjust the scroll position by the height difference
-                    window.scrollTo(0, initialScrollY + heightDifference);
-
-                    const currentViewportCenter = (element.getBoundingClientRect().top + element.getBoundingClientRect().bottom) / 2;
-                    const adjustment = currentViewportCenter - viewportCenter;
-
-                    console.log('Current viewport center of closest element:', currentViewportCenter);
-                    console.log('Scroll adjustment needed:', adjustment);
-
-                    window.scrollTo({
-                        top: window.scrollY + adjustment,
-                        behavior: 'instant'
-                    });
+                        window.scrollTo({
+                            top: window.scrollY + adjustment,
+                            behavior: 'instant'
+                        });
+                    }
                 }, 500); // 0.5 second delay
             }
         }
