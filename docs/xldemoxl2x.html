@@ -4317,7 +4317,7 @@
 
             // Exclude the following code from running on iOS devices
             if (isIOS) {
-                
+                scrollToClosestElement();
                 return; // Exit the function if on an iOS device
             }
 
@@ -4339,10 +4339,14 @@
             if (isIOS && !updateIntervalId) {
                 updateIntervalId = setInterval(() => {
                     lastClosestElementData = getClosestElementToViewportCenter();
+                    if (lastClosestElementData) {
+                        console.log('Closest element:', lastClosestElementData.element);
+                    }
                 }, 100); // Adjust the interval as needed (in milliseconds)
                 console.log('Continuous update started for iOS');
             }
         }
+
 
         function stopContinuousUpdate() {
             if (updateIntervalId) {
@@ -4351,6 +4355,19 @@
                 console.log('Continuous update stopped');
             }
         }
+
+        function scrollToClosestElement() {
+            if (lastClosestElementData) {
+                const viewportHeight = window.innerHeight;
+                const viewportCenter = viewportHeight / 2;
+                const scrollY = window.scrollY + lastClosestElementData.top - (viewportCenter - (lastClosestElementData.height / 2));
+                window.scrollTo({ top: scrollY, behavior: 'instant' }); // Use 'instant' for immediate scroll
+                console.log(`Scrolled to closest element:`, lastClosestElementData.element);
+            } else {
+                console.log('No closest element data available.');
+            }
+        }
+
 
         
 
