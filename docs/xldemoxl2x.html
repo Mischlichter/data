@@ -4335,7 +4335,9 @@
 
         function startContinuousUpdate() {
             if (isIOS && !updateIntervalId) {
-                updateIntervalId = setInterval(saveElementsViewportPosition, 100); // Adjust the interval as needed (in milliseconds)
+                updateIntervalId = setInterval(() => {
+                    lastClosestElementData = getClosestElementToViewportCenter();
+                }, 100); // Adjust the interval as needed (in milliseconds)
                 console.log('Continuous update started for iOS');
             }
         }
