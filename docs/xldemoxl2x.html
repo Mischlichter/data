@@ -2935,6 +2935,7 @@
             createStyledFooter();
 
             currentSceneData = scene;
+
             if (isIOS) {
                 startContinuousUpdate();
             }
@@ -3947,12 +3948,15 @@
             isscaling = true;
             //lenis.stop();
 
+
             // Save the initial height of the document
             const initialHeight = document.body.scrollHeight;
 
             // Save the viewport positions of observed elements
+            
             clearTextAnimationElements();
 
+        
             Object.keys(currentSceneData.containers).forEach(containerId => {
                 let containerData = currentSceneData.containers[containerId];
                 let textLines = containerData.text.split('\n');
@@ -3972,63 +3976,48 @@
                 }
             });
 
-       
+            // Calculate the new height and adjust the scroll position immediately
+            resizeCallCount++;
+            //console.log(`resizeCallCount: ${resizeCallCount}`);
+            if (resizeCallCount === 1 || resizeCallCount % resizeThreshold === 0) {
+                // console.log("Executing getClosestElementToViewportCenter logic.");
+                lastClosestElementData = getClosestElementToViewportCenter();
+            }
             
-            if (isIOS) {
-                setTimeout(() => {
-                    proceedWithUpdate();
-                }, 500);
-            } else {
-                proceedWithUpdate();
+
+            if (lastClosestElementData) {
+                const newHeight = document.body.scrollHeight;
+                const heightDifference = newHeight - initialHeight;
+                if (window.scrollY > scrollTopThreshold) {
+                // Adjust the scroll position by the height difference
+                    window.scrollTo(0, window.scrollY + heightDifference);
+
+
+                    const { element, viewportCenter } = lastClosestElementData;
+                    const currentViewportCenter = (element.getBoundingClientRect().top + element.getBoundingClientRect().bottom) / 2;
+                    const adjustment = currentViewportCenter - viewportCenter;
+
+                    window.scrollTo(0, window.scrollY + adjustment);
+              
+                    
+                } else {
+                    //console.log("Skipping scroll adjustment because the current scroll position is close to the top of the page.");
+                }
             }
 
-            function proceedWithUpdate() {
-                // Calculate the new height and adjust the scroll position immediately
-                resizeCallCount++;
-                //console.log(`resizeCallCount: ${resizeCallCount}`);
-                if (resizeCallCount === 1 || resizeCallCount % resizeThreshold === 0) {
-                    // console.log("Executing getClosestElementToViewportCenter logic.");
-                    lastClosestElementData = getClosestElementToViewportCenter();
-                }
+            // Reset the counter after the timeout duration
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                //console.log("Resetting resizeCallCount.");
+                resizeCallCount = 0;
+                lastClosestElementData = null;
+                isscaling = false;
+                //lenis.start();
+            }, resizeTimeoutDuration);
 
-                if (lastClosestElementData) {
-                    const newHeight = document.body.scrollHeight;
-                    const heightDifference = newHeight - initialHeight;
-                    if (window.scrollY > scrollTopThreshold) {
-                        // Adjust the scroll position by the height difference
-                        window.scrollTo(0, window.scrollY + heightDifference);
 
-                        const adjustScrollPosition = () => {
-                            const { element, viewportCenter } = lastClosestElementData;
-                            const currentViewportCenter = (element.getBoundingClientRect().top + element.getBoundingClientRect().bottom) / 2;
-                            const adjustment = currentViewportCenter - viewportCenter;
 
-                            window.scrollTo(0, window.scrollY + adjustment);
-                        };
-
-                        if (isIOS) {
-                            // Wait for 0.5 seconds before adjusting the scroll position on iOS devices
-                            setTimeout(adjustScrollPosition, 500);
-                        } else {
-                            // Immediately adjust the scroll position for non-iOS devices
-                            adjustScrollPosition();
-                        }
-                    } else {
-                        //console.log("Skipping scroll adjustment because the current scroll position is close to the top of the page.");
-                    }
-                }
-
-                // Reset the counter after the timeout duration
-                clearTimeout(resizeTimeout);
-                resizeTimeout = setTimeout(() => {
-                    //console.log("Resetting resizeCallCount.");
-                    resizeCallCount = 0;
-                    lastClosestElementData = null;
-                    isscaling = false;
-                    //lenis.start();
-                }, resizeTimeoutDuration);
-            }
-
+            
         }
 
 
@@ -4344,11 +4333,10 @@
             
         }
 
-        let updateIntervalId = null;
-
         function startContinuousUpdate() {
             if (isIOS && !updateIntervalId) {
                 updateIntervalId = setInterval(saveElementsViewportPosition, 100); // Adjust the interval as needed (in milliseconds)
+                console.log('Continuous update started for iOS');
             }
         }
 
@@ -4356,12 +4344,12 @@
             if (updateIntervalId) {
                 clearInterval(updateIntervalId);
                 updateIntervalId = null;
+                console.log('Continuous update stopped');
             }
         }
 
         
 
-     
 
 
 
