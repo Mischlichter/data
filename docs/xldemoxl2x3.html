@@ -3436,7 +3436,7 @@
                 containerDiv.style.backgroundSize = 'contain'; // Adjust this to fit your needs
 
                 container.appendChild(containerDiv);
-
+                shouldUpdateAllContainers = false;
                 updateVirtualCanvasSize();
 
                 resolve();
@@ -3447,7 +3447,7 @@
 
         function delayedVirtualCanvasUpdate() {
             // Delay the call to updateVirtualCanvasSize
-            
+            shouldUpdateAllContainers = false;
             setTimeout(updateVirtualCanvasSize, 100); // Delay of 100 milliseconds
         }
 
@@ -3543,7 +3543,7 @@
                 });
                 return;
             }
-
+            shouldUpdateAllContainers = false;
             updateVirtualCanvasSize();
 
             ensureWrapperExistence('scale-wrapper-background', `
@@ -4248,6 +4248,10 @@
                     container.style.paddingTop = `${scaledWidthPx}px`;
                 }
             });
+
+            if (shouldUpdateAllContainers) {
+                updateAllContainersDuringScaling();
+            }
         }
 
         function getSmoothBaseWidthPercent(viewportWidth, viewportHeight) {
@@ -4280,8 +4284,9 @@
 
         function handleResize(sceneIndex) {
             // Always call these functions on resize
+            shouldUpdateAllContainers = true;
             updateVirtualCanvasSize();
-            updateAllContainersDuringScaling();
+            
             updateLogoVisibility();
             shuffleMenu();
 
