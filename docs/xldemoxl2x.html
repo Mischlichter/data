@@ -4308,7 +4308,8 @@
         function handleResize(sceneIndex) {
             saveElementsViewportPosition();
             // Always call these functions on resize
-            
+            shouldUpdateAllContainers = true;
+            updateVirtualCanvasSize();
             
             updateLogoVisibility();
         
@@ -4316,9 +4317,7 @@
 
             // Exclude the following code from running on iOS devices
             if (isIOS) {
-                shouldUpdateAllContainers = false;
-                updateVirtualCanvasSize();
-                scrollToClosestElement();
+                
                 return; // Exit the function if on an iOS device
             }
 
@@ -4326,8 +4325,7 @@
                 return; // Exit the function if an animation is already happening
             }
 
-            shouldUpdateAllContainers = true;
-            updateVirtualCanvasSize();
+            
 
             // Call these functions if not on an iOS device
             
@@ -4346,7 +4344,7 @@
                     if (lastClosestElementData) {
                         console.log('Closest element:', lastClosestElementData.element);
                     }
-                }, 200); // Adjust the interval as needed (in milliseconds)
+                }, 500); // Adjust the interval as needed (in milliseconds)
                 console.log('Continuous update started for iOS');
             }
         }
@@ -4360,22 +4358,7 @@
             }
         }
 
-        function scrollToClosestElement() {
-            if (lastClosestElementData) {
-                const viewportHeight = window.innerHeight;
-                const viewportCenter = viewportHeight / 2;
-                const scrollY = window.scrollY + lastClosestElementData.top - (viewportCenter - (lastClosestElementData.height / 2));
-                window.scrollTo({ top: scrollY, behavior: 'instant' }); // Use 'instant' for immediate scroll
-                console.log(`Scrolled to closest element:`, lastClosestElementData.element);
-            } else {
-                console.log('No closest element data available.');
-            }
-        }
-
-
-        
-
-
+      
 
 
         function handleGalleryResize() {
