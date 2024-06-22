@@ -4313,7 +4313,7 @@
             // Exclude the following code from running on iOS devices
             if (isIOS) {
 
-                scrollElementToViewportCenter()
+                scrollClosestElementToViewportCenter();
                 updateVirtualCanvasSize();
                 updateLogoVisibility();
                 
@@ -4360,7 +4360,7 @@
 
                         window.scrollTo({
                             top: window.scrollY + adjustment,
-                            behavior: 'smooth'
+                            behavior: 'instant'
                         });
                     }
                 }, 500); // 0.5 second delay
