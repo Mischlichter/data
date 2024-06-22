@@ -4333,6 +4333,8 @@
             
         }
 
+        let updateIntervalId = null;
+
         function startContinuousUpdate() {
             if (isIOS && !updateIntervalId) {
                 updateIntervalId = setInterval(() => {
