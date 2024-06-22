@@ -3950,7 +3950,7 @@
             const initialHeight = document.body.scrollHeight;
 
             // Save the viewport positions of observed elements
-            saveElementsViewportPosition();
+            
             clearTextAnimationElements();
 
         
@@ -4303,29 +4303,19 @@
         
 
         function handleResize(sceneIndex) {
+            saveElementsViewportPosition();
             // Always call these functions on resize
             shouldUpdateAllContainers = true;
             updateVirtualCanvasSize();
+            
             updateLogoVisibility();
+        
 
-            // Check if the device is iOS
+
+            // Exclude the following code from running on iOS devices
             if (isIOS) {
-                // Function to execute with a delay
-                const executeWithDelay = (iteration) => {
-                    setTimeout(() => {
-                        shouldUpdateAllContainers = true;
-                        updateVirtualCanvasSize();
-                        updateLogoVisibility();
-
-                        if (iteration < 2) { // Execute 3 times
-                            executeWithDelay(iteration + 1);
-                        }
-                    }, 500); // 0.5-second delay
-                };
-
-                // Start the first execution
-                executeWithDelay(0);
-                return; // Exit the function after initiating the delayed executions
+                
+                return; // Exit the function if on an iOS device
             }
 
             if (isAnimating) {
@@ -4333,9 +4323,12 @@
             }
 
             // Call these functions if not on an iOS device
+            
             shuffleMenu();
-        }
 
+            // If in the gallery scene, call handleGalleryResize
+            
+        }
 
 
 
