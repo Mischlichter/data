@@ -4294,6 +4294,11 @@
             // Exclude the following code from running on iOS devices
             if (isIOS) {
                 scrollElementToViewportCenter();
+                shouldUpdateAllContainers = true;
+                updateVirtualCanvasSize();
+                
+                updateLogoVisibility();
+                shuffleMenu();
                 return; // Exit the function if on an iOS device
             }
 
@@ -4302,7 +4307,11 @@
             }
 
             // Call these functions if not on an iOS device
+            shouldUpdateAllContainers = true;
+            updateVirtualCanvasSize();
             
+            updateLogoVisibility();
+            shuffleMenu();
             
 
             // If in the gallery scene, call handleGalleryResize
