@@ -3944,6 +3944,7 @@
             }
             isscaling = true;
             
+            lenis.stop();
 
 
             // Save the initial height of the document
@@ -4009,7 +4010,8 @@
                 resizeCallCount = 0;
                 lastClosestElementData = null;
                 isscaling = false;
-                
+                lenis.start();
+
             }, resizeTimeoutDuration);
 
 
@@ -4305,18 +4307,17 @@
         function handleResize(sceneIndex) {
             // Always call these functions on resize
             
+            shouldUpdateAllContainers = true;
             
-            
-
 
             // Exclude the following code from running on iOS devices
             if (isIOS) {
-                resizeCallCount = 0;
+
                 scrollElementToViewportCenter()
                 updateVirtualCanvasSize();
                 updateLogoVisibility();
                 
-                updateAllContainersDuringScaling();
+                
 
                 
                 return; // Exit the function if on an iOS device
@@ -4330,7 +4331,7 @@
             
             updateVirtualCanvasSize();
             updateLogoVisibility();
-            shouldUpdateAllContainers = true;
+            
             
          
             shuffleMenu();
