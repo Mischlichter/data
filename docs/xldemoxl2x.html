@@ -2935,7 +2935,9 @@
             createStyledFooter();
 
             currentSceneData = scene;
-
+            if (isIOS) {
+                startContinuousUpdate();
+            }
             // Update containers when loading a new scene
             updateAllContainers(scene);
             installObserver();
@@ -4315,7 +4317,7 @@
 
             // Exclude the following code from running on iOS devices
             if (isIOS) {
-                simulateBrowserScaling();
+                
                 return; // Exit the function if on an iOS device
             }
 
@@ -4331,45 +4333,24 @@
             
         }
 
-        let isScaling = false;
+        let updateIntervalId = null;
 
-        function simulateBrowserScaling() {
-            if (isScaling) return; // Prevent triggering again if already running
-
-            isScaling = true;
-            let increasing = true;
-            let step = 1;
-            const originalHeight = document.documentElement.scrollHeight;
-
-            const scaleStep = () => {
-                let newHeight;
-                if (increasing) {
-                    newHeight = originalHeight + step;
-                } else {
-                    newHeight = originalHeight - step;
-                }
-
-                document.documentElement.style.height = `${newHeight}px`;
-
-                // Toggle the direction of scaling
-                increasing = !increasing;
-
-                // Call the function again after 0.6 seconds
-                setTimeout(() => {
-                    // Reset the height to the original after completing the scale back
-                    if (!increasing) {
-                        document.documentElement.style.height = `${originalHeight}px`;
-                        isScaling = false; // Allow triggering again
-                    } else {
-                        scaleStep();
-                    }
-                }, 600);
-            };
-
-            // Start the scaling process
-            scaleStep();
+        function startContinuousUpdate() {
+            if (isIOS && !updateIntervalId) {
+                updateIntervalId = setInterval(saveElementsViewportPosition, 100); // Adjust the interval as needed (in milliseconds)
+            }
         }
 
+        function stopContinuousUpdate() {
+            if (updateIntervalId) {
+                clearInterval(updateIntervalId);
+                updateIntervalId = null;
+            }
+        }
+
+        
+
+     
 
 
 
