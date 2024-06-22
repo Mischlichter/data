@@ -4441,7 +4441,18 @@
             let closestElementData = null;
             let minDistanceToCenter = Infinity;
 
-            observedElementsData.forEach(data => {
+            const allElementsData = observedElementsData.concat(
+                observedFlexContainers.map(element => {
+                    const rect = element.getBoundingClientRect();
+                    const elementCenter = (rect.top + rect.bottom) / 2;
+                    return {
+                        element: element,
+                        viewportCenter: elementCenter
+                    };
+                })
+            );
+
+            allElementsData.forEach(data => {
                 const distanceToCenter = Math.abs(data.viewportCenter - viewportCenter);
                 if (distanceToCenter < minDistanceToCenter) {
                     closestElementData = data;
@@ -4526,17 +4537,21 @@
                 if (isIOS) {
                     const heightDifference = Math.abs(currentHeight - lastHeight);
                     if (heightDifference > heightChangeThreshold) {
-                        handleResize();
+                        
                         if (currentSceneIndex === 4) {
                             handleGalleryResize();
+                            return;
                         }
+                        handleResize();
                         lastHeight = currentHeight;
                     }
                 } else {
-                    handleResize();
+                    
                     if (currentSceneIndex === 4) {
                         handleGalleryResize();
+                        return;
                     }
+                    handleResize();
                 }
             });
             isResizeListenerAdded = true;
