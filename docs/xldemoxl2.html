@@ -4305,14 +4305,17 @@
         function handleResize(sceneIndex) {
             // Always call these functions on resize
             
-            shouldUpdateAllContainers = true;
-            updateVirtualCanvasSize();
-            updateLogoVisibility();
+            
+            
 
 
             // Exclude the following code from running on iOS devices
             if (isIOS) {
-                resizeCallCount = 0
+                resizeCallCount = 0;
+                scrollElementToViewportCenter()
+                updateVirtualCanvasSize();
+                updateLogoVisibility();
+                
                 updateAllContainersDuringScaling();
 
                 
@@ -4325,7 +4328,9 @@
 
             
             
-            
+            updateVirtualCanvasSize();
+            updateLogoVisibility();
+            shouldUpdateAllContainers = true;
             
          
             shuffleMenu();
@@ -4335,7 +4340,23 @@
         }
 
 
+        function scrollElementToViewportCenter() {
+            const element = getClosestElementToViewportCenter();
+            
+            if (element) {
+                const elementRect = element.getBoundingClientRect();
+                const elementCenter = elementRect.top + (elementRect.height / 2);
+                const viewportCenter = window.innerHeight / 2;
+                const scrollOffset = elementCenter - viewportCenter;
 
+                setTimeout(() => {
+                    window.scrollTo({
+                        top: window.scrollY + scrollOffset,
+                        behavior: 'instant'
+                    });
+                }, 500); // 0.5 second delay
+            }
+        }
 
         function handleGalleryResize() {
             // Determine the orientation and set variableori
