@@ -4312,6 +4312,7 @@
 
             // Exclude the following code from running on iOS devices
             if (isIOS) {
+                updateLogoVisibility();
                 updateAllContainersDuringScaling();
                 
                 // Add a delay before calling updateVirtualCanvasSize
@@ -4323,7 +4324,7 @@
                     updateAllContainersDuringScaling();
                 }, 100);
 
-                updateLogoVisibility();
+                
                 
                 return; // Exit the function if on an iOS device
             }
