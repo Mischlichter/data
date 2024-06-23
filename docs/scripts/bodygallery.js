@@ -86,7 +86,6 @@ const galleryHTML = `
 
 
   
-
         
         function loadGallery() {
             loadingPercentage = 0;
@@ -1582,21 +1581,10 @@ const galleryHTML = `
 
         function initializePage() {
             document.getElementById('search-bar').value = ''; // Reset the search bar value
-
+            window.scrollTo(0, 0); // Scroll to the top of the page
             createBackgroundSurface();
             initializeLoadingScreen();
-
-            console.log('scrollttop');
-
-            // Introduce a delay before scrolling to the top
-            setTimeout(() => {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                }); // Scroll to the top of the page
-            }, 500); // Adjust the delay time as needed (500 milliseconds in this case)
         }
-
 
         function showSlideshow() {
 
