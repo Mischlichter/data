@@ -1813,7 +1813,7 @@
             const bodyGalleryContainer = document.getElementById('bodyGalleryContainer');
             let existingIframe = document.getElementById('sceneIframe');
 
-
+            scrollToTop();
             
             if (bodyGalleryContainer) {
                 resetLoadingStatus();
@@ -1976,13 +1976,9 @@
 
         function resetPageStyles() {
             //console.log('sweepsweep.');
-            if (isIOS) {
-                setTimeout(() => {
-                    scrollToTop();
-                }, 1000); // wait 1 second (1000 milliseconds)
-            } else {
-                scrollToTop();
-            }
+          
+            
+         
 
             let viewerContainers = [];
 
