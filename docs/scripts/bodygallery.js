@@ -1585,15 +1585,16 @@ const galleryHTML = `
         function initializePage() {
             document.getElementById('search-bar').value = ''; // Reset the search bar value
             window.scrollTo(0, 0); // Scroll to the top of the page
+            scrollToTop();
             createBackgroundSurface();
 
             // Scroll to the top of the page
-            scrollToTop();
+            
 
             // Introduce a small delay before initializing the loading screen
             setTimeout(() => {
                 initializeLoadingScreen();
-            }, 300); // Adjust the delay as needed (100 milliseconds in this case)
+            }, 500); // Adjust the delay as needed (100 milliseconds in this case)
         }
 
 
