@@ -86,6 +86,7 @@ const galleryHTML = `
 
 
   
+  
         
         function loadGallery() {
             loadingPercentage = 0;
