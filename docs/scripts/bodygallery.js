@@ -292,11 +292,8 @@ const galleryHTML = `
 
         function initializeLoadingScreen() {
 
-            
-            
-
             blockInteractions();
-            disableScroll();
+
                 
             const asciiArt = [
                 "                 /^ ^\\                ", 
@@ -370,7 +367,7 @@ const galleryHTML = `
 
             function generateRandomCharacter() {
                 const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()[]{}|';
-                
+                disableScroll();
                 return characters.charAt(Math.floor(Math.random() * characters.length));
             }
 
@@ -1584,8 +1581,7 @@ const galleryHTML = `
 
         function initializePage() {
             document.getElementById('search-bar').value = ''; // Reset the search bar value
-            lenis.scrollTo(0, { immediate: true });
-
+            window.scrollTo(0, 0); // Scroll to the top of the page
             createBackgroundSurface();
             initializeLoadingScreen();
         }
