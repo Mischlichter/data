@@ -4704,23 +4704,26 @@
         function scrollElementToViewportCenter() {
             const closestElementData = getClosestElementToViewportCenter();
 
-            if (closestElementData && closestElementData.element instanceof HTMLElement) {
-                const element = closestElementData.element;
-                const elementRect = element.getBoundingClientRect();
-                const elementCenter = elementRect.top + (elementRect.height / 2);
-                const viewportCenter = window.innerHeight / 2;
-                const scrollOffset = elementCenter - viewportCenter;
+            if (window.scrollY > scrollTopThreshold) {
+                if (closestElementData && closestElementData.element instanceof HTMLElement) {
+                    const element = closestElementData.element;
+                    const elementRect = element.getBoundingClientRect();
+                    const elementCenter = elementRect.top + (elementRect.height / 2);
+                    const viewportCenter = window.innerHeight / 2;
+                    const scrollOffset = elementCenter - viewportCenter;
 
-                setTimeout(() => {
-                    window.scrollTo({
-                        top: window.scrollY + scrollOffset,
-                        behavior: 'smooth'
-                    });
-                }, 500); // 0.5 second delay
-            } else {
-                console.error("getClosestElementToViewportCenter did not return valid element data.");
+                    setTimeout(() => {
+                        window.scrollTo({
+                            top: window.scrollY + scrollOffset,
+                            behavior: 'smooth'
+                        });
+                    }, 500); // 0.5 second delay
+                } else {
+                    console.error("getClosestElementToViewportCenter did not return valid element data.");
+                }
             }
         }
+
 
 
 
