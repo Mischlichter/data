@@ -317,10 +317,10 @@ const galleryHTML = `
             // Add more styles or content to the background as needed
 
             document.body.insertBefore(background, document.body.firstChild);
-            scrollToTop();
+            
             setTimeout(function() {
                 fetchImageFilenames();
-            }, 1000);
+            }, 10);
 
             const container = document.getElementById('ascii-art-container');
             const numberOfCharacters = asciiArt[0].length;
@@ -468,7 +468,12 @@ const galleryHTML = `
                         centerContainer.remove();
                         enableScroll(); // Re-enable scrolling if it was disabled
                         unblockInteractions();
-
+                        
+                        window.scrollTo({
+                            top: 0,
+                            left: 0,
+                            behavior: 'smooth'
+                        });
                         
                     }, 1000); // Adjust timing as needed based on the duration of the fade-out animation
                 }
@@ -486,8 +491,6 @@ const galleryHTML = `
         let abortController = new AbortController();
 
         function fetchImageFilenames() {
-
-
             // Create a new AbortController instance for each fetch
             abortController = new AbortController();
             const signal = abortController.signal;
