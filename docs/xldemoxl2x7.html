@@ -2360,6 +2360,7 @@
                 }).then(() => {
                     updateMenu(menuData);
                     isMenuLoaded = true;
+               
 
                 }).catch(error => {
                     console.error('Error updating logo visibility:', error);
@@ -3379,6 +3380,7 @@
                                 menufade = true;
                                 tiles.menuReady = true; // Set menuReady to true for iOS
                                 resolve();
+                                startGif();
                             }
                         }
                     });
