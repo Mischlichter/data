@@ -292,6 +292,8 @@ const galleryHTML = `
 
         function initializeLoadingScreen() {
 
+            scrollToTop();
+
             blockInteractions();
 
                 
@@ -459,23 +461,20 @@ const galleryHTML = `
                 const centerContainer = document.querySelector('.center-container');
                 if (centerContainer) {
                     scrollToTop();
+                    // Start fading out the center container smoothly
+                    centerContainer.style.transition = 'opacity 1s ease-out';
+                    centerContainer.style.opacity = '0';
 
-                    // Introduce a small delay before starting the fade-out transition
+                    // Delay removing the center container until the fade-out animation completes
                     setTimeout(() => {
-                        // Start fading out the center container smoothly
-                        centerContainer.style.transition = 'opacity 1s ease-out';
-                        centerContainer.style.opacity = '0';
+                        centerContainer.remove();
+                        enableScroll(); // Re-enable scrolling if it was disabled
+                        unblockInteractions();
 
-                        // Delay removing the center container until the fade-out animation completes
-                        setTimeout(() => {
-                            centerContainer.remove();
-                            enableScroll(); // Re-enable scrolling if it was disabled
-                            unblockInteractions();
-                        }, 1000); // Adjust timing as needed based on the duration of the fade-out animation
-                    }, 300); // Small delay to ensure the scroll has finished before starting the fade-out
+                        
+                    }, 1000); // Adjust timing as needed based on the duration of the fade-out animation
                 }
             }
-
 
 
 
