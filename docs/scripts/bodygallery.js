@@ -467,7 +467,7 @@ const galleryHTML = `
                         centerContainer.remove();
                         enableScroll(); // Re-enable scrolling if it was disabled
                         unblockInteractions();
-                        scrollToTop();
+
                         
                     }, 1000); // Adjust timing as needed based on the duration of the fade-out animation
                 }
@@ -1584,6 +1584,7 @@ const galleryHTML = `
             window.scrollTo(0, 0); // Scroll to the top of the page
             createBackgroundSurface();
             initializeLoadingScreen();
+            scrollToTop();
         }
 
         function showSlideshow() {
