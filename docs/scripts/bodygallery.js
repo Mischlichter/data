@@ -461,13 +461,13 @@ const galleryHTML = `
                     // Start fading out the center container smoothly
                     centerContainer.style.transition = 'opacity 1s ease-out';
                     centerContainer.style.opacity = '0';
-
+                    scrollToTop();
                     // Delay removing the center container until the fade-out animation completes
                     setTimeout(() => {
                         centerContainer.remove();
                         enableScroll(); // Re-enable scrolling if it was disabled
                         unblockInteractions();
-
+                        
                         
                     }, 1000); // Adjust timing as needed based on the duration of the fade-out animation
                 }
@@ -1584,7 +1584,6 @@ const galleryHTML = `
             window.scrollTo(0, 0); // Scroll to the top of the page
             createBackgroundSurface();
             initializeLoadingScreen();
-            scrollToTop();
         }
 
         function showSlideshow() {
