@@ -1813,7 +1813,7 @@
             const bodyGalleryContainer = document.getElementById('bodyGalleryContainer');
             let existingIframe = document.getElementById('sceneIframe');
 
-            scrollToTop();
+
             
             if (bodyGalleryContainer) {
                 resetLoadingStatus();
@@ -1976,7 +1976,8 @@
 
         function resetPageStyles() {
             //console.log('sweepsweep.');
-
+            scrollToTop();
+            
             let viewerContainers = [];
 
             // Enhanced cleanup function for existing iframe
@@ -2120,6 +2121,10 @@
 
             // Reset message event listener flag
             messageEventListenerAdded = false;
+
+
+
+
         }
 
 
