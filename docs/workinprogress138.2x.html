@@ -1699,14 +1699,14 @@
             }
         };
 
-        const lenisOptions = isIOS 
-            ? { smoothTouch: true }  // Enable smoothTouch only for touch devices
-            : { lerp: 0.042 };       // Use lerp for desktop
-
-        let lenis = null;
+        let lenis; // Declare lenis in an accessible scope
 
         if (!lenisInitialized) {
-            lenisInitialized = true;
+            const lenisOptions = isIOS 
+                ? { smoothTouch: true }  // Enable smoothTouch only for touch devices
+                : { lerp: 0.042 };       // Use lerp for desktop
+
+            // Initialize Lenis with the configured options
             lenis = new Lenis(lenisOptions);
 
             lenis.on('scroll', () => {
@@ -1714,15 +1714,12 @@
                     parallaxAnimationRegistered = true;
                     AnimationManager.registerAnimation(throttleUpdateParallax);
                 }
-                isScrolling = true;
                 updateParallax();
             });
 
             function throttleUpdateParallax() {
-                if (!isPaused && isScrolling) {
-                    if (!scrollAnimationFrame) {
-                        scrollAnimationFrame = requestAnimationFrame(updateParallax);
-                    }
+                if (!isPaused) {
+                    requestAnimationFrame(updateParallax);
                 }
             }
 
@@ -1733,6 +1730,7 @@
                 }
             }
 
+            lenisInitialized = true;
             requestAnimationFrame(runLenis);
         }
 
@@ -1750,6 +1748,7 @@
                 }
             }
         }
+
 
         window.scrollToTop = scrollToTop;
 
@@ -3984,7 +3983,55 @@
 
 
    
-   
+     
+
+
+        function updateParallax() {
+            if (isscaling || wasScaling) {
+                updateParallax2();
+                return;
+            }
+
+            if (isIOS) return;
+
+            const speedFactorBackground = 0.3;
+            const speedFactorSides = -1.2;
+            const speedFactorViewer = -0.3;
+
+            const scrollY = window.scrollY;
+
+            if (scrollY === lastScrollY) return;
+
+            lastScrollY = scrollY;
+
+            const background = document.getElementById('interfaceBackground');
+            const sideLeft = document.getElementById('interfaceSideLeft');
+            const sideRight = document.getElementById('interfaceSideRight');
+            const viewerContainer = document.getElementById('interfaceViewerContainer');
+
+            requestAnimationFrame(() => {
+                if (background) {
+                    const offsetBackground = scrollY * speedFactorBackground;
+                    background.style.transform = `translateY(${offsetBackground}px)`;
+                    background.style.willChange = 'transform';
+                }
+
+                if (sideLeft && sideRight) {
+                    const offsetSides = scrollY * speedFactorSides;
+                    sideLeft.style.transform = `translateY(${offsetSides}px)`;
+                    sideLeft.style.willChange = 'transform';
+                    sideRight.style.transform = `translateY(${offsetSides}px)`;
+                    sideRight.style.willChange = 'transform';
+                }
+
+                if (viewerContainer) {
+                    const offsetViewer = scrollY * speedFactorViewer;
+                    viewerContainer.style.transform = `translateY(${offsetViewer}px)`;
+                    viewerContainer.style.willChange = 'transform';
+                }
+            });
+        }
+
      
      
     
@@ -3997,7 +4044,7 @@
         const transitionDuration = 320; // Duration of the smooth transition in milliseconds
         let wasScaling = false; // Flag to detect transition from scaling to not scaling
 
-        function updateParallax() {
+        function updateParallax2() {
             if (isIOS) return;
 
             if (isscaling) {
