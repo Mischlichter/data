@@ -1703,36 +1703,36 @@
             ? { smoothTouch: true }  // Enable smoothTouch only for touch devices
             : { lerp: 0.042 };       // Use lerp for desktop
 
-        // Initialize Lenis with the configured options
-        const lenis = new Lenis(lenisOptions);
-
-        lenis.on('scroll', () => {
-            if (!parallaxAnimationRegistered) {
-                parallaxAnimationRegistered = true;
-                AnimationManager.registerAnimation(throttleUpdateParallax);
-            }
-            isScrolling = true;
-            updateParallax();
-        });
-
-        function throttleUpdateParallax() {
-            if (!isPaused && isScrolling) {
-                if (!scrollAnimationFrame) {
-                    scrollAnimationFrame = requestAnimationFrame(updateParallax);
-                }
-            }
-        }
-
-
-        function runLenis(timestamp) {
-            if (!isPaused) {
-                lenis.raf(timestamp);
-                requestAnimationFrame(runLenis);
-            }
-        }
+        let lenis = null;
 
         if (!lenisInitialized) {
             lenisInitialized = true;
+            lenis = new Lenis(lenisOptions);
+
+            lenis.on('scroll', () => {
+                if (!parallaxAnimationRegistered) {
+                    parallaxAnimationRegistered = true;
+                    AnimationManager.registerAnimation(throttleUpdateParallax);
+                }
+                isScrolling = true;
+                updateParallax();
+            });
+
+            function throttleUpdateParallax() {
+                if (!isPaused && isScrolling) {
+                    if (!scrollAnimationFrame) {
+                        scrollAnimationFrame = requestAnimationFrame(updateParallax);
+                    }
+                }
+            }
+
+            function runLenis(timestamp) {
+                if (!isPaused) {
+                    lenis.raf(timestamp);
+                    requestAnimationFrame(runLenis);
+                }
+            }
+
             requestAnimationFrame(runLenis);
         }
 
@@ -1811,105 +1811,20 @@
             const iframeContainer = document.getElementById('iframeContainer');
             const mouseOverlay = document.getElementById('mouseOverlay');
             const bodyGalleryContainer = document.getElementById('bodyGalleryContainer');
-            let viewerContainers = [];
-
-            // Enhanced cleanup function for existing iframe
-            function cleanupIframe(iframe) {
-                if (iframe) {
-                    //console.log('Cleaning up existing iframe.');
-
-                    // Lose WebGL context if possible
-                    try {
-                        const gl = iframe.contentWindow?.document.querySelector('canvas')?.getContext('webgl');
-                        if (gl) {
-                            const ext = gl.getExtension('WEBGL_lose_context');
-                            if (ext) {
-                                ext.loseContext();
-                            }
-                        }
-                    } catch (e) {
-                        // Suppress cross-origin errors
-                        if (e instanceof DOMException && e.message.includes('Permission denied to access property')) {
-                            // Silently handle specific cross-origin error
-                        } else {
-                            console.warn('Error losing WebGL context:', e);
-                        }
-                    }
-
-                    // Disconnect the observer if it exists
-                    try {
-                        if (observer) {
-                            observer.disconnect();
-                            observer = null;
-                        }
-                    } catch (e) {
-                        console.warn('Error disconnecting observer:', e);
-                    }
-
-                    // Attempt to safely remove event listeners and properties
-                    try {
-                        iframe.onload = null;
-                        if (iframe.contentWindow) {
-                            // Only try to access these properties if the iframe is same-origin
-                            try {
-                                if (iframe.contentWindow.location.origin === window.location.origin) {
-                                    iframe.contentWindow.onunload = null;
-                                    // Remove event listener if messageHandler is defined
-                                    if (typeof messageHandler !== 'undefined') {
-                                        iframe.contentWindow.removeEventListener('message', messageHandler);
-                                    }
-                                }
-                            } catch (e) {
-                                // Suppress cross-origin errors
-                                if (e instanceof DOMException && e.message.includes('Permission denied to access property')) {
-                                    // Silently handle specific cross-origin error
-                                } else {
-                                    console.warn('Error accessing iframe content properties:', e);
-                                }
-                            }
-                        }
-                    } catch (e) {
-                        console.warn('Error cleaning up iframe:', e);
-                    }
-
-                    // Remove the iframe and set it to null
-                    try {
-                        iframe.src = 'about:blank';
-                        iframe.remove();
-                        iframe = null;
-                        //console.log('Existing iframe cleaned up successfully.');
-                    } catch (e) {
-                        console.warn('Error removing iframe:', e);
-                    }
-                }
-            }
-
-            function cleanupViewerContainers() {
-                viewerContainers.forEach(viewer => {
-                    if (viewer.destroy) {
-                        viewer.destroy();
-                    }
-                });
-                viewerContainers = [];
-            }
-
-            // Remove existing iframe and clear body gallery content
             let existingIframe = document.getElementById('sceneIframe');
-            if (existingIframe) {
-                cleanupIframe(existingIframe);
-            }
+            
             if (bodyGalleryContainer) {
                 resetLoadingStatus();
                 bodyGalleryContainer.innerHTML = ''; // Clear body gallery content
             }
 
-            cleanupViewerContainers(); // Clean up any existing viewer containers
+            
 
             if (sceneKey === 'scene05') {
                 hideFooterInstantly();
                 
 
-                lenis.start();
+                
                 
                 
                 // Logic for scene05 (Gallery)
@@ -1929,7 +1844,7 @@
                 }
                 bodyGalleryContainer.style.display = 'block';
 
-                window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                //window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 
                 loadGallery(); // Load the gallery for scene05
                 unhideBackground();
@@ -2060,14 +1975,73 @@
         function resetPageStyles() {
             //console.log('sweepsweep.');
 
-            
-               
-            
+            let viewerContainers = [];
 
-          
-            if (abortController) {
-                    abortController.abort();
+            // Enhanced cleanup function for existing iframe
+            function cleanupIframe(iframe) {
+                if (!iframe) return;
+
+                // Lose WebGL context if possible
+                try {
+                    const gl = iframe.contentWindow?.document.querySelector('canvas')?.getContext('webgl');
+                    if (gl) {
+                        const ext = gl.getExtension('WEBGL_lose_context');
+                        ext?.loseContext();
+                    }
+                } catch (e) {
+                    if (!(e instanceof DOMException && e.message.includes('Permission denied to access property'))) {
+                        console.warn('Error losing WebGL context:', e);
+                    }
                 }
+
+                // Disconnect the observer if it exists
+                try {
+                    observer?.disconnect();
+                    observer = null;
+                } catch (e) {
+                    console.warn('Error disconnecting observer:', e);
+                }
+
+                // Attempt to safely remove event listeners and properties
+                try {
+                    iframe.onload = null;
+                    if (iframe.contentWindow && iframe.contentWindow.location.origin === window.location.origin) {
+                        iframe.contentWindow.onunload = null;
+                        if (typeof messageHandler !== 'undefined') {
+                            iframe.contentWindow.removeEventListener('message', messageHandler);
+                        }
+                    }
+                } catch (e) {
+                    if (!(e instanceof DOMException && e.message.includes('Permission denied to access property'))) {
+                        console.warn('Error accessing iframe content properties:', e);
+                    }
+                }
+
+                // Remove the iframe and set it to null
+                try {
+                    iframe.src = 'about:blank';
+                    iframe.remove();
+                    iframe = null;
+                } catch (e) {
+                    console.warn('Error removing iframe:', e);
+                }
+            }
+
+            function cleanupViewerContainers() {
+                viewerContainers.forEach(viewer => viewer.destroy?.());
+                viewerContainers = [];
+            }
+
+            // Remove existing iframe and clear body gallery content
+            let existingIframe = document.getElementById('sceneIframe');
+
+            cleanupViewerContainers();
+            cleanupIframe(existingIframe);
+
+            if (abortController) {
+                abortController.abort();
+            }
+
             // Cancel animation frames through AnimationManager
             if (typeof AnimationManager !== 'undefined') {
                 AnimationManager.cancelAnimations();
@@ -2076,48 +2050,36 @@
             const galleryContainer = document.getElementById('gallery-container');
             if (galleryContainer) {
                 // Remove event listeners and clear inner HTML
-                const images = galleryContainer.querySelectorAll('img');
-                images.forEach(img => {
+                galleryContainer.querySelectorAll('img').forEach(img => {
                     img.onload = null;
                     img.onerror = null;
                     if (img.src.startsWith('blob:')) {
-                        URL.revokeObjectURL(img.src); // Revoke the object URL
+                        URL.revokeObjectURL(img.src);
                     }
                 });
-                galleryContainer.innerHTML = ''; // Remove all children
+                galleryContainer.innerHTML = '';
             }
 
+            // Remove all existing containers and dynamic styles
+            const elementsToRemove = document.querySelectorAll(
+                '.flex-container, .flex-icontainer, .scale-wrapper-background, .scale-wrapper-interface, .hidden-char-XL, .ascii-line-XL, .flex-container.animation-container, span:not(.keep), img:not(.keep)'
+            );
+            elementsToRemove.forEach(el => el.remove());
 
-            // Clear dynamically created spans for text animations, excluding keep spans
-            document.querySelectorAll('span:not(.keep)').forEach(span => span.remove());
-
-            // Remove other dynamically created elements
-            document.querySelectorAll('.hidden-char-XL').forEach(span => span.remove());
-            document.querySelectorAll('.ascii-line-XL').forEach(div => div.remove());
-            document.querySelectorAll('.flex-container.animation-container').forEach(div => div.remove());
-            document.querySelectorAll('.flex-icontainer').forEach(div => div.remove());
-
-            document.querySelectorAll('.scale-wrapper-background, .scale-wrapper-interface').forEach(wrapper => {
-                wrapper.parentNode.removeChild(wrapper);
-            });
-
-
-
-            // Remove images not marked with 'keep' class
-            document.querySelectorAll('img:not(.keep)').forEach(img => img.remove());
+            // Clear dynamic styles
+            dynamicStyles.forEach(style => style.remove());
+            dynamicStyles.length = 0;
 
             // Clear GSAP global timeline
             if (typeof gsap !== 'undefined') {
                 gsap.globalTimeline.clear();
             }
 
-            // Clear intervals and timeouts, excluding the GIF timeout
-            let id = window.setTimeout(function() {}, 0);
+            // Clear intervals and timeouts
+            let id = window.setTimeout(() => {}, 0);
             while (id--) {
-                if (id !== gifTimeoutId) {
-                    window.clearTimeout(id);
-                    window.clearInterval(id);
-                }
+                window.clearTimeout(id);
+                window.clearInterval(id);
             }
 
             // Three.js cleanup
@@ -2128,21 +2090,21 @@
                 renderer.domElement = null;
                 renderer = null;
             }
+
             if (typeof scene !== 'undefined') {
                 while (scene.children.length > 0) {
                     const child = scene.children[0];
                     scene.remove(child);
-                    if (child.geometry) child.geometry.dispose();
-                    if (child.material) {
-                        if (Array.isArray(child.material)) {
-                            child.material.forEach(material => material.dispose());
-                        } else {
-                            child.material.dispose();
-                        }
+                    child.geometry?.dispose();
+                    if (Array.isArray(child.material)) {
+                        child.material.forEach(material => material.dispose());
+                    } else {
+                        child.material?.dispose();
                     }
                 }
-                scene = null; // Set scene to null to ensure it's garbage collected
+                scene = null;
             }
+
             if (typeof camera !== 'undefined') {
                 camera = null;
             }
@@ -2151,18 +2113,12 @@
             observedElements = [];
             observedElementsData = [];
 
-         
             // Reset tiles state
             tiles = { a: false, b: false, viewerReady: false, iframeReady: false, menuReady: true };
 
             // Reset message event listener flag
             messageEventListenerAdded = false;
-
-
         }
-
-
-
 
 
 
@@ -2683,6 +2639,7 @@
                         currentlyActiveMenuItemId = itemId;
                         hideDirectIframe();
                         await fadeOutElements();
+                        
                         await resetPageStyles();
 
                         currentSceneIndex = (itemId === 'menuLogo') ? 0 : index;
@@ -3264,14 +3221,8 @@
 
             if (!scene) return;
 
-            // Remove all existing containers and dynamic styles
-            const existingContainers = document.querySelectorAll('.flex-container, .flex-icontainer');
-            existingContainers.forEach(container => container.remove());
             
-            // Clear dynamic styles
-            dynamicStyles.forEach(style => style.remove());
-            dynamicStyles.length = 0; // Clear the array
-            handleScroll();
+          
             loadInterface(index);
 
             // Merge and sort text and image containers
@@ -3506,18 +3457,7 @@
             }
         }
 
-        function combinedScrollHandler() {
-            preventScrollBeyondFooter();
-
-            debounce(() => {
-                if (currentSceneIndex === 4) {
-                    saveScrollPosition();
-                }
-            }, 200)();
-
-            handleScroll();
-        }
-
+   
         function addScrollListener() {
             if (!isScrollListenerAdded) {
                 window.addEventListener('scroll', combinedScrollHandler);
