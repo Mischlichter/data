@@ -291,7 +291,7 @@ const galleryHTML = `
 
 
         function initializeLoadingScreen() {
-            window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+            scrollToTop();
             blockInteractions();
             disableScroll();
                 
@@ -467,7 +467,7 @@ const galleryHTML = `
                         centerContainer.remove();
                         enableScroll(); // Re-enable scrolling if it was disabled
                         unblockInteractions();
-                        
+
                         
                     }, 1000); // Adjust timing as needed based on the duration of the fade-out animation
                 }
