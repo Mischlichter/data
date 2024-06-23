@@ -1847,15 +1847,21 @@
                 bodyGalleryContainer.style.display = 'block';
 
                 //window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                // Start Lenis immediately
                 lenis.start();
 
+                // Wait for 5 seconds (5000 milliseconds) before calling scrollToTop and unhideBackground
                 setTimeout(() => {
                   scrollToTop();
-                   // Load the gallery for scene05
                   unhideBackground(); // Unhide the background
-                }, 1000);
 
-                loadGallery();
+                  // Wait for another 5 seconds (5000 milliseconds) before calling loadGallery
+                  setTimeout(() => {
+                    loadGallery(); // Load the gallery for scene05
+                  }, 5000);
+
+                }, 5000);
+
 
             } else if (sceneKey === 'scene06') {
                 // Logic for scene06 (Clipz)
