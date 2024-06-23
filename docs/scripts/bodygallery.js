@@ -291,8 +291,11 @@ const galleryHTML = `
 
 
         function initializeLoadingScreen() {
+
             
             
+
+            blockInteractions();
             disableScroll();
                 
             const asciiArt = [
@@ -367,7 +370,7 @@ const galleryHTML = `
 
             function generateRandomCharacter() {
                 const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()[]{}|';
-            
+                
                 return characters.charAt(Math.floor(Math.random() * characters.length));
             }
 
@@ -466,8 +469,7 @@ const galleryHTML = `
                     setTimeout(() => {
                         centerContainer.remove();
                         enableScroll(); // Re-enable scrolling if it was disabled
-
-                   
+                        unblockInteractions();
 
                         
                     }, 1000); // Adjust timing as needed based on the duration of the fade-out animation
@@ -1582,7 +1584,8 @@ const galleryHTML = `
 
         function initializePage() {
             document.getElementById('search-bar').value = ''; // Reset the search bar value
-            window.scrollTo(0, 0); // Scroll to the top of the page
+            lenis.scrollTo(0, { immediate: true });
+
             createBackgroundSurface();
             initializeLoadingScreen();
         }
