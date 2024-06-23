@@ -1580,9 +1580,11 @@ const galleryHTML = `
 
 
         function initializePage() {
+            lenis.start();
             document.getElementById('search-bar').value = ''; // Reset the search bar value
+            console.log('scrollttop');
             window.scrollTo({
-                console.log('scrollttop');
+
                 top: 0,
                 behavior: 'instant'
             }); // Scroll to the top of the page
