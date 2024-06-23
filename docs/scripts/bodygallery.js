@@ -458,22 +458,16 @@ const galleryHTML = `
             function removeCenterContainer() {
                 const centerContainer = document.querySelector('.center-container');
                 if (centerContainer) {
-
                     // Start fading out the center container smoothly
                     centerContainer.style.transition = 'opacity 1s ease-out';
                     centerContainer.style.opacity = '0';
-
+                    
                     // Delay removing the center container until the fade-out animation completes
                     setTimeout(() => {
                         centerContainer.remove();
                         enableScroll(); // Re-enable scrolling if it was disabled
                         unblockInteractions();
-                        
-                        window.scrollTo({
-                            top: 0,
-                            left: 0,
-                            behavior: 'smooth'
-                        });
+                        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
                         
                     }, 1000); // Adjust timing as needed based on the duration of the fade-out animation
                 }
