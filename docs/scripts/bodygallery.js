@@ -291,9 +291,9 @@ const galleryHTML = `
 
 
         function initializeLoadingScreen() {
-
-            blockInteractions();
-
+            
+            
+            disableScroll();
                 
             const asciiArt = [
                 "                 /^ ^\\                ", 
@@ -367,7 +367,7 @@ const galleryHTML = `
 
             function generateRandomCharacter() {
                 const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()[]{}|';
-                disableScroll();
+            
                 return characters.charAt(Math.floor(Math.random() * characters.length));
             }
 
@@ -466,7 +466,8 @@ const galleryHTML = `
                     setTimeout(() => {
                         centerContainer.remove();
                         enableScroll(); // Re-enable scrolling if it was disabled
-                        unblockInteractions();
+
+                   
 
                         
                     }, 1000); // Adjust timing as needed based on the duration of the fade-out animation
