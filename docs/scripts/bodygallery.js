@@ -292,8 +292,6 @@ const galleryHTML = `
 
         function initializeLoadingScreen() {
 
-
-
             blockInteractions();
 
                 
@@ -319,10 +317,10 @@ const galleryHTML = `
             // Add more styles or content to the background as needed
 
             document.body.insertBefore(background, document.body.firstChild);
-            
+            scrollToTop();
             setTimeout(function() {
                 fetchImageFilenames();
-            }, 10);
+            }, 1000);
 
             const container = document.getElementById('ascii-art-container');
             const numberOfCharacters = asciiArt[0].length;
@@ -460,7 +458,7 @@ const galleryHTML = `
             function removeCenterContainer() {
                 const centerContainer = document.querySelector('.center-container');
                 if (centerContainer) {
-                    scrollToTop();
+
                     // Start fading out the center container smoothly
                     centerContainer.style.transition = 'opacity 1s ease-out';
                     centerContainer.style.opacity = '0';
@@ -488,6 +486,8 @@ const galleryHTML = `
         let abortController = new AbortController();
 
         function fetchImageFilenames() {
+
+
             // Create a new AbortController instance for each fetch
             abortController = new AbortController();
             const signal = abortController.signal;
@@ -1585,18 +1585,9 @@ const galleryHTML = `
         function initializePage() {
             document.getElementById('search-bar').value = ''; // Reset the search bar value
             window.scrollTo(0, 0); // Scroll to the top of the page
-            scrollToTop();
             createBackgroundSurface();
-
-            // Scroll to the top of the page
-            
-
-            // Introduce a small delay before initializing the loading screen
-            setTimeout(() => {
-                initializeLoadingScreen();
-            }, 500); // Adjust the delay as needed (100 milliseconds in this case)
+            initializeLoadingScreen();
         }
-
 
         function showSlideshow() {
 
