@@ -1582,6 +1582,7 @@ const galleryHTML = `
         function initializePage() {
             document.getElementById('search-bar').value = ''; // Reset the search bar value
             window.scrollTo({
+                console.log('scrollttop');
                 top: 0,
                 behavior: 'instant'
             }); // Scroll to the top of the page
