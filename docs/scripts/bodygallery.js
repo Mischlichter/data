@@ -89,7 +89,7 @@ const galleryHTML = `
         
         function loadGallery() {
             loadingPercentage = 0;
-            scrollToTop();
+            
 
             const bodyGalleryContainer = document.getElementById('bodyGalleryContainer');
 
@@ -467,7 +467,7 @@ const galleryHTML = `
                         centerContainer.remove();
                         enableScroll(); // Re-enable scrolling if it was disabled
                         unblockInteractions();
-
+                        scrollToTop();
                         
                     }, 1000); // Adjust timing as needed based on the duration of the fade-out animation
                 }
