@@ -1812,6 +1812,8 @@
             const mouseOverlay = document.getElementById('mouseOverlay');
             const bodyGalleryContainer = document.getElementById('bodyGalleryContainer');
             let existingIframe = document.getElementById('sceneIframe');
+
+            scrollToTop();
             
             if (bodyGalleryContainer) {
                 resetLoadingStatus();
@@ -1889,7 +1891,7 @@
 
                 iframeContainer.appendChild(newIframe);
                 hideBackground();
-                scrollToTop();
+            
                 lenis.start();
 
                 // Ensure the observer is set up after adding the iframe to the DOM
@@ -1917,7 +1919,7 @@
                 unhideDirectIframe();
                 stopGif();
                 lenis.start();
-                scrollToTop();
+             
                 setTimeout(() => {
                     lenis.stop();
                 }, 111); // 1000 milliseconds = 1 second
