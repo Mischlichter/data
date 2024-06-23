@@ -1851,11 +1851,9 @@
 
                 setTimeout(() => {
                   scrollToTop();
-                   // Unhide the background
+                  loadGallery(); // Load the gallery for scene05
+                  unhideBackground(); // Unhide the background
                 }, 1000);
-
-                loadGallery(); // Load the gallery for scene05
-                unhideBackground();
 
             } else if (sceneKey === 'scene06') {
                 // Logic for scene06 (Clipz)
