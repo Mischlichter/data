@@ -86,7 +86,7 @@ const galleryHTML = `
 
 
   
-  
+
         
         function loadGallery() {
             loadingPercentage = 0;
@@ -1587,7 +1587,7 @@ const galleryHTML = `
             window.scrollTo({
 
                 top: 0,
-                behavior: 'instant'
+                behavior: 'smooth'
             }); // Scroll to the top of the page
             createBackgroundSurface();
             initializeLoadingScreen();
