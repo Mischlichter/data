@@ -89,7 +89,7 @@ const galleryHTML = `
         
         function loadGallery() {
             loadingPercentage = 0;
-            
+            scrollToTop();
 
             const bodyGalleryContainer = document.getElementById('bodyGalleryContainer');
 
