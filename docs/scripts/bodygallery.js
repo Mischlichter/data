@@ -291,9 +291,9 @@ const galleryHTML = `
 
 
         function initializeLoadingScreen() {
-
+            window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
             blockInteractions();
-
+            disableScroll();
                 
             const asciiArt = [
                 "                 /^ ^\\                ", 
@@ -367,7 +367,7 @@ const galleryHTML = `
 
             function generateRandomCharacter() {
                 const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()[]{}|';
-                disableScroll();
+                
                 return characters.charAt(Math.floor(Math.random() * characters.length));
             }
 
@@ -461,13 +461,13 @@ const galleryHTML = `
                     // Start fading out the center container smoothly
                     centerContainer.style.transition = 'opacity 1s ease-out';
                     centerContainer.style.opacity = '0';
-                    
+
                     // Delay removing the center container until the fade-out animation completes
                     setTimeout(() => {
                         centerContainer.remove();
                         enableScroll(); // Re-enable scrolling if it was disabled
                         unblockInteractions();
-                        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+                        
                         
                     }, 1000); // Adjust timing as needed based on the duration of the fade-out animation
                 }
