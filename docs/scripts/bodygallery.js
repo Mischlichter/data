@@ -1581,17 +1581,22 @@ const galleryHTML = `
 
 
         function initializePage() {
-            lenis.start();
             document.getElementById('search-bar').value = ''; // Reset the search bar value
-            console.log('scrollttop');
-            window.scrollTo({
 
-                top: 0,
-                behavior: 'smooth'
-            }); // Scroll to the top of the page
             createBackgroundSurface();
             initializeLoadingScreen();
+
+            console.log('scrollttop');
+
+            // Introduce a delay before scrolling to the top
+            setTimeout(() => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                }); // Scroll to the top of the page
+            }, 500); // Adjust the delay time as needed (500 milliseconds in this case)
         }
+
 
         function showSlideshow() {
 
