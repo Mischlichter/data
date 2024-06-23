@@ -1848,9 +1848,11 @@
 
                 //window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
                 lenis.start();
-                loadGallery(); // Load the gallery for scene05
-                
-                unhideBackground();
+
+                setTimeout(() => {
+                  loadGallery(); // Load the gallery for scene05
+                  unhideBackground(); // Unhide the background
+                }, 1000);
 
             } else if (sceneKey === 'scene06') {
                 // Logic for scene06 (Clipz)
