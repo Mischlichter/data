@@ -1820,7 +1820,7 @@
             const mouseOverlay = document.getElementById('mouseOverlay');
             const bodyGalleryContainer = document.getElementById('bodyGalleryContainer');
             let viewerContainers = [];
-
+            hideFooterInstantly();
             // Enhanced cleanup function for existing iframe
             function cleanupIframe(iframe) {
                 if (iframe) {
@@ -1914,7 +1914,7 @@
             cleanupViewerContainers(); // Clean up any existing viewer containers
 
             if (sceneKey === 'scene05') {
-                hideFooterInstantly();
+                
                 lenis.start();
                 if (typeof lenis !== 'undefined' && lenis !== null) {
                     lenis.scrollTo(0, { duration: 0.1 }); // Use Lenis to scroll to the top
