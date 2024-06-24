@@ -1951,39 +1951,45 @@
             }
 
             function setupIframe(src) {
-                //console.log('Setting up iframe.');
-                iframeContainer.style.display = 'block';
-                if (mouseOverlay) {
-                    mouseOverlay.style.display = 'block';
-                    mouseOverlay.style.zIndex = '1';
-                }
-                bodyGalleryContainer.style.display = 'none';
+                // Loop to check if cleanup is complete
+                const checkCleanupInterval = setInterval(() => {
+                    if (!cleanup) {
+                        clearInterval(checkCleanupInterval);
 
-                let newIframe = document.createElement('iframe');
-                newIframe.id = 'sceneIframe';
-                newIframe.style.width = '100%';
-                newIframe.style.height = '100vh';
-                newIframe.style.border = 'none';
-                newIframe.src = src;
-                newIframe.setAttribute('aria-label', 'Scene Viewer');
-
-                if (!messageEventListenerAdded) {
-                    window.addEventListener('message', (event) => {
-                        if (event.data === 'iframeLoaded') {
-                            tiles.iframeReady = true;
+                        // Proceed with setting up the iframe once cleanup is complete
+                        iframeContainer.style.display = 'block';
+                        if (mouseOverlay) {
+                            mouseOverlay.style.display = 'block';
+                            mouseOverlay.style.zIndex = '1';
                         }
-                    });
-                    messageEventListenerAdded = true; // Set the flag to true after adding the listener
-                    
-                }
+                        bodyGalleryContainer.style.display = 'none';
 
-                iframeContainer.appendChild(newIframe);
-                hideBackground();
-                scrollToTop();
-                lenis.start();
+                        let newIframe = document.createElement('iframe');
+                        newIframe.id = 'sceneIframe';
+                        newIframe.style.width = '100%';
+                        newIframe.style.height = '100vh';
+                        newIframe.style.border = 'none';
+                        newIframe.src = src;
+                        newIframe.setAttribute('aria-label', 'Scene Viewer');
 
-                // Ensure the observer is set up after adding the iframe to the DOM
-                iframeLoaded(newIframe);
+                        if (!messageEventListenerAdded) {
+                            window.addEventListener('message', (event) => {
+                                if (event.data === 'iframeLoaded') {
+                                    tiles.iframeReady = true;
+                                }
+                            });
+                            messageEventListenerAdded = true; // Set the flag to true after adding the listener
+                        }
+
+                        iframeContainer.appendChild(newIframe);
+                        hideBackground();
+                        scrollToTop();
+                        lenis.start();
+
+                        // Ensure the observer is set up after adding the iframe to the DOM
+                        iframeLoaded(newIframe);
+                    }
+                }, 100); // Check every 100 milliseconds
             }
 
             function setupDirectIframe(src) {
@@ -2061,12 +2067,13 @@
         }
 
 
+        let cleanup = false;
 
         function resetPageStyles() {
             //console.log('sweepsweep.');
 
             
-            return;
+       
             
 
           
@@ -2164,6 +2171,8 @@
             messageEventListenerAdded = false;
             isMainObserverInstalled = false;
             isFlexObserverInstalled = false;
+
+            cleanup = false;
 
         }
 
@@ -2689,6 +2698,8 @@
                         currentlyActiveMenuItemId = itemId;
                         hideDirectIframe();
                         await fadeOutElements();
+
+                        cleanup = true;
                         await resetPageStyles();
 
                         currentSceneIndex = (itemId === 'menuLogo') ? 0 : index;
