@@ -4631,7 +4631,7 @@
 
             var viewportWidth = window.innerWidth;
             var viewportHeight = window.innerHeight;
-            var isPortrait = viewportWidth - 1 < viewportHeight;
+            var isPortrait = viewportWidth < viewportHeight;
             var smoothAspectRatio = getSmoothAspectRatio(viewportWidth, viewportHeight);
             var fixedAspectRatio = 1536 / 1024;
 
@@ -4678,7 +4678,7 @@
 
 
         let lastUpdate3 = 0;
-        let targetFPS3 = 4; // Adjust this value to change the update rate for adjustContainerSizesBasedOnVirtualCanvas
+        let targetFPS3 = 40; // Adjust this value to change the update rate for adjustContainerSizesBasedOnVirtualCanvas
         let interval3 = 1000 / targetFPS3;
         let initialCallCount = 0; // Counter to track the number of initial calls
         let initialCallLimit = 2; // Number of initial calls to allow without throttling
@@ -4733,7 +4733,7 @@
             const startWidthPercent = 48;
             const endWidthPercent = 39;
             const transitionAspectRatio = 4 / 3;
-            const currentAspectRatio = (viewportWidth - 1) / viewportHeight;
+            const currentAspectRatio = (viewportWidth) / viewportHeight;
 
             if (currentAspectRatio < 1) {
                 return endWidthPercent;
