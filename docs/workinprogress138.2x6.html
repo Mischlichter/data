@@ -2126,14 +2126,21 @@
             }
 
             // Three.js cleanup
+            // Soft cleanup for Three.js
+
+            // Clear renderer without disposing it completely
             if (typeof renderer !== 'undefined') {
-                renderer.dispose();
-                renderer.forceContextLoss();
-                renderer.context = null;
-                renderer.domElement = null;
-                renderer = null;
+                console.log('Soft clearing renderer.');
+                renderer.clear();
+                // Optionally clear the color, depth, and stencil buffers
+                renderer.clearColor();
+                renderer.clearDepth();
+                renderer.clearStencil();
             }
+
+            // Soft clear the scene by removing children but not setting it to null
             if (typeof scene !== 'undefined') {
+                console.log('Soft clearing scene.');
                 while (scene.children.length > 0) {
                     const child = scene.children[0];
                     scene.remove(child);
@@ -2146,11 +2153,16 @@
                         }
                     }
                 }
-                scene = null; // Set scene to null to ensure it's garbage collected
+                // Don't set scene to null
             }
+
+            // Clear camera references if necessary, but don't set to null
             if (typeof camera !== 'undefined') {
-                camera = null;
+                console.log('Clearing camera references.');
+                // Perform any necessary camera cleanup here
+                // Don't set camera to null if it's still needed
             }
+
 
             // Clear observed elements and data
             observedElements = [];
