@@ -1831,10 +1831,12 @@
                     try {
                         const gl = iframe.contentWindow?.document.querySelector('canvas')?.getContext('webgl');
                         if (gl) {
-                            const ext = gl.getExtension('WEBGL_lose_context');
-                            if (ext) {
-                                ext.loseContext();
-                            }
+                            // Explicitly release WebGL resources
+                            gl.getExtension('WEBGL_lose_context')?.loseContext();
+                            gl.deleteShader = gl.deleteShader || function() {};
+                            gl.deleteProgram = gl.deleteProgram || function() {};
+                            gl.deleteTexture = gl.deleteTexture || function() {};
+                            gl.deleteBuffer = gl.deleteBuffer || function() {};
                         }
                     } catch (e) {
                         // Suppress cross-origin errors
@@ -1881,12 +1883,14 @@
                         console.warn('Error cleaning up iframe:', e);
                     }
 
-                    // Remove the iframe and set it to null
+                    // Remove the iframe and set it to null after a slight delay
                     try {
                         iframe.src = 'about:blank';
-                        iframe.remove();
-                        iframe = null;
-                        //console.log('Existing iframe cleaned up successfully.');
+                        setTimeout(() => {
+                            iframe.remove();
+                            iframe = null;
+                            //console.log('Existing iframe cleaned up successfully.');
+                        }, 100); // Slight delay to ensure cleanup operations are complete
                     } catch (e) {
                         console.warn('Error removing iframe:', e);
                     }
@@ -1968,6 +1972,12 @@
                 newIframe.src = src;
                 newIframe.setAttribute('aria-label', 'Scene Viewer');
 
+                // Added this block to ensure the iframe is fully loaded before proceeding
+                newIframe.onload = function() {
+                    // Ensure the iframe's content is fully loaded before setting up WebGL
+                    iframeLoaded(newIframe);
+                };
+
                 if (!messageEventListenerAdded) {
                     window.addEventListener('message', (event) => {
                         if (event.data === 'iframeLoaded') {
@@ -1975,17 +1985,16 @@
                         }
                     });
                     messageEventListenerAdded = true; // Set the flag to true after adding the listener
-                    
                 }
 
                 iframeContainer.appendChild(newIframe);
                 hideBackground();
                 scrollToTop();
                 lenis.start();
-
-                // Ensure the observer is set up after adding the iframe to the DOM
-                iframeLoaded(newIframe);
+                
+                // Removed the immediate call to iframeLoaded(newIframe) here
             }
+
 
             function setupDirectIframe(src) {
                 //console.log('Setting up direct iframe.');
