@@ -2618,18 +2618,18 @@
                 menuBar.appendChild(logoContainerSmall);
 
                 // Small animated GIF
-                if (!isIOS) {
-                    const gifSmall = document.createElement('img');
-                    gifSmall.style.width = '100%';
-                    gifSmall.style.height = '100%';
-                    gifSmall.style.position = 'absolute';
-                    gifSmall.style.top = '0';
-                    gifSmall.style.left = '0';
-                    gifSmall.style.display = 'none'; // Initially hidden
-                    gifSmall.id = 'menuGifSmall';
-                    gifSmall.classList.add('keep'); // Add the keep class
-                    logoContainerSmall.appendChild(gifSmall);
-                }
+              
+                const gifSmall = document.createElement('img');
+                gifSmall.style.width = '100%';
+                gifSmall.style.height = '100%';
+                gifSmall.style.position = 'absolute';
+                gifSmall.style.top = '0';
+                gifSmall.style.left = '0';
+                gifSmall.style.display = 'none'; // Initially hidden
+                gifSmall.id = 'menuGifSmall';
+                gifSmall.classList.add('keep'); // Add the keep class
+                logoContainerSmall.appendChild(gifSmall);
+            
 
                 // Small logo
                 const logoImgSmall = document.createElement('img');
@@ -2651,18 +2651,18 @@
                 menuBar.appendChild(logoContainerLarge);
 
                 // Large animated GIF
-                if (!isIOS) {
-                    const gifLarge = document.createElement('img');
-                    gifLarge.style.width = '100%';
-                    gifLarge.style.height = '100%';
-                    gifLarge.style.position = 'absolute';
-                    gifLarge.style.top = '0';
-                    gifLarge.style.left = '0';
-                    gifLarge.style.display = 'none'; // Initially hidden
-                    gifLarge.id = 'menuGifLarge';
-                    gifLarge.classList.add('keep'); // Add the keep class
-                    logoContainerLarge.appendChild(gifLarge);
-                }
+           
+                const gifLarge = document.createElement('img');
+                gifLarge.style.width = '100%';
+                gifLarge.style.height = '100%';
+                gifLarge.style.position = 'absolute';
+                gifLarge.style.top = '0';
+                gifLarge.style.left = '0';
+                gifLarge.style.display = 'none'; // Initially hidden
+                gifLarge.id = 'menuGifLarge';
+                gifLarge.classList.add('keep'); // Add the keep class
+                logoContainerLarge.appendChild(gifLarge);
+            
 
                 // Large logo
                 const logoImgLarge = document.createElement('img');
@@ -2701,6 +2701,7 @@
                         currentlyActiveMenuItemId = itemId;
                         hideDirectIframe();
                         await fadeOutElements();
+                        
                         await resetPageStyles();
 
                         currentSceneIndex = (itemId === 'menuLogo') ? 0 : index;
@@ -2782,25 +2783,23 @@
 
             const logoPromises = [
                 getCachedImage(smallLogoUrl),
-                getCachedImage(largeLogoUrl),
-                getCachedImage(smallGifUrl),
-                getCachedImage(largeGifUrl)
+                getCachedImage(largeLogoUrl)
             ];
 
-            // Await all promises to load images and gifs
-            const [smallLogo, largeLogo, smallGif, largeGif] = await Promise.all(logoPromises);
+            
+            logoPromises.push(getCachedImage(smallGifUrl), getCachedImage(largeGifUrl));
+        
 
-    
+            const [smallLogo, largeLogo, smallGif, largeGif] = await Promise.all(logoPromises);
 
             const logoImgSmall = document.getElementById('menuLogoSmall');
             const logoImgLarge = document.getElementById('menuLogoLarge');
-        
+           
             const gifSmall = document.getElementById('menuGifSmall');
             const gifLarge = document.getElementById('menuGifLarge');
-            
             gifSmall.src = smallGif;
             gifLarge.src = largeGif;
-        
+       
 
             logoImgSmall.src = smallLogo;
             logoImgLarge.src = largeLogo;
@@ -2837,7 +2836,7 @@
                 newLogoName = 'large';
             }
 
-            if (callCount > 0 && currentLogoName !== newLogoName) {
+            if (callCount === 0 || currentLogoName !== newLogoName) {
                 currentLogoName = newLogoName;
                 switchLogoAndGif(currentLogoName);
             }
@@ -2855,7 +2854,6 @@
             updateCssBasedOnOrientation(width, height, isPortrait);
             callCount++;
         }
-
 
         function switchLogoAndGif(newLogoName) {
             const logoImgSmall = document.getElementById('menuLogoSmall');
@@ -2917,7 +2915,7 @@
         const gifDuration = framesPerLoop / frameRate; // Duration of one loop in seconds
 
         function startGif() {
-            if (isIOS) return; // Exit if isIOS is true
+          
 
             const logoImgSmall = document.getElementById('menuLogoSmall');
             const logoImgLarge = document.getElementById('menuLogoLarge');
@@ -2959,7 +2957,7 @@
         }
 
         function stopGif() {
-            if (isIOS) return; // Exit if isIOS is true
+          
 
             const logoImgSmall = document.getElementById('menuLogoSmall');
             const logoImgLarge = document.getElementById('menuLogoLarge');
@@ -3010,6 +3008,7 @@
                 console.error('Logo or GIF element not found');
             }
         }
+
 
 
 
