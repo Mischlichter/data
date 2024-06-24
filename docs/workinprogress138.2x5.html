@@ -790,7 +790,7 @@
     <script src="./scripts/index-min.js"></script>
 
 
-    <script src="scripts/bodygallery.js"></script>
+    <script src="./scripts/bodygallery.js"></script>
     
     <script>
         document.addEventListener('DOMContentLoaded', async function() {
@@ -810,6 +810,8 @@
 
 
             }
+
+
 
             const asciiArt = [
                 "                 /^ ^\\                ", 
@@ -2768,23 +2770,25 @@
 
             const logoPromises = [
                 getCachedImage(smallLogoUrl),
-                getCachedImage(largeLogoUrl)
+                getCachedImage(largeLogoUrl),
+                getCachedImage(smallGifUrl),
+                getCachedImage(largeGifUrl)
             ];
 
-            if (!isIOS) {
-                logoPromises.push(getCachedImage(smallGifUrl), getCachedImage(largeGifUrl));
-            }
-
+            // Await all promises to load images and gifs
             const [smallLogo, largeLogo, smallGif, largeGif] = await Promise.all(logoPromises);
+
+    
 
             const logoImgSmall = document.getElementById('menuLogoSmall');
             const logoImgLarge = document.getElementById('menuLogoLarge');
-            if (!isIOS) {
-                const gifSmall = document.getElementById('menuGifSmall');
-                const gifLarge = document.getElementById('menuGifLarge');
-                gifSmall.src = smallGif;
-                gifLarge.src = largeGif;
-            }
+        
+            const gifSmall = document.getElementById('menuGifSmall');
+            const gifLarge = document.getElementById('menuGifLarge');
+            
+            gifSmall.src = smallGif;
+            gifLarge.src = largeGif;
+        
 
             logoImgSmall.src = smallLogo;
             logoImgLarge.src = largeLogo;
