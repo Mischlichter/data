@@ -1821,6 +1821,7 @@
             const bodyGalleryContainer = document.getElementById('bodyGalleryContainer');
             let viewerContainers = [];
 
+            cleanupViewerContainers();
             // Enhanced cleanup function for existing iframe
             function cleanupIframe(iframe) {
                 if (iframe) {
@@ -1911,7 +1912,7 @@
                 bodyGalleryContainer.innerHTML = ''; // Clear body gallery content
             }
 
-            cleanupViewerContainers(); // Clean up any existing viewer containers
+             
 
             if (sceneKey === 'scene05') {
                 hideFooterInstantly();
