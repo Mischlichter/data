@@ -2065,8 +2065,26 @@
         function resetPageStyles() {
             //console.log('sweepsweep.');
 
+            if (isMainObserverInstalled) {
+                // Unobserve all observed elements for the main observer
+                observedElements.forEach(element => {
+                    element.dataset.observed = ''; // Reset observed flag
+                    element.dataset.animationStarted = ''; // Reset animation started flag
+                });
+                observedElements = [];
+                isMainObserverInstalled = false;
+            }
+
+            if (isFlexObserverInstalled) {
+                // Unobserve all observed elements for the flex observer
+                observedFlexContainers.forEach(element => {
+                    element.dataset.observed = ''; // Reset observed flag
+                    element.style.opacity = '0.01'; // Reset opacity to initial state
+                });
+                observedFlexContainers = [];
+                isFlexObserverInstalled = false;
+            }    
             
-       
             
 
           
@@ -3485,104 +3503,9 @@
 
         
 
-        let maxScrollY;
-        let isThrottling = false;
-        let throttleTimeout;
-
-        // Calculate maxScrollY once
-        function setupMaxScrollY() {
-            const footerContainer = document.getElementById('customStyledFooter');
-            if (!footerContainer) return;
-
-            maxScrollY = document.body.offsetHeight - window.innerHeight - footerContainer.offsetHeight + 111;
-        }
-
-        function preventScrollBeyondFooter() {
-            if (typeof maxScrollY === 'undefined') return;
-
-            setupMaxScrollY();
-
-            if (window.scrollY > maxScrollY) {
-                if (!isIOS) {
-                    lenis.stop();
-                }
-
-                window.scrollTo({
-                    top: maxScrollY,
-                    behavior: 'smooth'
-                });
-
-                if (!isIOS) {
-                    setTimeout(() => {
-                        lenis.start();
-                    }, 500);
-                }
-            }
-        }
-
-        function throttledPreventScroll() {
-            if (isThrottling) return;
-            isThrottling = true;
-
-            preventScrollBeyondFooter();
-
-            throttleTimeout = setTimeout(() => {
-                isThrottling = false;
-            }, 1000); // Adjust this delay as needed
-        }
-
-        function handleScroll() {
-            isScrolling = true; // Set isScrolling to true at the beginning
-            const scrollY = window.scrollY;
-            const threshold = 200; // Adjust this threshold as needed
-
-            // Throttle the preventScrollBeyondFooter only if not close to the footer
-            if (scrollY < maxScrollY - threshold) {
-                throttledPreventScroll();
-            } else {
-                preventScrollBeyondFooter();
-            }
-
-            // Debounce the saveScrollPosition function only if needed
-            debounce(() => {
-                if (currentSceneIndex === 4) {
-                    saveScrollPosition();
-                }
-            }, 500)();
-
-            // If scrollToTopButton is not defined, exit the function
-            if (!scrollToTopButton) return;
-
-            // Hide button during scrolling
-            scrollToTopButton.style.opacity = 0;
-
-            // Clear the previous timeout
-            clearTimeout(scrollTimeout);
-
-            // Set a timeout to check if scrolling has stopped
-            scrollTimeout = setTimeout(() => {
-                isScrolling = false; // Set isScrolling to false after 500ms
-                // Check the scroll position to determine the display of the button
-                if (window.scrollY > 1111) {
-                    scrollToTopButton.style.display = 'block';
-                    requestAnimationFrame(() => {
-                        scrollToTopButton.style.opacity = 1;
-                    });
-                } else {
-                    scrollToTopButton.style.display = 'none';
-                }
-            }, 500); // Adjusted debounce duration for quicker response
-        }
 
 
-        let isScrollListenerAdded = false;
-
-        function addScrollListener() {
-            if (!isScrollListenerAdded) {
-                window.addEventListener('scroll', handleScroll);
-                isScrollListenerAdded = true;
-            }
-        }
+        
 
  
 
@@ -4755,7 +4678,7 @@
 
 
         let lastUpdate3 = 0;
-        let targetFPS3 = 25; // Adjust this value to change the update rate for adjustContainerSizesBasedOnVirtualCanvas
+        let targetFPS3 = 4; // Adjust this value to change the update rate for adjustContainerSizesBasedOnVirtualCanvas
         let interval3 = 1000 / targetFPS3;
         let initialCallCount = 0; // Counter to track the number of initial calls
         let initialCallLimit = 2; // Number of initial calls to allow without throttling
@@ -4917,16 +4840,17 @@
             }
         }
  
-        
-        let isMainObserverInstalled = false;
-        let isFlexObserverInstalled = false;
-
+ 
         let observedElements = [];
         let observedElementsData = [];
         let containerIds = []; // Assume you will populate this with relevant IDs
 
+        let isMainObserverInstalled = false;
+        let isFlexObserverInstalled = false;
+
         function observeElementsForAnimations() {
             if (isMainObserverInstalled) return;
+
             const observerOptions = {
                 threshold: [0.01, 0.25],
                 rootMargin: '50px'
@@ -4964,6 +4888,7 @@
                     observedElements.push(element);
                 }
             });
+
             isMainObserverInstalled = true;
         }
 
@@ -5005,6 +4930,7 @@
 
         function installObserver() {
             if (isFlexObserverInstalled) return;
+            
             const observerOptions = {
                 threshold: 0.25,
                 rootMargin: '50px'
@@ -5039,6 +4965,8 @@
                     observedFlexContainers.push(element);
                 }
             });
+
+
             isFlexObserverInstalled = true;
         }
 
@@ -5146,10 +5074,7 @@
         
 
 
-        
 
-
-    
 
         function debounce(func, wait) {
             let timeout;
@@ -5160,12 +5085,111 @@
         }
 
 
+        let maxScrollY;
+        let isThrottling = false;
+        let throttleTimeout;
 
         // Call this function when all the elements are constructed
         function initializeScrollHandling() {
             // Ensure any construction logic here
             addScrollListener();
         }
+
+        let isScrollListenerAdded = false;
+
+        function addScrollListener() {
+            if (!isScrollListenerAdded) {
+                window.addEventListener('scroll', handleScroll);
+                isScrollListenerAdded = true;
+            }
+        }
+
+        // Calculate maxScrollY once
+        function setupMaxScrollY() {
+            const footerContainer = document.getElementById('customStyledFooter');
+            if (!footerContainer) return;
+
+            maxScrollY = document.body.offsetHeight - window.innerHeight - footerContainer.offsetHeight + 111;
+        }
+
+        function preventScrollBeyondFooter() {
+            if (typeof maxScrollY === 'undefined') return;
+
+            setupMaxScrollY();
+
+            if (window.scrollY > maxScrollY) {
+                if (!isIOS) {
+                    lenis.stop();
+                }
+
+                window.scrollTo({
+                    top: maxScrollY,
+                    behavior: 'smooth'
+                });
+
+                if (!isIOS) {
+                    setTimeout(() => {
+                        lenis.start();
+                    }, 500);
+                }
+            }
+        }
+
+        function throttledPreventScroll() {
+            if (isThrottling) return;
+            isThrottling = true;
+
+            preventScrollBeyondFooter();
+
+            throttleTimeout = setTimeout(() => {
+                isThrottling = false;
+            }, 1000); // Adjust this delay as needed
+        }
+
+        function handleScroll() {
+            isScrolling = true; // Set isScrolling to true at the beginning
+            const scrollY = window.scrollY;
+            const threshold = 200; // Adjust this threshold as needed
+
+            // Throttle the preventScrollBeyondFooter only if not close to the footer
+            if (scrollY < maxScrollY - threshold) {
+                throttledPreventScroll();
+            } else {
+                preventScrollBeyondFooter();
+            }
+
+            // Debounce the saveScrollPosition function only if needed
+            debounce(() => {
+                if (currentSceneIndex === 4) {
+                    saveScrollPosition();
+                }
+            }, 500)();
+
+            // If scrollToTopButton is not defined, exit the function
+            if (!scrollToTopButton) return;
+
+            // Hide button during scrolling
+            scrollToTopButton.style.opacity = 0;
+
+            // Clear the previous timeout
+            clearTimeout(scrollTimeout);
+
+            // Set a timeout to check if scrolling has stopped
+            scrollTimeout = setTimeout(() => {
+                isScrolling = false; // Set isScrolling to false after 500ms
+                // Check the scroll position to determine the display of the button
+                if (window.scrollY > 1111) {
+                    scrollToTopButton.style.display = 'block';
+                    requestAnimationFrame(() => {
+                        scrollToTopButton.style.opacity = 1;
+                    });
+                } else {
+                    scrollToTopButton.style.display = 'none';
+                }
+            }, 500); // Adjusted debounce duration for quicker response
+        }
+
+        
 
 
         let isScrollDisabled = false;
@@ -5199,3 +5223,4 @@
     </script>
 </body>
 </html>
+
