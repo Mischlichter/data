@@ -4098,7 +4098,6 @@
                     lastUpdateTimeout = setTimeout(() => {
                         if (isscaling) {
                             executeParallaxUpdate(true);
-                            
                         }
                     }, 320); // Adjust the delay as needed for optimal performance
                     return;
@@ -4108,14 +4107,13 @@
                     // Trigger smooth transition for the final update
                     wasScaling = false;
                     executeParallaxUpdate(true);
-
-
                 } else {
                     frameCount = 0; // Reset frame count when not scaling
                     executeParallaxUpdate(false);
                 }
             }
         }
+
 
         
 
@@ -4800,7 +4798,7 @@
                             top: window.scrollY + scrollOffset,
                             behavior: 'smooth'
                         });
-                    }, 500); // 0.5 second delay
+                    }, 850); // 0.5 second delay
                 } else {
                     console.error("getClosestElementToViewportCenter did not return valid element data.");
                 }
