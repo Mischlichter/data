@@ -1,55 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
     <script>
-        (function() {
-            // Create an Image object to check if the browser can render GIFs as favicons
-            var gif64 = new Image();
-            gif64.src = '/favicon-animated-64.gif';
-            
-            gif64.onload = function() {
-                // If the GIF loads, use the animated favicon
-                var link64 = document.getElementById('animated-favicon-64');
-                link64.href = gif64.src;
-            };
+     (function() {
+            function setFavicon(size) {
+                var gif = new Image();
+                gif.src = '/favicon-animated-' + size + '.gif';
+                
+                gif.onload = function() {
+                    // If the GIF loads, use the animated favicon
+                    var link = document.getElementById('animated-favicon-' + size) || document.createElement('link');
+                    link.id = 'animated-favicon-' + size;
+                    link.rel = 'icon';
+                    link.type = 'image/gif';
+                    link.sizes = size + 'x' + size;
+                    link.href = gif.src;
+                    document.head.appendChild(link);
+                };
 
-            gif64.onerror = function() {
-                // If the GIF fails to load, fall back to static icons
-                var link64 = document.getElementById('animated-favicon-64');
-                link64.parentNode.removeChild(link64);
-            };
+                gif.onerror = function() {
+                    // If the GIF fails to load, remove the link
+                    var link = document.getElementById('animated-favicon-' + size);
+                    if (link) {
+                        link.parentNode.removeChild(link);
+                    }
 
+                    // Check the next size down
+                    if (size === 128) setFavicon(32);
+                    else if (size === 32) setFavicon(64);
+                };
+            }
 
-            var gif32 = new Image();
-            gif32.src = '/favicon-animated-32.gif';
-            
-            gif32.onload = function() {
-                // If the GIF loads, use the animated favicon
-                var link32 = document.getElementById('animated-favicon-32');
-                link32.href = gif32.src;
-            };
-
-            gif32.onerror = function() {
-                // If the GIF fails to load, fall back to static icons
-                var link32 = document.getElementById('animated-favicon-32');
-                link32.parentNode.removeChild(link32);
-            };
-
-
-            var gif128 = new Image();
-            gif128.src = '/favicon-animated-128.gif';
-            
-            gif128.onload = function() {
-                // If the GIF loads, use the animated favicon
-                var link128 = document.getElementById('animated-favicon-128');
-                link128.href = gif128.src;
-            };
-
-            gif128.onerror = function() {
-                // If the GIF fails to load, fall back to static icons
-                var link128 = document.getElementById('animated-favicon-128');
-                link128.parentNode.removeChild(link128);
-            };
-        })();    
+            // Start by checking the preferred favicon size
+            setFavicon(64);
+        })();
     </script>
 <head>
     <meta charset="UTF-8">
