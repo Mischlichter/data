@@ -15,6 +15,17 @@
                         link.sizes = size + 'x' + size;
                         link.href = gif.src;
                         document.head.appendChild(link);
+                        
+                        // Force reload to start the animation
+                        var oldLink = document.getElementById('favicon');
+                        if (oldLink) {
+                            document.head.removeChild(oldLink);
+                        }
+                        var newLink = document.createElement('link');
+                        newLink.id = 'favicon';
+                        newLink.rel = 'icon';
+                        newLink.href = gif.src;
+                        document.head.appendChild(newLink);
                     };
 
                     gif.onerror = function() {
@@ -30,7 +41,7 @@
                     };
                 }
 
-                // Start by checking the largest favicon size
+                // Start by checking the preferred favicon size
                 setFavicon(64);
             })();
     </script>
