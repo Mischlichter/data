@@ -1,38 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
     <script>
-        (function() {
-            function setFavicon(size) {
-                var gif = new Image();
-                gif.src = '/favicon-animated-' + size + '.gif';
-                
-                gif.onload = function() {
-                    // If the GIF loads, use the animated favicon
-                    var link = document.getElementById('animated-favicon-' + size) || document.createElement('link');
-                    link.id = 'animated-favicon-' + size;
-                    link.rel = 'icon';
-                    link.type = 'image/gif';
-                    link.sizes = size + 'x' + size;
-                    link.href = gif.src;
-                    document.head.appendChild(link);
-                };
+            (function() {
+                function setFavicon(size) {
+                    var gif = new Image();
+                    gif.src = '/favicon-animated-' + size + '.gif';
+                    
+                    gif.onload = function() {
+                        // If the GIF loads, use the animated favicon
+                        var link = document.getElementById('animated-favicon-' + size) || document.createElement('link');
+                        link.id = 'animated-favicon-' + size;
+                        link.rel = 'icon';
+                        link.type = 'image/gif';
+                        link.sizes = size + 'x' + size;
+                        link.href = gif.src;
+                        document.head.appendChild(link);
+                    };
 
-                gif.onerror = function() {
-                    // If the GIF fails to load, remove the link
-                    var link = document.getElementById('animated-favicon-' + size);
-                    if (link) {
-                        link.parentNode.removeChild(link);
-                    }
+                    gif.onerror = function() {
+                        // If the GIF fails to load, remove the link
+                        var link = document.getElementById('animated-favicon-' + size);
+                        if (link) {
+                            link.parentNode.removeChild(link);
+                        }
 
-                    // Check the next size down
-                    if (size === 128) setFavicon(64);
-                    else if (size === 64) setFavicon(32);
-                };
-            }
+                        // Check the next size down
+                        if (size === 128) setFavicon(64);
+                        else if (size === 64) setFavicon(32);
+                    };
+                }
 
-            // Start by checking the largest favicon size
-            setFavicon(128);
-        })();
+                // Start by checking the largest favicon size
+                setFavicon(128);
+            })();
     </script>
 <head>
     <meta charset="UTF-8">
@@ -67,9 +67,8 @@
     <meta name="msapplication-TileColor" content="#000000">
     <meta name="theme-color" content="#000000">
 
-    <!-- Animated GIF favicon -->
     <link id="animated-favicon-128" rel="icon" type="image/gif" sizes="128x128" href="/favicon-animated-128.gif">
-    <link id="animated-favicon-64" rel="icon" type="image/gif" sizes="64x64" href="/favicon-animated-64.gif">    
+    <link id="animated-favicon-64" rel="icon" type="image/gif" sizes="64x64" href="/favicon-animated-64.gif">
     <link id="animated-favicon-32" rel="icon" type="image/gif" sizes="32x32" href="/favicon-animated-32.gif">
 
 
