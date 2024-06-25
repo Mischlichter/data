@@ -25,13 +25,13 @@
                         }
 
                         // Check the next size down
-                        if (size === 64) setFavicon(128);
-                        else if (size === 128) setFavicon(32);
+                        if (size === 32) setFavicon(64);
+                        else if (size === 64) setFavicon(128);
                     };
                 }
 
                 // Start by checking the largest favicon size
-                setFavicon(64);
+                setFavicon(32);
             })();
     </script>
 <head>
@@ -67,9 +67,10 @@
     <meta name="msapplication-TileColor" content="#000000">
     <meta name="theme-color" content="#000000">
 
-    <link id="animated-favicon-128" rel="icon" type="image/gif" sizes="128x128" href="/favicon-animated-128.gif">
-    <link id="animated-favicon-64" rel="icon" type="image/gif" sizes="64x64" href="/favicon-animated-64.gif">
+    
     <link id="animated-favicon-32" rel="icon" type="image/gif" sizes="32x32" href="/favicon-animated-32.gif">
+    <link id="animated-favicon-64" rel="icon" type="image/gif" sizes="64x64" href="/favicon-animated-64.gif">
+    <link id="animated-favicon-128" rel="icon" type="image/gif" sizes="128x128" href="/favicon-animated-128.gif">
 
 
     <link rel="preconnect" href="https://raw.githubusercontent.com">
