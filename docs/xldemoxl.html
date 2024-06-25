@@ -1,29 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
     <script>
-            (function() {
-                var faviconImages = [];
-                for (var i = 0; i <= 50; i++) {
-                    var num = ('000' + i).slice(-3);  // Ensure the number is zero-padded
+            async function getCachedImage(url) {
+                try {
+                    const cache = await caches.open('site-assets');
+                    const response = await cache.match(url);
+                    if (response) {
+                        const blob = await response.blob();
+                        const objectURL = URL.createObjectURL(blob);
+                        return objectURL;
+                    } else {
+                        console.log(`Cached file not found for URL: ${url}, downloading...`);
+                    }
+                } catch (error) {
+                    console.error(`Error fetching cached image for URL ${url}:`, error);
+                }
+                console.log(`Falling back to original URL: ${url}`);
+                return url;
+            }
+
+            async function fetchLogos() {
+                const faviconImages = [];
+                for (let i = 0; i <= 50; i++) {
+                    const num = ('000' + i).slice(-3);
                     faviconImages.push('./anis/logoani_' + num + '.png');
                 }
-                var currentFrame = 0;
+                const logoPromises = faviconImages.map(url => getCachedImage(url));
+                return await Promise.all(logoPromises);
+            }
+
+            function isFirefox() {
+                return navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+            }
+
+            function setGifFavicon() {
+                const link = document.createElement('link');
+                link.rel = 'icon';
+                link.type = 'image/gif';
+                link.href = './anis/logoani.gif';
+                document.head.appendChild(link);
+            }
+
+            async function setAnimatedFavicon() {
+                const cachedImages = await fetchLogos();
+                let currentFrame = 0;
+                const link = document.createElement('link');
+                link.id = 'dynamic-favicon';
+                link.rel = 'icon';
+                link.type = 'image/png';
+                link.sizes = '32x32';
+                document.head.appendChild(link);
+
                 function changeFavicon() {
-                    var link = document.createElement('link');
-                    var oldLink = document.getElementById('dynamic-favicon');
-                    link.id = 'dynamic-favicon';
-                    link.rel = 'icon';
-                    link.type = 'image/png';
-                    link.sizes = '32x32';
-                    link.href = faviconImages[currentFrame];
-                    if (oldLink) {
-                        document.head.removeChild(oldLink);
-                    }
-                    document.head.appendChild(link);
-                    currentFrame = (currentFrame + 1) % faviconImages.length;
+                    link.href = cachedImages[currentFrame];
+                    currentFrame = (currentFrame + 1) % cachedImages.length;
                 }
-                setInterval(changeFavicon, 77);  // 30 fps (1000 ms / 30 fps ≈ 33.33 ms)
-            })();
+                setInterval(changeFavicon, 33);
+            }
+
+            if (isFirefox()) {
+                setGifFavicon();
+            } else {
+                setAnimatedFavicon();
+            }
     </script>
 <head>
     <meta charset="UTF-8">
