@@ -23,7 +23,7 @@
             const faviconImages = [];
             for (let i = 0; i <= 50; i++) {
                 const num = ('000' + i).slice(-3);
-                faviconImages.push('./ani/logoani_' + num + '.png');
+                faviconImages.push('./anis/logoani_' + num + '.png');
             }
             const logoPromises = faviconImages.map(url => getCachedImage(url));
             return await Promise.all(logoPromises);
