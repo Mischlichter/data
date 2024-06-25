@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<script>
+    <script>
         (function() {
             function setFavicon(size) {
                 var gif = new Image();
@@ -25,13 +25,13 @@
                     }
 
                     // Check the next size down
-                    if (size === 32) setFavicon(64);
-                    else if (size === 64) setFavicon(128);
+                    if (size === 128) setFavicon(64);
+                    else if (size === 64) setFavicon(32);
                 };
             }
 
-            // Start by checking the preferred favicon size
-            setFavicon(32);
+            // Start by checking the largest favicon size
+            setFavicon(128);
         })();
     </script>
 <head>
