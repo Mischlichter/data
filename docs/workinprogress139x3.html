@@ -1826,10 +1826,9 @@
             // Remove existing iframe and clear body gallery content
             let existingIframe = document.getElementById('sceneIframe');
             if (existingIframe) {
+                //console.log('Removing existing iframe.');
                 existingIframe.src = 'about:blank';
-                setTimeout(() => {
-                    existingIframe.remove(); // Remove the old iframe after a short delay
-                }, 5000); // 100ms delay to ensure cleanup
+                existingIframe.remove(); // Remove the old iframe
             }
             
             if (bodyGalleryContainer) {
