@@ -2,47 +2,26 @@
 <html lang="en">
     <script>
             (function() {
-                function setFavicon(size) {
-                    var gif = new Image();
-                    gif.src = '/favicon-animated-' + size + '.gif';
-                    
-                    gif.onload = function() {
-                        // If the GIF loads, use the animated favicon
-                        var link = document.getElementById('animated-favicon-' + size) || document.createElement('link');
-                        link.id = 'animated-favicon-' + size;
-                        link.rel = 'icon';
-                        link.type = 'image/gif';
-                        link.sizes = size + 'x' + size;
-                        link.href = gif.src;
-                        document.head.appendChild(link);
-                        
-                        // Force reload to start the animation
-                        var oldLink = document.getElementById('favicon');
-                        if (oldLink) {
-                            document.head.removeChild(oldLink);
-                        }
-                        var newLink = document.createElement('link');
-                        newLink.id = 'favicon';
-                        newLink.rel = 'icon';
-                        newLink.href = gif.src;
-                        document.head.appendChild(newLink);
-                    };
-
-                    gif.onerror = function() {
-                        // If the GIF fails to load, remove the link
-                        var link = document.getElementById('animated-favicon-' + size);
-                        if (link) {
-                            link.parentNode.removeChild(link);
-                        }
-
-                        // Check the next size down
-                        if (size === 64) setFavicon(128);
-                        else if (size === 128) setFavicon(32);
-                    };
+                var faviconImages = [];
+                for (var i = 0; i <= 50; i++) {
+                    var num = ('000' + i).slice(-3);  // Ensure the number is zero-padded
+                    faviconImages.push('./ani/logoani_' + num + '.png');
                 }
-
-                // Start by checking the preferred favicon size
-                setFavicon(64);
+                var currentFrame = 0;
+                function changeFavicon() {
+                    var link = document.createElement('link');
+                    var oldLink = document.getElementById('dynamic-favicon');
+                    link.id = 'dynamic-favicon';
+                    link.rel = 'icon';
+                    link.type = 'image/png';
+                    link.href = faviconImages[currentFrame];
+                    if (oldLink) {
+                        document.head.removeChild(oldLink);
+                    }
+                    document.head.appendChild(link);
+                    currentFrame = (currentFrame + 1) % faviconImages.length;
+                }
+                setInterval(changeFavicon, 200);  // Adjust the interval to control animation speed
             })();
     </script>
 <head>
