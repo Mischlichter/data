@@ -33,45 +33,45 @@
             return navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
         }
 
-        
-            function setGifFavicon(size) {
-                var gif = new Image();
-                gif.src = '/favicon-animated-' + size + '.gif';
+        function setGifFavicon(size) {
+            var gif = new Image();
+            gif.src = '/favicon-animated-' + size + '.gif';
+            
+            gif.onload = function() {
+                // If the GIF loads, use the animated favicon
+                var link = document.getElementById('animated-favicon-' + size) || document.createElement('link');
+                link.id = 'animated-favicon-' + size;
+                link.rel = 'icon';
+                link.type = 'image/gif';
+                link.sizes = size + 'x' + size;
+                link.href = gif.src;
+                document.head.appendChild(link);
                 
-                gif.onload = function() {
-                    // If the GIF loads, use the animated favicon
-                    var link = document.getElementById('animated-favicon-' + size) || document.createElement('link');
-                    link.id = 'animated-favicon-' + size;
-                    link.rel = 'icon';
-                    link.type = 'image/gif';
-                    link.sizes = size + 'x' + size;
-                    link.href = gif.src;
-                    document.head.appendChild(link);
-                    
-                    // Force reload to start the animation
-                    var oldLink = document.getElementById('favicon');
-                    if (oldLink) {
-                        document.head.removeChild(oldLink);
-                    }
-                    var newLink = document.createElement('link');
-                    newLink.id = 'favicon';
-                    newLink.rel = 'icon';
-                    newLink.href = gif.src;
-                    document.head.appendChild(newLink);
-                };
+                // Force reload to start the animation
+                var oldLink = document.getElementById('favicon');
+                if (oldLink) {
+                    document.head.removeChild(oldLink);
+                }
+                var newLink = document.createElement('link');
+                newLink.id = 'favicon';
+                newLink.rel = 'icon';
+                newLink.href = gif.src;
+                document.head.appendChild(newLink);
+            };
 
-                gif.onerror = function() {
-                    // If the GIF fails to load, remove the link
-                    var link = document.getElementById('animated-favicon-' + size);
-                    if (link) {
-                        link.parentNode.removeChild(link);
-                    }
+            gif.onerror = function() {
+                // If the GIF fails to load, remove the link
+                var link = document.getElementById('animated-favicon-' + size);
+                if (link) {
+                    link.parentNode.removeChild(link);
+                }
 
-                    // Check the next size down
-                    if (size === 64) setGifFavicon(128);
-                    else if (size === 128) setGifFavicon(32);
-                };
-            }
+                // Check the next size down
+                if (size === 64) setGifFavicon(128);
+                else if (size === 128) setGifFavicon(32);
+            };
+        }        
+            
 
             // Start by checking the preferred favicon size
     
