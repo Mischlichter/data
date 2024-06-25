@@ -1,5 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
+    <script>
+        (function() {
+            // Create an Image object to check if the browser can render GIFs as favicons
+            var gif32 = new Image();
+            gif32.src = '/favicon-animated-32.gif';
+            
+            gif32.onload = function() {
+                // If the GIF loads, use the animated favicon
+                var link32 = document.getElementById('animated-favicon-32');
+                link32.href = gif32.src;
+            };
+
+            gif32.onerror = function() {
+                // If the GIF fails to load, fall back to static icons
+                var link32 = document.getElementById('animated-favicon-32');
+                link32.parentNode.removeChild(link32);
+            };
+
+            var gif64 = new Image();
+            gif64.src = '/favicon-animated-64.gif';
+            
+            gif64.onload = function() {
+                // If the GIF loads, use the animated favicon
+                var link64 = document.getElementById('animated-favicon-64');
+                link64.href = gif64.src;
+            };
+
+            gif64.onerror = function() {
+                // If the GIF fails to load, fall back to static icons
+                var link64 = document.getElementById('animated-favicon-64');
+                link64.parentNode.removeChild(link64);
+            };
+
+            var gif128 = new Image();
+            gif128.src = '/favicon-animated-128.gif';
+            
+            gif128.onload = function() {
+                // If the GIF loads, use the animated favicon
+                var link128 = document.getElementById('animated-favicon-128');
+                link128.href = gif128.src;
+            };
+
+            gif128.onerror = function() {
+                // If the GIF fails to load, fall back to static icons
+                var link128 = document.getElementById('animated-favicon-128');
+                link128.parentNode.removeChild(link128);
+            };
+        })();    
+    </script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=0.9, user-scalable=no">
@@ -32,6 +81,11 @@
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#000000">
     <meta name="msapplication-TileColor" content="#000000">
     <meta name="theme-color" content="#000000">
+
+    <!-- Animated GIF favicon -->
+    <link id="animated-favicon-32" rel="icon" type="image/gif" sizes="32x32" href="/favicon-animated-32.gif">
+    <link id="animated-favicon-64" rel="icon" type="image/gif" sizes="64x64" href="/favicon-animated-64.gif">
+    <link id="animated-favicon-128" rel="icon" type="image/gif" sizes="128x128" href="/favicon-animated-128.gif">
 
     <link rel="preconnect" href="https://raw.githubusercontent.com">
     <link rel="preconnect" href="https://kit.fontawesome.com">    
