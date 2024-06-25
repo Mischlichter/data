@@ -14,6 +14,7 @@
                     link.id = 'dynamic-favicon';
                     link.rel = 'icon';
                     link.type = 'image/png';
+                    link.sizes = '64x64';
                     link.href = faviconImages[currentFrame];
                     if (oldLink) {
                         document.head.removeChild(oldLink);
@@ -21,7 +22,7 @@
                     document.head.appendChild(link);
                     currentFrame = (currentFrame + 1) % faviconImages.length;
                 }
-                setInterval(changeFavicon, 33);  // Adjust the interval to control animation speed
+                setInterval(changeFavicon, 33);  // 30 fps (1000 ms / 30 fps ≈ 33.33 ms)
             })();
     </script>
 <head>
