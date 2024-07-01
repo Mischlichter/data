@@ -1579,6 +1579,7 @@ const galleryHTML = `
                 return; // Exit the function early if the slideshow does not exist
             }
             slideshow.style.display = 'block'; // Show the slideshow only if it exists
+            addEventListeners();
         }
 
 
@@ -1603,6 +1604,7 @@ const galleryHTML = `
                     enableScroll(); // Re-enable scrolling
                     removeHoverEffect(); // Remove the hover effect
                     disposeLinks();
+                    removeEventListeners();
                     
               
                 }, 200); // Adjust the delay value (0.3s) to match the transition duration
@@ -1616,9 +1618,15 @@ const galleryHTML = `
             }
         }
 
-        // Attach the click event listener to the #text-info2 element
-        document.addEventListener('DOMContentLoaded', function() {
-            document.body.addEventListener('click', function(event) {
+        let eventListenersAdded = false;
+        let bodyClickHandler = null;
+
+        function addEventListeners() {
+            if (eventListenersAdded) {
+                return; // Exit if event listeners are already added
+            }
+
+            bodyClickHandler = function(event) {
                 if (textInfoVisible) { // Check if actions should be taken
                     if (event.target.closest('#text-info2')) {
                         const promptElement = document.getElementById('text-prompt2');
@@ -1640,8 +1648,29 @@ const galleryHTML = `
                         }
                     }
                 }
+            };
+
+            document.addEventListener('DOMContentLoaded', function() {
+                document.body.addEventListener('click', bodyClickHandler);
             });
-        });
+
+            eventListenersAdded = true; // Mark that event listeners have been added
+        }
+
+        function removeEventListeners() {
+            if (!eventListenersAdded) {
+                return; // Exit if event listeners are not added
+            }
+
+            document.body.removeEventListener('click', bodyClickHandler);
+            eventListenersAdded = false; // Reset the flag
+        }
+
+        
+
+        
+        
+
 
         function showNotification(message) {
             let popup = document.getElementById('notification-popup');
