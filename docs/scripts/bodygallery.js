@@ -1643,39 +1643,40 @@ const galleryHTML = `
                         }
                     }
 
-                    let clickCount = 0; // Initialize clickCount here, outside any function
-                    let isNotificationVisible = false; // Track whether the notification is visible
-
                     if (event.target.closest('#hover-effect-wrapper')) {
-                        clickCount++;  // Increment the click count on each click within the wrapper
-
-                        // First click - handle the URL copying
-                        if (clickCount === 1) {
-                            if (globalLinkUrl) {
-                                navigator.clipboard.writeText(globalLinkUrl)
-                                    .then(() => {
-                                        showNotification2('Sharing Link copied! Click again to open.', 'notification-popup2');
-                                    })
-                                    .catch(err => {
-                                        showNotification2('Failed to copy link. Please try again.', 'notification-popup2');
-                                    });
-                            } else {
-                                console.log('No URL found to copy');
-                            }
-                        } else if (clickCount === 2 && isNotificationVisible) {
-                            // Second click - open the URL if the notification is visible
-                            if (globalLinkUrl) {
-                                window.open(globalLinkUrl, '_blank');
-                                clickCount = 0; // Reset the click count after opening the link
-                            }
-                        }
-                    } else if (!event.target.closest('#notification-popup2')) {
-                        // Reset the click count if clicking outside the notification and wrapper
-                        clickCount = 0;
+                        handleHoverEffectClick(event);
                     }
                 });
             }
         });
+
+        let clickCount = 0; // Initialize clickCount here, outside any function
+        let isNotificationVisible = false; // Track whether the notification is visible
+
+        function handleHoverEffectClick(event) {
+            clickCount++;  // Increment the click count on each click within the wrapper
+
+            // First click - handle the URL copying
+            if (clickCount === 1) {
+                if (globalLinkUrl) {
+                    navigator.clipboard.writeText(globalLinkUrl)
+                        .then(() => {
+                            showNotification2('Sharing Link copied! Click again to open.', 'notification-popup2');
+                        })
+                        .catch(err => {
+                            showNotification2('Failed to copy link. Please try again.', 'notification-popup2');
+                        });
+                } else {
+                    console.log('No URL found to copy');
+                }
+            } else if (clickCount === 2 && isNotificationVisible) {
+                // Second click - open the URL if the notification is visible
+                if (globalLinkUrl) {
+                    window.open(globalLinkUrl, '_blank');
+                    clickCount = 0; // Reset the click count after opening the link
+                }
+            }
+        }
 
         function showNotification(message) {
             let popup = document.getElementById('notification-popup');
@@ -1741,7 +1742,7 @@ const galleryHTML = `
                     isNotificationVisible = false; // Set visibility to false after hiding
                     clickCount = 0; // Reset click count here too, to be safe
                 }, 500);
-            }, 2500); // 10 seconds to allow for a second click
+            }, 2500); // 2.5 seconds to allow for a second click
         }
 
         function applyStyles2(element) {
@@ -1764,6 +1765,7 @@ const galleryHTML = `
             element.style.maxWidth = '80%';
             element.style.cursor = 'pointer'; // Indicate it's clickable
         }
+
 
 
 
