@@ -1653,134 +1653,129 @@ const galleryHTML = `
                 let clickCount = 0; // Initialize clickCount here, outside any function
                 let isNotificationVisible = false; // Track whether the notification is visible
 
-                document.body.addEventListener('click', function(event) {
-                    if (event.target.closest('#hover-effect-wrapper')) {
-                        clickCount++;  // Increment the click count on each click within the wrapper
-
-                        // First click - handle the URL copying
+                document.body.addEventListener("click", function(event) {
+                    if (event.target.closest("#hover-effect-wrapper")) {
+                        clickCount++;
                         if (clickCount === 1) {
                             if (globalLinkUrl) {
                                 navigator.clipboard.writeText(globalLinkUrl)
                                     .then(() => {
-                                        //console.log('Successfully copied URL to clipboard');
-                                        showNotification2('Sharing Link copied! Click again to open.', 'notification-popup2');
+                                        showNotification2("Sharing Link copied! Click again to open.", "notification-popup2");
                                     })
                                     .catch(err => {
-                                        //console.error('Failed to copy URL:', err);
-                                        showNotification2('Failed to copy link. Please try again.', 'notification-popup2');
+                                        showNotification2("Failed to copy link. Please try again.", "notification-popup2");
                                     });
                             } else {
                                 console.log('No URL found to copy');
                             }
                         } else if (clickCount === 2 && isNotificationVisible) {
-                            // Second click - open the URL if the notification is visible
                             if (globalLinkUrl) {
-                                window.open(globalLinkUrl, '_blank');
+                                window.open(globalLinkUrl, "_blank");
                                 clickCount = 0; // Reset the click count after opening the link
                             }
                         }
-                    } else if (!event.target.closest('#notification-popup2')) {
+                    } else if (!event.target.closest("#notification-popup2")) {
                         // Reset the click count if clicking outside the notification and wrapper
                         clickCount = 0;
                     }
                 });
-
                 hoverEffectListenerAdded = true; // Set flag to true after adding the listener
+            }
 
-                function showNotification2(message, elementId) {
-                    let popup2 = document.getElementById(elementId);
-                    if (!popup2) {
-                        popup2 = document.createElement('div');
-                        popup2.id = elementId;
-                        document.body.appendChild(popup2);
-                        applyStyles2(popup2);
-                    }
+            function showNotification(message) {
+                let popup = document.getElementById('notification-popup');
+                if (!popup) {
+                    //console.log('Creating new notification popup');
+                    popup = document.createElement('div');
+                    popup.id = 'notification-popup';
+                    document.body.appendChild(popup);
+                    applyStyles(popup);
+                }
 
-                    popup2.textContent = message;
-                    popup2.style.display = 'block';
-                    popup2.style.opacity = 1;
-                    isNotificationVisible = true;  // Set visibility to true
+                popup.textContent = message;
+                popup.style.display = 'block';
+                popup.style.opacity = 1;
 
+                //console.log('Notification should now be visible');
+
+                setTimeout(() => {
+                    popup.style.opacity = 0;
+                    //console.log('Fading out notification');
                     setTimeout(() => {
-                        popup2.style.opacity = 0;
-                        setTimeout(() => {
-                            popup2.style.display = 'none';
-                            console.log('Notification hidden');
-                            isNotificationVisible = false; // Set visibility to false after hiding
-                            clickCount = 0; // Reset click count here too, to be safe
-                        }, 500);
-                    }, 2500); // 10 seconds to allow for a second click
+                        popup.style.display = 'none';
+                        //console.log('Notification hidden');
+                    }, 500);
+                }, 3000);
+            }
+
+            function applyStyles(element) {
+                element.style.position = 'fixed';
+                element.style.bottom = '20px';
+                element.style.left = '50%';
+                element.style.transform = 'translateX(-50%)';
+                element.style.fontFamily = 'JetBrainsMono-Bold, sans-serif';
+                element.style.fontSize = '16px';
+                element.style.border = '2px solid #00ffcc';
+                element.style.borderRadius = '20px';
+                element.style.padding = '8px 15px';
+                element.style.backgroundColor = 'black';
+                element.style.color = '#00ffcc';
+                element.style.textAlign = 'center';
+                element.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.6)';
+                element.style.zIndex = '10000000000000000000';
+                element.style.opacity = '0'; // Initial opacity set to 0 for fade-in effect
+                element.style.transition = 'opacity 0.5s ease-in-out';
+                element.style.width = 'auto'; // Ensure width is auto to accommodate text width
+                element.style.maxWidth = '80%'; // Prevents the popup from being too wide on the screen
+            }
+
+            function showNotification2(message, elementId) {
+                let popup2 = document.getElementById(elementId);
+                if (!popup2) {
+                    popup2 = document.createElement('div');
+                    popup2.id = elementId;
+                    document.body.appendChild(popup2);
+                    applyStyles2(popup2);
                 }
 
-                function applyStyles2(element) {
-                    element.style.position = 'fixed';
-                    element.style.bottom = '50%';
-                    element.style.left = '50%';
-                    element.style.transform = 'translateX(-50%) translateY(-50%)';
-                    element.style.fontFamily = 'JetBrainsMono-Bold, sans-serif';
-                    element.style.fontSize = '16px';
-                    element.style.border = '2px solid #00ffcc';
-                    element.style.borderRadius = '20px';
-                    element.style.padding = '8px 15px';
-                    element.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-                    element.style.color = '#00ffcc';
-                    element.style.textAlign = 'center';
-                    element.style.zIndex = '1000';
-                    element.style.opacity = '0'; // Start with fade-in effect
-                    element.style.transition = 'opacity 0.5s ease-in-out';
-                    element.style.width = 'auto';
-                    element.style.maxWidth = '80%';
-                    element.style.cursor = 'pointer'; // Indicate it's clickable
-                }
+                popup2.textContent = message;
+                popup2.style.display = 'block';
+                popup2.style.opacity = 1;
+                isNotificationVisible = true;  // Set visibility to true
+
+                setTimeout(() => {
+                    popup2.style.opacity = 0;
+                    setTimeout(() => {
+                        popup2.style.display = 'none';
+                        console.log('Notification hidden');
+                        isNotificationVisible = false; // Set visibility to false after hiding
+                        clickCount = 0; // Reset click count here too, to be safe
+                    }, 500);
+                }, 2500); // 10 seconds to allow for a second click
+            }
+
+            function applyStyles2(element) {
+                element.style.position = 'fixed';
+                element.style.bottom = '50%';
+                element.style.left = '50%';
+                element.style.transform = 'translateX(-50%) translateY(-50%)';
+                element.style.fontFamily = 'JetBrainsMono-Bold, sans-serif';
+                element.style.fontSize = '16px';
+                element.style.border = '2px solid #00ffcc';
+                element.style.borderRadius = '20px';
+                element.style.padding = '8px 15px';
+                element.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+                element.style.color = '#00ffcc';
+                element.style.textAlign = 'center';
+                element.style.zIndex = '1000';
+                element.style.opacity = '0'; // Start with fade-in effect
+                element.style.transition = 'opacity 0.5s ease-in-out';
+                element.style.width = 'auto';
+                element.style.maxWidth = '80%';
+                element.style.cursor = 'pointer'; // Indicate it's clickable
             }
         });
 
-        function showNotification(message) {
-            let popup = document.getElementById('notification-popup');
-            if (!popup) {
-                //console.log('Creating new notification popup');
-                popup = document.createElement('div');
-                popup.id = 'notification-popup';
-                document.body.appendChild(popup);
-                applyStyles(popup);
-            }
-
-            popup.textContent = message;
-            popup.style.display = 'block';
-            popup.style.opacity = 1;
-
-            //console.log('Notification should now be visible');
-
-            setTimeout(() => {
-                popup.style.opacity = 0;
-                //console.log('Fading out notification');
-                setTimeout(() => {
-                    popup.style.display = 'none';
-                    //console.log('Notification hidden');
-                }, 500);
-            }, 3000);
-        }
-
-        function applyStyles(element) {
-            element.style.position = 'fixed';
-            element.style.bottom = '20px';
-            element.style.left = '50%';
-            element.style.transform = 'translateX(-50%)';
-            element.style.fontFamily = 'JetBrainsMono-Bold, sans-serif';
-            element.style.fontSize = '16px';
-            element.style.border = '2px solid #00ffcc';
-            element.style.borderRadius = '20px';
-            element.style.padding = '8px 15px';
-            element.style.backgroundColor = 'black';
-            element.style.color = '#00ffcc';
-            element.style.textAlign = 'center';
-            element.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.6)';
-            element.style.zIndex = '10000000000000000000';
-            element.style.opacity = '0'; // Initial opacity set to 0 for fade-in effect
-            element.style.transition = 'opacity 0.5s ease-in-out';
-            element.style.width = 'auto'; // Ensure width is auto to accommodate text width
-            element.style.maxWidth = '80%'; // Prevents the popup from being too wide on the screen
-        }
 
 
 
