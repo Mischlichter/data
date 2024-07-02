@@ -1616,11 +1616,10 @@ const galleryHTML = `
             }
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            let textInfoListenerAdded = false; // Flag to ensure the listener is added only once
-            let hoverEffectListenerAdded = false; // Flag to ensure the listener is added only once
-            let globalClickListenerAdded = false; // Flag to ensure the general click listener is added only once
+        let textInfoListenerAdded = false; // Flag to ensure the listener is added only once
+        let hoverEffectListenerAdded = false; // Flag to ensure the listener is added only once
 
+        document.addEventListener('DOMContentLoaded', function() {
             // Attach the click event listener to the #text-info2 element
             if (!textInfoListenerAdded) {
                 document.body.addEventListener('click', function(event) {
@@ -1684,22 +1683,6 @@ const galleryHTML = `
                     }
                 });
                 hoverEffectListenerAdded = true; // Set flag to true after adding the listener
-            }
-
-            // General click event listener to ensure it is added only once
-            if (!globalClickListenerAdded) {
-                document.body.addEventListener('click', function(event) {
-                    event.target.closest("#hover-effect-wrapper") ? (clickCount++,
-                    1 === clickCount ? globalLinkUrl && navigator.clipboard.writeText(globalLinkUrl).then(()=>{
-                        showNotification2("Sharing Link copied! Click again to open.", "notification-popup2")
-                    }
-                    ).catch(err=>{
-                        showNotification2("Failed to copy link. Please try again.", "notification-popup2")
-                    }
-                    ) : 2 === clickCount && isNotificationVisible && globalLinkUrl && (window.open(globalLinkUrl, "_blank"),
-                    clickCount = 0)) : event.target.closest("#notification-popup2") || (clickCount = 0)
-                });
-                globalClickListenerAdded = true; // Set flag to true after adding the listener
             }
         });
 
@@ -1795,6 +1778,7 @@ const galleryHTML = `
             element.style.maxWidth = '80%';
             element.style.cursor = 'pointer'; // Indicate it's clickable
         }
+
 
 
 
