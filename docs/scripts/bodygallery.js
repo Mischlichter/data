@@ -615,6 +615,7 @@ const galleryHTML = `
                                                     img.onclick = () => onImageClick(img.src);
                                                     if (currentImageIndex !== -1) {
                                                         showSlideshow();
+                                                        addEventListeners();
                                                     } else {
                                                         console.error("Clicked image index not found in dynamicImages array.");
                                                     }
@@ -1579,7 +1580,7 @@ const galleryHTML = `
                 return; // Exit the function early if the slideshow does not exist
             }
             slideshow.style.display = 'block'; // Show the slideshow only if it exists
-            addEventListeners();
+            
         }
 
 
@@ -1804,7 +1805,7 @@ const galleryHTML = `
 
 
 
-        
+
 
 
         function removeButtonOverlay() {
