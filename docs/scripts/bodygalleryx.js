@@ -145,7 +145,59 @@ const galleryHTML = `
         }
 
 
-        
+        function handleGalleryResize() {
+            // Determine the orientation and set variableori
+            let variableori;
+            if (window.innerWidth > window.innerHeight) {
+                // Landscape orientation
+                variableori = 75;
+            } else {
+                // Portrait orientation
+                variableori = 98;
+            }
+
+            // Handle saved element scroll position
+            if (savedElement) {
+                const newRect = savedElement.getBoundingClientRect();
+                const newTop = newRect.top + window.scrollY - variableori;
+                const newSavedPosition = savedPosition + (newTop - savedPosition);
+
+                window.scrollTo({
+                    top: newSavedPosition,
+                    behavior: 'instant'
+                });
+                //console.log(`Scrolled to new position: ${newSavedPosition}`);
+
+                ignoreSaveScroll = true;
+                setTimeout(() => {
+                    ignoreSaveScroll = false;
+                }, 3000);
+            }
+
+            // Integrate gallery resize logic
+            const currentHeight = window.innerHeight;
+            const currentOrientation = window.innerWidth > window.innerHeight ? 'landscape' : 'portrait';
+
+            if (isIOS) {
+                const heightDifference = Math.abs(currentHeight - lastHeight);
+                if (heightDifference > heightChangeThresholdG) {
+                    //console.log('Height change is significant.');
+                    if (currentOrientation !== lastOrientation) {
+                        //console.log('Orientation change detected, scrolling to the left.');
+                        window.scrollTo({ left: 0 });
+                        lastOrientation = currentOrientation;
+                    }
+                    //console.log('Recalculating aspect ratio.');
+                    calculateAspectRatio();
+                    lastHeight = currentHeight;
+                } else {
+                    //console.log('Height change is not significant, skipping recalculation.');
+                }
+            } else {
+                //console.log('Non-iOS device, recalculating aspect ratio.');
+                calculateAspectRatio();
+            }
+        }
 
 
         function adjustNavButtonsForAspectRatio(isSquare) {

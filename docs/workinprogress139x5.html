@@ -4703,50 +4703,7 @@
   
       
 
-        function handleGalleryResize() {
-            // Determine the orientation and set variableori
-            let variableori;
-            if (window.innerWidth > window.innerHeight) {
-                // Landscape orientation
-                variableori = 75;
-            } else {
-                // Portrait orientation
-                variableori = 98;
-            }
-
-            if (savedElement) {
-                const newRect = savedElement.getBoundingClientRect();
-                const newTop = newRect.top + window.scrollY - variableori;
-                const newSavedPosition = savedPosition + (newTop - savedPosition);
-
-                window.scrollTo({
-                    top: newSavedPosition,
-                    behavior: 'instant'
-                });
-
-                ignoreSaveScroll = true;
-                setTimeout(() => {
-                    ignoreSaveScroll = false;
-                }, 3000);
-            }
-
-            const currentHeight = window.innerHeight;
-            const currentOrientation = window.innerWidth > window.innerHeight ? 'landscape' : 'portrait';
-
-            if (isIOS) {
-                const heightDifference = Math.abs(currentHeight - lastHeight);
-                if (heightDifference > heightChangeThresholdG) {
-                    if (currentOrientation !== lastOrientation) {
-                        window.scrollTo({ left: 0 });
-                        lastOrientation = currentOrientation;
-                    }
-                    calculateAspectRatio();
-                    lastHeight = currentHeight;
-                }
-            } else {
-                calculateAspectRatio();
-            }
-        }
+        
 
  
  
