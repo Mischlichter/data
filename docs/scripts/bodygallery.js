@@ -1618,55 +1618,8 @@ const galleryHTML = `
             }
         }
 
-        let eventListenersAdded = false;
-        let bodyClickHandler = null;
+    
 
-        function addEventListeners() {
-            if (eventListenersAdded) {
-                return; // Exit if event listeners are already added
-            }
-
-            bodyClickHandler = function(event) {
-                if (textInfoVisible) { // Check if actions should be taken
-                    if (event.target.closest('#text-info2')) {
-                        const promptElement = document.getElementById('text-prompt2');
-                        if (promptElement) {
-                            const promptText = promptElement.textContent.replace('Prompt:', '').trim();
-                            if (promptText) {
-                                navigator.clipboard.writeText(promptText)
-                                    .then(() => {
-                                        showNotification('Prompt Text copied!');  // Notification text adjusted for clarity
-                                    })
-                                    .catch(err => {
-                                        showNotification('Failed to copy prompt text. Please try again.');
-                                    });
-                            } else {
-                                console.log('No prompt text found to copy');
-                            }
-                        } else {
-                            console.log('Prompt element not found');
-                        }
-                    }
-                }
-            };
-
-            document.addEventListener('DOMContentLoaded', function() {
-                document.body.addEventListener('click', bodyClickHandler);
-            });
-
-            eventListenersAdded = true; // Mark that event listeners have been added
-        }
-
-        function removeEventListeners() {
-            if (!eventListenersAdded) {
-                return; // Exit if event listeners are not added
-            }
-
-            document.body.removeEventListener('click', bodyClickHandler);
-            eventListenersAdded = false; // Reset the flag
-        }
-
-        
 
         
         
@@ -1719,90 +1672,139 @@ const galleryHTML = `
             element.style.maxWidth = '80%'; // Prevents the popup from being too wide on the screen
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            let clickCount = 0; // Initialize clickCount here, outside any function
-            let isNotificationVisible = false; // Track whether the notification is visible
+        let eventListenersInitialized = false;
+        let bodyClickHandler1 = null;
+        let bodyClickHandler2 = null;
 
-            document.body.addEventListener('click', function(event) {
-                if (event.target.closest('#hover-effect-wrapper')) {
-                    clickCount++;  // Increment the click count on each click within the wrapper
-
-                    // First click - handle the URL copying
-                    if (clickCount === 1) {
-                        if (globalLinkUrl) {
-                            navigator.clipboard.writeText(globalLinkUrl)
+        function bodyClickEventHandler1(event) {
+            if (textInfoVisible) { // Check if actions should be taken
+                if (event.target.closest('#text-info2')) {
+                    const promptElement = document.getElementById('text-prompt2');
+                    if (promptElement) {
+                        const promptText = promptElement.textContent.replace('Prompt:', '').trim();
+                        if (promptText) {
+                            navigator.clipboard.writeText(promptText)
                                 .then(() => {
-                                    //console.log('Successfully copied URL to clipboard');
-                                    showNotification2('Sharing Link copied! Click again to open.', 'notification-popup2');
+                                    showNotification('Prompt Text copied!');  // Notification text adjusted for clarity
                                 })
                                 .catch(err => {
-                                    //console.error('Failed to copy URL:', err);
-                                    showNotification2('Failed to copy link. Please try again.', 'notification-popup2');
+                                    showNotification('Failed to copy prompt text. Please try again.');
                                 });
                         } else {
-                            console.log('No URL found to copy');
+                            console.log('No prompt text found to copy');
                         }
-                    } else if (clickCount === 2 && isNotificationVisible) {
-                        // Second click - open the URL if the notification is visible
-                        if (globalLinkUrl) {
-                            window.open(globalLinkUrl, '_blank');
-                            clickCount = 0; // Reset the click count after opening the link
-                        }
+                    } else {
+                        console.log('Prompt element not found');
                     }
-                } else if (!event.target.closest('#notification-popup2')) {
-                    // Reset the click count if clicking outside the notification and wrapper
-                    clickCount = 0;
                 }
+            }
+        }
+
+        function bodyClickEventHandler2(event) {
+            let clickCount = 0;
+            let isNotificationVisible = false;
+
+            if (event.target.closest('#hover-effect-wrapper')) {
+                clickCount++;  // Increment the click count on each click within the wrapper
+
+                // First click - handle the URL copying
+                if (clickCount === 1) {
+                    if (globalLinkUrl) {
+                        navigator.clipboard.writeText(globalLinkUrl)
+                            .then(() => {
+                                showNotification2('Sharing Link copied! Click again to open.', 'notification-popup2');
+                            })
+                            .catch(err => {
+                                showNotification2('Failed to copy link. Please try again.', 'notification-popup2');
+                            });
+                    } else {
+                        console.log('No URL found to copy');
+                    }
+                } else if (clickCount === 2 && isNotificationVisible) {
+                    // Second click - open the URL if the notification is visible
+                    if (globalLinkUrl) {
+                        window.open(globalLinkUrl, '_blank');
+                        clickCount = 0; // Reset the click count after opening the link
+                    }
+                }
+            } else if (!event.target.closest('#notification-popup2')) {
+                // Reset the click count if clicking outside the notification and wrapper
+                clickCount = 0;
+            }
+        }
+
+        function showNotification2(message, elementId) {
+            let popup2 = document.getElementById(elementId);
+            if (!popup2) {
+                popup2 = document.createElement('div');
+                popup2.id = elementId;
+                document.body.appendChild(popup2);
+                applyStyles2(popup2);
+            }
+
+            popup2.textContent = message;
+            popup2.style.display = 'block';
+            popup2.style.opacity = 1;
+            isNotificationVisible = true;  // Set visibility to true
+
+            setTimeout(() => {
+                popup2.style.opacity = 0;
+                setTimeout(() => {
+                    popup2.style.display = 'none';
+                    console.log('Notification hidden');
+                    isNotificationVisible = false; // Set visibility to false after hiding
+                    clickCount = 0; // Reset click count here too, to be safe
+                }, 500);
+            }, 2500); // 10 seconds to allow for a second click
+        }
+
+        function applyStyles2(element) {
+            element.style.position = 'fixed';
+            element.style.bottom = '50%';
+            element.style.left = '50%';
+            element.style.transform = 'translateX(-50%) translateY(-50%)';
+            element.style.fontFamily = 'JetBrainsMono-Bold, sans-serif';
+            element.style.fontSize = '16px';
+            element.style.border = '2px solid #00ffcc';
+            element.style.borderRadius = '20px';
+            element.style.padding = '8px 15px';
+            element.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+            element.style.color = '#00ffcc';
+            element.style.textAlign = 'center';
+            element.style.zIndex = '1000';
+            element.style.opacity = '0'; // Start with fade-in effect
+            element.style.transition = 'opacity 0.5s ease-in-out';
+            element.style.width = 'auto';
+            element.style.maxWidth = '80%';
+            element.style.cursor = 'pointer'; // Indicate it's clickable
+        }
+
+        function addEventListeners() {
+            if (eventListenersInitialized) {
+                return; // Exit if event listeners are already added
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                document.body.addEventListener('click', bodyClickEventHandler1);
+                document.body.addEventListener('click', bodyClickEventHandler2);
             });
 
-            function showNotification2(message, elementId) {
-                let popup2 = document.getElementById(elementId);
-                if (!popup2) {
-                    popup2 = document.createElement('div');
-                    popup2.id = elementId;
-                    document.body.appendChild(popup2);
-                    applyStyles2(popup2);
-                }
+            eventListenersInitialized = true; // Mark that event listeners have been added
+        }
 
-                popup2.textContent = message;
-                popup2.style.display = 'block';
-                popup2.style.opacity = 1;
-                isNotificationVisible = true;  // Set visibility to true
-
-                setTimeout(() => {
-                    popup2.style.opacity = 0;
-                    setTimeout(() => {
-                        popup2.style.display = 'none';
-                        console.log('Notification hidden');
-                        isNotificationVisible = false; // Set visibility to false after hiding
-                        clickCount = 0; // Reset click count here too, to be safe
-                    }, 500);
-                }, 2500); // 10 seconds to allow for a second click
+        function removeEventListeners() {
+            if (!eventListenersInitialized) {
+                return; // Exit if event listeners are not added
             }
 
-            function applyStyles2(element) {
-                element.style.position = 'fixed';
-                element.style.bottom = '50%';
-                element.style.left = '50%';
-                element.style.transform = 'translateX(-50%) translateY(-50%)';
-                element.style.fontFamily = 'JetBrainsMono-Bold, sans-serif';
-                element.style.fontSize = '16px';
-                element.style.border = '2px solid #00ffcc';
-                element.style.borderRadius = '20px';
-                element.style.padding = '8px 15px';
-                element.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-                element.style.color = '#00ffcc';
-                element.style.textAlign = 'center';
-                element.style.zIndex = '1000';
-                element.style.opacity = '0'; // Start with fade-in effect
-                element.style.transition = 'opacity 0.5s ease-in-out';
-                element.style.width = 'auto';
-                element.style.maxWidth = '80%';
-                element.style.cursor = 'pointer'; // Indicate it's clickable
-            }
-        });
+            document.body.removeEventListener('click', bodyClickEventHandler1);
+            document.body.removeEventListener('click', bodyClickEventHandler2);
+            eventListenersInitialized = false; // Reset the flag
+        }
 
 
+
+        
 
 
         function removeButtonOverlay() {
