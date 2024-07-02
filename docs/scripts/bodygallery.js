@@ -1616,12 +1616,10 @@ const galleryHTML = `
             }
         }
 
-        let textInfoListenerAdded = false; // Flag to ensure the listener is added only once
-        let hoverEffectListenerAdded = false; // Flag to ensure the listener is added only once
-
         document.addEventListener('DOMContentLoaded', function() {
-            // Attach the click event listener to the #text-info2 element
-            if (!textInfoListenerAdded) {
+            if (!window.listenersAdded) {
+                window.listenersAdded = true;
+
                 document.body.addEventListener('click', function(event) {
                     if (textInfoVisible) { // Check if actions should be taken
                         if (event.target.closest('#text-info2')) {
@@ -1644,16 +1642,10 @@ const galleryHTML = `
                             }
                         }
                     }
-                });
-                textInfoListenerAdded = true; // Set flag to true after adding the listener
-            }
 
-            // Attach the click event listener to the #hover-effect-wrapper element
-            if (!hoverEffectListenerAdded) {
-                let clickCount = 0; // Initialize clickCount here, outside any function
-                let isNotificationVisible = false; // Track whether the notification is visible
+                    let clickCount = 0; // Initialize clickCount here, outside any function
+                    let isNotificationVisible = false; // Track whether the notification is visible
 
-                document.body.addEventListener('click', function(event) {
                     if (event.target.closest('#hover-effect-wrapper')) {
                         clickCount++;  // Increment the click count on each click within the wrapper
 
@@ -1682,14 +1674,12 @@ const galleryHTML = `
                         clickCount = 0;
                     }
                 });
-                hoverEffectListenerAdded = true; // Set flag to true after adding the listener
             }
         });
 
         function showNotification(message) {
             let popup = document.getElementById('notification-popup');
             if (!popup) {
-                //console.log('Creating new notification popup');
                 popup = document.createElement('div');
                 popup.id = 'notification-popup';
                 document.body.appendChild(popup);
@@ -1700,14 +1690,10 @@ const galleryHTML = `
             popup.style.display = 'block';
             popup.style.opacity = 1;
 
-            //console.log('Notification should now be visible');
-
             setTimeout(() => {
                 popup.style.opacity = 0;
-                //console.log('Fading out notification');
                 setTimeout(() => {
                     popup.style.display = 'none';
-                    //console.log('Notification hidden');
                 }, 500);
             }, 3000);
         }
@@ -1778,8 +1764,6 @@ const galleryHTML = `
             element.style.maxWidth = '80%';
             element.style.cursor = 'pointer'; // Indicate it's clickable
         }
-
-
 
 
 
