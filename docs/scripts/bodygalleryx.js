@@ -144,7 +144,8 @@ const galleryHTML = `
             }
         }
 
-
+        window.handleGalleryResize = handleGalleryResize;
+        
         function handleGalleryResize() {
             // Determine the orientation and set variableori
             let variableori;
