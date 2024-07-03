@@ -3094,5 +3094,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "59574111548"
+    },
+    "94636233546.jpg": {
+        "File Name": "94636233546.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man weaving intricate tattoos on an avatar) in a cyberpunk parlor. The room, adorned with [floating holographic 1.0] talismans and ethereal sigils, pulses with [soft ambient 1.0] light. The tattoos come alive, dancing and reshaping, representing a [fluid dynamic 0.9] form of art. The backdrop, filled with arrays of [vivid glowing 0.9] colors, sets a [hypnotic mesmerizing 0.8] atmosphere, a testament to the fusion of tradition and future. High in a realm where the skies tell stories of aeons past, HogeAI man soars among clouds that are canvases for celestial narratives. This sky kingdom, where each cloud formation is a chapter in a cosmic saga, is a place of tranquility and awe. The air is crisp with the essence of creation, carrying the scent of stardust and the echoes of cosmic events. As HogeAI glides through this aerial domain, he encounters cloud beings, each a ...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "94636233546"
     }
 }
