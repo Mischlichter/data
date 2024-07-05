@@ -36,6 +36,7 @@
         function fetchImages() {
             imagePaths.forEach(path => {
                 const img = new Image();
+                img.crossOrigin = "Anonymous"; // Enable cross-origin requests
                 img.src = imageFolderUrl + path;
                 img.onload = () => {
                     imagesLoaded.push(img);
@@ -80,7 +81,13 @@
 
         function placeRandomImage() {
             const img = imagesLoaded[Math.floor(Math.random() * imagesLoaded.length)];
-            const bounds = getAlphaBounds(img);
+            let bounds;
+            try {
+                bounds = getAlphaBounds(img);
+            } catch (e) {
+                console.error("Unable to get alpha bounds:", e);
+                bounds = { minX: 0, maxX: img.width, minY: 0, maxY: img.height };
+            }
             const imgElement = document.createElement('img');
             imgElement.src = img.src;
             imgElement.style.position = 'absolute';
