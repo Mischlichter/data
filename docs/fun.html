@@ -18,6 +18,109 @@
 </head>
 <body>
     <div id="collage-container"></div>
-    <script src="collage.js"></script>
+    <script>
+        const collageContainer = document.getElementById('collage-container');
+        const imageFolderUrl = 'https://raw.githubusercontent.com/Mischlichter/data/main/fun/';
+        const imagePaths = [
+            '2024-02-18%2019.54.52.png',
+            // Add more image paths here
+        ];
+
+        let imagesLoaded = [];
+        let collageWidth = window.innerWidth;
+        let collageHeight = window.innerHeight;
+        let offsetX = 0;
+        let offsetY = 0;
+        const margin = 25;
+
+        function fetchImages() {
+            imagePaths.forEach(path => {
+                const img = new Image();
+                img.src = imageFolderUrl + path;
+                img.onload = () => {
+                    imagesLoaded.push(img);
+                    if (imagesLoaded.length === imagePaths.length) {
+                        initializeCollage();
+                    }
+                };
+            });
+        }
+
+        function initializeCollage() {
+            for (let i = 0; i < 100; i++) { // Load initial set of images
+                placeRandomImage();
+            }
+            window.addEventListener('scroll', handleScroll);
+        }
+
+        function getAlphaBounds(img) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+
+            const imageData = ctx.getImageData(0, 0, img.width, img.height);
+            const data = imageData.data;
+            let minX = img.width, maxX = 0, minY = img.height, maxY = 0;
+
+            for (let y = 0; y < img.height; y++) {
+                for (let x = 0; x < img.width; x++) {
+                    const alpha = data[(y * img.width + x) * 4 + 3];
+                    if (alpha > 0) {
+                        if (x < minX) minX = x;
+                        if (x > maxX) maxX = x;
+                        if (y < minY) minY = y;
+                        if (y > maxY) maxY = y;
+                    }
+                }
+            }
+            return { minX, maxX, minY, maxY };
+        }
+
+        function placeRandomImage() {
+            const img = imagesLoaded[Math.floor(Math.random() * imagesLoaded.length)];
+            const bounds = getAlphaBounds(img);
+            const imgElement = document.createElement('img');
+            imgElement.src = img.src;
+            imgElement.style.position = 'absolute';
+            imgElement.style.left = `${Math.random() * (collageWidth - (bounds.maxX - bounds.minX)) + offsetX + bounds.minX}px`;
+            imgElement.style.top = `${Math.random() * (collageHeight - (bounds.maxY - bounds.minY)) + offsetY + bounds.minY}px`;
+            collageContainer.appendChild(imgElement);
+        }
+
+        function handleScroll() {
+            const scrollX = window.scrollX;
+            const scrollY = window.scrollY;
+
+            if (scrollX + window.innerWidth >= collageWidth) {
+                offsetX += window.innerWidth;
+                collageWidth += window.innerWidth;
+                for (let i = 0; i < 10; i++) {
+                    placeRandomImage();
+                }
+            }
+            if (scrollY + window.innerHeight >= collageHeight) {
+                offsetY += window.innerHeight;
+                collageHeight += window.innerHeight;
+                for (let i = 0; i < 10; i++) {
+                    placeRandomImage();
+                }
+            }
+
+            // Remove out of viewport images
+            const images = document.querySelectorAll('#collage-container img');
+            images.forEach(img => {
+                const rect = img.getBoundingClientRect();
+                if (rect.right < -window.innerWidth || rect.left > 2 * window.innerWidth ||
+                    rect.bottom < -window.innerHeight || rect.top > 2 * window.innerHeight) {
+                    img.remove();
+                }
+            });
+        }
+
+        // Initial fetch
+        fetchImages();
+    </script>
 </body>
 </html>
