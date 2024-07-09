@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Bubble View</title>
     <style>
         body, html {
@@ -20,14 +21,14 @@
 <body>
     <canvas id="canvas"></canvas>
     <script type="module">
-        import { Renderer, Camera, Transform, Program, Mesh, Sphere, Vec3, Orbit } from 'https://cdn.skypack.dev/ogl';
+        import { Renderer, Camera, Transform, Program, Mesh, Sphere, Vec3 } from 'https://cdn.skypack.dev/ogl';
 
         let canvas, renderer, camera, scene, gl;
         let bubbles = [];
-        const bubbleCount = 25;
-        const maxBubbleRadius = 2;
-        const minBubbleRadius = 1;
-        const growthRate = 0.01;
+        const maxBubbles = 50;
+        const bubbleSizes = [0.382, 0.5, 0.618]; // Specific sizes
+        const initialGrowthRate = 0.01;
+        const collisionDampingFactor = 0.95; // Reduce growth rate by 5% on collision
 
         function init() {
             canvas = document.getElementById('canvas');
@@ -59,9 +60,7 @@
             console.log(`Camera view size: ${camera.viewWidth}x${camera.viewHeight}`);
         }
 
-        function createBubble() {
-            const radius = Math.random() * (maxBubbleRadius - minBubbleRadius) + minBubbleRadius;
-
+        function createBubble(radius) {
             const program = new Program(gl, {
                 vertex: `
                     attribute vec3 position;
@@ -88,22 +87,38 @@
                 program,
             });
 
-            mesh.position.set(
-                (Math.random() - 0.5) * 20,
-                (Math.random() - 0.5) * 20,
-                0
-            );
-            mesh.velocity = new Vec3(Math.random() * 0.1 - 0.05, Math.random() * 0.1 - 0.05, 0);
+            let position;
+            let collision;
+            const maxAttempts = 1000;  // Prevent infinite loops
+            let attempts = 0;
+            do {
+                position = new Vec3(
+                    (Math.random() - 0.5) * 40,
+                    (Math.random() - 0.5) * 40,
+                    0
+                );
+                collision = false;
+                for (let bubble of bubbles) {
+                    if (bubble.position.distance(position) < bubble.radius + radius + 1) {
+                        collision = true;
+                        break;
+                    }
+                }
+                attempts++;
+            } while (collision && attempts < maxAttempts);
 
+            mesh.position.copy(position);
             mesh.radius = radius;
-            mesh.growthRate = Math.random() * growthRate;
+            mesh.growthRate = initialGrowthRate;
+            mesh.velocity = new Vec3(0, 0, 0); // Ensure velocity is initialized
             mesh.setParent(scene);
             return mesh;
         }
 
         function createBubbles() {
-            while (bubbles.length < bubbleCount) {
-                bubbles.push(createBubble());
+            for (let i = 0; i < maxBubbles; i++) {
+                const radius = bubbleSizes[i % bubbleSizes.length];
+                bubbles.push(createBubble(radius));
             }
         }
 
@@ -114,16 +129,12 @@
             bubbles.forEach((bubble1) => {
                 // Grow the bubble
                 bubble1.radius += bubble1.growthRate;
-                if (bubble1.radius > maxBubbleRadius) {
-                    bubble1.radius = maxBubbleRadius;
-                }
-                if (bubble1.radius < minBubbleRadius) {
-                    bubble1.radius = minBubbleRadius;
+                if (bubble1.radius > maxBubbles) {
+                    bubble1.radius = maxBubbles;
                 }
 
                 bubble1.scale.set(bubble1.radius, bubble1.radius, bubble1.radius);
 
-                // Apply velocity to move the bubble
                 bubble1.position.add(bubble1.velocity);
 
                 // Bounce off walls
@@ -148,7 +159,7 @@
                 bubbles.forEach(bubble2 => {
                     if (bubble1 !== bubble2) {
                         const dist = bubble1.position.distance(bubble2.position);
-                        const minDist = bubble1.radius + bubble2.radius;
+                        const minDist = bubble1.radius + bubble2.radius + 1; // Add margin
                         if (dist < minDist) {
                             const overlap = minDist - dist;
                             const direction = bubble1.position.clone().sub(bubble2.position).normalize();
@@ -158,6 +169,10 @@
                             // Adjust velocities for a more dynamic interaction
                             bubble1.velocity.add(direction.clone().multiply(0.01));
                             bubble2.velocity.sub(direction.clone().multiply(0.01));
+
+                            // Reduce growth rate on collision
+                            bubble1.growthRate *= collisionDampingFactor;
+                            bubble2.growthRate *= collisionDampingFactor;
                         }
                     }
                 });
