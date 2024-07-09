@@ -41,7 +41,7 @@
                 const img = new Image();
                 img.crossOrigin = "anonymous"; // Enable CORS
                 img.onload = () => resolve(new Texture(gl, { image: img }));
-                img.src = `https://cors-anywhere.herokuapp.com/${url}`; // Use proxy to handle CORS
+                img.src = url;
             });
         }
 
@@ -55,7 +55,7 @@
             window.addEventListener('resize', onWindowResize, false);
             canvas.addEventListener('mousemove', onMouseMove, false);
             onWindowResize();
-            imageTexture = await loadTexture('https://raw.githubusercontent.com/Mischlichter/data/main/docs/android-chrome-192x192.png');
+            imageTexture = await loadTexture('https://www.hogeai.com/android-chrome-192x192.png');
             createBubbles();
             render();
         }
