@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Bubble View</title>
+    <style>
+        body, html {
+            margin: 0;
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script type="module">
+        import { Renderer, Camera, Transform, Program, Mesh, Sphere, Vec3, Texture, Plane } from 'https://cdn.skypack.dev/ogl';
+
+        let canvas, renderer, camera, scene, gl;
+        let bubbles = [];
+        const maxBubbles = 50;
+        const bubbleSizes = [0.236, 0.5, 0.768]; // Specific sizes
+        const initialGrowthRate = 0.01;
+        const collisionDampingFactor = 0.95; // Reduce growth rate by 5% on collision
+        const maxHoverGrowthFactor = 0.01; // Maximum size increase factor on hover
+        const minBubbleSize = 3; // Minimum size for bubbles
+        const maxBubbleSize = 11; // Maximum size for bubbles
+        const forceAdjustmentFactor = 1; // Adjust this factor to scale the force applied during collisions
+        let hoverBubble = null;
+        let imageTexture;
+
+        async function loadTexture(url) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.crossOrigin = "anonymous"; // Enable CORS
+                img.onload = () => resolve(new Texture(gl, { image: img }));
+                img.src = url;
+            });
+        }
+
+        async function init() {
+            canvas = document.getElementById('canvas');
+            renderer = new Renderer({ canvas });
+            gl = renderer.gl;
+            camera = new Camera(gl, { fov: 45, aspect: window.innerWidth / window.innerHeight, near: 0.1, far: 100 });
+            camera.position.set(0, 0, 50);
+            scene = new Transform();
+            window.addEventListener('resize', onWindowResize, false);
+            canvas.addEventListener('mousemove', onMouseMove, false);
+            onWindowResize();
+            imageTexture = await loadTexture('https://www.hogeai.com/android-chrome-192x192.png');
+            createBubbles();
+            render();
+        }
+
+        function onWindowResize() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            renderer.setSize(width, height);
+            camera.perspective({ aspect: width / height });
+
+            // Calculate the view size at the near plane
+            const frustumHeight = 2.0 * Math.tan(camera.fov * 0.5 * Math.PI / 180) * camera.position.z;
+            const frustumWidth = frustumHeight * camera.aspect;
+            camera.viewWidth = frustumWidth;
+            camera.viewHeight = frustumHeight;
+        }
+
+        function createBubble(radius) {
+            const planeProgram = new Program(gl, {
+                vertex: `
+                    attribute vec3 position;
+                    attribute vec2 uv;
+                    uniform mat4 modelViewMatrix;
+                    uniform mat4 projectionMatrix;
+                    varying vec2 vUv;
+                    void main() {
+                        vUv = uv;
+                        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                    }
+                `,
+                fragment: `
+                    precision highp float;
+                    uniform sampler2D tMap;
+                    varying vec2 vUv;
+                    void main() {
+                        gl_FragColor = texture2D(tMap, vUv);
+                    }
+                `,
+                uniforms: {
+                    tMap: { value: imageTexture },
+                },
+            });
+
+            const plane = new Mesh(gl, {
+                geometry: new Plane(gl, { width: 2 * radius, height: 2 * radius }),
+                program: planeProgram,
+            });
+
+            let position;
+            let collision;
+            const maxAttempts = 1000;  // Prevent infinite loops
+            let attempts = 0;
+            do {
+                position = new Vec3(
+                    (Math.random() - 0.5) * 40,
+                    (Math.random() - 0.5) * 40,
+                    0
+                );
+                collision = false;
+                for (let bubble of bubbles) {
+                    if (bubble.position.distance(position) < bubble.radius + radius + 1) {
+                        collision = true;
+                        break;
+                    }
+                }
+                attempts++;
+            } while (collision && attempts < maxAttempts);
+
+            plane.position.copy(position);
+            plane.radius = radius;
+            plane.growthRate = initialGrowthRate;
+            plane.hoverGrowth = 0; // Initialize hover growth factor
+            plane.velocity = new Vec3(0, 0, 0); // Ensure velocity is initialized
+            plane.setParent(scene);
+            return plane;
+        }
+
+        function createBubbles() {
+            for (let i = 0; i < maxBubbles; i++) {
+                const radius = bubbleSizes[i % bubbleSizes.length];
+                bubbles.push(createBubble(radius));
+            }
+        }
+
+        function updateBubbles() {
+            const halfViewWidth = camera.viewWidth / 2;
+            const halfViewHeight = camera.viewHeight / 2;
+
+            bubbles.forEach((bubble1) => {
+                // Update the bubble size with the current growth rate and hover growth
+                bubble1.radius = Math.min(Math.max(bubble1.radius + bubble1.growthRate + bubble1.hoverGrowth, minBubbleSize), maxBubbleSize);
+                bubble1.scale.set(bubble1.radius, bubble1.radius, bubble1.radius);
+
+                // Reset growth rate if bubble reaches minimum size
+                if (bubble1.radius <= minBubbleSize) {
+                    bubble1.growthRate = initialGrowthRate;
+                }
+
+                bubble1.position.add(bubble1.velocity);
+
+                // Bounce off walls
+                if (bubble1.position.x + bubble1.radius > halfViewWidth) {
+                    bubble1.position.x = halfViewWidth - bubble1.radius;
+                    bubble1.velocity.x *= -1;
+                }
+                if (bubble1.position.x - bubble1.radius < -halfViewWidth) {
+                    bubble1.position.x = -halfViewWidth + bubble1.radius;
+                    bubble1.velocity.x *= -1;
+                }
+                if (bubble1.position.y + bubble1.radius > halfViewHeight) {
+                    bubble1.position.y = halfViewHeight - bubble1.radius;
+                    bubble1.velocity.y *= -1;
+                }
+                if (bubble1.position.y - bubble1.radius < -halfViewHeight) {
+                    bubble1.position.y = -halfViewHeight + bubble1.radius;
+                    bubble1.velocity.y *= -1;
+                }
+
+                // Avoid overlapping
+                bubbles.forEach(bubble2 => {
+                    if (bubble1 !== bubble2) {
+                        const dist = bubble1.position.distance(bubble2.position);
+                        const minDist = bubble1.radius + bubble2.radius + 1; // Add margin
+                        if (dist < minDist) {
+                            const overlap = minDist - dist;
+                            const direction = bubble1.position.clone().sub(bubble2.position).normalize();
+                            const force = overlap / 2 * forceAdjustmentFactor;
+                            bubble1.position.add(direction.clone().multiply(force));
+                            bubble2.position.sub(direction.clone().multiply(force));
+
+                            // Adjust velocities for a more dynamic interaction
+                            bubble1.velocity.add(direction.clone().multiply(force));
+                            bubble2.velocity.sub(direction.clone().multiply(force));
+
+                            // Reduce growth rate on collision
+                            bubble1.growthRate *= collisionDampingFactor;
+                            bubble2.growthRate *= collisionDampingFactor;
+                        }
+                    }
+                });
+            });
+        }
+
+        function onMouseMove(e) {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = (e.clientX - rect.left) / rect.width * 2 - 1;
+            const mouseY = -(e.clientY - rect.top) / rect.height * 2 + 1;
+            const mouse = new Vec3(mouseX * camera.viewWidth / 2, mouseY * camera.viewHeight / 2, 0);
+
+            // Find the bubble closest to the mouse
+            let closestBubble = null;
+            let minDistance = Infinity;
+            bubbles.forEach(bubble => {
+                const distance = mouse.distance(bubble.position);
+                if (distance < bubble.radius && distance < minDistance) {
+                    minDistance = distance;
+                    closestBubble = bubble;
+                }
+            });
+
+            // Reset hover growth for all bubbles
+            bubbles.forEach(bubble => {
+                bubble.hoverGrowth = 0;
+            });
+
+            // Apply the hover growth factor based on proximity to the center of the hovered bubble
+            if (closestBubble && minDistance < closestBubble.radius) {
+                const proximityFactor = 1 - (minDistance / closestBubble.radius);
+                closestBubble.hoverGrowth = proximityFactor * maxHoverGrowthFactor;
+
+                // Calculate total shrink amount for other bubbles
+                const totalShrink = closestBubble.hoverGrowth * (bubbles.length - 1);
+                let canGrow = true;
+                bubbles.forEach(bubble => {
+                    if (bubble !== closestBubble && bubble.radius <= minBubbleSize) {
+                        canGrow = false;
+                    }
+                });
+
+                if (canGrow) {
+                    bubbles.forEach(bubble => {
+                        if (bubble !== closestBubble) {
+                            bubble.hoverGrowth = -totalShrink / (bubbles.length - 1);
+                        }
+                    });
+                } else {
+                    closestBubble.hoverGrowth = 0;
+                }
+            } else {
+                hoverBubble = null;
+            }
+        }
+
+        function render() {
+            updateBubbles();
+            renderer.render({ scene, camera });
+            requestAnimationFrame(render);
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
