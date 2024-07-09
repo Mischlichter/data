@@ -35,17 +35,33 @@
         const maxBubbleSize = 11; // Maximum size for bubbles
         const forceAdjustmentFactor = 1; // Adjust this factor to scale the force applied during collisions
         let hoverBubble = null;
-        let imageTexture;
         let targetBubbleCount = baseMaxBubbles; // Target number of bubbles
         const adjustSpeed = 1; // Number of bubbles to add/remove per frame
         const textureScale = 1.2; // Adjustment variable for texture size
+        const videoUrls = ['https://www.hogeai.com/coingold.webm']; // Array of video URLs
 
-        async function loadTexture(url) {
+        function createRandomVideoTexture(url) {
             return new Promise((resolve) => {
-                const img = new Image();
-                img.crossOrigin = "anonymous"; // Enable CORS
-                img.onload = () => resolve(new Texture(gl, { image: img, premultiplyAlpha: true }));
-                img.src = url;
+                const video = document.createElement('video');
+                video.crossOrigin = "anonymous"; // Enable CORS
+                video.src = url;
+                video.loop = true;
+                video.muted = true;
+                video.autoplay = true;
+
+                video.addEventListener('loadedmetadata', () => {
+                    video.currentTime = Math.random() * video.duration; // Start at random position
+                });
+
+                video.play();
+                video.oncanplay = () => {
+                    const texture = new Texture(gl, {
+                        image: video,
+                        generateMipmaps: false,
+                        premultiplyAlpha: true
+                    });
+                    resolve({ video, texture });
+                };
             });
         }
 
@@ -59,8 +75,7 @@
             window.addEventListener('resize', onWindowResize, false);
             canvas.addEventListener('mousemove', onMouseMove, false);
             onWindowResize();
-            imageTexture = await loadTexture('https://www.hogeai.com/android-chrome-192x192.png');
-            createInitialBubbles();
+            await createInitialBubbles();
             render();
         }
 
@@ -93,7 +108,8 @@
             return bubbleSizes[0]; // Fallback in case of an error
         }
 
-        function createBubble(radius) {
+        async function createBubble(radius) {
+            const { video, texture } = await createRandomVideoTexture(videoUrls[0]);
             const planeProgram = new Program(gl, {
                 vertex: `
                     attribute vec3 position;
@@ -116,7 +132,7 @@
                     }
                 `,
                 uniforms: {
-                    tMap: { value: imageTexture },
+                    tMap: { value: texture },
                 },
                 transparent: true
             });
@@ -151,15 +167,17 @@
             plane.growthRate = initialGrowthRate;
             plane.hoverGrowth = 0; // Initialize hover growth factor
             plane.velocity = new Vec3(0, 0, 0); // Ensure velocity is initialized
+            plane.video = video; // Save the video element for texture updates
+            plane.texture = texture; // Save the texture for updates
             plane.setParent(scene);
             return plane;
         }
 
-        function createInitialBubbles() {
+        async function createInitialBubbles() {
             const initialCount = Math.round(baseMaxBubbles * (window.innerWidth * window.innerHeight) / (1920 * 1080));
             for (let i = 0; i < initialCount; i++) {
                 const radius = weightedRandom();
-                bubbles.push(createBubble(radius));
+                bubbles.push(await createBubble(radius));
             }
         }
 
@@ -172,7 +190,9 @@
             } else if (bubbles.length < targetBubbleCount) {
                 for (let i = 0; i < adjustSpeed && bubbles.length < targetBubbleCount; i++) {
                     const radius = weightedRandom();
-                    bubbles.push(createBubble(radius));
+                    createBubble(radius).then(bubble => {
+                        bubbles.push(bubble);
+                    });
                 }
             }
         }
@@ -291,6 +311,15 @@
         function render() {
             gl.clearColor(0, 0, 0, 1); // Set the clear color to black
             gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); // Clear the canvas with the specified clear color
+
+            // Update video textures
+            bubbles.forEach(bubble => {
+                if (bubble.texture && bubble.video.readyState >= bubble.video.HAVE_CURRENT_DATA) {
+                    bubble.texture.image = bubble.video;
+                    bubble.texture.needsUpdate = true;
+                }
+            });
+
             updateBubbles();
             renderer.render({ scene, camera });
             requestAnimationFrame(render);
