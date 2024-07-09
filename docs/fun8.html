@@ -21,7 +21,7 @@
 <body>
     <canvas id="canvas"></canvas>
     <script type="module">
-        import { Renderer, Camera, Transform, Program, Mesh, Sphere, Vec3, Texture, Plane } from 'https://cdn.skypack.dev/ogl';
+        import { Renderer, Camera, Transform, Program, Mesh, Vec3, Texture, Plane, Quat, Mat4 } from 'https://cdn.skypack.dev/ogl';
 
         let canvas, renderer, camera, scene, gl;
         let bubbles = [];
@@ -96,6 +96,7 @@
                 `,
                 uniforms: {
                     tMap: { value: imageTexture },
+                    modelViewMatrix: { value: new Mat4() }
                 },
             });
 
@@ -129,6 +130,11 @@
             plane.growthRate = initialGrowthRate;
             plane.hoverGrowth = 0; // Initialize hover growth factor
             plane.velocity = new Vec3(0, 0, 0); // Ensure velocity is initialized
+
+            // Initialize rotation and rotation speed
+            plane.rotation = Math.random() * 2 * Math.PI; // Random initial rotation
+            plane.rotationSpeed = (Math.random() - 0.5) * 0.02; // Gentle random rotation speed
+
             plane.setParent(scene);
             return plane;
         }
@@ -156,22 +162,35 @@
 
                 bubble1.position.add(bubble1.velocity);
 
+                // Update rotation
+                bubble1.rotation += bubble1.rotationSpeed;
+                const rotationQuat = new Quat().fromEuler(0, 0, bubble1.rotation);
+                const modelViewMatrix = new Mat4().compose(bubble1.position, rotationQuat, bubble1.scale);
+
+                // Apply transformation explicitly
+                bubble1.program.uniforms.modelViewMatrix.value = modelViewMatrix;
+                bubble1.program.uniforms.modelViewMatrix.needsUpdate = true;
+
                 // Bounce off walls
                 if (bubble1.position.x + bubble1.radius > halfViewWidth) {
                     bubble1.position.x = halfViewWidth - bubble1.radius;
                     bubble1.velocity.x *= -1;
+                    bubble1.rotationSpeed *= -1; // Influence rotation on collision
                 }
                 if (bubble1.position.x - bubble1.radius < -halfViewWidth) {
                     bubble1.position.x = -halfViewWidth + bubble1.radius;
                     bubble1.velocity.x *= -1;
+                    bubble1.rotationSpeed *= -1; // Influence rotation on collision
                 }
                 if (bubble1.position.y + bubble1.radius > halfViewHeight) {
                     bubble1.position.y = halfViewHeight - bubble1.radius;
                     bubble1.velocity.y *= -1;
+                    bubble1.rotationSpeed *= -1; // Influence rotation on collision
                 }
                 if (bubble1.position.y - bubble1.radius < -halfViewHeight) {
                     bubble1.position.y = -halfViewHeight + bubble1.radius;
                     bubble1.velocity.y *= -1;
+                    bubble1.rotationSpeed *= -1; // Influence rotation on collision
                 }
 
                 // Avoid overlapping
@@ -193,11 +212,19 @@
                             // Reduce growth rate on collision
                             bubble1.growthRate *= collisionDampingFactor;
                             bubble2.growthRate *= collisionDampingFactor;
+
+                            // Influence rotation on collision
+                            const forceVector = direction.clone().multiply(force);
+                            const forceLength = forceVector.len(); // Corrected to use len() method
+                            bubble1.rotationSpeed += forceLength * 0.01;
+                            bubble2.rotationSpeed -= forceLength * 0.01;
                         }
                     }
                 });
             });
         }
+
+
 
         function onMouseMove(e) {
             const rect = canvas.getBoundingClientRect();
