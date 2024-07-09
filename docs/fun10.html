@@ -69,6 +69,8 @@
             canvas = document.getElementById('canvas');
             renderer = new Renderer({ canvas, alpha: true, premultipliedAlpha: true });
             gl = renderer.gl;
+            gl.enable(gl.BLEND);
+            gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA); // Enable alpha blending
             camera = new Camera(gl, { fov: 45, aspect: window.innerWidth / window.innerHeight, near: 0.1, far: 100 });
             camera.position.set(0, 0, 50);
             scene = new Transform();
