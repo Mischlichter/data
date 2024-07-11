@@ -100,22 +100,22 @@
         }
 
         async function loadGifTexture(url) {
-            return new Promise((resolve) => {
-                const gifCanvas = document.createElement('canvas');
-                const ctx = gifCanvas.getContext('2d');
-                gifler(url).animate(gifCanvas, {
-                    autoPlay: true,
-                    loop: true,
-                    onDraw: (ctx, frame) => {
-                        gifCanvas.width = frame.width;
-                        gifCanvas.height = frame.height;
-                        ctx.clearRect(0, 0, gifCanvas.width, gifCanvas.height);
-                        ctx.drawImage(frame.buffer, 0, 0);
-                    }
-                });
-                resolve(gifCanvas);
+            const randomQuery = `?${Math.random()}`;
+            const gifCanvas = document.createElement('canvas');
+            const ctx = gifCanvas.getContext('2d');
+            gifler(url + randomQuery).animate(gifCanvas, {
+                autoPlay: true,
+                loop: true,
+                onDraw: (ctx, frame) => {
+                    gifCanvas.width = frame.width;
+                    gifCanvas.height = frame.height;
+                    ctx.clearRect(0, 0, gifCanvas.width, gifCanvas.height);
+                    ctx.drawImage(frame.buffer, 0, 0);
+                }
             });
+            return gifCanvas;
         }
+
 
         async function init() {
             await fetchQuotes();
