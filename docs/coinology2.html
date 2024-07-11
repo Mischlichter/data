@@ -21,52 +21,45 @@
 </head>
 <body>
     <canvas id="canvas"></canvas>
+    <script src="./scripts/gifler.min.js"></script>
     <script type="module">
         import { Renderer, Camera, Transform, Program, Mesh, Vec3, Texture, Plane } from 'https://cdn.skypack.dev/ogl';
 
         let canvas, renderer, camera, scene, gl;
         let bubbles = [];
-        const baseMaxBubbles = 40; // Base number of bubbles for 1920x1080 resolution
+        const baseMaxBubbles = 60; // Base number of bubbles for 1920x1080 resolution
         const bubbleSizes = [0.236, 0.368, 0.5, 0.618, 0.768, 1]; // Specific sizes
         const bubbleWeights = [21, 13, 8, 5, 3, 2]; // Weights based on Fibonacci sequence
         const initialGrowthRate = 0.01;
         const collisionDampingFactor = 0.95; // Reduce growth rate by 5% on collision
         const maxHoverGrowthFactor = 0.01; // Maximum size increase factor on hover
-        const minBubbleSize = 4; // Minimum size for bubbles
+        const minBubbleSize = 3; // Minimum size for bubbles
         const maxBubbleSize = 15; // Maximum size for bubbles
         const forceAdjustmentFactor = 1; // Adjust this factor to scale the force applied during collisions
         const mouseForceFactor = 0.01; // Force applied by mouse movement
         let hoverBubble = null;
-        let textures = [];
         let targetBubbleCount = baseMaxBubbles; // Target number of bubbles
         const adjustSpeed = 1; // Number of bubbles to add/remove per frame
-        const textureScale = 2; // Adjustment variable for texture size
+        const textureScale = 1.2; // Adjustment variable for texture size
+        const gifUrl = 'https://www.hogeai.com/coingold.gif'; // URL of the gif
         let lastMousePosition = new Vec3(); // To track the last mouse position
 
-        async function fetchImageUrlsFromGitHub() {
-            const response = await fetch('https://api.github.com/repos/Mischlichter/data/contents/fun');
-            const files = await response.json();
-            return files.filter(file => file.name.endsWith('.png')).map(file => file.download_url);
-        }
-
-        async function loadTextures(urls) {
-            return Promise.all(urls.map(url => {
-                return new Promise((resolve) => {
-                    const img = new Image();
-                    img.crossOrigin = "anonymous"; // Enable CORS
-                    img.onload = () => {
-                        // Create a canvas to scale the image
-                        const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
-                        const aspectRatio = img.width / img.height;
-                        canvas.width = aspectRatio * 512;
-                        canvas.height = 512;
-                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        resolve(new Texture(gl, { image: canvas }));
-                    };
-                    img.src = url;
+        async function loadGifTexture(url) {
+            return new Promise((resolve) => {
+                const gifCanvas = document.createElement('canvas');
+                const ctx = gifCanvas.getContext('2d');
+                gifler(url).animate(gifCanvas, {
+                    autoPlay: true,
+                    loop: true,
+                    onDraw: (ctx, frame) => {
+                        gifCanvas.width = frame.width;
+                        gifCanvas.height = frame.height;
+                        ctx.clearRect(0, 0, gifCanvas.width, gifCanvas.height);
+                        ctx.drawImage(frame.buffer, 0, 0);
+                    }
                 });
-            }));
+                resolve(gifCanvas);
+            });
         }
 
         async function init() {
@@ -81,10 +74,7 @@
             window.addEventListener('resize', onWindowResize, false);
             canvas.addEventListener('mousemove', onMouseMove, false);
             onWindowResize();
-
-            const imageUrls = await fetchImageUrlsFromGitHub();
-            textures = await loadTextures(imageUrls);
-            createInitialBubbles();
+            await createInitialBubbles();
             render();
         }
 
@@ -117,8 +107,14 @@
             return bubbleSizes[0]; // Fallback in case of an error
         }
 
-        function createBubble(radius) {
-            const texture = textures[Math.floor(Math.random() * textures.length)];
+        async function createBubble(radius) {
+            const gifCanvas = await loadGifTexture(gifUrl);
+            const texture = new Texture(gl, {
+                image: gifCanvas,
+                generateMipmaps: false,
+                premultiplyAlpha: false
+            });
+
             const planeProgram = new Program(gl, {
                 vertex: `
                     attribute vec3 position;
@@ -177,16 +173,18 @@
             plane.growthRate = initialGrowthRate;
             plane.hoverGrowth = 0; // Initialize hover growth factor
             plane.velocity = new Vec3(0, 0, 0); // Ensure velocity is initialized
+            plane.gifCanvas = gifCanvas; // Save the canvas for texture updates
+            plane.texture = texture; // Save the texture for updates
             plane.setParent(scene);
 
             return plane;
         }
 
-        function createInitialBubbles() {
+        async function createInitialBubbles() {
             const initialCount = Math.round(baseMaxBubbles * (window.innerWidth * window.innerHeight) / (1920 * 1080));
             for (let i = 0; i < initialCount; i++) {
                 const radius = weightedRandom();
-                bubbles.push(createBubble(radius));
+                bubbles.push(await createBubble(radius));
             }
         }
 
@@ -199,7 +197,9 @@
             } else if (bubbles.length < targetBubbleCount) {
                 for (let i = 0; i < adjustSpeed && bubbles.length < targetBubbleCount; i++) {
                     const radius = weightedRandom();
-                    bubbles.push(createBubble(radius));
+                    createBubble(radius).then(bubble => {
+                        bubbles.push(bubble);
+                    });
                 }
             }
         }
@@ -331,6 +331,14 @@
         function render() {
             gl.clearColor(0, 0, 0, 0); // Set the clear color to transparent
             gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); // Clear the canvas with the specified clear color
+
+            // Update gif textures
+            bubbles.forEach(bubble => {
+                if (bubble.texture) {
+                    bubble.texture.image = bubble.gifCanvas;
+                    bubble.texture.needsUpdate = true;
+                }
+            });
 
             updateBubbles();
             renderer.render({ scene, camera });
