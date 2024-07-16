@@ -3118,5 +3118,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "25646856458"
+    },
+    "72838270291.jpg": {
+        "File Name": "72838270291.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man is chilling, epic illustrtion from mad magazin, intricate details, neon cyberpunk style bedroom",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "72838270291"
     }
 }
