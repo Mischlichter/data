@@ -3126,5 +3126,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "72838270291"
+    },
+    "53328633271.jpg": {
+        "File Name": "53328633271.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "full body portrait (extremely cute white furry hogeai man) has an idea, lamp hanging from the ceiling, a room with many strategy plans on a billboards, pinboard full of notes, screens with graphs that go up, many notes, cute fotos of dogs, intricate office room  centered, extremely detailed fur puppy, high details, detailed, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "53328633271"
     }
 }
