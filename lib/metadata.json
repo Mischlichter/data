@@ -3134,5 +3134,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "53328633271"
+    },
+    "79243230778.jpg": {
+        "File Name": "79243230778.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "HogeAI man drinks coffee,  This sanctuary, a fusion of natural cannabis beauty and digital artistry, radiates with the warmth of glowing cannabis leaves, each imbued with a soft, neon aura. The air is rich with the iconic, earthy fragrance of cannabis, intermingling with synthesized scents to create a hypnotic ambiance. Bioluminescent buds, swaying to the rhythm of ambient melodies, open in mesmerizing patterns that reflect the sacred geometry of nature and the intricate design of technology. Hasselblad photo, chibi hogeai, (extremely enlightened white furry HogeAI man dancing within a psychedelic vortex) spirals of colors expanding and contracting, melodies of the universe playing, bob ross painting in color connection, raytracing, hdr, 8k uhd extremely detailed fur puppy, high details.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "79243230778"
     }
 }
