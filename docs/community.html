@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="COMMUNITY FIRST - An interactive physics-based animation powered by HogeAI.">
+    <meta property="og:title" content="COMMUNITY FIRST">
+    <meta property="og:description" content="An interactive physics-based animation powered by HogeAI.">
+    <meta property="og:image" content="https://www.hogeai.com/fluid.png">
+    <meta property="og:image:secure_url" content="https://www.hogeai.com/fluid.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="600">
+    <meta property="og:image:height" content="400">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="COMMUNITY FIRST">
+    <meta name="twitter:description" content="An interactive physics-based animation powered by HogeAI.">
+    <meta name="twitter:image" content="https://www.hogeai.com/fluid.png">
+    <title>COMMUNITY FIRST</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #000;
+            overflow: hidden;
+        }
+        canvas {
+            border: 1px solid #fff;
+        }
+        .controls {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(34, 34, 34, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+        #logo-container {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 10;
+            text-align: center;
+        }
+        #logo-container img {
+            width: 100px;
+            height: auto;
+        }
+        #logo-container span {
+            display: block;
+            font-family: Helvetica, sans-serif;
+            font-size: 12px;
+            color: white;
+        }
+        input[type="range"] {
+            width: 100%;
+        }
+        .link-container {
+            margin-top: 10px;
+        }
+        .link-container a {
+            color: #31dfcf;
+            text-decoration: none;
+            font-family: Arial, sans-serif;
+        }
+        .link-container a:hover {
+            text-decoration: underline;
+        }
+        .message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 24px;
+            text-align: center;
+            opacity: 1;
+            transition: opacity 1s ease;
+        }
+    </style>
+</head>
+<body>
+    <div id="logo-container">
+        <span>powered by</span>
+        <a href="https://www.hogeai.com" target="_blank">
+            <img src="https://raw.githubusercontent.com/Mischlichter/data/main/interface/logo5ani.gif" alt="Logo">
+        </a>
+    </div>
+    <div class="message">Click to spawn letters.</div>
+    <canvas id="fluidCanvas"></canvas>
+    <div class="controls">
+        <label>Gravity: <input type="range" id="gravity" min="-60" max="60" step="0.1"></label><br>
+        <label>Viscosity: <input type="range" id="viscosity" min="0" max="500" step="1"></label><br>
+        <div class="link-container">
+            <a href="https://hoge.gg/" target="_blank">Join the HOGE community</a>
+        </div>
+    </div>
+    <script>
+        const canvas = document.getElementById('fluidCanvas');
+        const ctx = canvas.getContext('2d');
+        const message = document.querySelector('.message');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        const lettersHOGE = ['H', 'O', 'G', 'E'];
+        const lettersCOMMUNITY = ['C', 'O', 'M', 'M', 'U', 'N', 'I', 'T', 'Y'];
+
+        const moleculePairsHOGE = {
+            'H': { attracts: 'O', dx: 40 },
+            'O': { attracts: 'G', dx: 40 },
+            'G': { attracts: 'E', dx: 40 },
+            'E': { attracts: null, dx: 0 }
+        };
+        
+        const moleculePairsCOMMUNITY = {
+            'C': { attracts: 'O', dx: 40 },
+            'O': { attracts: 'M', dx: 40 },
+            'M': { attracts: 'M', dx: 40 },
+            'M': { attracts: 'U', dx: 40 },
+            'U': { attracts: 'N', dx: 40 },
+            'N': { attracts: 'I', dx: 40 },
+            'I': { attracts: 'T', dx: 40 },
+            'T': { attracts: 'Y', dx: 40 },
+            'Y': { attracts: null, dx: 0 }
+        };
+
+        let lastSpawnTime = 0;
+        const spawnThrottle = 100; // Throttle in milliseconds
+        const maxParticles = 600; // Hardcoded maximum particles
+
+        const gravitySlider = document.getElementById('gravity');
+        const viscositySlider = document.getElementById('viscosity');
+        const margin = 100; // Fixed margin value
+
+        let mouseX = 0;
+        let mouseY = 0;
+        let mouseVX = 0;
+        let mouseVY = 0;
+        let lastMouseX = 0;
+        let lastMouseY = 0;
+
+        const mouseForce = 1.5; // Variable to set the mouse force
+        const initialGravity = -10; // Initial gravity slider position
+        const initialViscosity = 50; // Initial viscosity slider position
+
+        gravitySlider.value = initialGravity;
+        viscositySlider.value = initialViscosity;
+
+        function Particle(x, y, letter, group) {
+            this.x = x;
+            this.y = y;
+            this.vx = 0;
+            this.vy = 0;
+            this.density = 0;
+            this.pressure = 0;
+            this.letter = letter;
+            this.group = group;
+        }
+
+        Particle.prototype.update = function(gravity, viscosity) {
+            this.vy += gravity * 0.04; // Increased the effect of gravity
+            this.vx *= (1 - viscosity * 0.001);
+            this.vy *= (1 - viscosity * 0.001);
+            this.x += this.vx;
+            this.y += this.vy;
+
+            if (this.x > canvas.width) {
+                this.x = canvas.width;
+                this.vx *= -0.5;
+            }
+            if (this.x < 0) {
+                this.x = 0;
+                this.vx *= -0.5;
+            }
+            if (this.y > canvas.height) {
+                this.y = canvas.height;
+                this.vy *= -0.5;
+            }
+            if (this.y < 0) {
+                this.y = 0;
+                this.vy *= -0.5;
+            }
+        }
+
+        function applyMoleculeForce(p1, p2, restLength, strength) {
+            const dx = p2.x - p1.x - restLength;
+            const dy = p2.y - p1.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < 100) { // Apply force only when they are close
+                const force = strength * (1 - distance / 100);
+                const fx = force * (dx / distance);
+                const fy = force * (dy / distance);
+
+                p1.vx += fx;
+                p1.vy += fy;
+                p2.vx -= fx;
+                p2.vy -= fy;
+            }
+        }
+
+        function applyMouseForce(p, mouseX, mouseY, mouseVX, mouseVY, strength) {
+            const dx = p.x - mouseX;
+            const dy = p.y - mouseY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < 100) { // Apply force only when they are close
+                const force = strength * (1 - distance / 100);
+                const fx = force * (dx / distance);
+                const fy = force * (dy / distance);
+
+                p.vx += fx + mouseVX * 0.05; // Apply force based on mouse velocity, reduced strength
+                p.vy += fy + mouseVY * 0.05;
+            }
+        }
+
+        function updateParticles() {
+            const gravity = parseFloat(gravitySlider.value);
+            const viscosity = parseFloat(viscositySlider.value);
+
+            // Limit the number of particles
+            while (particles.length > maxParticles) {
+                particles.shift(); // Remove the oldest particle
+            }
+
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update(gravity, viscosity);
+                applyMouseForce(particles[i], mouseX, mouseY, mouseVX, mouseVY, mouseForce); // Apply mouse force with variable strength
+            }
+
+            // Apply particle interactions and molecule forces
+            for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
+                p.density = 0;
+                p.pressure = 0;
+
+                for (let j = 0; j < particles.length; j++) {
+                    if (i === j) continue;
+                    const q = particles[j];
+                    const dx = p.x - q.x;
+                    const dy = p.y - q.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < margin) {
+                        const densityFactor = 1 - dist / margin;
+                        p.density += densityFactor;
+                        q.density += densityFactor;
+                    }
+
+                    // Apply molecule forces based on specific letter pairs and positions within groups
+                    if (p.group === 'HOGE' && moleculePairsHOGE[p.letter] && moleculePairsHOGE[p.letter].attracts === q.letter) {
+                        applyMoleculeForce(p, q, moleculePairsHOGE[p.letter].dx, 0.5); // Adjust strength as needed
+                    }
+                    if (p.group === 'COMMUNITY' && moleculePairsCOMMUNITY[p.letter] && moleculePairsCOMMUNITY[p.letter].attracts === q.letter) {
+                        applyMoleculeForce(p, q, moleculePairsCOMMUNITY[p.letter].dx, 0.5); // Adjust strength as needed
+                    }
+                }
+
+                p.pressure = p.density - 1;
+
+                for (let j = 0; j < particles.length; j++) {
+                    if (i === j) continue;
+                    const q = particles[j];
+                    const dx = p.x - q.x;
+                    const dy = p.y - q.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < margin) {
+                        const pressureFactor = p.pressure + q.pressure;
+                        const force = pressureFactor * 0.5 * (1 - dist / margin);
+                        p.vx += force * (dx / dist);
+                        p.vy += force * (dy / dist);
+                    }
+                }
+
+                // Apply margin force around the edges of the canvas
+                if (p.x < margin) {
+                    p.vx += (margin - p.x) * 0.1;
+                } else if (p.x > canvas.width - margin) {
+                    p.vx -= (p.x - (canvas.width - margin)) * 0.1;
+                }
+
+                if (p.y < margin) {
+                    p.vy += (margin - p.y) * 0.1;
+                } else if (p.y > canvas.height - margin) {
+                    p.vy -= (p.y - (canvas.height - margin)) * 0.1;
+                }
+            }
+        }
+
+        function drawFluid() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            ctx.font = '20px Arial';
+            for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
+                ctx.fillText(p.letter, p.x, p.y);
+            }
+        }
+
+        function animate() {
+            updateParticles();
+            drawFluid();
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        canvas.addEventListener('mousemove', (event) => {
+            mouseVX = event.clientX - lastMouseX;
+            mouseVY = event.clientY - lastMouseY;
+            lastMouseX = mouseX = event.clientX;
+            lastMouseY = mouseY = event.clientY;
+        });
+
+        canvas.addEventListener('mousedown', function(event) {
+            const addParticles = (event) => {
+                const currentTime = Date.now();
+                if (currentTime - lastSpawnTime > spawnThrottle) {
+                    const x = event.clientX;
+                    const y = event.clientY;
+                    for (let i = 0; i < 5; i++) { // Reduced the number of particles spawned at once
+                        const group = Math.random() < 0.5 ? 'HOGE' : 'COMMUNITY';
+                        const letters = group === 'HOGE' ? lettersHOGE : lettersCOMMUNITY;
+                        const letter = letters[Math.floor(Math.random() * letters.length)];
+                        particles.push(new Particle(x + Math.random() * 20 - 10, y + Math.random() * 20 - 10, letter, group));
+                    }
+                    lastSpawnTime = currentTime;
+                }
+            };
+            canvas.addEventListener('mousemove', addParticles);
+            canvas.addEventListener('mouseup', () => {
+                canvas.removeEventListener('mousemove', addParticles);
+            }, { once: true });
+            message.style.opacity = 0;
+        });
+
+        canvas.addEventListener('touchmove', (event) => {
+            const touch = event.touches[0];
+            mouseVX = touch.clientX - lastMouseX;
+            mouseVY = touch.clientY - lastMouseY;
+            lastMouseX = mouseX = touch.clientX;
+            lastMouseY = mouseY = touch.clientY;
+        });
+
+        canvas.addEventListener('touchstart', function(event) {
+            const addParticles = (event) => {
+                const touch = event.touches[0];
+                const currentTime = Date.now();
+                if (currentTime - lastSpawnTime > spawnThrottle) {
+                    const x = touch.clientX;
+                    const y = touch.clientY;
+                    for (let i = 0; i < 5; i++) { // Reduced the number of particles spawned at once
+                        const group = Math.random() < 0.5 ? 'HOGE' : 'COMMUNITY';
+                        const letters = group === 'HOGE' ? lettersHOGE : lettersCOMMUNITY;
+                        const letter = letters[Math.floor(Math.random() * letters.length)];
+                        particles.push(new Particle(x + Math.random() * 20 - 10, y + Math.random() * 20 - 10, letter, group));
+                    }
+                    lastSpawnTime = currentTime;
+                }
+            };
+            canvas.addEventListener('touchmove', addParticles);
+            canvas.addEventListener('touchend', () => {
+                canvas.removeEventListener('touchmove', addParticles);
+            }, { once: true });
+            message.style.opacity = 0;
+        });
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
