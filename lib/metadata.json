@@ -3166,5 +3166,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "23911400360"
+    },
+    "15278993690.jpg": {
+        "File Name": "15278993690.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hai Hasselblad photo, chibi hogeai, (white furry HogeAI man surrounded by numerous HogeAI friends) on an outdoor dance floor at a vibrant, neon-lit psychedelic trance party. HogeAI characters, women and men, are actively celebrating, dancing, and jumping with excitement to pulsating electronic music under a canopy of laser lights and colorful projections against the night sky. Characters are gathered around large, UV-painted canvases, creating and discussing HogeAI man-inspired art, and sharing glowing, psychedelic body paint designs. Others are busy at communal art stations, painting and drawing whimsical HogeAI man illustrations with fluorescent colors, collaborating on a large, shared mural. Tech-savvy HogeAI characters are using LED-embedded poi and other flow arts tools, spinning and moving rhythmically with the music, laughing and high-fiving each other. The outdoor space is filled with the hum of enthusiastic conversat...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "15278993690"
     }
 }
