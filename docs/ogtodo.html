@@ -36,7 +36,7 @@
         }
 
         .container {
-            background: #1a1a1a;
+            background: #101012;
             padding: 20px;
             border-radius: 20px;
             box-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
@@ -287,7 +287,7 @@
         }
 
         #login-form {
-            background: #1a1a1a;
+            background: #101012;
             padding: 20px;
             border-radius: 20px;
             box-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
@@ -637,7 +637,7 @@
             todos.forEach(todo => {
                 const todoItem = document.createElement('li');
                 todoItem.className = `todo-item ${todo.completed ? 'completed' : ''}`;
-                todoItem.innerHTML = `<span>${todo.title} ${todo.completed ? '<span class="checkmark">&#10003;</span>' : `(Urgency: ${todo.urgency})`}</span>`;
+                todoItem.innerHTML = `<span>${todo.title} ${todo.completed ? '<span class="checkmark">&#10003;</span>' : `(${todo.urgency})`}</span>`;
 
                 todoItem.addEventListener('click', () => {
                     showModal(todo);
