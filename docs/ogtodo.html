@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizer</title>
+    <style>
+        @font-face {
+            font-family: 'JetBrainsMono-Bold';
+            src: url('https://www.hogeai.com/fonts/JetBrainsMono-Bold.woff2') format('woff2'),
+                 url('https://www.hogeai.com/fonts/JetBrainsMono-Bold.ttf') format('truetype');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-family: 'JetBrainsMono-Bold', sans-serif;
+            background-color: black;
+            color: #00ffcc;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            overflow-y: auto;
+            padding-top: 30px; /* Margin for main container */
+        }
+
+        .container {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+            width: 90%;
+            max-width: 800px;
+            display: none; /* Hide initially */
+            flex-direction: column;
+            align-items: center;
+            border: 4px solid #00ffcc;
+        }
+
+        .flex-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .list-container, .calendar-container {
+            width: 100%;
+            padding: 20px;
+            margin-bottom: 20px; /* Added margin for spacing */
+        }
+
+        .form-container {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            align-items: center;
+        }
+
+        h1, h2 {
+            text-align: center;
+            font-family: 'JetBrainsMono-Bold', sans-serif;
+        }
+
+        .form-header {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 400px;
+            font-family: 'JetBrainsMono-Bold', sans-serif; /* Ensure bold font for forms */
+        }
+
+        input, textarea, select, button {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 20px;
+            border: 2px solid #00ffcc;
+            background-color: black;
+            color: #00ffcc;
+            font-family: 'JetBrainsMono-Bold', sans-serif; /* Ensure bold font */
+        }
+
+        #todo-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .todo-item {
+            background: #1a1a1a;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 20px;
+            border: 2px solid #00ffcc;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            font-family: 'JetBrainsMono-Bold', sans-serif; /* Ensure bold font */
+        }
+
+        .todo-item.completed {
+            text-decoration: line-through;
+            background: #1a1a1a;
+        }
+
+        .add-btn {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px; /* Ensure some space above the button */
+        }
+
+        .plus-icon {
+            font-size: 48px;
+            cursor: pointer;
+            color: #00ffcc;
+        }
+
+        .checkmark {
+            font-size: 18px;
+            color: green;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #333;
+            margin: auto;
+            padding: 20px;
+            border: 2px solid #00ffcc;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+            font-family: 'JetBrainsMono-Bold', sans-serif; /* Ensure bold font */
+        }
+
+        .modal-header, .modal-body, .modal-footer {
+            padding: 10px;
+            font-family: 'JetBrainsMono-Bold', sans-serif; /* Ensure bold font */
+        }
+
+        .modal-header {
+            font-size: 20px;
+            color: #00ffcc;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .modal-footer button {
+            margin-left: 10px;
+            background-color: black;
+            color: #00ffcc;
+            border: 2px solid #00ffcc;
+            border-radius: 20px;
+            font-family: 'JetBrainsMono-Bold', sans-serif; /* Ensure bold font */
+        }
+
+        /* Calendar Styles */
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            justify-content: center;
+        }
+
+        .calendar-day {
+            background: #1a1a1a;
+            border: 2px solid #00ffcc;
+            border-radius: 20px;
+            text-align: center;
+            position: relative;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            box-sizing: border-box;
+            font-family: 'JetBrainsMono-Bold', sans-serif; /* Ensure bold font */
+        }
+
+        .calendar-day .dot {
+            width: 8px;
+            height: 8px;
+            background: red;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+        }
+
+        .calendar-day.today {
+            background: rgba(0, 255, 204, 0.2);
+        }
+
+        .calendar-day.event {
+            background: rgb(255, 0, 102);
+            border: 2px solid #00ffcc;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-family: 'JetBrainsMono-Bold', sans-serif; /* Ensure bold font */
+        }
+
+        .calendar-header button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            color: #00ffcc;
+            font-family: 'JetBrainsMono-Bold', sans-serif; /* Ensure bold font */
+        }
+
+        /* Media Queries for Mobile View */
+        @media (max-width: 768px) {
+            .flex-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .list-container, .calendar-container {
+                width: 100%;
+                padding: 10px;
+            }
+        }
+
+        .logout-btn {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background-color: black;
+            color: #00ffcc;
+            border: 2px solid #00ffcc;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 24px;
+            font-family: 'JetBrainsMono-Bold', sans-serif; /* Ensure bold font */
+        }
+
+        .logout-btn.visible {
+            display: flex;
+        }
+
+        #auth-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        #login-form {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+            border: 4px solid #00ffcc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #login-form input, #login-form button {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 20px;
+            border: 2px solid #00ffcc;
+            background-color: black;
+            color: #00ffcc;
+            font-family: 'JetBrainsMono-Bold', sans-serif; /* Ensure bold font */
+        }
+    </style>
+</head>
+<body>
+    <div id="auth-section">
+        <form id="login-form">
+            <input type="text" id="login-key" placeholder="Public Key" required>
+            <input type="password" id="login-password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+    <div class="container" id="main-container">
+        <div class="logout-btn" id="logout-btn">X</div>
+        <h1 id="main-header">Organizer</h1>
+        <div id="todo-section" style="display: none;">
+            <div class="calendar-container" id="calendar-container">
+                <h2>Calendar</h2>
+                <div class="calendar-header">
+                    <button id="prev-month">&lt;</button>
+                    <span id="current-month"></span>
+                    <button id="next-month">&gt;</button>
+                </div>
+                <div id="calendar" class="calendar"></div>
+            </div>
+            <div class="list-container" id="list-container">
+                <h2>To-Do List</h2>
+                <div class="add-btn">
+                    <span class="plus-icon" id="add-todo-btn">+</span>
+                </div>
+                <ul id="todo-list"></ul>
+            </div>
+            <div class="form-container" id="form-container">
+                <div class="form-header">ADD TODO</div>
+                <form id="todo-form">
+                    <input type="text" id="todo-title" placeholder="Title" required>
+                    <textarea id="todo-description" placeholder="Description"></textarea>
+                    <input type="date" id="todo-deadline">
+                    <button type="submit">Add To-Do</button>
+                    <button type="button" id="cancel-btn">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span id="modal-title"></span>
+            </div>
+            <div class="modal-body">
+                <p id="modal-description"></p>
+                <p id="modal-deadline"></p>
+                <p id="modal-urgency"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="modal-delete">Delete</button>
+                <button id="modal-cancel">Cancel</button>
+                <button id="modal-action"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase App (the core Firebase SDK) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC79gyb2EMPMgWCLglCkAoAo_TogFX0nds",
+            authDomain: "ogtodo-30efa.firebaseapp.com",
+            projectId: "ogtodo-30efa",
+            storageBucket: "ogtodo-30efa.appspot.com",
+            messagingSenderId: "684828844502",
+            appId: "1:684828844502:web:fb1e16a404e87439d3c477"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const correctPassword = '4711';
+        const correctKeyHash = '2996c24ed5592742957dcf4e1216cd31f73176e8e2754097ed537b00cbd11d50'; 
+
+        const loginForm = document.getElementById('login-form');
+        const loginKeyInput = document.getElementById('login-key');
+        const loginPasswordInput = document.getElementById('login-password');
+        const authSection = document.getElementById('auth-section');
+        const mainContainer = document.getElementById('main-container');
+        const todoSection = document.getElementById('todo-section');
+        const formContainer = document.getElementById('form-container');
+        const addTodoBtn = document.getElementById('add-todo-btn');
+        const cancelBtn = document.getElementById('cancel-btn');
+        const modal = document.getElementById('modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDescription = document.getElementById('modal-description');
+        const modalDeadline = document.getElementById('modal-deadline');
+        const modalUrgency = document.getElementById('modal-urgency');
+        const modalDelete = document.getElementById('modal-delete');
+        const modalCancel = document.getElementById('modal-cancel');
+        const modalAction = document.getElementById('modal-action');
+        const prevMonthBtn = document.getElementById('prev-month');
+        const nextMonthBtn = document.getElementById('next-month');
+        const currentMonthDisplay = document.getElementById('current-month');
+        const mainHeader = document.getElementById('main-header');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        const DAYS_TO_LOWEST_URGENCY_BEFORE_DEADLINE = 3;
+        const DAYS_INTERVAL_FOR_URGENCY_DECREASE = 3;
+
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+        let allTodos = []; // Global variable to store all todos
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const key = loginKeyInput.value;
+            const password = loginPasswordInput.value;
+
+            if (await isValidKey(key) && password === correctPassword) {
+                toggleSections();
+            } else {
+                alert('Incorrect key or password');
+            }
+        });
+
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            authSection.style.display = 'flex';
+            todoSection.style.display = 'none';
+            mainContainer.style.display = 'none';
+            logoutBtn.classList.remove('visible');
+        });
+
+
+        const hashString = async (str) => {
+            const msgUint8 = new TextEncoder().encode(str);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        };
+
+        const isValidKey = async (key) => {
+            const keyHash = await hashString(key);
+            console.log('Computed Key Hash:', keyHash);
+            return keyHash === correctKeyHash;
+        };
+
+        const toggleSections = () => {
+            if (authSection.style.display === 'none') {
+                authSection.style.display = 'flex';
+                todoSection.style.display = 'none';
+                mainContainer.style.display = 'none';
+                logoutBtn.classList.remove('visible');
+            } else {
+                authSection.style.display = 'none';
+                todoSection.style.display = 'block';
+                mainContainer.style.display = 'flex';
+                logoutBtn.classList.add('visible');
+                loadTodos();
+            }
+        };
+
+        const showForm = () => {
+            formContainer.style.display = 'flex';
+            document.getElementById('list-container').style.display = 'none'; // Hide the to-do list
+            document.getElementById('calendar-container').style.display = 'none'; // Hide the calendar
+            mainHeader.style.display = 'none'; // Hide the main header
+            logoutBtn.style.display = 'none'; // Hide the logout button
+        };
+
+        const hideForm = () => {
+            formContainer.style.display = 'none';
+            document.getElementById('list-container').style.display = 'block'; // Show the to-do list
+            document.getElementById('calendar-container').style.display = 'block'; // Show the calendar
+            mainHeader.style.display = 'block'; // Show the main header
+            logoutBtn.style.display = 'flex'; // Show the logout button
+            document.getElementById('todo-form').reset();
+        };
+
+        const showModal = (todo) => {
+            modalTitle.textContent = todo.title;
+            modalDescription.textContent = `Description: ${todo.description}`;
+            modalDeadline.textContent = `Deadline: ${todo.deadline ? new Date(todo.deadline).toLocaleDateString('en-US', { timeZone: 'UTC' }) : 'None'}`;
+            modalUrgency.textContent = `Urgency: ${todo.urgency}`;
+            modalAction.textContent = todo.completed ? 'Undo Completion' : 'Mark as Completed';
+            modalAction.onclick = () => {
+                updateTodo(todo.id, { completed: !todo.completed });
+                closeModal();
+            };
+            modalDelete.onclick = () => {
+                deleteTodo(todo.id);
+                closeModal();
+            };
+            modal.style.display = 'flex';
+        };
+
+        const closeModal = () => {
+            modal.style.display = 'none';
+        };
+
+        addTodoBtn.addEventListener('click', showForm);
+        cancelBtn.addEventListener('click', hideForm);
+        modalCancel.addEventListener('click', closeModal);
+
+        prevMonthBtn.addEventListener('click', () => {
+            if (currentMonth === 0) {
+                currentMonth = 11;
+                currentYear--;
+            } else {
+                currentMonth--;
+            }
+            renderCalendar(allTodos); // Use global todos
+        });
+
+        nextMonthBtn.addEventListener('click', () => {
+            if (currentMonth === 11) {
+                currentMonth = 0;
+                currentYear++;
+            } else {
+                currentMonth++;
+            }
+            renderCalendar(allTodos); // Use global todos
+        });
+
+        const addTodo = async (todo) => {
+            try {
+                const docRef = await addDoc(collection(db, "todos"), todo);
+                loadTodos();
+                hideForm();
+            } catch (error) {
+                console.error("Error adding document: ", error);
+            }
+        };
+
+        const getTodos = async () => {
+            const querySnapshot = await getDocs(collection(db, "todos"));
+            const todos = [];
+            querySnapshot.forEach((doc) => {
+                todos.push({ id: doc.id, ...doc.data() });
+            });
+            return todos;
+        };
+
+        const updateTodo = async (id, data) => {
+            try {
+                await updateDoc(doc(db, "todos", id), data);
+                loadTodos();
+            } catch (error) {
+                console.error("Error updating document: ", error);
+            }
+        };
+
+        const deleteTodo = async (id) => {
+            try {
+                await deleteDoc(doc(db, "todos", id));
+                loadTodos();
+            } catch (error) {
+                console.error("Error deleting document: ", error);
+            }
+        };
+
+        document.getElementById('todo-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const title = document.getElementById('todo-title').value;
+            const description = document.getElementById('todo-description').value;
+            const deadline = document.getElementById('todo-deadline').value;
+            const todo = {
+                title,
+                description,
+                deadline: deadline ? new Date(deadline).toISOString() : null,
+                urgency: 10, // Initialize urgency to 10
+                completed: false,
+                createdAt: new Date().toISOString()
+            };
+            addTodo(todo);
+        });
+
+        const loadTodos = async () => {
+            const todos = await getTodos();
+            console.log("Fetched todos: ", todos);
+            allTodos = todos; // Store fetched todos in global variable
+            adjustUrgencyLevels(todos); // Adjust urgency levels
+            displayTodos(todos);
+            renderCalendar(todos);
+        };
+
+        const adjustUrgencyLevels = (todos) => {
+            const currentDate = new Date();
+
+            todos.forEach(todo => {
+                const createdAt = new Date(todo.createdAt);
+
+                if (todo.deadline) {
+                    // Case 1: Event with a deadline
+                    const deadline = new Date(todo.deadline);
+                    const totalDays = Math.floor((deadline - createdAt) / (1000 * 60 * 60 * 24)) - DAYS_TO_LOWEST_URGENCY_BEFORE_DEADLINE;
+                    const daysPassed = Math.floor((currentDate - createdAt) / (1000 * 60 * 60 * 24));
+
+                    if (daysPassed >= totalDays) {
+                        todo.urgency = 1; // Assuming lowest urgency value is 1
+                    } else {
+                        const decreaseRate = (10 - 1) / totalDays;
+                        todo.urgency = Math.max(1, 10 - Math.floor(decreaseRate * daysPassed));
+                    }
+                } else {
+                    // Case 2: Event without a deadline
+                    const daysPassed = Math.floor((currentDate - createdAt) / (1000 * 60 * 60 * 24));
+                    const urgencyDecrease = Math.floor(daysPassed / DAYS_INTERVAL_FOR_URGENCY_DECREASE);
+
+                    todo.urgency = Math.max(1, 10 - urgencyDecrease); // Ensure urgency does not go below 1
+                }
+            });
+        };
+
+        const displayTodos = (todos) => {
+            console.log("Displaying todos: ", todos);
+            const todoList = document.getElementById('todo-list');
+            todoList.innerHTML = '';
+
+            todos.sort((a, b) => {
+                if (a.completed === b.completed) {
+                    return a.urgency - b.urgency;
+                }
+                return a.completed ? 1 : -1;
+            });
+
+            todos.forEach(todo => {
+                const todoItem = document.createElement('li');
+                todoItem.className = `todo-item ${todo.completed ? 'completed' : ''}`;
+                todoItem.innerHTML = `<span>${todo.title} ${todo.completed ? '<span class="checkmark">&#10003;</span>' : `(Urgency: ${todo.urgency})`}</span>`;
+
+                todoItem.addEventListener('click', () => {
+                    showModal(todo);
+                });
+
+                todoList.appendChild(todoItem);
+            });
+        };
+
+        const renderCalendar = (todos = []) => {
+            console.log("Rendering calendar for month: ", currentMonth, currentYear);
+            const calendar = document.getElementById('calendar');
+            calendar.innerHTML = '';
+
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            currentMonthDisplay.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            const lastDay = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+            const deadlines = todos
+                .filter(todo => todo.deadline)
+                .map(todo => {
+                    const date = new Date(todo.deadline);
+                    return {
+                        dateISO: new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())).toLocaleDateString('en-US', { timeZone: 'UTC' }),
+                        completed: todo.completed
+                    };
+                });
+
+            for (let i = 0; i < firstDay; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'calendar-day';
+                calendar.appendChild(emptyCell);
+            }
+
+            const today = new Date();
+            const todayISO = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate())).toLocaleDateString('en-US', { timeZone: 'UTC' });
+
+            for (let i = 1; i <= lastDay; i++) {
+                const dayElement = document.createElement('div');
+                const dayDate = new Date(currentYear, currentMonth, i);
+                const dayISO = new Date(Date.UTC(dayDate.getFullYear(), dayDate.getMonth(), dayDate.getDate())).toLocaleDateString('en-US', { timeZone: 'UTC' });
+                dayElement.className = `calendar-day ${dayISO === todayISO ? 'today' : ''}`;
+                dayElement.textContent = i;
+
+                const dayTodos = deadlines.filter(deadline => deadline.dateISO === dayISO);
+
+                if (dayTodos.length > 0) {
+                    dayElement.classList.add('event');
+                    const dot = document.createElement('div');
+                    dot.className = 'dot';
+                    dayElement.appendChild(dot);
+
+                    if (dayTodos.some(todo => todo.completed)) {
+                        dot.style.background = 'green';
+                        dayElement.style.border = '2px solid green';
+                        dayElement.style.background = 'none';
+                    }
+
+                    dayElement.style.cursor = 'pointer';
+
+                    dayElement.addEventListener('click', () => {
+                        showModal(todos.find(todo => {
+                            const todoDate = new Date(todo.deadline);
+                            const todoISO = new Date(Date.UTC(todoDate.getFullYear(), todoDate.getMonth(), todoDate.getDate())).toLocaleDateString('en-US', { timeZone: 'UTC' });
+                            return todoISO === dayISO;
+                        }));
+                    });
+
+                    if (dayTodos.some(todo => todo.completed)) {
+                        dayElement.classList.add('completed');
+                    }
+                }
+
+                calendar.appendChild(dayElement);
+            }
+        };
+
+        window.onload = async () => {
+            authSection.style.display = 'flex';
+            todoSection.style.display = 'none';
+            mainContainer.style.display = 'none';
+            const todos = await getTodos();
+            allTodos = todos;
+            renderCalendar(todos);
+        };
+    </script>
+
+</body>
+</html>
