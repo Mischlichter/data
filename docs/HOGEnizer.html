@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Organizer</title>
+    <title>HOGEnizer</title>
     <style>
         @font-face {
             font-family: 'JetBrainsMono-Bold';
@@ -23,7 +23,7 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             font-family: 'JetBrainsMono-Bold', sans-serif;
-            background-color: black;
+            background-color: #101012;
             color: #00ffcc;
             margin: 0;
             padding: 0;
@@ -33,9 +33,11 @@
             min-height: 100vh;
             overflow-y: auto;
             padding-top: 30px; /* Margin for main container */
+            
         }
 
         .container {
+
             background: #101012;
             padding: 20px;
             border-radius: 20px;
@@ -49,6 +51,7 @@
         }
 
         .flex-container {
+
             display: flex;
             flex-direction: column;
             width: 100%;
@@ -193,7 +196,7 @@
             justify-content: center;
         }
 
-        .calendar-day {
+        .calendar-day, .calendar-header-day {
             background: #1a1a1a;
             border: 2px solid #00ffcc;
             border-radius: 20px;
@@ -204,6 +207,11 @@
             height: 50px;
             box-sizing: border-box;
             font-family: 'JetBrainsMono-Bold', sans-serif; /* Ensure bold font */
+        }
+
+        .calendar-header-day {
+            cursor: default;
+            font-weight: bold;
         }
 
         .calendar-day .dot {
@@ -274,17 +282,34 @@
             font-family: 'JetBrainsMono-Bold', sans-serif; /* Ensure bold font */
         }
 
+        .logout-btn span {
+            line-height: 0; /* Adjust line-height */
+            margin-top: -2px; /* Adjust margin to move the "X" slightly up */
+        }
+
         .logout-btn.visible {
             display: flex;
         }
 
+
+   
         #auth-section {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
+            width: 100%; /* Ensure it takes full width */
+            background: url('https://raw.githubusercontent.com/Mischlichter/data/main/docs/todo.jpg') no-repeat center center;
+            background-size: contain; /* Ensure the image fits within the height of the viewport */
+            background-color: #101012; /* Fallback color */
         }
+
+
+
+
+
+
 
         #login-form {
             background: #101012;
@@ -295,7 +320,11 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            position: absolute;
+            top: 60%; /* Position the form at 60% from the top */
+            transform: translateY(-50%); /* Adjust to center it vertically around the 60% mark */
         }
+
 
         #login-form input, #login-form button {
             margin-bottom: 20px;
@@ -318,7 +347,7 @@
     </div>
     <div class="container" id="main-container">
         <div class="logout-btn" id="logout-btn">X</div>
-        <h1 id="main-header">Organizer</h1>
+        <h1 id="main-header">HOGEnizer</h1>
         <div id="todo-section" style="display: none;">
             <div class="calendar-container" id="calendar-container">
                 <h2>Calendar</h2>
@@ -651,6 +680,14 @@
             console.log("Rendering calendar for month: ", currentMonth, currentYear);
             const calendar = document.getElementById('calendar');
             calendar.innerHTML = '';
+
+            const daysOfWeek = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'];
+            daysOfWeek.forEach(day => {
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'calendar-header-day';
+                dayHeader.textContent = day;
+                calendar.appendChild(dayHeader);
+            });
 
             const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
             currentMonthDisplay.textContent = `${monthNames[currentMonth]} ${currentYear}`;
