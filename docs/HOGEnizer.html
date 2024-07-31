@@ -493,7 +493,7 @@
 
         const isValidKey = async (key) => {
             const keyHash = await hashString(key);
-            console.log('Computed Key Hash:', keyHash);
+            //console.log('Computed Key Hash:', keyHash);
             return keyHash === correctKeyHash;
         };
 
@@ -629,7 +629,7 @@
 
         const loadTodos = async () => {
             const todos = await getTodos();
-            console.log("Fetched todos: ", todos);
+            //console.log("Fetched todos: ", todos);
             allTodos = todos; // Store fetched todos in global variable
             adjustUrgencyLevels(todos); // Adjust urgency levels
             displayTodos(todos);
@@ -665,7 +665,7 @@
         };
 
         const displayTodos = (todos) => {
-            console.log("Displaying todos: ", todos);
+            //console.log("Displaying todos: ", todos);
             const todoList = document.getElementById('todo-list');
             todoList.innerHTML = '';
 
@@ -690,7 +690,7 @@
         };
 
         const renderCalendar = (todos = []) => {
-            console.log("Rendering calendar for month: ", currentMonth, currentYear);
+            //console.log("Rendering calendar for month: ", currentMonth, currentYear);
             const calendar = document.getElementById('calendar');
             calendar.innerHTML = '';
 
