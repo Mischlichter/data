@@ -3158,5 +3158,21 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "64619730040"
+    },
+    "42595266163.jpg": {
+        "File Name": "42595266163.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "1up style, hogeai man pump up the volume,1up style, graffity expressive painting, cosmic background with rocket and moon and stars in a abstract way",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "42595266163"
+    },
+    "73968758505.jpg": {
+        "File Name": "73968758505.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "contest poster, chibi hogeai, extremely cute white furry HogeAI man, standing confidently with arms crossed, extremely detailed fur, high details, flying coins, large sparkling diamonds, treasure chest, shiny things, vibrant outer space scene, cosmic elements, radiant beams of light, dynamic and lively atmosphere, shimmering stardust, abstract shapes, patterns, vivid hues of blue, purple, silver, depth and wonder, bright, colorful, energetic, 4K, next-gen, ultra detailed, 3D octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, Bayard Wu, Greg Rutkowski, Giger, Maxim Verehin",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "73968758505"
     }
 }
