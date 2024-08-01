@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=0.9">
+    <meta name="viewport" content="width=device-width, initial-scale=0.9">
     <title>HOGEnizer</title>
     <meta name="description" content="HOGEnizer - An interactive organizer powered by HogeAI.">
     <meta property="og:title" content="HOGEnizer">
@@ -17,6 +17,7 @@
     <meta name="twitter:description" content="An interactive organizer powered by HogeAI.">
     <meta name="twitter:image" content="https://raw.githubusercontent.com/Mischlichter/data/main/docs/todo.jpg">
     <style>
+        /* Include your CSS styles here */
         @font-face {
             font-family: 'JetBrainsMono-Bold';
             src: url('https://www.hogeai.com/fonts/JetBrainsMono-Bold.woff2') format('woff2'),
@@ -25,7 +26,6 @@
             font-style: normal;
         }
 
-        
         * {
             margin: 0;
             padding: 0;
@@ -42,29 +42,26 @@
             padding: 0;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
+            align-items: center; /* Center items vertically */
             min-height: 100vh;
             overflow-y: auto;
             padding-top: 30px; /* Margin for main container */
-            
         }
 
         .container {
-
             background: #101012;
             padding: 20px;
             border-radius: 20px;
             box-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
             width: 90%;
             max-width: 800px;
-            display: none; /* Hide initially */
+            display: none; /* Hide container initially */
             flex-direction: column;
             align-items: center;
             border: 4px solid #00ffcc;
         }
 
         .flex-container {
-
             display: flex;
             flex-direction: column;
             width: 100%;
@@ -111,7 +108,8 @@
             font-family: 'JetBrainsMono-Bold', sans-serif; /* Ensure bold font */
         }
 
-        #todo-list {
+        #todo-list, #deleted-todo-list {
+            margin-top: 20px;
             list-style: none;
             padding: 0;
         }
@@ -133,7 +131,6 @@
             background: #101012;
             color: grey;
         }
-
 
         .add-btn {
             display: flex;
@@ -195,6 +192,32 @@
         }
 
         .modal-footer button {
+            margin-left: 10px;
+            background-color: black;
+            color: #00ffcc;
+            border: 2px solid #00ffcc;
+            border-radius: 20px;
+            font-family: 'JetBrainsMono-Bold', sans-serif; /* Ensure bold font */
+        }
+
+        .confirmation-modal-content {
+            background-color: #1a1a1a;
+            margin: auto;
+            padding: 20px;
+            border: 2px solid #00ffcc;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+            font-family: 'JetBrainsMono-Bold', sans-serif; /* Ensure bold font */
+        }
+
+        .confirmation-modal-footer {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .confirmation-modal-footer button {
             margin-left: 10px;
             background-color: black;
             color: #00ffcc;
@@ -306,8 +329,6 @@
             display: flex;
         }
 
-
-   
         #auth-section {
             display: flex;
             flex-direction: column;
@@ -319,12 +340,6 @@
             background-size: contain; /* Ensure the image fits within the height of the viewport */
             background-color: #101012; /* Fallback color */
         }
-
-
-
-
-
-
 
         #login-form {
             background: #101012;
@@ -340,7 +355,6 @@
             transform: translateY(-50%); /* Adjust to center it vertically around the 60% mark */
         }
 
-
         #login-form input, #login-form button {
             margin-bottom: 20px;
             padding: 10px;
@@ -350,7 +364,45 @@
             color: #00ffcc;
             font-family: 'JetBrainsMono-Bold', sans-serif; /* Ensure bold font */
         }
+
+        #edit-form-container {
+            display: none; /* Hide initially */
+            flex-direction: column;
+            align-items: center;
+            width: 100%; /* Ensure it takes full width */
+            max-width: 400px; /* Center and constrain width */
+            margin: 0 auto; /* Center horizontally */
+        }
+
+        #history-section {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            align-items: center;
+        }
+
+        .cancel-btn {
+            background-color: black;
+            color: #00ffcc;
+            border: 2px solid #00ffcc;
+            border-radius: 20px;
+            font-family: 'JetBrainsMono-Bold', sans-serif;
+            padding: 10px;
+        }
+
+        /* Center the History Button and add spacing */
+        #view-history-btn {
+            margin-top: 60px; /* Space above the button */
+            margin-bottom: 20px; /* Space below the button */
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: auto; /* Ensure it only takes the width of the text content */
+        }
+
+
     </style>
+
 </head>
 <body>
     <div id="auth-section">
@@ -379,6 +431,7 @@
                     <span class="plus-icon" id="add-todo-btn">+</span>
                 </div>
                 <ul id="todo-list"></ul>
+                <button class="cancel-btn" id="view-history-btn">History</button>
             </div>
             <div class="form-container" id="form-container">
                 <div class="form-header">ADD TODO</div>
@@ -390,6 +443,19 @@
                     <button type="button" id="cancel-btn">Cancel</button>
                 </form>
             </div>
+        </div>
+        <div class="form-container" id="edit-form-container">
+            <div class="form-header">EDIT INFO</div>
+            <form id="edit-todo-form">
+                <textarea id="edit-todo-description" placeholder="Edit Description"></textarea>
+                <button type="submit">Save Changes</button>
+                <button type="button" id="edit-cancel-btn">Cancel</button>
+            </form>
+        </div>
+        <div class="form-container" id="history-section">
+            <div class="form-header">DELETED ITEMS</div>
+            <ul id="deleted-todo-list"></ul>
+            <button class="cancel-btn" id="history-cancel-btn">Cancel</button>
         </div>
     </div>
 
@@ -405,9 +471,26 @@
                 <p id="modal-urgency"></p>
             </div>
             <div class="modal-footer">
-                <button id="modal-delete">Delete</button>
                 <button id="modal-cancel">Cancel</button>
+                <button id="modal-edit">Edit</button>
                 <button id="modal-action"></button>
+                <button id="modal-delete">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmation-modal" class="modal">
+        <div class="confirmation-modal-content">
+            <div class="modal-header">
+                <span id="confirmation-title">Confirm Deletion</span>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this item?</p>
+            </div>
+            <div class="confirmation-modal-footer">
+                <button id="confirm-delete-btn">Delete</button>
+                <button id="cancel-delete-btn">Cancel</button>
             </div>
         </div>
     </div>
@@ -416,7 +499,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyC79gyb2EMPMgWCLglCkAoAo_TogFX0nds",
@@ -450,12 +533,24 @@
         const modalUrgency = document.getElementById('modal-urgency');
         const modalDelete = document.getElementById('modal-delete');
         const modalCancel = document.getElementById('modal-cancel');
+        const modalEdit = document.getElementById('modal-edit');
         const modalAction = document.getElementById('modal-action');
         const prevMonthBtn = document.getElementById('prev-month');
         const nextMonthBtn = document.getElementById('next-month');
         const currentMonthDisplay = document.getElementById('current-month');
         const mainHeader = document.getElementById('main-header');
         const logoutBtn = document.getElementById('logout-btn');
+        const editFormContainer = document.getElementById('edit-form-container');
+        const editTodoForm = document.getElementById('edit-todo-form');
+        const editTodoDescription = document.getElementById('edit-todo-description');
+        const editCancelBtn = document.getElementById('edit-cancel-btn');
+        const historySection = document.getElementById('history-section');
+        const viewHistoryBtn = document.getElementById('view-history-btn');
+        const deletedTodoList = document.getElementById('deleted-todo-list');
+        const historyCancelBtn = document.getElementById('history-cancel-btn');
+        const confirmationModal = document.getElementById('confirmation-modal');
+        const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
+        const cancelDeleteBtn = document.getElementById('cancel-delete-btn');
 
         const DAYS_TO_LOWEST_URGENCY_BEFORE_DEADLINE = 3;
         const DAYS_INTERVAL_FOR_URGENCY_DECREASE = 3;
@@ -463,6 +558,9 @@
         let currentMonth = new Date().getMonth();
         let currentYear = new Date().getFullYear();
         let allTodos = []; // Global variable to store all todos
+        let deletedTodos = []; // Global variable to store deleted todos
+        let currentTodo = null; // Variable to store the current todo being edited
+        let todoToDelete = null; // Variable to store the current todo being deleted
 
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -484,7 +582,6 @@
             logoutBtn.classList.remove('visible');
         });
 
-
         const hashString = async (str) => {
             const msgUint8 = new TextEncoder().encode(str);
             const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
@@ -495,7 +592,6 @@
 
         const isValidKey = async (key) => {
             const keyHash = await hashString(key);
-            //console.log('Computed Key Hash:', keyHash);
             return keyHash === correctKeyHash;
         };
 
@@ -511,15 +607,20 @@
                 mainContainer.style.display = 'flex';
                 logoutBtn.classList.add('visible');
                 loadTodos();
+                loadDeletedTodos();
             }
         };
 
-        const showForm = () => {
+        const showForm = (date = null) => {
             formContainer.style.display = 'flex';
             document.getElementById('list-container').style.display = 'none'; // Hide the to-do list
             document.getElementById('calendar-container').style.display = 'none'; // Hide the calendar
             mainHeader.style.display = 'none'; // Hide the main header
             logoutBtn.style.display = 'none'; // Hide the logout button
+
+            if (date) {
+                document.getElementById('todo-deadline').value = date;
+            }
         };
 
         const hideForm = () => {
@@ -536,25 +637,87 @@
             modalDescription.textContent = `Description: ${todo.description}`;
             modalDeadline.textContent = `Deadline: ${todo.deadline ? new Date(todo.deadline).toLocaleDateString('en-US', { timeZone: 'UTC' }) : 'None'}`;
             modalUrgency.textContent = `Urgency: ${todo.urgency}`;
-            modalAction.textContent = todo.completed ? 'Undo Completion' : 'Mark as Completed';
+            modalAction.textContent = todo.completed ? 'Undo Completion' : 'Completed';
             modalAction.onclick = () => {
                 updateTodo(todo.id, { completed: !todo.completed });
                 closeModal();
             };
             modalDelete.onclick = () => {
-                deleteTodo(todo.id);
-                closeModal();
+                showConfirmationModal(todo);
+            };
+            modalEdit.onclick = () => {
+                showEditForm(todo);
             };
             modal.style.display = 'flex';
         };
 
         const closeModal = () => {
             modal.style.display = 'none';
+            modalAction.style.display = 'inline'; // Reset to show all buttons
+            modalDelete.style.display = 'inline';
+            modalEdit.style.display = 'inline';
         };
 
-        addTodoBtn.addEventListener('click', showForm);
+        const showEditForm = (todo) => {
+            currentTodo = todo; // Set the current todo being edited
+            editTodoDescription.value = todo.description;
+            editFormContainer.style.display = 'flex';
+            document.getElementById('list-container').style.display = 'none'; // Hide the to-do list
+            document.getElementById('calendar-container').style.display = 'none'; // Hide the calendar
+            mainHeader.style.display = 'none'; // Hide the main header
+            logoutBtn.style.display = 'none'; // Hide the logout button
+            modal.style.display = 'none'; // Hide the modal
+        };
+
+        const hideEditForm = () => {
+            editFormContainer.style.display = 'none';
+            document.getElementById('list-container').style.display = 'block'; // Show the to-do list
+            document.getElementById('calendar-container').style.display = 'block'; // Show the calendar
+            mainHeader.style.display = 'block'; // Show the main header
+            logoutBtn.style.display = 'flex'; // Show the logout button
+            editTodoForm.reset();
+        };
+
+        const showHistory = () => {
+            historySection.style.display = 'flex';
+            document.getElementById('list-container').style.display = 'none'; // Hide the to-do list
+            document.getElementById('calendar-container').style.display = 'none'; // Hide the calendar
+            mainHeader.style.display = 'none'; // Hide the main header
+            logoutBtn.style.display = 'none'; // Hide the logout button
+            displayDeletedTodos();
+        };
+
+        const hideHistory = () => {
+            historySection.style.display = 'none';
+            document.getElementById('list-container').style.display = 'block'; // Show the to-do list
+            document.getElementById('calendar-container').style.display = 'block'; // Show the calendar
+            mainHeader.style.display = 'block'; // Show the main header
+            logoutBtn.style.display = 'flex'; // Show the logout button
+            resetModalButtons(); // Reset modal buttons when leaving history view
+        };
+
+        const showConfirmationModal = (todo) => {
+            todoToDelete = todo;
+            confirmationModal.style.display = 'flex';
+        };
+
+        const hideConfirmationModal = () => {
+            confirmationModal.style.display = 'none';
+        };
+
+        addTodoBtn.addEventListener('click', () => showForm());
         cancelBtn.addEventListener('click', hideForm);
         modalCancel.addEventListener('click', closeModal);
+        editCancelBtn.addEventListener('click', hideEditForm);
+        viewHistoryBtn.addEventListener('click', showHistory);
+        historyCancelBtn.addEventListener('click', hideHistory);
+        cancelDeleteBtn.addEventListener('click', hideConfirmationModal);
+
+        confirmDeleteBtn.addEventListener('click', () => {
+            deleteTodo(todoToDelete.id);
+            hideConfirmationModal();
+            closeModal();
+        });
 
         prevMonthBtn.addEventListener('click', () => {
             if (currentMonth === 0) {
@@ -595,6 +758,15 @@
             return todos;
         };
 
+        const getDeletedTodos = async () => {
+            const querySnapshot = await getDocs(collection(db, "deletedTodos"));
+            const deleted = [];
+            querySnapshot.forEach((doc) => {
+                deleted.push({ id: doc.id, ...doc.data() });
+            });
+            return deleted;
+        };
+
         const updateTodo = async (id, data) => {
             try {
                 await updateDoc(doc(db, "todos", id), data);
@@ -606,8 +778,27 @@
 
         const deleteTodo = async (id) => {
             try {
-                await deleteDoc(doc(db, "todos", id));
-                loadTodos();
+                const todoDoc = doc(db, "todos", id);
+                const todoSnapshot = await getDoc(todoDoc);
+
+                if (todoSnapshot.exists()) {
+                    const todoData = todoSnapshot.data();
+                    const deletedTodo = { id, ...todoData };
+
+                    // Add the todo to the deletedTodos array and the UI
+                    deletedTodos.push(deletedTodo);
+                    displayDeletedTodos();
+
+                    // Save the deleted todo in a separate collection (if needed)
+                    await addDoc(collection(db, "deletedTodos"), deletedTodo);
+
+                    // Delete the todo from the main collection
+                    await deleteDoc(todoDoc);
+
+                    loadTodos();
+                } else {
+                    console.log("No such document!");
+                }
             } catch (error) {
                 console.error("Error deleting document: ", error);
             }
@@ -629,13 +820,26 @@
             addTodo(todo);
         });
 
+        editTodoForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const newDescription = editTodoDescription.value;
+            if (currentTodo) {
+                updateTodo(currentTodo.id, { description: newDescription });
+                hideEditForm();
+            }
+        });
+
         const loadTodos = async () => {
             const todos = await getTodos();
-            //console.log("Fetched todos: ", todos);
             allTodos = todos; // Store fetched todos in global variable
             adjustUrgencyLevels(todos); // Adjust urgency levels
             displayTodos(todos);
             renderCalendar(todos);
+        };
+
+        const loadDeletedTodos = async () => {
+            const deleted = await getDeletedTodos();
+            deletedTodos = deleted; // Store fetched deleted todos in global variable
         };
 
         const adjustUrgencyLevels = (todos) => {
@@ -667,7 +871,6 @@
         };
 
         const displayTodos = (todos) => {
-            //console.log("Displaying todos: ", todos);
             const todoList = document.getElementById('todo-list');
             todoList.innerHTML = '';
 
@@ -691,8 +894,44 @@
             });
         };
 
+        const displayDeletedTodos = () => {
+            const deletedTodoList = document.getElementById('deleted-todo-list');
+            deletedTodoList.innerHTML = '';
+
+            deletedTodos.forEach(todo => {
+                const todoItem = document.createElement('li');
+                todoItem.className = `todo-item`;
+                todoItem.innerHTML = `<span>${todo.title} (${todo.urgency})</span>`;
+
+                todoItem.addEventListener('click', () => {
+                    showDeletedTodoModal(todo);
+                });
+
+                deletedTodoList.appendChild(todoItem);
+            });
+        };
+
+        const showDeletedTodoModal = (todo) => {
+            modalTitle.textContent = todo.title;
+            modalDescription.textContent = `Description: ${todo.description}`;
+            modalDeadline.textContent = `Deadline: ${todo.deadline ? new Date(todo.deadline).toLocaleDateString('en-US', { timeZone: 'UTC' }) : 'None'}`;
+            modalUrgency.textContent = `Urgency: ${todo.urgency}`;
+            modalAction.style.display = 'none';
+            modalDelete.style.display = 'none';
+            modalEdit.style.display = 'none';
+            modal.style.display = 'flex';
+            modalCancel.onclick = () => {
+                modal.style.display = 'none';
+            };
+        };
+
+        const resetModalButtons = () => {
+            modalAction.style.display = 'inline';
+            modalDelete.style.display = 'inline';
+            modalEdit.style.display = 'inline';
+        };
+
         const renderCalendar = (todos = []) => {
-            //console.log("Rendering calendar for month: ", currentMonth, currentYear);
             const calendar = document.getElementById('calendar');
             calendar.innerHTML = '';
 
@@ -763,6 +1002,11 @@
                     if (dayTodos.some(todo => todo.completed)) {
                         dayElement.classList.add('completed');
                     }
+                } else {
+                    dayElement.addEventListener('click', () => {
+                        const selectedDate = dayDate.toISOString().split('T')[0];
+                        showForm(selectedDate);
+                    });
                 }
 
                 calendar.appendChild(dayElement);
@@ -773,9 +1017,9 @@
             authSection.style.display = 'flex';
             todoSection.style.display = 'none';
             mainContainer.style.display = 'none';
-            const todos = await getTodos();
-            allTodos = todos;
-            renderCalendar(todos);
+            await loadTodos();
+            await loadDeletedTodos();
+            renderCalendar(allTodos);
         };
     </script>
 
