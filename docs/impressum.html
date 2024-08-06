@@ -62,44 +62,38 @@
         }
 
         async function fetchEthPrice() {
-            const query = `
-                {
-                    token(id: "0xfad45e47083e4607302aa43c65fb3106f1cd7607") {
-                        derivedETH
-                    }
-                    bundle(id: "1") {
-                        ethPrice
-                    }
-                }
-            `;
-            const response = await fetch('https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ query })
-            });
-            const data = await response.json();
-            const ethPrice = data.data.bundle.ethPrice;
-            const hogeEth = data.data.token.derivedETH;
-            return { hogeEth, ethPrice };
+            try {
+                const response = await fetch('https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=0xfad45e47083e4607302aa43c65fb3106f1cd7607&vs_currencies=usd');
+                const data = await response.json();
+                const ethPrice = data['0xfad45e47083e4607302aa43c65fb3106f1cd7607'].usd;
+                return ethPrice;
+            } catch (error) {
+                console.error('Error fetching Ethereum price:', error);
+                return 0;
+            }
         }
 
         async function fetchSolPrice() {
-            const response = await fetch('https://serum-api.bonfida.com/candles/74gUPK636nrieDT9kLSgF1peWg5BB7itNkjF2BkMDwZj?resolution=3600');
-            const data = await response.json();
-            const solPrice = data.candles[0].close;
-            const solHoge = solPrice; // Assuming 1 HOGE = solPrice in SOL
-            return { solHoge, solPrice };
+            try {
+                const response = await fetch('https://serum-api.bonfida.com/candles/74gUPK636nrieDT9kLSgF1peWg5BB7itNkjF2BkMDwZj?resolution=3600');
+                const data = await response.json();
+                const solPrice = data.candles[0].close;
+                return solPrice;
+            } catch (error) {
+                console.error('Error fetching Solana price:', error);
+                return 0;
+            }
         }
 
         async function fetchPrices() {
             try {
-                const { hogeEth, ethPrice } = await fetchEthPrice();
-                const { solHoge, solPrice } = await fetchSolPrice();
+                const ethPrice = await fetchEthPrice();
+                const solPrice = await fetchSolPrice();
 
-                document.getElementById('ethPrice').textContent = (hogeEth * ethPrice).toFixed(4);
-                document.getElementById('solPrice').textContent = solHoge.toFixed(4);
+                document.getElementById('ethPrice').textContent = ethPrice.toFixed(4);
+                document.getElementById('solPrice').textContent = solPrice.toFixed(4);
 
-                return { ethPrice: hogeEth * ethPrice, solPrice: solHoge };
+                return { ethPrice, solPrice };
             } catch (error) {
                 console.error('Error fetching prices:', error);
                 return { ethPrice: 0, solPrice: 0 };
