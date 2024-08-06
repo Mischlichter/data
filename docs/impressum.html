@@ -52,13 +52,13 @@
         let ethEth = 0;
         let solSol = 0;
         const bridgeThreshold = 200;
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 
         function updateBalances() {
             document.getElementById('ethHoge').textContent = ethHoge;
             document.getElementById('solHoge').textContent = solHoge;
             document.getElementById('ethEth').textContent = ethEth.toFixed(4);
             document.getElementById('solSol').textContent = solSol.toFixed(4);
+            calculateTotalValue();
         }
 
         async function fetchEthPrice() {
@@ -72,7 +72,7 @@
                     }
                 }
             `;
-            const response = await fetch(proxyUrl + 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2', {
+            const response = await fetch('https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ query })
@@ -84,7 +84,7 @@
         }
 
         async function fetchSolPrice() {
-            const response = await fetch(proxyUrl + 'https://serum-api.bonfida.com/candles/74gUPK636nrieDT9kLSgF1peWg5BB7itNkjF2BkMDwZj?resolution=3600');
+            const response = await fetch('https://serum-api.bonfida.com/candles/74gUPK636nrieDT9kLSgF1peWg5BB7itNkjF2BkMDwZj?resolution=3600');
             const data = await response.json();
             const solPrice = data.candles[0].close;
             const solHoge = solPrice; // Assuming 1 HOGE = solPrice in SOL
@@ -92,21 +92,25 @@
         }
 
         async function fetchPrices() {
-            const { hogeEth, ethPrice } = await fetchEthPrice();
-            const { solHoge, solPrice } = await fetchSolPrice();
+            try {
+                const { hogeEth, ethPrice } = await fetchEthPrice();
+                const { solHoge, solPrice } = await fetchSolPrice();
 
-            document.getElementById('ethPrice').textContent = (hogeEth * ethPrice).toFixed(4);
-            document.getElementById('solPrice').textContent = solHoge.toFixed(4);
+                document.getElementById('ethPrice').textContent = (hogeEth * ethPrice).toFixed(4);
+                document.getElementById('solPrice').textContent = solHoge.toFixed(4);
 
-            return { ethPrice: hogeEth * ethPrice, solPrice: solHoge };
+                return { ethPrice: hogeEth * ethPrice, solPrice: solHoge };
+            } catch (error) {
+                console.error('Error fetching prices:', error);
+                return { ethPrice: 0, solPrice: 0 };
+            }
         }
 
         async function calculateInitialBalances() {
             const { ethPrice, solPrice } = await fetchPrices();
-            ethEth = ethPrice * ethHoge;
+            ethEth = (ethPrice * ethHoge) / 1e18; // Adjust for ETH's 18 decimals
             solSol = solPrice * solHoge;
             updateBalances();
-            calculateTotalValue();
         }
 
         function calculateTotalValue() {
@@ -161,7 +165,6 @@
                 }
 
                 updateBalances();
-                calculateTotalValue();
             });
         }
 
