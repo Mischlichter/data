@@ -3182,5 +3182,13 @@
         "Model": "HOGExAZO",
         "Creator": "@Mischlichter",
         "Seed": "40714815726"
+    },
+    "80981271690.jpg": {
+        "File Name": "80981271690.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (reverent white furry HogeAI man gazing into the heart of a luminous Merkaba) bob ross painting in color connection, raytracing, hdr, 8k uhd. Geometries of ascension revolve, each facet revealing layers of multidimensional truths. Vortices of pure energy spiral, drenched in hues of emerald green and deep celestial blue, an odyssey of enlightenment and evolution, as depicted by bayard wu and giger.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "80981271690"
     }
 }
