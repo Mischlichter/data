@@ -3198,5 +3198,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Spaggmayo",
         "Seed": "31615917550"
+    },
+    "1688783766.jpg": {
+        "File Name": "1688783766.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man watching the sunrize peacefully",
+        "Model": "HOGExSAM",
+        "Creator": "@Spaggmayo",
+        "Seed": "1688783766"
     }
 }
