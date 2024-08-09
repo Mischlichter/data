@@ -3214,5 +3214,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "92199614605"
+    },
+    "41128299011.jpg": {
+        "File Name": "41128299011.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "fluffy hogeai man, watching sunrise, drinking cup of coffe",
+        "Model": "HOGExSAM",
+        "Creator": "@Spaggmayo",
+        "Seed": "41128299011"
     }
 }
