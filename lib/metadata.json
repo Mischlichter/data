@@ -3230,5 +3230,13 @@
         "Model": "Unknown",
         "Creator": "@Unknown",
         "Seed": "66600731892"
+    },
+    "14986912908.jpg": {
+        "File Name": "14986912908.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Lynda Barry 3d movie still render of a hogeai person, (((((1950s retro robot dog . muted colors.))))) by Jean-Baptiste Monge !!!!!!!!!!!!!!!!!!!!!!!!!!!",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "14986912908"
     }
 }
