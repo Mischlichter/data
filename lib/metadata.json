@@ -3206,5 +3206,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Spaggmayo",
         "Seed": "1688783766"
+    },
+    "92199614605.jpg": {
+        "File Name": "92199614605.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "\"a cartoon hogeai man wearing a t - shirt, behance, trending on fiverr, insanely nice hair style, profile picture 1024px, timelapse, ghailan! , twitter pfp, the artist has used bright, reduce duplicate image, deviantar, neymar, caricature\" \"At the heart of a labyrinthine city of mirrors on New Year's Eve, HogeAI man discovers a world where reality is fractured into infinite reflections. The city is a maze of iridescent pathways and kaleidoscopic skyscrapers, each surface a portal into another version of reality. HogeAI, dressed in a suit of reflective prisms, moves through this mirrored world, his every step creating ripples of light and color, leading him to a central plaza where the boundaries of space and perception dissolve in a dazzling display of visual euphoria.\"",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "92199614605"
     }
 }
