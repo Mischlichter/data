@@ -3254,5 +3254,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Spaggmayo",
         "Seed": "94633527798"
+    },
+    "90596316348.jpg": {
+        "File Name": "90596316348.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "a cinematic professional quality close-up shot of hogeai man cyborg's face. the neon-lit cityscape is reflected in the cyborg's polished metallic eye, creating a visually captivating image. the details of the cyborg's face, the reflections in the eye, and the futuristic cityscape are captured with expert precision, boasting amazing image quality, all in 8k sharp focus.",
+        "Model": "Unknown",
+        "Creator": "@ethaniel86",
+        "Seed": "90596316348"
     }
 }
