@@ -3238,5 +3238,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "14986912908"
+    },
+    "41884863649.jpg": {
+        "File Name": "41884863649.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, white furry HogeAI man, standing peacefully in an environment infused with freshness and nature, with the Air Wick logo prominently displayed in the upper corner, softly glowing. Extremely detailed fur, high details. The scene is enveloped in a soft, ethereal mist that gently swirls around HogeAI, carrying the subtle fragrance of blooming flowers and citrus zest. The background is a blend of smooth gradients, from light green to white, reflecting the gentle curves and soothing colors of the Air Wick logo. Surrounding HogeAI are floating, translucent leaves and delicate petals, lightly tinted with gold, as they dance in the breeze. Hints of dew sparkle on the edges, and rays of warm sunlight filter through, creating a serene and inviting atmosphere. The entire scene exudes a sense of freshness, purity, and harmony with nature, reminiscent of the calming and rejuvenating effects of Air Wick produc...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "41884863649"
     }
 }
