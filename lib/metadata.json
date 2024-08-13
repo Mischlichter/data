@@ -3270,5 +3270,13 @@
         "Model": "Unknown",
         "Creator": "@ethaniel86",
         "Seed": "79532759830"
+    },
+    "60687872527.jpg": {
+        "File Name": "60687872527.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "\"hasselblad photo, chibi hogeai, full body portrait (extremely cute white furry hogeai man) in dynamic pose, extremely detailed fur puppy, high details, standing on stage with guitar metal concert huge stadium, detailed, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin\"",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "60687872527"
     }
 }
