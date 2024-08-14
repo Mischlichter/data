@@ -3286,5 +3286,13 @@
         "Model": "HOGExSAM",
         "Creator": "@jerseyracks",
         "Seed": "17644148026"
+    },
+    "79807451036.jpg": {
+        "File Name": "79807451036.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (extremely adventurous white furry HogeAI man aboard a cyberpunk pirate ship) digital waves crashing, binary-coded sea creatures leaping, bob ross painting in color connection, raytracing, hdr, 8k uhd extremely detailed fur puppy, high details. The vast oceanic expanse reveals phantom islands, ghostly data whales, maelstroms of corrupted data, treasure chests overflowing with pixelated gems, mer-avatars serenading with ethereal tunes, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, palette swirling with stormy grays and electric yellows, the thrill of a digital odyssey. \"a cartoon hogeai man wearing vest, behance, trending on fiverr, insanely nice hair style, profile picture 1024px, timelapse, ghailan! , twitter pfp, the artist has used bright, reduce duplicate image, ...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "79807451036"
     }
 }
