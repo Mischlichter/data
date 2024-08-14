@@ -3278,5 +3278,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "60687872527"
+    },
+    "17644148026.jpg": {
+        "File Name": "17644148026.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man shirtless with an athletic body, eating tacos, surrounded by beautiful ladies",
+        "Model": "HOGExSAM",
+        "Creator": "@jerseyracks",
+        "Seed": "17644148026"
     }
 }
