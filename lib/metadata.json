@@ -3294,5 +3294,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "79807451036"
+    },
+    "28228968271.jpg": {
+        "File Name": "28228968271.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "In an expansive, kaleidoscopic universe, Chibi HogeAI man stands at the convergence of swirling digital galaxies, inspired by Vincent van Gogh's swirling skies in 'Starry Night.' The scene is a blend of impressionistic brushstrokes and pixelated star clusters. Van Gogh's vibrant blues and yellows merge with luminous cyber hues, creating an otherworldly glow. Each pixel seems to pulse with energy, reminiscent of Seurat's pointillism, adding depth and texture. The atmosphere is electric yet harmonious, as if each stroke and pixel is part of a grand cosmic symphony, echoing the intricate balance of artistry and algorithm in HogeAI's world",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "28228968271"
     }
 }
