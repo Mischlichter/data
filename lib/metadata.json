@@ -3302,5 +3302,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "28228968271"
+    },
+    "15340068340.jpg": {
+        "File Name": "15340068340.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "micheal jackson playing the guitar, in the livingroom, terracotta wall, flowers on the table, detailled, photo, masterpiece",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "15340068340"
     }
 }
