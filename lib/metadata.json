@@ -3326,5 +3326,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "7362364482"
+    },
+    "5850228995.jpg": {
+        "File Name": "5850228995.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man) in a luxurious, high-tech art studio buzzing with vibrant energy and creativity. HogeAI man stands at the center, wielding a radiant, golden wand that sparkles with magical energy. Surrounding him are opulent, holographic displays and floating canvases, each showcasing stunning, dynamic artworks being transformed with magical effects. Other HogeAI characters are engaged in creating and enhancing their art with glowing, enchanted tools, golden light trails flowing from their hands. The studio is illuminated with bright neon lights, gold accents, and shimmering digital paint splatters, creating an atmosphere of lavish artistic potential. Floating holograms depict incredible before-and-after transformations, captivating everyone around. The space is filled with digital graffiti art, immersive installations, and sparkling gold particles, enhancing the dynamic",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "5850228995"
     }
 }
