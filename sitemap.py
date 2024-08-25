@@ -5,8 +5,7 @@ from urllib.parse import quote
 from datetime import datetime
 
 # Configuration
-base_url = "https://www.hogeai.com/"
-sharing_url = "https://www.hogeai.com/sharing/"
+base_url = "https://www.hogeai.com/sharing/"
 docs_path = "./docs"
 sitemap_path = "./docs/sitemap.xml"
 
@@ -17,9 +16,16 @@ def get_last_modified(file_path):
     else:
         return datetime.now()  # Use current time if the file isn't found
 
-def generate_sitemap(directory, base_url, sharing_url, sitemap_path, html_list_file):
+def generate_sitemap(directory, base_url, sitemap_path, html_list_file):
     """Generate the sitemap XML file, including specific HTML files."""
     urlset = ET.Element("urlset", xmlns="http://www.sitemaps.org/schemas/sitemap/0.9")
+
+    # Add the index page URL to the sitemap
+    url = ET.SubElement(urlset, "url")
+    loc = ET.SubElement(url, "loc")
+    loc.text = "https://www.hogeai.com/index.html"
+    lastmod = ET.SubElement(url, "lastmod")
+    lastmod.text = datetime.now().strftime("%Y-%m-%d")
 
     # Include specific HTML files
     with open(html_list_file, 'r') as file:
@@ -39,17 +45,14 @@ def generate_sitemap(directory, base_url, sharing_url, sitemap_path, html_list_f
         last_modified = get_last_modified(file_path)
         url = ET.SubElement(urlset, "url")
         loc = ET.SubElement(url, "loc")
-        
-        # Determine URL based on whether it's in the sharing folder
+        # Correct the URL to not include the 'docs/' path
+        relative_path = file_path.replace(directory, "").lstrip('/')
+        # Make sure not to add 'sharing/' if it's already part of the base URL
         if 'docs/sharing/' in file_path:
-            # For files in the docs/sharing folder, use the sharing URL
-            relative_path = file_path.replace("docs/sharing/", "").lstrip('/')
-            full_url = sharing_url + quote(relative_path)
+            corrected_path = relative_path.replace('docs/sharing/', '')
         else:
-            # For all other files in docs, use the base URL without 'docs/' prefix
-            relative_path = file_path.replace(directory, "").lstrip('/')
-            full_url = base_url + quote(relative_path)
-        
+            corrected_path = relative_path
+        full_url = base_url + quote(corrected_path)
         loc.text = full_url
         lastmod = ET.SubElement(url, "lastmod")
         lastmod.text = last_modified.strftime("%Y-%m-%d")
@@ -61,4 +64,4 @@ def generate_sitemap(directory, base_url, sharing_url, sitemap_path, html_list_f
 if __name__ == "__main__":
     html_list_file = sys.argv[1] if len(sys.argv) > 1 else ""
     if html_list_file:
-        generate_sitemap(docs_path, base_url, sharing_url, sitemap_path, html_list_file)
+        generate_sitemap(docs_path, base_url, sitemap_path, html_list_file)
