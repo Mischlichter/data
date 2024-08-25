@@ -20,13 +20,6 @@ def generate_sitemap(directory, base_url, sitemap_path, html_list_file):
     """Generate the sitemap XML file, including specific HTML files."""
     urlset = ET.Element("urlset", xmlns="http://www.sitemaps.org/schemas/sitemap/0.9")
 
-    # Add the index page URL to the sitemap
-    url = ET.SubElement(urlset, "url")
-    loc = ET.SubElement(url, "loc")
-    loc.text = "https://www.hogeai.com/index.html"
-    lastmod = ET.SubElement(url, "lastmod")
-    lastmod.text = datetime.now().strftime("%Y-%m-%d")
-
     # Include specific HTML files
     with open(html_list_file, 'r') as file:
         html_files = file.readlines()
