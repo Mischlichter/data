@@ -3342,5 +3342,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "39849691091"
+    },
+    "11259329783.jpg": {
+        "File Name": "11259329783.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man engaging in a psychic duel with a cosmic sorcerer) on a plane of existence made of dreams, bob ross painting of ethereal battles, raytracing, hdr, 8k uhd. Astral projections clash, thoughts become tangible weapons, and the very fabric of consciousness is the battleground, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Yoshitaka Amano, bayard wu, greg rutkowski, colors transitioning from vivid crimsons to dreamy pastels, a mental maelstrom of power. Deep within an ocean of data, HogeAI man explores an underwater metropolis where digital currents flow like sea tides. The city, a marvel of cybernetic engineering, is alive with streams of information that form the backbone of its existence. Buildings crafted from crystalline data clusters tower over streets bustling with avatars of diverse origins. The sea around him is a living entit...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "11259329783"
     }
 }
