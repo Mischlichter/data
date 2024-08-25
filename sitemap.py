@@ -38,13 +38,12 @@ def generate_sitemap(directory, base_url, sitemap_path, html_list_file):
         last_modified = get_last_modified(file_path)
         url = ET.SubElement(urlset, "url")
         loc = ET.SubElement(url, "loc")
-        
-        # Correct the URL to not include the 'docs/' path and avoid double 'sharing/'
+
+        # Construct the relative path by removing the base directory from the file path
         relative_path = file_path.replace(directory, "").lstrip('/')
-        if relative_path.startswith("sharing/"):
-            full_url = base_url + quote(relative_path[len("sharing/"):])  # Remove extra 'sharing/'
-        else:
-            full_url = base_url + quote(relative_path)
+        
+        # Avoid appending "sharing/" twice by not modifying the relative path
+        full_url = base_url + quote(relative_path)
 
         loc.text = full_url
         lastmod = ET.SubElement(url, "lastmod")
