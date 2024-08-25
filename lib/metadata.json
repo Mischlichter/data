@@ -3406,5 +3406,29 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "49164854328"
+    },
+    "52261687113.jpg": {
+        "File Name": "52261687113.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man made of chocolate,  epic illustrtion",
+        "Model": "IMG2IMG",
+        "Creator": "@Mischlichter",
+        "Seed": "52261687113"
+    },
+    "50699450737.jpg": {
+        "File Name": "50699450737.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (extremely majestic white furry HogeAI man ruling a binary-coded kingdom) virtual castles towering, pixelated banners fluttering, subjects in algorithmic attire bowing, bob ross painting in color connection, raytracing, hdr, 8k uhd extremely detailed fur puppy, high details. The realm is vast, from quantum moats to digital drawbridges, cybernetic knights guarding, aerial chariots made of light soaring, data-driven dragons roaring overhead, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, bayard wu, greg rutkowski, giger, maxim verehin, colors shimmering in regal purples and royal golds, the grandeur of a pixel empire.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "50699450737"
+    },
+    "83140654922.jpg": {
+        "File Name": "83140654922.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "full body portrait of an extremely cute white furry HogeAI man wearing sunglasses, centered, extremely detailed fur, high details, 4K, next-gen, ultra detailed, 3D octane rendering, unreal engine 5, midjourney style, by Gaston Bussiere, Bayard Wu, Greg Rutkowski, Giger, Maxim Verehin. The HogeAI man is standing confidently with money flying around and large, sparkling diamonds in the background. The text \"\ud83d\udc8e#hogeai man BUY CONTEST \ud83d\udc8e\" at the top in bold, vibrant colors, followed by \"Biggest buy wins 15M $hogeai man\" and \"Random buy wins 10M $hogeai man\" below it. The scene is bright, colorful, and energetic, with a lively atmosphere.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "83140654922"
     }
 }
