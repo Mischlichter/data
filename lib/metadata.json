@@ -3374,5 +3374,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "68710202629"
+    },
+    "42700174633.jpg": {
+        "File Name": "42700174633.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Paul Delvaux style hasselblad photo of a (hogeai man in  suburban hood)  walking a black dog with a big gold chain, a ghetto dog style, wearing hiphop outfit, photo of a needle - felted wrinkled old kaiju,",
+        "Model": "HOGExILLU",
+        "Creator": "@Mischlichter",
+        "Seed": "42700174633"
     }
 }
