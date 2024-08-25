@@ -16,6 +16,14 @@ def get_last_modified(file_path):
     else:
         return datetime.now()  # Use current time if the file isn't found
 
+def normalize_path(file_path, base_dir):
+    """Normalize the file path by removing the base directory and 'docs'."""
+    relative_path = file_path.replace(base_dir, "").lstrip('/')
+    # If the path starts with 'docs/sharing/', remove 'docs/' part
+    if relative_path.startswith("docs/"):
+        relative_path = relative_path[len("docs/"):]
+    return relative_path
+
 def generate_sitemap(directory, base_url, sitemap_path, html_list_file):
     """Generate the sitemap XML file, including specific HTML files."""
     urlset = ET.Element("urlset", xmlns="http://www.sitemaps.org/schemas/sitemap/0.9")
@@ -25,24 +33,24 @@ def generate_sitemap(directory, base_url, sitemap_path, html_list_file):
         html_files = file.readlines()
         html_files = [line.strip() for line in html_files]
 
-    # Include files from directory scan and ensure all specified files are considered
-    all_files = set(os.path.join(directory, f) for f in html_files)
+    # Normalize the paths for files from the list
+    all_files = set(normalize_path(os.path.join(directory, f), directory) for f in html_files)
+
+    # Include files from directory scan and normalize them
     for subdir, dirs, files in os.walk(directory):
         for file in files:
             if file.endswith(".html"):
                 file_path = os.path.join(subdir, file)
-                all_files.add(file_path)
+                all_files.add(normalize_path(file_path, directory))
 
     # Create sitemap entries
-    for file_path in all_files:
-        last_modified = get_last_modified(file_path)
+    for relative_path in all_files:
+        full_path = os.path.join(directory, relative_path)  # Full path to get last modified date
+        last_modified = get_last_modified(full_path)
         url = ET.SubElement(urlset, "url")
         loc = ET.SubElement(url, "loc")
 
-        # Get the relative path without 'docs' and avoid double '/sharing/'
-        relative_path = file_path.replace(directory, "").lstrip('/')
-        
-        # If the relative path already starts with 'sharing/', don't add it again
+        # If the relative path already starts with 'sharing/', avoid double 'sharing/'
         if relative_path.startswith("sharing/"):
             full_url = base_url.rstrip('/') + '/' + quote(relative_path[len("sharing/"):])
         else:
