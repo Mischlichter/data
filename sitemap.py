@@ -5,7 +5,7 @@ from urllib.parse import quote
 from datetime import datetime
 
 # Configuration
-base_url = "https://www.hogeai.com/"
+base_url = "https://www.hogeai.com/sharing/"
 docs_path = "./docs"
 sitemap_path = "./docs/sitemap.xml"
 
