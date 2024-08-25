@@ -5,7 +5,7 @@ from urllib.parse import quote
 from datetime import datetime
 
 # Configuration
-base_url = "https://www.hogeai.com/sharing/"
+base_url = "https://www.hogeai.com/"
 docs_path = "./docs"
 sitemap_path = "./docs/sitemap.xml"
 
@@ -17,18 +17,15 @@ def get_last_modified(file_path):
         return datetime.now()  # Use current time if the file isn't found
 
 def normalize_path(file_path, base_dir):
-    """Normalize the file path by removing the base directory and 'docs'."""
+    """Normalize the file path by removing the base directory and returning relative path."""
     relative_path = file_path.replace(base_dir, "").lstrip('/')
-    # If the path starts with 'docs/sharing/', remove 'docs/' part
-    if relative_path.startswith("docs/"):
-        relative_path = relative_path[len("docs/"):]
     return relative_path
 
 def generate_sitemap(directory, base_url, sitemap_path, html_list_file):
     """Generate the sitemap XML file, including specific HTML files."""
     urlset = ET.Element("urlset", xmlns="http://www.sitemaps.org/schemas/sitemap/0.9")
 
-    # Include specific HTML files
+    # Include specific HTML files from the provided list
     with open(html_list_file, 'r') as file:
         html_files = file.readlines()
         html_files = [line.strip() for line in html_files]
@@ -50,16 +47,18 @@ def generate_sitemap(directory, base_url, sitemap_path, html_list_file):
         url = ET.SubElement(urlset, "url")
         loc = ET.SubElement(url, "loc")
 
-        # If the relative path already starts with 'sharing/', avoid double 'sharing/'
+        # Handle URLs in the sharing folder separately
         if relative_path.startswith("sharing/"):
-            full_url = base_url.rstrip('/') + '/' + quote(relative_path[len("sharing/"):])
+            full_url = base_url.rstrip('/') + '/' + quote(relative_path)
         else:
-            full_url = base_url + quote(relative_path)
+            # For everything else (e.g., index.html), place it under the root domain
+            full_url = base_url.rstrip('/') + '/' + quote(relative_path)
 
         loc.text = full_url
         lastmod = ET.SubElement(url, "lastmod")
         lastmod.text = last_modified.strftime("%Y-%m-%d")
 
+    # Write the final sitemap
     tree = ET.ElementTree(urlset)
     tree.write(sitemap_path, xml_declaration=True, encoding='utf-8', method="xml")
     print(f"Sitemap generated at {sitemap_path}")
