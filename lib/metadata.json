@@ -3358,5 +3358,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "9576914802"
+    },
+    "9576914803.jpg": {
+        "File Name": "9576914803.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man summoning a phoenix from stardust) atop a floating pyramid, bob ross painting of astral horizons, raytracing, hdr, 8k uhd. Constellations respond to his call, spiraling galaxies form a backdrop, and shimmering auroras dance, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Kinuko Y. Craft, bayard wu, greg rutkowski, colors flowing with molten golds and fiery reds, the rebirth of cosmic wonders. In a transcendent garden where reality and imagination blur, HogeAI man celebrates New Year's Eve. This enchanted haven, nestled at the intersection of organic life and futuristic vision, pulsates with the energy of living plants that glow with an inner neon light, intertwining with holographic vines. The air is perfumed with a blend of natural and synthesized scents, creating a sensory tapestry that captivates and soothes. Bioluminescent flo...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "9576914803"
     }
 }
