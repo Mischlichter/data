@@ -74,3 +74,4 @@ if __name__ == "__main__":
     html_list_file = sys.argv[1] if len(sys.argv) > 1 else ""
     if html_list_file:
         generate_sitemap(docs_path, base_url, sitemap_path, html_list_file)
+
