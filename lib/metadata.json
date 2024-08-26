@@ -3462,5 +3462,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "22556760439"
+    },
+    "97817714116.jpg": {
+        "File Name": "97817714116.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Paul Delvaux style movie scene of a furry hogeai, (hogeai man)  creating graffiti, a ghetto dog style, wearing hiphop outfit, photo of a needle - felted wrinkled old kaiju",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "97817714116"
     }
 }
