@@ -3414,5 +3414,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "168655240"
+    },
+    "6856460985.jpg": {
+        "File Name": "6856460985.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man on a Monday, heading to the place he gives his energy for unbacked fiat, while missing his kids at home",
+        "Model": "HOGExSAM",
+        "Creator": "@jerseyracks",
+        "Seed": "6856460985"
     }
 }
