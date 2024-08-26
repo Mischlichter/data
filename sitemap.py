@@ -18,27 +18,32 @@ def get_last_modified(file_path):
 
 def normalize_path(file_path, base_dir):
     """Normalize the file path by removing the base directory and returning relative path."""
+    # Remove the base directory and strip any leading slashes
     relative_path = file_path.replace(base_dir, "").lstrip('/')
+    # If the path starts with 'docs/', remove the 'docs/' part
+    if relative_path.startswith("docs/"):
+        relative_path = relative_path[len("docs/"):]
     return relative_path
 
 def generate_sitemap(directory, base_url, sitemap_path, html_list_file):
     """Generate the sitemap XML file, including specific HTML files."""
     urlset = ET.Element("urlset", xmlns="http://www.sitemaps.org/schemas/sitemap/0.9")
 
-    # Read the specific HTML files from the provided list (these are relative to the root and should not include docs)
+    # Include specific HTML files from the provided list
     with open(html_list_file, 'r') as file:
         html_files = file.readlines()
         html_files = [line.strip() for line in html_files]
 
-    # Process the files from the list directly (no docs/ prefix)
+    # Normalize the paths for files from the list, stripping the 'docs/' if it's there
     for html_file in html_files:
+        normalized_html_file = normalize_path(html_file, "docs/")  # Ensuring docs/ is stripped from list files
         url = ET.SubElement(urlset, "url")
         loc = ET.SubElement(url, "loc")
-        full_url = base_url.rstrip('/') + '/' + quote(html_file)  # <-- This line changed to avoid docs/ prefix
+        full_url = base_url.rstrip('/') + '/' + quote(normalized_html_file)
         loc.text = full_url
 
         # Get last modified date for these files if they exist in the docs folder
-        full_path = os.path.join(directory, html_file)
+        full_path = os.path.join(directory, normalized_html_file)
         last_modified = get_last_modified(full_path)
         lastmod = ET.SubElement(url, "lastmod")
         lastmod.text = last_modified.strftime("%Y-%m-%d")
@@ -52,7 +57,7 @@ def generate_sitemap(directory, base_url, sitemap_path, html_list_file):
                 if relative_path not in html_files:  # Skip files already in the list
                     url = ET.SubElement(urlset, "url")
                     loc = ET.SubElement(url, "loc")
-                    full_url = base_url.rstrip('/') + '/' + quote(relative_path)
+                    full_url = base_url.rstrip('/') + '/' + quote(relative_path)  # Normalize path to remove docs/
                     loc.text = full_url
 
                     last_modified = get_last_modified(file_path)
