@@ -25,42 +25,39 @@ def generate_sitemap(directory, base_url, sitemap_path, html_list_file):
     """Generate the sitemap XML file, including specific HTML files."""
     urlset = ET.Element("urlset", xmlns="http://www.sitemaps.org/schemas/sitemap/0.9")
 
-    # Include specific HTML files from the provided list (files are treated as relative to the root)
+    # Read the specific HTML files from the provided list (these are relative to the root and should not include docs)
     with open(html_list_file, 'r') as file:
         html_files = file.readlines()
         html_files = [line.strip() for line in html_files]
 
-    # Files from the list are added directly without prepending the docs directory
-    list_files = set(html_files)  # These files are relative to the root, not the docs directory
+    # Process the files from the list directly (no docs/ prefix)
+    for html_file in html_files:
+        url = ET.SubElement(urlset, "url")
+        loc = ET.SubElement(url, "loc")
+        full_url = base_url.rstrip('/') + '/' + quote(html_file)  # <-- This line changed to avoid docs/ prefix
+        loc.text = full_url
 
-    # Include files from directory scan and normalize them
+        # Get last modified date for these files if they exist in the docs folder
+        full_path = os.path.join(directory, html_file)
+        last_modified = get_last_modified(full_path)
+        lastmod = ET.SubElement(url, "lastmod")
+        lastmod.text = last_modified.strftime("%Y-%m-%d")
+
+    # Scan through the docs folder and add any other .html files
     for subdir, dirs, files in os.walk(directory):
         for file in files:
             if file.endswith(".html"):
                 file_path = os.path.join(subdir, file)
-                # Normalize file paths relative to the docs directory
-                normalized_path = normalize_path(file_path, directory)
-                list_files.add(normalized_path)
+                relative_path = normalize_path(file_path, directory)
+                if relative_path not in html_files:  # Skip files already in the list
+                    url = ET.SubElement(urlset, "url")
+                    loc = ET.SubElement(url, "loc")
+                    full_url = base_url.rstrip('/') + '/' + quote(relative_path)
+                    loc.text = full_url
 
-    # Create sitemap entries
-    for relative_path in list_files:
-        if relative_path in html_files:
-            # If the file is from the list, we treat it as already relative to the root
-            full_url = base_url.rstrip('/') + '/' + quote(relative_path)
-        else:
-            # Otherwise, normalize the paths from the docs directory
-            full_path = os.path.join(directory, relative_path)
-            last_modified = get_last_modified(full_path)
-            full_url = base_url.rstrip('/') + '/' + quote(normalize_path(relative_path, directory))
-        
-        # Create URL element
-        url = ET.SubElement(urlset, "url")
-        loc = ET.SubElement(url, "loc")
-        loc.text = full_url
-
-        # Add lastmod element if applicable
-        lastmod = ET.SubElement(url, "lastmod")
-        lastmod.text = datetime.now().strftime("%Y-%m-%d")
+                    last_modified = get_last_modified(file_path)
+                    lastmod = ET.SubElement(url, "lastmod")
+                    lastmod.text = last_modified.strftime("%Y-%m-%d")
 
     # Write the final sitemap
     tree = ET.ElementTree(urlset)
