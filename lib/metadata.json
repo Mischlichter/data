@@ -3422,5 +3422,13 @@
         "Model": "HOGExSAM",
         "Creator": "@jerseyracks",
         "Seed": "6856460985"
+    },
+    "86042273027.jpg": {
+        "File Name": "86042273027.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Paul Delvaux style octane render of a furry hogeai, (hogeai man)  walking a black bulldog with a big gold chain, a ghetto dog style, wearing hiphop outfit, photo of a needle - felted wrinkled old kaiju",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "86042273027"
     }
 }
