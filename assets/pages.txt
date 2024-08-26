@@ -35,6 +35,7 @@ We invite you to be part of this adventure, to share your creations, to inspire 
 
 #container04 {
     text-transform: none;
+    /* link: https://t.me/officialhogecommunity */
 }
 
 #container05 {
