@@ -25,24 +25,31 @@ def generate_sitemap(directory, base_url, sitemap_path, html_list_file):
     """Generate the sitemap XML file, including specific HTML files."""
     urlset = ET.Element("urlset", xmlns="http://www.sitemaps.org/schemas/sitemap/0.9")
 
-    # Include specific HTML files from the provided list
+    # Include specific HTML files from the provided list (these are relative to the root and should not be normalized with docs_path)
     with open(html_list_file, 'r') as file:
         html_files = file.readlines()
         html_files = [line.strip() for line in html_files]
 
-    # Normalize the paths for files from the list, without including the docs directory
-    all_files = set(html_files)  # Files from the list are treated as relative to the root
+    # Files from the list are directly added without any further normalization
+    list_files = set(html_files)  # Files from the list are treated as relative to the root
 
     # Include files from directory scan and normalize them
     for subdir, dirs, files in os.walk(directory):
         for file in files:
             if file.endswith(".html"):
                 file_path = os.path.join(subdir, file)
-                all_files.add(normalize_path(file_path, directory))
+                # Normalize file paths relative to the docs directory
+                normalized_path = normalize_path(file_path, directory)
+                list_files.add(normalized_path)
 
     # Create sitemap entries
-    for relative_path in all_files:
-        full_path = os.path.join(directory, relative_path)  # Full path to get last modified date
+    for relative_path in list_files:
+        # Only normalize paths found by scanning the docs directory, not the ones from the list
+        if not os.path.isabs(relative_path):  # Checking if it's already an absolute URL
+            full_path = os.path.join(directory, relative_path)  # Full path to get last modified date
+        else:
+            full_path = relative_path
+
         last_modified = get_last_modified(full_path)
         url = ET.SubElement(urlset, "url")
         loc = ET.SubElement(url, "loc")
