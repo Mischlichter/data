@@ -30,8 +30,8 @@ def generate_sitemap(directory, base_url, sitemap_path, html_list_file):
         html_files = file.readlines()
         html_files = [line.strip() for line in html_files]
 
-    # Normalize the paths for files from the list
-    all_files = set(normalize_path(os.path.join(directory, f), directory) for f in html_files)
+    # Normalize the paths for files from the list, without including the docs directory
+    all_files = set(html_files)  # Files from the list are treated as relative to the root
 
     # Include files from directory scan and normalize them
     for subdir, dirs, files in os.walk(directory):
