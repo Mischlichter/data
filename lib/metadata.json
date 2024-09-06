@@ -3486,5 +3486,13 @@
         "Model": "HOGExSAM",
         "Creator": "@ZrcoT",
         "Seed": "83617422795"
+    },
+    "78349533643.jpg": {
+        "File Name": "78349533643.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "a close up of a hogeai man wearing a horned helmet and holding a sword, hogeai metal album cover, barong family, great pinterest photo, dark color palette, emblem of wisdom, black rock statue material, clockwork mechanical, dark color scheme, inspired by Dong Yuan, celtic culture, arthas",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "78349533643"
     }
 }
