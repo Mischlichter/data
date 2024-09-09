@@ -3510,5 +3510,13 @@
         "Model": "HOGExSAM",
         "Creator": "@HogeismyDoge",
         "Seed": "59962002006"
+    },
+    "84769317675.jpg": {
+        "File Name": "84769317675.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man drawn as seraph, angelic lighting radiating in the background through the clouds",
+        "Model": "HOGExSAM",
+        "Creator": "@HogeismyDoge",
+        "Seed": "84769317675"
     }
 }
