@@ -3526,5 +3526,13 @@
         "Model": "HOGExSAM",
         "Creator": "@HogeismyDoge",
         "Seed": "59876004465"
+    },
+    "75384907453.jpg": {
+        "File Name": "75384907453.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man drawn as a Gundam with Rasta coloring. Dynamic battle in background",
+        "Model": "HOGExSAM",
+        "Creator": "@HogeismyDoge",
+        "Seed": "75384907453"
     }
 }
