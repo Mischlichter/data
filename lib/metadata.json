@@ -3534,5 +3534,13 @@
         "Model": "HOGExSAM",
         "Creator": "@HogeismyDoge",
         "Seed": "75384907453"
+    },
+    "9991650671.jpg": {
+        "File Name": "9991650671.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man exploring a digital market square) where avatars peddle rare audio NFTs. The air vibrates with [melodic surreal 1.0] tones. Stands are draped in [holographic vibrant 0.9] cloths depicting legendary album covers. In the center, a fountain spills [luminous shimmering 1.0] musical notes, each triggering a classic riff when touched.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "9991650671"
     }
 }
