@@ -3486,5 +3486,61 @@
         "Model": "HOGExSAM",
         "Creator": "@ZrcoT",
         "Seed": "83617422795"
+    },
+    "78349533643.jpg": {
+        "File Name": "78349533643.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "a close up of a hogeai man wearing a horned helmet and holding a sword, hogeai metal album cover, barong family, great pinterest photo, dark color palette, emblem of wisdom, black rock statue material, clockwork mechanical, dark color scheme, inspired by Dong Yuan, celtic culture, arthas",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "78349533643"
+    },
+    "66362045205.jpg": {
+        "File Name": "66362045205.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man stick figure drawing",
+        "Model": "HOGExSAM",
+        "Creator": "@HogeismyDoge",
+        "Seed": "66362045205"
+    },
+    "59962002006.jpg": {
+        "File Name": "59962002006.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man saying have a good morning on a light up billboard in las Vegas.",
+        "Model": "HOGExSAM",
+        "Creator": "@HogeismyDoge",
+        "Seed": "59962002006"
+    },
+    "84769317675.jpg": {
+        "File Name": "84769317675.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man drawn as seraph, angelic lighting radiating in the background through the clouds",
+        "Model": "HOGExSAM",
+        "Creator": "@HogeismyDoge",
+        "Seed": "84769317675"
+    },
+    "59876004465.jpg": {
+        "File Name": "59876004465.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man drawn as a Gundam with Rasta coloring",
+        "Model": "HOGExSAM",
+        "Creator": "@HogeismyDoge",
+        "Seed": "59876004465"
+    },
+    "75384907453.jpg": {
+        "File Name": "75384907453.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man drawn as a Gundam with Rasta coloring. Dynamic battle in background",
+        "Model": "HOGExSAM",
+        "Creator": "@HogeismyDoge",
+        "Seed": "75384907453"
+    },
+    "9991650671.jpg": {
+        "File Name": "9991650671.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man exploring a digital market square) where avatars peddle rare audio NFTs. The air vibrates with [melodic surreal 1.0] tones. Stands are draped in [holographic vibrant 0.9] cloths depicting legendary album covers. In the center, a fountain spills [luminous shimmering 1.0] musical notes, each triggering a classic riff when touched.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "9991650671"
     }
 }
