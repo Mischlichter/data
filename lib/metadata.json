@@ -3542,5 +3542,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "9991650671"
+    },
+    "83960248892.jpg": {
+        "File Name": "83960248892.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man inside a luxurious digital mansion) where every furnishing embodies a crypto's history. Walls [shift narrate 1.0] tales of market highs and lows, while a grand piano plays melodies mirroring HogeAI coin's growth. Outside, topiaries are shaped as iconic crypto logos, with a prominent, gleaming HogeAI symbol reigning supreme. \"In a desert of shifting sands and hypnotic patterns, HogeAI man finds himself at a New Year's gathering of nomadic tribes, each tent a portal to a different psychedelic realm. The desert night comes alive with fire dancers, their flames painting stories in the air, while the sands below undulate in rhythm with the heartbeat of the earth. HogeAI, adorned in garments of woven light, joins the dance, his movements a tribute to the primal energy that connects all beings, in a landscape where the mystical and the tangible merge in a dance of vibrant ecst...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "83960248892"
     }
 }
