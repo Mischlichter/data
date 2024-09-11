@@ -46,7 +46,6 @@ We invite you to be part of this adventure, to share your creations, to inspire 
     text-transform: none;
     pointer-events: none;
     margin-bottom: 100px;
-    /* link: http://t.me/HogeAI */
 }
 
 
