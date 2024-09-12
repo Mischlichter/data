@@ -3574,5 +3574,13 @@
         "Model": "HOGExSAM",
         "Creator": "@HogeismyDoge",
         "Seed": "76776600638"
+    },
+    "66393727618.jpg": {
+        "File Name": "66393727618.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "elon musk wearing a hogeai man puppet on his hand",
+        "Model": "HOGExSAM",
+        "Creator": "@HogeismyDoge",
+        "Seed": "66393727618"
     }
 }
