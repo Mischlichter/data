@@ -3558,5 +3558,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "21248573387"
+    },
+    "44982392379.jpg": {
+        "File Name": "44982392379.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man turned into a magic the gathering card with full text, mana value, activated ability on card",
+        "Model": "HOGExSAM",
+        "Creator": "@HogeismyDoge",
+        "Seed": "44982392379"
     }
 }
