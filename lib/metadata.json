@@ -3590,5 +3590,13 @@
         "Model": "HOGExSAM",
         "Creator": "@HogeismyDoge",
         "Seed": "71986485839"
+    },
+    "2920060953.jpg": {
+        "File Name": "2920060953.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man will rise in a way that changes the world",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "2920060953"
     }
 }
