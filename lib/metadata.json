@@ -3662,5 +3662,13 @@
         "Model": "HOGExSAM",
         "Creator": "@HogeismyDoge",
         "Seed": "89830120878"
+    },
+    "25639835663.jpg": {
+        "File Name": "25639835663.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man man dressed like Gambit, purple glowing aura around hands, hogeai man throws playing card with streaks of purple energy around it, full body shot",
+        "Model": "HOGExSAM",
+        "Creator": "@HogeismyDoge",
+        "Seed": "25639835663"
     }
 }
