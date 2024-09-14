@@ -3710,5 +3710,13 @@
         "Model": "HOGExSAM",
         "Creator": "@HogeismyDoge",
         "Seed": "45976947867"
+    },
+    "92554972403.jpg": {
+        "File Name": "92554972403.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man made out of bones",
+        "Model": "HOGExSAM",
+        "Creator": "@HogeismyDoge",
+        "Seed": "92554972403"
     }
 }
