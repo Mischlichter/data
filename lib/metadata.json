@@ -3622,5 +3622,13 @@
         "Model": "HOGExILLU",
         "Creator": "@HogeismyDoge",
         "Seed": "28575908814"
+    },
+    "95612043448.jpg": {
+        "File Name": "95612043448.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man made out of steel",
+        "Model": "HOGExSAM",
+        "Creator": "@HogeismyDoge",
+        "Seed": "95612043448"
     }
 }
