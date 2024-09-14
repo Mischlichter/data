@@ -3742,5 +3742,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "67935634139"
+    },
+    "64369810274.jpg": {
+        "File Name": "64369810274.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, cinematic shot, (white furry HogeAI man standing at the center of a grand penthouse), dressed in a black velvet suit with gold embroidery, his cane tipped with diamonds. (HogeAI man gestures to a woman in a silk gown), as she presents a briefcase filled with gold coins to an avatar in a tailored suit. Neon lights from the city below filter through the tall glass windows, casting soft shadows across the room. The penthouse glows with ambient lighting, reflecting off polished marble floors and golden surfaces. Inspired by The Godfather and the regal poise of Kehinde Wiley\u2019s portraits, this scene exudes control and luxury, with deep reds, golds, and blacks creating a rich color palette that emphasizes power and dominance.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "64369810274"
     }
 }
