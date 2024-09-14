@@ -3670,5 +3670,13 @@
         "Model": "HOGExSAM",
         "Creator": "@HogeismyDoge",
         "Seed": "25639835663"
+    },
+    "52352962956.jpg": {
+        "File Name": "52352962956.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man zombie, brain shows from skull, broken limbs, infested body, maggots, worms, full body shot, zombie walk, cartoon art style",
+        "Model": "HOGExSAM",
+        "Creator": "@HogeismyDoge",
+        "Seed": "52352962956"
     }
 }
