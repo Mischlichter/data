@@ -3646,5 +3646,13 @@
         "Model": "HOGExSAM",
         "Creator": "@HogeismyDoge",
         "Seed": "16648181846"
+    },
+    "37644561930.jpg": {
+        "File Name": "37644561930.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man pulling out Excalibur from a jagged stone boulder",
+        "Model": "HOGExSAM",
+        "Creator": "@HogeismyDoge",
+        "Seed": "37644561930"
     }
 }
