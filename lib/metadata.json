@@ -3606,5 +3606,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "12948378934"
+    },
+    "25915016211.jpg": {
+        "File Name": "25915016211.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "transparent hogeai man, made out of glass",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "25915016211"
     }
 }
