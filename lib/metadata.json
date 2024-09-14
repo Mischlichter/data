@@ -3726,5 +3726,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "32156072446"
+    },
+    "10923153746.jpg": {
+        "File Name": "10923153746.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, cinematic shot, (white furry HogeAI man standing beside his loyal enforcers), dressed in a tailored velvet suit and wide-brimmed hat. (HogeAI man commands attention with a simple nod), as avatars in luxury streetwear form a protective circle. The women by his side, draped in gold and diamonds, add a sense of regal authority to the scene, reminiscent of Michael Corleone\u2019s inner circle in The Godfather, where family and loyalty are paramount.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "10923153746"
     }
 }
