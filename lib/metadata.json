@@ -3678,5 +3678,13 @@
         "Model": "HOGExSAM",
         "Creator": "@HogeismyDoge",
         "Seed": "52352962956"
+    },
+    "18364766454.jpg": {
+        "File Name": "18364766454.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man Phoenix, hogeai man rebirth, full body shot, 8k, hyper-realistic, dynamic lighting, extreme detail, sharp contrast, zoom lens",
+        "Model": "HOGExSAM",
+        "Creator": "@HogeismyDoge",
+        "Seed": "18364766454"
     }
 }
