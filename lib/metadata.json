@@ -3686,5 +3686,13 @@
         "Model": "HOGExSAM",
         "Creator": "@HogeismyDoge",
         "Seed": "18364766454"
+    },
+    "49272552294.jpg": {
+        "File Name": "49272552294.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man made from car tires",
+        "Model": "HOGExSAM",
+        "Creator": "@HogeismyDoge",
+        "Seed": "49272552294"
     }
 }
