@@ -3718,5 +3718,13 @@
         "Model": "HOGExSAM",
         "Creator": "@HogeismyDoge",
         "Seed": "92554972403"
+    },
+    "32156072446.jpg": {
+        "File Name": "32156072446.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, cinematic shot, (white furry HogeAI man seated at the head of a long, lavish dinner table), avatars dressed in velvet and silk lined up in reverence. The table is laden with golden platters of rare delicacies, glimmering under candlelight. (HogeAI man leans back, resting his hand on a jewel-encrusted cane), as the chandelier above flickers softly, casting opulent shadows across the marble floors. Inspired by the opulence of Gustav Klimt\u2019s gilded works, the scene exudes an air of aristocratic dominance and wealth, with every inch of the room dripping in golden hues and rich textures.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "32156072446"
     }
 }
