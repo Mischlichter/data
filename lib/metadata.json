@@ -3614,5 +3614,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "25915016211"
+    },
+    "28575908814.jpg": {
+        "File Name": "28575908814.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man made out of hay",
+        "Model": "HOGExILLU",
+        "Creator": "@HogeismyDoge",
+        "Seed": "28575908814"
     }
 }
