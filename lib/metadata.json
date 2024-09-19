@@ -3766,5 +3766,13 @@
         "Model": "HOGExSAM",
         "Creator": "@HogeismyDoge",
         "Seed": "51916222888"
+    },
+    "51247194674.jpg": {
+        "File Name": "51247194674.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, cinematic shot, (white furry HogeAI man hosting a lavish party in his sky-high penthouse), standing in front of floor-to-ceiling windows with neon-lit skyscrapers glowing behind him. (HogeAI man raises a crystal glass of champagne), his velvet purple coat flowing as he toasts with avatars in sleek suits and women in sequined gowns lounging on plush velvet sofas. The gold-trimmed penthouse reflects the shimmering lights of the city, while chandeliers cast soft, warm lighting on the marble floors. The atmosphere is one of high-class indulgence, with music softly playing in the background and luxury dripping from every corner. Inspired by The Wolf of Wall Street and the opulence of The Great Gatsby, the scene combines a sense of power, wealth, and decadence, using deep golds, purples, and neon reflections to create a mood of excess.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "51247194674"
     }
 }
