@@ -3782,5 +3782,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "3272333061"
+    },
+    "3540441402.jpg": {
+        "File Name": "3540441402.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, cinematic shot, (white furry HogeAI man leaning against a vintage jukebox in a secret underground club), dressed in a silver-streaked fur coat. The dim room is filled with avatars sipping cocktails martini, a band playing soft jazz in the corner. (HogeAI man taps his cane to the beat), while a glamorous woman leans in to whisper, her diamond earrings catching the light. The atmosphere is playful yet refined, inspired by the speakeasy scenes from The Untouchables, where illicit charm and luxury come together in a hidden world of indulgence",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "3540441402"
     }
 }
