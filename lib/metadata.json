@@ -3774,5 +3774,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "51247194674"
+    },
+    "3272333061.jpg": {
+        "File Name": "3272333061.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, cinematic shot, (white furry HogeAI man standing in a neon-lit alley), dressed in a sleek black velvet trench coat and gold chains. (HogeAI man flicks a coin into the air), as holographic street signs flash overhead, casting a multi-colored glow on the scene. Avatars in shadowy corners watch as the coin spins, anticipation heavy in the air. The alley is filled with digital graffiti and floating holograms, reminiscent of the chaotic energy in Basquiat\u2019s compositions. The scene is a blend of urban tension and sleek luxury, a portrait of control in the shadows of a neon jungle",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "3272333061"
     }
 }
