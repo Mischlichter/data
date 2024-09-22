@@ -3814,5 +3814,13 @@
         "Model": "HOGExSAM",
         "Creator": "@HogeismyDoge",
         "Seed": "23358309118"
+    },
+    "4905624550.jpg": {
+        "File Name": "4905624550.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hasselblad photo, furry hogeai, (hogeai man dancing) with corpse bride on a graveyard, dark sky full moon, epic style, tim burton movie scene",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "4905624550"
     }
 }
