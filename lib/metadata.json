@@ -3798,5 +3798,13 @@
         "Model": "HOGExSAM",
         "Creator": "@HogeismyDoge",
         "Seed": "9146405768"
+    },
+    "70704688272.jpg": {
+        "File Name": "70704688272.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man origami ninja",
+        "Model": "HOGExSAM",
+        "Creator": "@HogeismyDoge",
+        "Seed": "70704688272"
     }
 }
