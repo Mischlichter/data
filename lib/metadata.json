@@ -3822,5 +3822,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "4905624550"
+    },
+    "5578306232.jpg": {
+        "File Name": "5578306232.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "gangster style movie scene, dc comic style 3d render of hogeai man standing on a graveyard,  blue woodcut print, cartoon halloween hogeai in graveyard at midnight by greg rutkowski, fine details, highly detailed",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "5578306232"
     }
 }
