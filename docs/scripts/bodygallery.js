@@ -490,6 +490,7 @@ const galleryHTML = `
             const signal = abortController.signal;
 
             let imageMetadata = {};
+            let indexData = {}; // Declare indexData here to make it accessible
             const galleryContainer = document.getElementById('gallery-container');
             let db; // Reference for IndexedDB database
 
@@ -518,7 +519,9 @@ const galleryHTML = `
             function fetchMetadataAndImages() {
                 fetch('https://raw.githubusercontent.com/Mischlichter/data/main/index.json', { signal })
                     .then(response => response.json())
-                    .then(indexData => {
+                    .then(data => {
+                        indexData = data; // Store index.json data here
+
                         fetch('https://raw.githubusercontent.com/Mischlichter/data/main/lib/metadata.json', { signal })
                             .then(response => response.json())
                             .then(data => {
@@ -527,6 +530,29 @@ const galleryHTML = `
                                 fetch('https://api.github.com/repos/Mischlichter/data/contents/gallerycom', { signal })
                                     .then(response => response.json())
                                     .then(files => {
+                                        // **Sorting the files array based on creation dates**
+                                        files.sort((a, b) => {
+                                            // Get the creation dates for both files from indexData
+                                            let dateStrA = indexData['gallerycom/' + a.name];
+                                            let dateStrB = indexData['gallerycom/' + b.name];
+
+                                            let dateA = new Date(0);
+                                            let dateB = new Date(0);
+
+                                            if (dateStrA) {
+                                                let partsA = dateStrA.split(/[- :]/);
+                                                dateA = new Date(partsA[0], partsA[1] - 1, partsA[2], partsA[3], partsA[4], partsA[5]);
+                                            }
+
+                                            if (dateStrB) {
+                                                let partsB = dateStrB.split(/[- :]/);
+                                                dateB = new Date(partsB[0], partsB[1] - 1, partsB[2], partsB[3], partsB[4], partsB[5]);
+                                            }
+
+                                            // For descending order (most recent first)
+                                            return dateB - dateA;
+                                        });
+
                                         const totalImages = files.length;
                                         let loadedImages = 0;
                                         // Reset variables
@@ -556,6 +582,18 @@ const galleryHTML = `
                                             imageContainer.appendChild(wordOverlay);
                                             img.dataset.metadata = JSON.stringify(metadata);
 
+                                            // Get the creation date from indexData
+                                            let dateStr = indexData['gallerycom/' + file.name];
+                                            let creationDate;
+                                            if (dateStr) {
+                                                let parts = dateStr.split(/[- :]/);
+                                                creationDate = new Date(parts[0], parts[1] - 1, parts[2], parts[3], parts[4], parts[5]);
+                                            } else {
+                                                creationDate = new Date(0); // Default to epoch start if no date is provided
+                                            }
+                                            // Add the creation date to the image container as a data attribute
+                                            imageContainer.dataset.creationDate = creationDate.getTime();
+
                                             let transaction = db.transaction('assets', 'readonly');
                                             let store = transaction.objectStore('assets');
                                             let dbRequest = store.get(file.download_url);
@@ -563,16 +601,7 @@ const galleryHTML = `
                                             dbRequest.onsuccess = function(event) {
                                                 let dbResult = event.target.result;
                                                 let lastModifiedInDB = dbResult ? new Date(dbResult.lastModified) : new Date(0);
-                                                let dateStr = indexData[file.name]?.lastModified;
-                                                let lastModifiedCurrent;
-
-                                                // Ensure the date string is correctly parsed
-                                                if (dateStr) {
-                                                    let parts = dateStr.split(/[- :]/);
-                                                    lastModifiedCurrent = new Date(parts[0], parts[1] - 1, parts[2], parts[3], parts[4], parts[5]);
-                                                } else {
-                                                    lastModifiedCurrent = new Date(0);  // Default to epoch start if no date is provided
-                                                }
+                                                let lastModifiedCurrent = new Date(0);  // Default value
 
                                                 if (!dbResult || lastModifiedInDB < lastModifiedCurrent) {
                                                     fetch(file.download_url, { signal })
@@ -622,7 +651,9 @@ const galleryHTML = `
                                                         // Full load handling
                                                     }
 
+                                                    // Since images are loaded in order, simply append them
                                                     galleryContainer.appendChild(imageContainer);
+
                                                     setTimeout(() => loadImage(index + 1), 7);
                                                 };
 
@@ -664,6 +695,7 @@ const galleryHTML = `
                     });
             }
         }
+
 
 
 
