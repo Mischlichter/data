@@ -3838,5 +3838,13 @@
         "Model": "HOGExSAM",
         "Creator": "@HogeismyDoge",
         "Seed": "42866645572"
+    },
+    "78286261383.jpg": {
+        "File Name": "78286261383.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man origami wizard, spell casting, fiery blue glow",
+        "Model": "HOGExSAM",
+        "Creator": "@HogeismyDoge",
+        "Seed": "78286261383"
     }
 }
