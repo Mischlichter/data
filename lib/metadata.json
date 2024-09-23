@@ -3830,5 +3830,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "5578306232"
+    },
+    "42866645572.jpg": {
+        "File Name": "42866645572.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man portrayed as a werewolf, wearing hogeai man goggles, 8k, extreme detail, hyper focus, close up, Halloween vibes",
+        "Model": "HOGExSAM",
+        "Creator": "@HogeismyDoge",
+        "Seed": "42866645572"
     }
 }
