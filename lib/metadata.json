@@ -3854,5 +3854,13 @@
         "Model": "HOGExILLU",
         "Creator": "@HogeismyDoge",
         "Seed": "99000726060"
+    },
+    "82198440624.jpg": {
+        "File Name": "82198440624.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man drawn as Rambo, hold machine gun",
+        "Model": "HOGExSAM",
+        "Creator": "@HogeismyDoge",
+        "Seed": "82198440624"
     }
 }
