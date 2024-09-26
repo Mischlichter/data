@@ -3862,5 +3862,13 @@
         "Model": "HOGExSAM",
         "Creator": "@HogeismyDoge",
         "Seed": "82198440624"
+    },
+    "43659793089.jpg": {
+        "File Name": "43659793089.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, cinematic shot, (white furry HogeAI man sitting by a neon-lit infinity pool), his velvet robe flowing in the breeze, while the golden rays of the sun slowly illuminate the sky. (HogeAI man sips a holographic coffee), the calm water reflecting both the neon city skyline and the rising sun. Avatars in relaxed resort wear stretch and smile, their reflections mirrored in the glowing pool. The scene embodies the calm potential of morning, where the world holds its breath, ready for the possibilities of the day. Rendered in 8K HDR, the soft, golden light blends with the cool neon reflections, creating a moment of perfect harmony",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "43659793089"
     }
 }
