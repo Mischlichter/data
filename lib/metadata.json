@@ -3886,5 +3886,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "94785525769"
+    },
+    "46840993914.jpg": {
+        "File Name": "46840993914.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "memedream magazine cover design, (white furry HogeAI man and his crew gathered), avatars in neon suits and meme-themed streetwear surrounding a giant blueprint of their project, holding oversized meme coins, (HogeAI man smiling, standing at the center, pointing to the next big move), as avatars exchange ideas and toast to the next step, Neon billboards in the distance reflect off the polished marble floor, casting a warm collaborative glow on the group,  atmosphere is buzzing with innovation and the spirit of building together, Inspired by the vibe of Silicon Valley startup culture, with a memetic twist, rendered in 8K HDR,  soft neon reflections, glowing plans, and a futuristic, community-focused vibe",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "46840993914"
     }
 }
