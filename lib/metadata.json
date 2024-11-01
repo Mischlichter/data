@@ -3902,5 +3902,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "99626647360"
+    },
+    "63412074172.jpg": {
+        "File Name": "63412074172.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, cinematic shot, (white furry HogeAI man flanked by his trusted enforcer), the two standing under a neon sign outside a luxury club. A woman in a silk gown leans against the limo, exuding elegance and allure. (HogeAI man speaks quietly to his enforcer), the air tense with power. The gritty backdrop, inspired by urban Blaxploitation films, contrasts the luxury of the characters, creating a dynamic of control and street-level authority.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "63412074172"
     }
 }
