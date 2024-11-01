@@ -3894,5 +3894,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "46840993914"
+    },
+    "99626647360.jpg": {
+        "File Name": "99626647360.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "rap ulbum cover; carricature graffiti artwork, hogeai man in suburban outfit, a getto street in da hood, walking the dogg, gangsta og style, high contrast vibrant colors, epic compostion full frame shot, cinematic lighting, pimpin",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "99626647360"
     }
 }
