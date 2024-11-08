@@ -3910,5 +3910,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "63412074172"
+    },
+    "99742456902.jpg": {
+        "File Name": "99742456902.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Paul Delvaux style movie scene of a furry hogeai, (hogeai man)  returning from a the dead in hell, a fantasy dog style, wearing wanderers outfit, photo of a needle - felted wrinkled old kaiju",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "99742456902"
     }
 }
