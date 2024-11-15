@@ -3926,5 +3926,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "81337472553"
+    },
+    "88532439192.jpg": {
+        "File Name": "88532439192.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, cinematic shot, (white furry HogeAI man standing in the center of a vibrant, neon-lit colosseum), surrounded by avatars in futuristic streetwear, holding giant meme coins, (HogeAI man raising his arms, rallying the crowd), as avatars cheer from the stands, exchanging ideas, offering toasts, and shouting words of encouragement. Neon lights pulse in waves around the arena, holographic meme banners floating in the air, while avatars stand united in the energy of the moment. Inspired by a communal rally in the style of The Roman Colosseum but set in a meme-futuristic world, rendered in 8K HDR, with vivid neon colors, soft lighting, and the unbreakable power of community unity",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "88532439192"
     }
 }
