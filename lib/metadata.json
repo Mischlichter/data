@@ -3934,5 +3934,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "88532439192"
+    },
+    "9561197331.jpg": {
+        "File Name": "9561197331.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, cinematic shot, (white furry HogeAI man standing at the helm of a neon-lit luxury yacht), avatars in glamorous sequined dresses and tailored suits lounging around a neon-lit pool. (HogeAI man raises a crystal champagne flute), celebrating under a sky filled with neon-colored holographic fireworks, palm trees glowing softly in the distance. The yacht is adorned with gold-plated decorations, and avatars toast with oversized meme coins in hand, dancing to upbeat music. The scene is a mix of opulence and carefree joy, inspired by Miami Vice and the lavish excess of The Wolf of Wall Street, rendered in 8K HDR with glowing reflections, soft water lighting, and a vibrant, fun energy",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "9561197331"
     }
 }
