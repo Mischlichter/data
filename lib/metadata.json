@@ -3958,5 +3958,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "29339567809"
+    },
+    "86189465198.jpg": {
+        "File Name": "86189465198.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, cinematic shot, (white furry HogeAI man standing with diamond hand gloves out to the side. in a sleek business setting as an avatar in black luxury suit and red tie.",
+        "Model": "HOGExSAM",
+        "Creator": "@tothemooooon3",
+        "Seed": "86189465198"
     }
 }
