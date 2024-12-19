@@ -3966,5 +3966,13 @@
         "Model": "HOGExSAM",
         "Creator": "@tothemooooon3",
         "Seed": "86189465198"
+    },
+    "75088695496.jpg": {
+        "File Name": "75088695496.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Inspired by the over-the-top absurdity of 2024 meme trends, Hasselblad photo, cinematic shot, (white furry HogeAI man partying with friedns on a neon-colored rave goa trance festival), meme-themed avatars surrounding him,  a zoo of dancing animal represantation costumes, Neon lights, deep purple and gold contrasts, and hyper-saturated dancefloor reflections create a chaotic yet vibrant atmosphere.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "75088695496"
     }
 }
