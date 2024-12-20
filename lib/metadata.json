@@ -3974,5 +3974,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "75088695496"
+    },
+    "34069163514.jpg": {
+        "File Name": "34069163514.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "sexy hogeai dog woman, (white sexy furry HogeAI dog woman wearing goggles embracing a grunge style) with distressed jeans and flannel, standing under a dim, flickering neon sign. The environment reflects the raw, unfiltered love and compassion mood present in Nan Goldin\u2019s photography, complemented by the dark, gritty atmosphere characteristic of Banksy\u2019s iconic pieces, 4K, next gen, ultra detailed, 3d octane rendering, unreal engine 5, midjourney style, by Yoshitaka Amano, bayard wu, greg rutkowski Hasselblad photo, chibi hogeai, a white furry HogeAI woman standing atop a glimmering skyscraper on New Year's Eve, gazing at the sprawling digital metropolis below. The city pulses with neon lights, resembling a living motherboard, its streets filled with joyous throngs of people from all walks of life. The sky above bursts with virtual fireworks, casting a kaleidoscope of colors on the glass and steel. HogeAI",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "34069163514"
     }
 }
