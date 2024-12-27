@@ -3982,5 +3982,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "34069163514"
+    },
+    "23185793359.jpg": {
+        "File Name": "23185793359.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Inspired by the limitless potential of frictionless transactions. Hasselblad photo, cinematic family shot, (white furry HogeAI family standing on a futuristic memecoinsupermarket), avatars in sleek, digital outfits holding holographic tablets as glowing on-chain tokens flow seamlessly from their screens into the exchanges vibrant economy. (HogeAI man gestures toward a glowing, decentralized on-ramp), with no middlemen, just pure, unbroken connection to the on-chain world. The air is charged with the energy of transformation, avatars celebrating the frictionless flow. Rendered in 8K HDR, with neon arcade lights, futuristic vibes, and a dynamic atmosphere of innovation and progress.",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "23185793359"
     }
 }
