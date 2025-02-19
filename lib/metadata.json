@@ -4054,5 +4054,13 @@
         "Model": "HOGExSAM",
         "Creator": "@tothemooooon3",
         "Seed": "51215538902"
+    },
+    "94648334869.jpg": {
+        "File Name": "94648334869.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Hasselblad photo, chibi hogeai, (white furry HogeAI man) running lightning fast with glowing trail , neon-blue-lit party atmosphere. HogeAI man speeds at the center, surrounded by characters who are building a glowing digital archway out of floating, interconnected blocks, symbolizing the bridge to the base blockchain. Holographic screens display intricate, interconnected nodes and pathways of the blockchain. Characters are dancing, high-fiving, and cheering as the archway is completed and lights up brilliantly. The air is filled with swirling light particles, neon colors, and digital fireworks, creating an innovative and festive atmosphere. Bright neon lights, digital effects, and interactive installations amplify the joyous mood, reflecting the spirit of connection and progress within the HogeAI community. The environment captures the essence of bridging and connecting, symbolizing the seamless integration with the blockchai...",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "94648334869"
     }
 }
