@@ -4070,5 +4070,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "75924204723"
+    },
+    "989457134.jpg": {
+        "File Name": "989457134.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Jim Henson muppet style, hyperrealistic, furry  hogeai man IS shilling on a couch with hogeai friends , surreal hd photo, opulence, shiny happy abundance, goldenage memes",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "989457134"
     }
 }
