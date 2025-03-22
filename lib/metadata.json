@@ -4086,5 +4086,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "15442503488"
+    },
+    "62144613280.jpg": {
+        "File Name": "62144613280.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai astronaut man character aqua silhouette , 1up style graffiti, vibrant URANUS city futuristic background,  intricate detailled masterpiece design, epic mematic.",
+        "Model": "HOGExSAM",
+        "Creator": "@tothemooooon3",
+        "Seed": "62144613280"
     }
 }
