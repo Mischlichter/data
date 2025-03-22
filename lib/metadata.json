@@ -4094,5 +4094,13 @@
         "Model": "HOGExSAM",
         "Creator": "@tothemooooon3",
         "Seed": "62144613280"
+    },
+    "7804338508.jpg": {
+        "File Name": "7804338508.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "hogeai man walks his majestic White German Shepherd through the haunting corridors of the crypto underworld. The atmosphere glows with eerie moonlight cutting through dark shadows, casting long silhouettes across ancient blockchain ruins and glowing digital runes. Inspired by oil painting techniques, the scene is hyper realistic, rich in detail, and rendered in 8K HD resolution. The overall tone is mysterious and cinematic, with surreal elements reflecting the volatile world of crypto.",
+        "Model": "HOGExSAM",
+        "Creator": "@HogeismyDoge",
+        "Seed": "7804338508"
     }
 }
