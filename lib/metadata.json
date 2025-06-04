@@ -4118,5 +4118,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "28824592073"
+    },
+    "85334177744.jpg": {
+        "File Name": "85334177744.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "3d character movie scene good morning vibes, Paul Delvaux style fullbody octane render of a furry hogeai, (white furry HogeAI having coffee in a diner with his friend), avatar in sleek suits and meme-themed streetwear, photo of a needle - felted wrinkled old kaiju, atmosphere is buzzing with innovation and the spirit of building together, Inspired by the vibe of Silicon Valley startup culture, with a memetic twist, rendered in 8K HDR,  soft neon reflections, glowing plans, and a futuristic, community-focused vibe",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "85334177744"
     }
 }
