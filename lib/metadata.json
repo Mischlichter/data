@@ -4126,5 +4126,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "85334177744"
+    },
+    "58628418863.jpg": {
+        "File Name": "58628418863.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "jim hendson style, hyperrealistic, furry  hogeai man IS shilling with his friend saying \"trust me bro\" two buddys hangingn out in the garden, wearing hawaii clothing, surreal hd photo, opulence, shiny happy abundance, hogeai man dog",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "58628418863"
     }
 }
