@@ -4134,5 +4134,13 @@
         "Model": "HOGExSAM",
         "Creator": "@Mischlichter",
         "Seed": "58628418863"
+    },
+    "80147553867.jpg": {
+        "File Name": "80147553867.jpg",
+        "Directory": "/home/runner/work/data/data/gallerycom",
+        "Prompt": "Paul Delvaux style octane render of a happy furry hogeai, (white furry HogeAI community and hogeai man 4th birthday celebration), avatars in sleek attitude and meme-themed streetwear surrounding partying and celebrating, dancing and cheering in joy, (HogeAI man raising glass cocktail in the center, colorful and opulent details), as avatars exchange ideas and toast to the next step, zoo of memetic characters in the distance reflect off the polished marble floor, casting a warm collaborative glow on the group, photo of a needle - felted wrinkled old kaiju, atmosphere is buzzing with innovation and the spirit of building together, Inspired by the vibe of Silicon Valley startup culture, with a memetic twist, rendered in 8K HDR,  soft neon reflections, glowing plans, and a futuristic, community-focused vibe",
+        "Model": "HOGExSAM",
+        "Creator": "@Mischlichter",
+        "Seed": "80147553867"
     }
 }
